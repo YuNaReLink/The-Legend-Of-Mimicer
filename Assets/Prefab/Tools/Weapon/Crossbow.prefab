@@ -424,7 +424,7 @@ GameObject:
   - component: {fileID: 1582100704937274686}
   - component: {fileID: 1710881463445818625}
   m_Layer: 31
-  m_Name: MyCrossbow
+  m_Name: Crossbow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

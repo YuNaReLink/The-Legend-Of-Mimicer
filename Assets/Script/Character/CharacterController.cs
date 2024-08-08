@@ -50,10 +50,10 @@ public class CharacterController : MonoBehaviour
     public Vector3 Velocity { get { return velocity; } set { velocity = value; } }
 
     /// <summary>
-    /// プレイヤーの盾の行動を処理するクラス
+    /// キャラクターの防御の状態を決めるeunmクラス
     /// </summary>
     [SerializeField]
-    public GuardState guardState = GuardState.Null;
+    protected GuardState guardState = GuardState.Null;
     public GuardState GuardState { get { return guardState; } set { guardState = value; } }
 
     ///<summary>
@@ -126,7 +126,6 @@ public class CharacterController : MonoBehaviour
         groundCheck = GetComponent<GroundCheck>();
     }
 
-    // Update is called once per frame
     protected virtual void Update()
     {
         //入力を解除

@@ -10,6 +10,8 @@ public class EnemyTimer : TimerController
     public DeltaTimeCountDown GetTimerAttackCoolDown() {  return timerAttackCoolDown; }
     private DeltaTimeCountDown timerDamageCoolDown = null;
     public DeltaTimeCountDown GetTimerDamageCoolDown() { return timerDamageCoolDown; }
+    private DeltaTimeCountDown timerStun = null;
+    public DeltaTimeCountDown GetTimerStun() { return timerStun; }
     private DeltaTimeCountDown timerDie = null;
     public DeltaTimeCountDown GetTimerDie() { return timerDie; }
 
@@ -18,6 +20,7 @@ public class EnemyTimer : TimerController
         timerIdle = new DeltaTimeCountDown();
         timerAttackCoolDown = new DeltaTimeCountDown();
         timerDamageCoolDown = new DeltaTimeCountDown();
+        timerStun = new DeltaTimeCountDown();
         timerDie = new DeltaTimeCountDown();
 
         updateCountDowns = new InterfaceCountDown[]
@@ -25,6 +28,7 @@ public class EnemyTimer : TimerController
             timerIdle,
             timerAttackCoolDown,
             timerDamageCoolDown,
+            timerStun,
             timerDie,
         };
     }

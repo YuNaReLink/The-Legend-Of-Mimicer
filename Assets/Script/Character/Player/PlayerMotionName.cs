@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MotionName
+public class PlayerMotionName
 {
     private string[] rollingName = new string[]
     {

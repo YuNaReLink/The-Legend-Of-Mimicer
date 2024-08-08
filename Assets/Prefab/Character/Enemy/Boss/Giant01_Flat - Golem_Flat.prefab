@@ -212,7 +212,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -572,6 +572,7 @@ GameObject:
   - component: {fileID: 1357216421320936970}
   - component: {fileID: 4915082991154533488}
   - component: {fileID: 9104749675323322348}
+  - component: {fileID: 7251201412158598548}
   m_Layer: 0
   m_Name: Giant01_Flat - Golem_Flat
   m_TagString: Untagged
@@ -644,6 +645,41 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &7251201412158598548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845945369076765872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6308249ef7d17c14cb03cc9d73259f42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: -1
+  pastState: -1
+  animator: {fileID: 0}
+  maxHp: 0
+  hp: 0
+  death: 0
+  velocity: {x: 0, y: 0, z: 0}
+  guardState: -1
+  characterCollider: {fileID: 0}
+  characterRB: {fileID: 0}
+  input: 0
+  groundCheck: {fileID: 0}
+  landing: 0
+  jumping: 0
+  jumpPower: 0
+  stopController: 0
+  vfxObjects: {fileID: 0}
+  data: {fileID: 0}
+  foundPlayer: 0
+  target: {fileID: 0}
+  goalPosition: {x: 0, y: 0, z: 0}
+  loiterRadius: 10
+  stunFlag: 0
 --- !u!1 &2125977167109061285
 GameObject:
   m_ObjectHideFlags: 0
@@ -1426,7 +1462,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -2212,7 +2248,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -2294,7 +2330,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3488002732556618048, guid: 99559a2b2def484498d9017239e50c5f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4229640239774903126}
+      addedObject: {fileID: 2119853899822602888}
+    - targetCorrespondingSourceObject: {fileID: 3488002732556618048, guid: 99559a2b2def484498d9017239e50c5f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5275606436985138485}
   m_SourcePrefab: {fileID: 100100000, guid: 99559a2b2def484498d9017239e50c5f, type: 3}
 --- !u!4 &7260410148220054675 stripped
 Transform:
@@ -2306,8 +2345,20 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3488002732556618048, guid: 99559a2b2def484498d9017239e50c5f, type: 3}
   m_PrefabInstance: {fileID: 6912489131878481769}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &4229640239774903126
-MeshCollider:
+--- !u!114 &2119853899822602888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037227949201323561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e381cc421e6985b429ab7b308c8048eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &5275606436985138485
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2324,10 +2375,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3491645933159100563, guid: e7276da3de3dc194b8c62db5d121f0af, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.36188492, y: 0.45164058, z: 0.083883}
+  m_Center: {x: -2.0747943e-13, y: 0, z: 0.00000023841858}
 --- !u!1001 &9212282006146175233
 PrefabInstance:
   m_ObjectHideFlags: 0

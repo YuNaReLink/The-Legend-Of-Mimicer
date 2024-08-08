@@ -107,7 +107,7 @@ public class PlayerMotion : MotionController
     {
         Animator anim = controller.GetAnimator();
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
-        MotionName motionName = new MotionName();
+        PlayerMotionName motionName = new PlayerMotionName();
         string[] rollingName = motionName.GetRollingName();
         foreach(string motion in rollingName)
         {
@@ -135,7 +135,7 @@ public class PlayerMotion : MotionController
         // (3)  AnimationClipを差し替えて、強制的にアップデート
         // ステートがリセットされる
         //条件に当てはまらなければ何もしない
-        MotionName setmotionnames = new MotionName();
+        PlayerMotionName setmotionnames = new PlayerMotionName();
         foreach (var motionname in setmotionnames.GetGuardEnabledMotionName())
         {
             if (controller.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName(motionname))
@@ -152,7 +152,7 @@ public class PlayerMotion : MotionController
     {
         Animator anim = controller.GetAnimator();
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
-        MotionName motionName = new MotionName();
+        PlayerMotionName motionName = new PlayerMotionName();
 
         foreach (string motion in motionName.GetMotionName())
         {
@@ -190,7 +190,7 @@ public class PlayerMotion : MotionController
         Animator anim = controller.GetAnimator();
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
         if(animInfo.normalizedTime < 1.0f) { return; }
-        MotionName motionName = new MotionName();
+        PlayerMotionName motionName = new PlayerMotionName();
 
         foreach(string motion in motionName.GetMotionName())
         {
