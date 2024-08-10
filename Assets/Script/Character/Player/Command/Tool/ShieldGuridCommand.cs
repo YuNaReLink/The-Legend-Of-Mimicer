@@ -76,7 +76,7 @@ public class ShieldGuridCommand : BaseToolCommand
         switch (controller.GuardState)
         {
             case GuardState.Crouch:
-                controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.Gurid);
+                controller.GetMotion().ChangeMotion(StateTag.Gurid);
                 break;
         }
     }
@@ -92,11 +92,11 @@ public class ShieldGuridCommand : BaseToolCommand
         //状態によって左腕のモーションを変更する(現在は盾を持つモーションだけ)
         if (controller.GuardState == GuardState.Normal)
         {
-            controller.GetKeyInput().GetMotion().Change(controller.GetClip());
+            controller.GetMotion().Change(controller.GetClip());
         }
         else
         {
-            controller.GetKeyInput().GetMotion().Change(controller.GetNullClip());
+            controller.GetMotion().Change(controller.GetNullClip());
         }
     }
 }

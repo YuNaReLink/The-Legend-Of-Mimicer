@@ -68,7 +68,7 @@ public class RightHandInput
             if (controller.BattleMode)
             {
                 controller.BattleMode = false;
-                controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.ChangeMode);
+                controller.GetMotion().ChangeMotion(StateTag.ChangeMode);
             }
         }
         else if (controller.GetKeyInput().QKey)

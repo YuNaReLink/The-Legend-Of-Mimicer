@@ -152,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
   collider: {fileID: 0}
+  statusData: {fileID: 11400000, guid: d700cefbef5e6764bb87fd1a0f416648, type: 2}
   damageData: 1
 --- !u!114 &1416688065515829856
 MonoBehaviour:

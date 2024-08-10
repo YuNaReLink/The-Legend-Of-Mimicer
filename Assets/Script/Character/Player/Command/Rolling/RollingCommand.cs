@@ -20,7 +20,7 @@ public class RollingCommand
         {
             //ローリングが終わったら初速度を代入
             controller.CharacterRB.velocity = controller.GetKeyInput().InitVelocity;
-            controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.Run);
+            controller.GetMotion().ChangeMotion(StateTag.Run);
         }
         //ローリング中崖ジャンプ処理が実行されたら
         else if (controller.GetObstacleCheck().CliffJumpFlag)

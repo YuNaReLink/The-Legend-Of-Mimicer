@@ -18,6 +18,10 @@ public class ToolController : MonoBehaviour
     protected Collider collider = null;
 
     [SerializeField]
+    private WeaponStateData statusData = null;
+    public WeaponStateData GetStatusData() {  return statusData; }
+
+    [SerializeField]
     protected float damageData = 1f;
     public float GetDamage() {  return damageData; }
 }

@@ -77,7 +77,7 @@ public class OpenDoor : MonoBehaviour
                 hitExecute.enabled = false;
                 triggerCheck.GetController().StopController = true;
                 triggerCheck.GetController().Decele();
-                triggerCheck.GetController().GetKeyInput().GetMotion().ChangeMotion(CharacterTag.StateTag.Idle);
+                triggerCheck.GetController().GetMotion().ChangeMotion(CharacterTag.StateTag.Idle);
                 start = false;
                 return;
             }
@@ -115,7 +115,7 @@ public class OpenDoor : MonoBehaviour
             lookPos.y = triggerCheck.GetPlayer().transform.position.y;
             triggerCheck.GetPlayer().transform.LookAt(lookPos);
             triggerCheck.GetPlayer().transform.position = Vector3.MoveTowards(triggerCheck.GetPlayer().transform.position, movePosition.transform.position, playerSpeed * Time.deltaTime);
-            triggerCheck.GetController().GetKeyInput().GetMotion().ChangeMotion(CharacterTag.StateTag.Run);
+            triggerCheck.GetController().GetMotion().ChangeMotion(CharacterTag.StateTag.Run);
             //5番目:ドアを閉めるフラグを設定
             if (triggerCheck.GetPlayer().transform.position == movePosition.transform.position)
             {

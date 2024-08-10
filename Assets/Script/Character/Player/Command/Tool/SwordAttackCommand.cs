@@ -66,7 +66,7 @@ public class SwordAttackCommand : BaseToolCommand
     private void AttackDetailHandle()
     {
         controller.TripleAttack = (TripleAttack)controller.GetKeyInput().ThreeAttackCount;
-        controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.Attack);
+        controller.GetMotion().ChangeMotion(StateTag.Attack);
         controller.GetKeyInput().ThreeAttackCount++;
     }
     private bool CheckStopState()
@@ -91,13 +91,13 @@ public class SwordAttackCommand : BaseToolCommand
         if (controller.GetKeyInput().ShiftKey&& controller.GetKeyInput().IsCKeyEnabled())
         {
             controller.GetTimer().GetTimerJumpAttackAccele().StartTimer(0.5f);
-            controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.JumpAttack);
+            controller.GetMotion().ChangeMotion(StateTag.JumpAttack);
             controller.GetKeyInput().ShiftKey = false;
         }
         else if (controller.GetKeyInput().LeftMouseDownClick && !controller.Landing)
         {
             controller.GetTimer().GetTimerJumpAttackAccele().StartTimer(0.5f);
-            controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.JumpAttack);
+            controller.GetMotion().ChangeMotion(StateTag.JumpAttack);
             controller.GetKeyInput().LeftMouseDownClick = false;
             controller.BattleMode = true;
         }
@@ -113,11 +113,11 @@ public class SwordAttackCommand : BaseToolCommand
         bool spinflag = controller.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("readySpinAttack");
         if (controller.GetKeyInput().LeftMouseClick&&readystartflag)
         {
-            controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.ReadySpinAttack);
+            controller.GetMotion().ChangeMotion(StateTag.ReadySpinAttack);
         }
         else if (!controller.GetKeyInput().LeftMouseClick&&spinflag)
         {
-            controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.SpinAttack);
+            controller.GetMotion().ChangeMotion(StateTag.SpinAttack);
         }
     }
 

@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyController : CharacterController
 {
     [SerializeField]
-    private EnemyScriptableObject data = null;
+    protected EnemyScriptableObject data = null;
     public EnemyScriptableObject GetData() {  return data; }
 
     protected NavMeshController navMeshController = null;
@@ -27,11 +27,8 @@ public class EnemyController : CharacterController
     protected float loiterRadius = 10f;
     public float GetLoiterRadius() { return loiterRadius; }
 
-    [SerializeField]
-    protected EnemyMotion motion;
-    public EnemyMotion GetMotion() { return motion; }
-
-    protected EnemyDamageDetection damage = null;
+    protected EnemyDamageCommand damage = null;
+    public EnemyDamageCommand GetDamage() { return damage; }
 
     protected EnemyTimer timer = null;
     public EnemyTimer GetTimer() { return timer; }
@@ -53,18 +50,46 @@ public class EnemyController : CharacterController
     {
         base.InitializeAssign();
 
-        motion = new EnemyMotion(this);
+        
 
-        damage = new EnemyDamageDetection(this);
+        damage = new EnemyDamageCommand(this);
 
         timer = new EnemyTimer();
         timer.InitializeAssignTimer();
         timer.GetTimerIdle().StartTimer(3f);
     }
 
+    protected override void SetMotionController()
+    {
+        motion = new EnemyMotion(this);
+    }
+
     protected override void Update()
     {
         base.Update();
         timer.TimerUpdate();
+    }
+
+    public override void Death()
+    {
+        base.Death();
+        timer.GetTimerDie().StartTimer(1f);
+        timer.GetTimerDie().OnCompleted += () =>
+        {
+            CreateDieEffect(GetDieEffectScale());
+            Destroy(gameObject);
+            if (gameObject == PlayerCameraController.LockObject)
+            {
+                PlayerCameraController.LockObject = null;
+            }
+        };
+    }
+
+    protected virtual float GetDieEffectScale() { return 1f; }
+
+    private void CreateDieEffect(float scale)
+    {
+        GameObject vfx = Instantiate(vfxObjects.GetVFXArray()[(int)VFXScriptableObject.VFXTag.Die], transform.position, Quaternion.identity);
+        vfx.transform.localScale *= scale;
     }
 }

@@ -19,7 +19,7 @@ public class SpiderController : EnemyController
     protected override void Update()
     {
         base.Update();
-        if (DeathInput()) { return; }
+        if (death) { return; }
         DamageInput();
 
         if (!foundPlayer)
@@ -32,18 +32,6 @@ public class SpiderController : EnemyController
         }
     }
 
-    private bool DeathInput()
-    {
-        if (death)
-        {
-            if (!timer.GetTimerDie().IsEnabled())
-            {
-                Death();
-            }
-            return true;
-        }
-        return false;
-    }
     private void DamageInput()
     {
         damage.Execute();
@@ -137,8 +125,9 @@ public class SpiderController : EnemyController
             case "Attack":
                 if (timer.GetTimerDamageCoolDown().IsEnabled()) { return; }
                 timer.GetTimerDamageCoolDown().StartTimer(1f);
-                ToolController data = other.GetComponent<ToolController>();
-                damage.DamageValue = data.GetDamage();
+                damage.Attacker = other.gameObject;
+                //ToolController data = other.GetComponent<ToolController>();
+                //damage.DamageValue = data.GetDamage();
                 damage.DamageFlag = true;
                 Instantiate(vfxObjects.GetVFXArray()[(int)VFXScriptableObject.VFXTag.Damage], other.transform.position, Quaternion.identity);
                 break;

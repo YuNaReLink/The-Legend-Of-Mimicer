@@ -66,8 +66,8 @@ public class PlayerController : CharacterController
     /// <summary>
     /// プレイヤーのダメージ処理を行うクラス
     /// </summary>
-    private DamageCommand damage = null;
-    public DamageCommand GetDamage() { return damage; }
+    private PlayerDamageCommand damage = null;
+    public PlayerDamageCommand GetDamage() { return damage; }
 
     /// <summary>
     /// プレイヤーの各右・左の道具の処理を生成するクラス
@@ -109,10 +109,6 @@ public class PlayerController : CharacterController
 
     public DamageTag DamageTag {  get { return damageTag; } set { damageTag = value; } }
 
-    [SerializeField]
-    private bool damageFlag = false;
-    public bool DamageFlag { get { return damageFlag; } set {damageFlag = value; } }
-
     [Header("プレイヤーが盾を構えた時に使うモーションClip")]
     [SerializeField]
     private AnimationClip clip = null;
@@ -132,6 +128,11 @@ public class PlayerController : CharacterController
     {
         base.Awake();
         InitializeAssign();
+    }
+
+    protected override void SetMotionController()
+    {
+        motion = new PlayerMotion(this);
     }
 
     protected override void Start()
@@ -175,7 +176,7 @@ public class PlayerController : CharacterController
 
         rolling = new RollingCommand(this);
 
-        damage = new DamageCommand(this);
+        damage = new PlayerDamageCommand(this);
 
         animatorOverride = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = animatorOverride;
@@ -206,9 +207,9 @@ public class PlayerController : CharacterController
         toolController.UpdateProps();
 
         //特定のモーションを特定の条件で止めたり再生したりするメソッド
-        keyInput.GetMotion().StopMotionCheck(this);
+        motion.StopMotionCheck();
         //特定のモーション終了時に処理を行うメソッド
-        keyInput.GetMotion().EndMotionNameCheck(this);
+        motion.EndMotionNameCheck();
     }
 
     private void LandingCheck()
@@ -253,7 +254,7 @@ public class PlayerController : CharacterController
         UpdateCommand();
     }
 
-    private void UpdateMoveInput()
+    protected override void UpdateMoveInput()
     {
         switch (currentState)
         {
@@ -265,6 +266,7 @@ public class PlayerController : CharacterController
             case StateTag.SpinAttack:
             case StateTag.Gurid:
             case StateTag.Damage:
+            case StateTag.Die:
                 return;
         }
         if(currentState == StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 && keyInput.Vertical == 0) { return; }
@@ -305,6 +307,10 @@ public class PlayerController : CharacterController
         {
             leftCommand.Execute();
         }
+        if(damage != null)
+        {
+            damage.Execute();
+        }
         //移動処理
         if (!timer.GetTimerRolling().IsEnabled())
         {
@@ -324,6 +330,7 @@ public class PlayerController : CharacterController
         if (rotation.GetCameraVelocity() == Vector3.zero) { return; }
         if (obstacleCheck.IsMoveDirectionWallHitFlag()) { return; }
         if(currentState == StateTag.Push) { return; }
+        if(currentState == StateTag.Damage) { return; }
         transform.rotation = rotation.SelfRotation(this);
     }
 
@@ -376,15 +383,11 @@ public class PlayerController : CharacterController
         characterRB.velocity =  StopRigidBodyVelocity();
     }
 
-    public Vector3 StopMoveVelocity()
+    public override void Death()
     {
-        return new Vector3(0, characterRB.velocity.y, 0);
+        base.Death();
     }
 
-    public Vector3 StopRigidBodyVelocity()
-    {
-        return new Vector3(0, characterRB.velocity.y, 0);
-    }
     private void SetPushState(PushTag _pushTag){pushTag = _pushTag;}
 
     private void OnCollisionEnter(Collision collision)
@@ -398,13 +401,14 @@ public class PlayerController : CharacterController
 
     private void HandleCollision(Collider other)
     {
+        if (death) { return; }
         switch (other.tag)
         {
             case "Furniture":
                 SetPushState(PushTag.Start);
                 break;
             case "Damage":
-                damageTag = DamageTag.NormalAttack;
+                DamageOrGuardCheck(other);
                 break;
             default:
                 fallDistanceCheck.CollisionEnter();
@@ -414,10 +418,24 @@ public class PlayerController : CharacterController
         }
     }
 
+    private void DamageOrGuardCheck(Collider other)
+    {
+        switch (guardState)
+        {
+            case GuardState.Null:
+                //ダメージ発生時の処理
+                damageTag = DamageTag.NormalAttack;
+                damage.Attacker = other.gameObject;
+                break;
+            case GuardState.Normal:
+            case GuardState.Crouch:
+                break;
+        }
+    }
 
     private void OnCollisionStay(Collision collision)
     {
-        if (!gameObject.transform.parent) { return; }
+        if (death) { return; }
         switch (collision.collider.tag)
         {
             case "Furniture":
@@ -445,7 +463,7 @@ public class PlayerController : CharacterController
 
     private void OnCollisionExit(Collision collision)
     {
-        if (!gameObject.transform.parent) { return; }
+        if (death) { return; }
         switch (collision.collider.tag)
         {
             case "Furniture":

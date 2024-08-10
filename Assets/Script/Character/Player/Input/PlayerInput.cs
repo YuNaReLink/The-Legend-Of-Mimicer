@@ -12,10 +12,9 @@ public class PlayerInput : MonoBehaviour
 
 
     public void SetController(PlayerController _controller) {  controller = _controller; }
-    private PlayerMotion motion;
-
-    public PlayerMotion GetMotion() { return motion; }
-    public void SetMotion(PlayerMotion _motion) { motion = _motion; }
+    //private PlayerMotion motion;
+    //
+    //public PlayerMotion GetMotion() { return motion; }
 
     /// <summary>
     /// マウス入力
@@ -146,8 +145,6 @@ public class PlayerInput : MonoBehaviour
 
     public void Initialize()
     {
-        motion = new PlayerMotion();
-        motion.SetController(controller);
 
         rightHandInput = new RightHandInput(controller);
         leftHandInput = new LeftHandInput(controller);
@@ -156,7 +153,7 @@ public class PlayerInput : MonoBehaviour
     private bool NoInputEnabled()
     {
         bool noaccele = controller.GetTimer().GetTimerNoAccele().IsEnabled();
-        bool rollingflag = controller.CurrentState == StateTag.Rolling && !motion.MotionEndCheck(controller);
+        bool rollingflag = controller.CurrentState == StateTag.Rolling && !controller.GetMotion().MotionEndCheck();
         bool falldamageflag = controller.CurrentState == StateTag.Damage;
         bool jumpattack = controller.CurrentState == StateTag.JumpAttack;
         bool pushflag = controller.CurrentState == StateTag.Push&&(controller.PushTag == PushTag.Start|| controller.PushTag == PushTag.Pushing);
@@ -171,26 +168,28 @@ public class PlayerInput : MonoBehaviour
 
     public void UpdatePlayerInput()
     {
-        //入力初期化
-        InitializeInput();
         //ダメージ入力
         DamageInput();
-        //落下入力
-        FallInput();
-        //押すことが可能なオブジェクトに対しての動作の入力
-        PushInput();
-        if (NoInputEnabled()) { return; }
-        //待機入力
-        IdleInput();
-        //移動入力
-        RunInput();
-        //回転入力
-        RollingInput();
-        //収納・納刀入力
-        ModeChangeInput();
-
-        //手に持っている道具の入力
-        HoldToolInput();
+        if (!controller.DeathFlag)
+        {
+            //入力初期化
+            InitializeInput();
+            //落下入力
+            FallInput();
+            //押すことが可能なオブジェクトに対しての動作の入力
+            PushInput();
+            if (NoInputEnabled()) { return; }
+            //待機入力
+            IdleInput();
+            //移動入力
+            RunInput();
+            //回転入力
+            RollingInput();
+            //収納・納刀入力
+            ModeChangeInput();
+            //手に持っている道具の入力
+            HoldToolInput();
+        }
     }
 
     public void UpdateGimicInput()
@@ -247,7 +246,7 @@ public class PlayerInput : MonoBehaviour
         if(controller.GetObstacleCheck().IsWallJumpFlag()) { return; }
         if (!controller.Landing)
         {
-            motion.ChangeMotion(StateTag.Fall);
+            controller.GetMotion().ChangeMotion(StateTag.Fall);
         }
     }
 
@@ -286,7 +285,7 @@ public class PlayerInput : MonoBehaviour
         bool verIdleNoEnabled = vertical >= 1 || vertical <= -1;
 
         if (horidleNoEnabled||verIdleNoEnabled) { return; }
-        motion.ChangeMotion(StateTag.Idle);
+        controller.GetMotion().ChangeMotion(StateTag.Idle);
         
     }
 
@@ -306,7 +305,7 @@ public class PlayerInput : MonoBehaviour
         if (!cKeyEnabled)
         {
             currentDirection = DirectionTag.Null;
-            motion.ChangeMotion(StateTag.Run);
+            controller.GetMotion().ChangeMotion(StateTag.Run);
         }
         else
         {
@@ -333,7 +332,7 @@ public class PlayerInput : MonoBehaviour
             currentDirection = DirectionTag.Down;
         }
         controller.MoveInput = true;
-        motion.ChangeMotion(StateTag.Run);
+        controller.GetMotion().ChangeMotion(StateTag.Run);
     }
 
     private void RollingInput()
@@ -343,7 +342,7 @@ public class PlayerInput : MonoBehaviour
             controller.CurrentState == StateTag.ReadySpinAttack||controller.CurrentState == StateTag.SpinAttack;
         if (stopstate) { return; }
         if (!controller.Landing) { return; }
-        if (controller.GetKeyInput().GetMotion().IsEndRollingMotionNameCheck(controller)) { return; }
+        if (controller.GetMotion().IsEndRollingMotionNameCheck()) { return; }
         if (!shiftKey) { return; }
         if (!cKeyEnabled) 
         {
@@ -356,7 +355,7 @@ public class PlayerInput : MonoBehaviour
 
             controller.GetTimer().GetTimerRolling().StartTimer(0.4f);
             controller.GetTimer().GetTimerNoAccele().StartTimer(0.4f);
-            motion.ChangeMotion(StateTag.Rolling);
+            controller.GetMotion().ChangeMotion(StateTag.Rolling);
             //Shiftキーを無効にする
             shiftKey = false;
         }
@@ -393,7 +392,7 @@ public class PlayerInput : MonoBehaviour
         rollTimer = 0.0f;
         controller.GetTimer().GetTimerRolling().StartTimer(rollingcount);
         controller.GetTimer().GetTimerNoAccele().StartTimer(noaccele);
-        motion.ChangeMotion(StateTag.Rolling);
+        controller.GetMotion().ChangeMotion(StateTag.Rolling);
         //Shiftキーを無効にする
         shiftKey = false;
     }
@@ -405,14 +404,14 @@ public class PlayerInput : MonoBehaviour
         if (!qKey) { return;}
         if(controller.GetToolController().CurrentToolTag == PlayerToolController.ToolObjectTag.Bow) { return; }
         controller.BattleMode = !controller.BattleMode;
-        motion.ChangeMotion(StateTag.ChangeMode);
+        controller.GetMotion().ChangeMotion(StateTag.ChangeMode);
     }
 
     private void PushInput()
     {
         if (!controller.Landing) { return; }
         if(controller.PushTag == PushTag.Null) { return; }
-        motion.ChangeMotion(StateTag.Push);
+        controller.GetMotion().ChangeMotion(StateTag.Push);
     }
 
     private void HoldToolInput()

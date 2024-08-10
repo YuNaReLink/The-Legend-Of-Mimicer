@@ -6,8 +6,10 @@ using CharacterTag;
 public class PlayerMotion : MotionController
 {
     private PlayerController controller;
-
-    public void SetController(PlayerController _controller) { controller = _controller; }
+    public PlayerMotion(PlayerController _controller)
+    {
+        controller = _controller;
+    }
     //Parametersの名前を取得
 
     private string boolname = "BattleMode";
@@ -17,7 +19,7 @@ public class PlayerMotion : MotionController
     private string damagename = "Damage";
     private string pushingname = "Pushing";
 
-    public void ChangeMotion(StateTag _state)
+    public override void ChangeMotion(StateTag _state)
     {
         //アニメーターを代入
         Animator anim = controller.GetAnimator();
@@ -65,7 +67,7 @@ public class PlayerMotion : MotionController
         bool damage = controller.CurrentState ==
             StateTag.Damage&&
             anim.GetCurrentAnimatorStateInfo(0).IsName("DamageLanding")&&
-            !MotionEndCheck(controller);
+            !MotionEndCheck();
         bool jumpStop = controller.CurrentState == StateTag.Jump&&!controller.Landing&&
             _state != StateTag.Grab&& _state != StateTag.JumpAttack;
 
@@ -84,7 +86,7 @@ public class PlayerMotion : MotionController
     }
 
 
-    public bool MotionEndCheck(PlayerController controller)
+    public override bool MotionEndCheck()
     {
         Animator anim = controller.GetAnimator();
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -92,7 +94,7 @@ public class PlayerMotion : MotionController
         return false;
     }
 
-    public bool IsMotionNameCheck(PlayerController controller,string name)
+    public override bool IsMotionNameCheck(string name)
     {
         Animator anim = controller.GetAnimator();
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -103,7 +105,7 @@ public class PlayerMotion : MotionController
         return false;
     }
 
-    public bool IsEndRollingMotionNameCheck(PlayerController controller)
+    public override bool IsEndRollingMotionNameCheck()
     {
         Animator anim = controller.GetAnimator();
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -119,7 +121,7 @@ public class PlayerMotion : MotionController
         return false;
     }
 
-    public void Change(AnimationClip clip)
+    public override void Change(AnimationClip clip)
     {
         AllocateMotion("noGuard", clip);
     }
@@ -148,7 +150,7 @@ public class PlayerMotion : MotionController
     }
 
 
-    public void StopMotionCheck(PlayerController controller)
+    public override void StopMotionCheck()
     {
         Animator anim = controller.GetAnimator();
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -164,7 +166,7 @@ public class PlayerMotion : MotionController
         }
     }
 
-    public void StopMotionCommand(string motion, Animator anim)
+    private void StopMotionCommand(string motion, Animator anim)
     {
         switch (motion)
         {
@@ -185,7 +187,7 @@ public class PlayerMotion : MotionController
     }
 
     //保持してるモーション名が終わったか判定する処理
-    public void EndMotionNameCheck(PlayerController controller)
+    public override void EndMotionNameCheck()
     {
         Animator anim = controller.GetAnimator();
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -203,7 +205,7 @@ public class PlayerMotion : MotionController
     }
 
     //モーションが終わった時にする処理
-    public void EndMotionCommand(string motion)
+    private void EndMotionCommand(string motion)
     {
         switch (motion)
         {

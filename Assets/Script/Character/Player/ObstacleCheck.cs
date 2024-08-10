@@ -339,7 +339,7 @@ public class ObstacleCheck : MonoBehaviour
             {
                 lowJumpCount = 0;
             }
-            controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.Jump);
+            controller.GetMotion().ChangeMotion(StateTag.Jump);
             controller.JumpForce(lowStepJumpPower);
             cliffJump = true;
             controller.Jumping = true;
@@ -354,7 +354,7 @@ public class ObstacleCheck : MonoBehaviour
         {
             lowJumpCount = 0;
             controller.CharacterRB.velocity = Vector3.zero;
-            controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.Jump);
+            controller.GetMotion().ChangeMotion(StateTag.Jump);
             controller.JumpForce(wallJumpPower);
             stepJumpFlag = false;
             controller.Jumping = true;
@@ -366,7 +366,7 @@ public class ObstacleCheck : MonoBehaviour
 
         if (wallJumpFlag && controller.MoveInput)
         {
-            controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.WallJump);
+            controller.GetMotion().ChangeMotion(StateTag.WallJump);
             controller.JumpForce(wallJumpPower);
             grabFlag = true;
             wallJumpFlag = false;
@@ -388,11 +388,11 @@ public class ObstacleCheck : MonoBehaviour
             }
             controller.Velocity = controller.StopMoveVelocity();
             controller.CharacterRB.velocity = controller.StopRigidBodyVelocity();
-            controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.Grab);
+            controller.GetMotion().ChangeMotion(StateTag.Grab);
             if (MoveKeyInput(controller))
             {
                 SetClimbPostion();
-                controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.ClimbWall);
+                controller.GetMotion().ChangeMotion(StateTag.ClimbWall);
             }
             else if (controller.GetKeyInput().IsDownKey())
             {
@@ -403,7 +403,7 @@ public class ObstacleCheck : MonoBehaviour
                 grabFlag = false;
                 climbFlag = false;
                 controller.CharacterRB.useGravity = true;
-                controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.Fall);
+                controller.GetMotion().ChangeMotion(StateTag.Fall);
                 grabCancel = true;
             }
         }
@@ -440,7 +440,7 @@ public class ObstacleCheck : MonoBehaviour
             controller.CharacterRB.velocity = Vector3.zero;
             controller.Velocity = controller.StopMoveVelocity();
             SetClimbPostion();
-            controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.ClimbWall);
+            controller.GetMotion().ChangeMotion(StateTag.ClimbWall);
         }
 
         if (!climbFlag) { return; }
@@ -465,7 +465,7 @@ public class ObstacleCheck : MonoBehaviour
             grabFlag = false;
             lowStep = false;
             controller.CharacterRB.useGravity = true;
-            controller.GetKeyInput().GetMotion().ChangeMotion(StateTag.Idle);
+            controller.GetMotion().ChangeMotion(StateTag.Idle);
         }
     }
     //  イージング関数

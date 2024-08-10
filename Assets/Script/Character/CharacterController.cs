@@ -20,12 +20,18 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     [SerializeField]
     protected Animator animator;
-
-
     public Animator GetAnimator() { return animator; }
 
     protected AnimatorOverrideController animatorOverride;
     public AnimatorOverrideController GetAnimatorOverrideController() { return animatorOverride; }
+
+    protected MotionController motion = null;
+    public MotionController GetMotion() {  return motion; }
+
+    protected virtual void SetMotionController()
+    {
+        motion = new MotionController();
+    }
 
     /// <summary>
     /// HPä÷åWÇÃïœêî
@@ -105,6 +111,7 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField]
     protected VFXScriptableObject vfxObjects = null;
+    public VFXScriptableObject GetVFXObjects() { return vfxObjects; }
 
     protected virtual void Awake()
     {
@@ -120,7 +127,7 @@ public class CharacterController : MonoBehaviour
     protected virtual void InitializeAssign()
     {
         animator = GetComponent<Animator>();
-
+        SetMotionController();
         characterCollider = GetComponent<Collider>();
         characterRB = GetComponent<Rigidbody>();
         groundCheck = GetComponent<GroundCheck>();
@@ -132,9 +139,22 @@ public class CharacterController : MonoBehaviour
         input = false;
     }
 
+    protected virtual void UpdateMoveInput()
+    {
+        input = true;
+    }
+
     protected void Move()
     {
         characterRB.velocity = new Vector3(velocity.x, characterRB.velocity.y, velocity.z);
+    }
+    public Vector3 StopMoveVelocity()
+    {
+        return new Vector3(0, characterRB.velocity.y, 0);
+    }
+    public Vector3 StopRigidBodyVelocity()
+    {
+        return new Vector3(0, characterRB.velocity.y, 0);
     }
 
     public virtual void AcceleJumpForce(float _jumppower,float _maxJumpPower)
@@ -154,14 +174,16 @@ public class CharacterController : MonoBehaviour
         characterRB.AddForce(transform.forward * _accele, ForceMode.Acceleration);
     }
 
-
-    public void Death()
+    public void Knockback(Vector3 attacker, float power)
     {
-        Instantiate(vfxObjects.GetVFXArray()[(int)VFXScriptableObject.VFXTag.Die], transform.position, Quaternion.identity);
-        Destroy(this.gameObject);
-        if(gameObject == PlayerCameraController.LockObject)
-        {
-            PlayerCameraController.LockObject = null;
-        }
+        Vector3 direction = transform.position - attacker;
+        characterRB.AddForce(direction * power, ForceMode.VelocityChange);
+    }
+
+    public virtual void Death()
+    {
+        if (death) { return; }
+        motion.ChangeMotion(StateTag.Die);
+        death = true;
     }
 }

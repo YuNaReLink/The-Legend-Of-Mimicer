@@ -169,7 +169,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  collider: {fileID: 0}
+  statusData: {fileID: 11400000, guid: 36263985310dc4b47a04a7681f91d34a, type: 2}
   damageData: 1
+  effect: {fileID: 0}
 --- !u!1 &589098143679851100
 GameObject:
   m_ObjectHideFlags: 0
