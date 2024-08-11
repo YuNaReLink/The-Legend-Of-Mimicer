@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1591648560292032964}
   - component: {fileID: 8347278751281650749}
   - component: {fileID: 5994030701940666743}
+  - component: {fileID: 2032780172307816642}
   m_Layer: 0
   m_Name: Urns
   m_TagString: Decoration
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 138304229593889868}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.67, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -119,6 +120,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a33bf5f6afcc0ca44998b44df39c5806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  appearItem: {fileID: 2032780172307816642}
+--- !u!114 &2032780172307816642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138304229593889868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e367f58f7f5fc42bd9b8edb32f8d46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   list: {fileID: 11400000, guid: c3ddbe17f0a38cd4e9ec907a4b0dec8d, type: 2}
   ratios: 64000000f4010000e8030000
   ratioNum: 2
+  lancherPowerY: 25
+  lancherPowerX: 5

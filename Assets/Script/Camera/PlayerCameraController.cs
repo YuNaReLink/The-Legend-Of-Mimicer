@@ -76,6 +76,11 @@ public class PlayerCameraController : MonoBehaviour
     private bool fpsMode = false;
     public bool IsFPSMode() {  return fpsMode; }
 
+    private void Awake()
+    {
+        Application.targetFrameRate = 120;
+    }
+
     private void Start()
     {
         target = GameObject.FindWithTag("Player");

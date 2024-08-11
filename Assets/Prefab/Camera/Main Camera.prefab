@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8879047264742076938}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.12659362, y: 0.39456353, z: -0.05498329, w: 0.90844405}
+  m_LocalRotation: {x: 0.12659058, y: 0.3945605, z: -0.054981414, w: 0.90844595}
   m_LocalPosition: {x: -13.86, y: 7.09, z: -8.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -109,8 +109,8 @@ MonoBehaviour:
   player: {fileID: 0}
   distance_base: 4.5
   maxDistanceBase: 4.5
-  mouseXSpeed: 3
-  mouseYSpeed: 1.5
+  mouseXSpeed: 10
+  mouseYSpeed: 10
   rotation_hor: 0
   rotation_ver: 0
   resetCameraSpeed: 5
