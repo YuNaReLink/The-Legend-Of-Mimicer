@@ -14,7 +14,7 @@ public class GameUIController : MonoBehaviour
         playerUIController = GetComponentInChildren<PlayerConnectionUI>();
         if(playerUIController != null)
         {
-            playerUIController.Initilaize();
+            playerUIController.Initilaize(this);
         }
     }
     

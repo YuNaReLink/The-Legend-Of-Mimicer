@@ -74,20 +74,27 @@ public class KeyInputUIController : MonoBehaviour
         ShiftKeyUI();
     }
 
+    private void OutputText(string text,bool active)
+    {
+        if (keyUIObjectArray[(int)KeyUINumber.F].activeSelf == active) { return; }
+        fKeyText.text = text;
+        keyUIObjectArray[(int)KeyUINumber.F].SetActive(active);
+    }
+
+
     private void FKeyEnabledCheck()
     {
-        switch (GameSystemController.KeyTriggerTag)
+        switch (GameSceneSystemController.KeyTriggerTag)
         {
-            case GameSystemController.TriggerTag.Null:
-                if (!keyUIObjectArray[(int)KeyUINumber.F].activeSelf) { return; }
-                fKeyText.text = "";
-                keyUIObjectArray[(int)KeyUINumber.F].SetActive(false);
+            case GameSceneSystemController.TriggerTag.Null:
+                OutputText("", false);
                 break;
-            case GameSystemController.TriggerTag.Door:
-            case GameSystemController.TriggerTag.Chest:
-                if (keyUIObjectArray[(int)KeyUINumber.F].activeSelf) { return; }
-                fKeyText.text = "ŠJ‚¯‚é";
-                keyUIObjectArray[(int)KeyUINumber.F].SetActive(true);
+            case GameSceneSystemController.TriggerTag.Door:
+            case GameSceneSystemController.TriggerTag.Chest:
+                OutputText("ŠJ‚¯‚é", true);
+                break;
+            case GameSceneSystemController.TriggerTag.Item:
+                OutputText("Žæ‚é", true);
                 break;
         }
     }

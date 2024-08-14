@@ -39,9 +39,9 @@ public class PlayerLifeUI : MonoBehaviour
 
     private PlayerConnectionUI uiController = null;
 
-    public void Initilaize()
+    public void Initilaize(PlayerConnectionUI playerConnectionUI)
     {
-        uiController = GetComponentInParent<PlayerConnectionUI>();
+        uiController = playerConnectionUI;
     }
 
     private void HeartInitialize(float hp)

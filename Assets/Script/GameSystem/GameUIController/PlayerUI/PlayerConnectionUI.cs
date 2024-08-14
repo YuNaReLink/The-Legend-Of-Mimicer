@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerConnectionUI : MonoBehaviour
 {
+    private GameUIController gameUIController = null;
+    public GameUIController GetGameUIController() { return gameUIController; }
+
     private PlayerController playerController = null;
     public PlayerController GetPlayerController() { return playerController; }
 
@@ -13,8 +16,12 @@ public class PlayerConnectionUI : MonoBehaviour
     private KeyInputUIController keyInputUIController = null;
     public KeyInputUIController GetKeyInputUIController() { return keyInputUIController; }
 
-    public void Initilaize()
+    private TargetLockController targetLockController = null;
+
+    public void Initilaize(GameUIController _gameUIController)
     {
+        gameUIController = _gameUIController;
+
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
@@ -24,7 +31,7 @@ public class PlayerConnectionUI : MonoBehaviour
         playerLifeUI = GetComponentInChildren<PlayerLifeUI>();
         if(playerLifeUI != null)
         {
-            playerLifeUI.Initilaize();
+            playerLifeUI.Initilaize(this);
         }
 
         keyInputUIController = GetComponentInChildren<KeyInputUIController>();
@@ -32,11 +39,20 @@ public class PlayerConnectionUI : MonoBehaviour
         {
             keyInputUIController.Initialize();
         }
+
+        targetLockController = GetComponentInChildren<TargetLockController>();
+        if(targetLockController != null)
+        {
+            targetLockController.Initialize(this);
+        }
     }
 
     public void PlayerUIUpdate()
     {
         playerLifeUI.LifeUpdate(playerController.HP);
+
         keyInputUIController.KeyUIInputUpdate();
+
+        targetLockController.LockUIActiveCheck();
     }
 }

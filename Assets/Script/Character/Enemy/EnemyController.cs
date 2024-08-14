@@ -66,6 +66,7 @@ public class EnemyController : CharacterController
 
     protected override void Update()
     {
+        if (Time.timeScale <= 0) { return; }
         base.Update();
         timer.TimerUpdate();
     }

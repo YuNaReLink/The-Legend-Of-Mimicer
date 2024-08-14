@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6103464786946503549}
   - component: {fileID: 4422212462829703554}
+  - component: {fileID: 3315400749793113511}
   - component: {fileID: 5934489374836772169}
   m_Layer: 0
   m_Name: ItemShield
@@ -49,7 +50,20 @@ MonoBehaviour:
   item: {fileID: 1025332976208471594, guid: fd55e165ea516174d83f760afc0d68b0, type: 3}
   toolTag: 1
   controller: {fileID: 0}
-  getFlag: 0
+--- !u!114 &3315400749793113511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3348946749907425813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31f32ef8ab3dd734fb79e1603dcf6ae1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTrigger: 3
+  hitPlayer: 0
 --- !u!135 &5934489374836772169
 SphereCollider:
   m_ObjectHideFlags: 0

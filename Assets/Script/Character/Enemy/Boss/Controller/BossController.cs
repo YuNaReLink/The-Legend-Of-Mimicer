@@ -39,6 +39,7 @@ public class BossController : EnemyController
 
     protected override void Update()
     {
+        if (Time.timeScale <= 0) { return; }
         base.Update();
         bossStateInput.StateInput();
         //特定のモーションを特定の条件で止めたり再生したりするメソッド

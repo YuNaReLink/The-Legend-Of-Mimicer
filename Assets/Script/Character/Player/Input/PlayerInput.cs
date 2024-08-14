@@ -9,12 +9,7 @@ public class PlayerInput : MonoBehaviour
 
     [SerializeField]
     private PlayerController controller;
-
-
     public void SetController(PlayerController _controller) {  controller = _controller; }
-    //private PlayerMotion motion;
-    //
-    //public PlayerMotion GetMotion() { return motion; }
 
     /// <summary>
     /// マウス入力
@@ -168,6 +163,8 @@ public class PlayerInput : MonoBehaviour
 
     public void UpdatePlayerInput()
     {
+        SystemInput();
+
         //ダメージ入力
         DamageInput();
         if (!controller.DeathFlag)
@@ -189,6 +186,13 @@ public class PlayerInput : MonoBehaviour
             ModeChangeInput();
             //手に持っている道具の入力
             HoldToolInput();
+        }
+    }
+    private void SystemInput()
+    {
+        if (InputManager.PushTabKey())
+        {
+            GameManager.MenuEnabled = !GameManager.MenuEnabled;
         }
     }
 

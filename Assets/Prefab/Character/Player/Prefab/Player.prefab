@@ -340,7 +340,6 @@ MonoBehaviour:
   jumping: 0
   jumpPower: 0
   stopController: 0
-  vfxObjects: {fileID: 0}
   vfxController: {fileID: 0}
   data: {fileID: 11400000, guid: 2a35ea8483179074b998d0a286b0cccb, type: 2}
   cameraObject: {fileID: 0}

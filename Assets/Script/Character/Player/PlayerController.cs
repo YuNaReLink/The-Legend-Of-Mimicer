@@ -192,6 +192,7 @@ public class PlayerController : CharacterController
     //“ü—Íˆ—‚ğs‚¤
     protected override void Update()
     {
+        if(Time.timeScale <= 0) { return; }
         //’…’n‚Ì”»’è
         LandingCheck();
         if (obstacleCheck.IsSavePosition()&&landing)
@@ -338,9 +339,20 @@ public class PlayerController : CharacterController
         rotation.MathPlayerPos(transform);
         if (rotation.GetCameraVelocity() == Vector3.zero) { return; }
         if (obstacleCheck.IsMoveDirectionWallHitFlag()) { return; }
-        if(currentState == CharacterTag.StateTag.Push) { return; }
-        if(currentState == CharacterTag.StateTag.Damage) { return; }
+        if(RotateStopFlag()) { return; }
         transform.rotation = rotation.SelfRotation(this);
+    }
+
+    private bool RotateStopFlag()
+    {
+        switch (currentState)
+        {
+            case CharacterTag.StateTag.Push:
+            case CharacterTag.StateTag.Damage:
+            case CharacterTag.StateTag.WallJump:
+                return true;
+        }
+        return false;
     }
 
     private void Accele(Vector3 forward, Vector3 right, float _maxspeed, float _accele)
@@ -384,12 +396,6 @@ public class PlayerController : CharacterController
             _maxSpeed *= 0.2f;
         }
         return _maxSpeed;
-    }
-
-    public void Decele()
-    {
-        velocity = StopMoveVelocity();
-        characterRB.velocity =  StopRigidBodyVelocity();
     }
 
     public override void Death()

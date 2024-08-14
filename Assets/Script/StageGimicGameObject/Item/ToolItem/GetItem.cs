@@ -14,11 +14,12 @@ public class GetItem : MonoBehaviour
     [SerializeField]
     protected PlayerToolController.ToolObjectTag toolTag = PlayerToolController.ToolObjectTag.Null;
 
-    [SerializeField]
-    protected PlayerController controller = null;
+    protected TriggerCheck triggerCheck = null;
 
-    [SerializeField]
-    private bool getFlag = false;
+    private void Awake()
+    {
+        triggerCheck = GetComponentInChildren<TriggerCheck>();
+    }
 
     private void Update()
     {
@@ -27,8 +28,8 @@ public class GetItem : MonoBehaviour
 
     private void PassingAnItem()
     {
-        if (!getFlag) { return; }
-        if(controller == null) { return; }
+        if (!triggerCheck.IsHitPlayer()) { return; }
+        if(triggerCheck.GetController() == null) { return; }
         if(item == null) { return; }
         if (!InputManager.PushFKey()) { return; }
         Get();
@@ -36,22 +37,8 @@ public class GetItem : MonoBehaviour
 
     public virtual void Get()
     {
-        PlayerToolController tool = controller.GetToolController();
+        PlayerToolController tool = triggerCheck.GetController().GetToolController();
         tool.GetToolSetting(toolTag, item);
         Destroy(gameObject);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag != "Player") { return; }
-        controller = other.GetComponent<PlayerController>();
-        getFlag = true;
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.tag != "Player") { return; }
-        controller = null;
-        getFlag = false;
     }
 }

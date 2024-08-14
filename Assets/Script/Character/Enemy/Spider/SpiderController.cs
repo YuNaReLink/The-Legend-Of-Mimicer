@@ -18,6 +18,7 @@ public class SpiderController : EnemyController
 
     protected override void Update()
     {
+        if (Time.timeScale <= 0) { return; }
         base.Update();
         if (death) { return; }
         DamageInput();
@@ -110,10 +111,25 @@ public class SpiderController : EnemyController
         navMeshController.PositionReset();
         timer.GetTimerAttackCoolDown().StartTimer(3f);
     }
+    protected override void UpdateMoveInput()
+    {
+        switch (currentState)
+        {
+            case CharacterTag.StateTag.Idle:
+            case CharacterTag.StateTag.Attack:
+            case CharacterTag.StateTag.Damage:
+            case CharacterTag.StateTag.Die:
+                return;
+        }
+        input = true;
+    }
 
     private void FixedUpdate()
     {
-        
+        if (!input)
+        {
+            Decele();
+        }
     }
 
 

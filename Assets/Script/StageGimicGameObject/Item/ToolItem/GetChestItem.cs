@@ -5,14 +5,9 @@ using UnityEngine;
 public class GetChestItem : GetItem
 {
 
-    public void SetController(PlayerController _controller)
-    {
-        controller = _controller;
-    }
-
     public override void Get()
     {
-        PlayerToolController tool = controller.GetToolController();
+        PlayerToolController tool = triggerCheck.GetController().GetToolController();
         tool.GetToolSetting(toolTag, item);
     }
 }

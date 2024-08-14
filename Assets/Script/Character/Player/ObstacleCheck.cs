@@ -273,16 +273,17 @@ public class ObstacleCheck : MonoBehaviour
         {
             //åıê¸ÇçÏê¨
             wallCheckRay[i] = new Ray(transform.position + Vector3.up * wallCheckoffsetArray[i], dir);
-            cameraForwardWallFlagArray[i] = Physics.Raycast(wallCheckRay[i], 1f);
-            Debug.DrawRay(wallCheckRay[i].origin, wallCheckRay[i].direction * 1f, Color.green);
+            cameraForwardWallFlagArray[i] = Physics.Raycast(wallCheckRay[i], wallCheckDistanceArray[i]);
+            Debug.DrawRay(wallCheckRay[i].origin, wallCheckRay[i].direction * wallCheckDistanceArray[i], Color.green);
         }
     }
 
     public bool IsMoveDirectionWallHitFlag()
     {
-        for (int i = 0;i<cameraForwardWallFlagArray.Length;i++)
+        for (int i = 1;i<cameraForwardWallFlagArray.Length;i++)
         {
             if (!cameraForwardWallFlagArray[i]) { continue; }
+            if(!hitWallFlagArray[i]) { continue; }
             return true;
         }
         return false;

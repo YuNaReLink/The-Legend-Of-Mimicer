@@ -10,7 +10,7 @@ using UnityEngine;
 public class TriggerCheck : MonoBehaviour
 {
     [SerializeField]
-    private GameSystemController.TriggerTag myTrigger = GameSystemController.TriggerTag.Null;
+    private GameSceneSystemController.TriggerTag myTrigger = GameSceneSystemController.TriggerTag.Null;
     [SerializeField]
     private bool hitPlayer = false;
     public bool IsHitPlayer() {  return hitPlayer; }
@@ -20,21 +20,29 @@ public class TriggerCheck : MonoBehaviour
     private PlayerController controller;
     public PlayerController GetController() { return controller; }
 
-    public void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if(other.tag != "Player") { return; }
         hitPlayer = true;
         player = other.gameObject;
         controller = player.GetComponent<PlayerController>();
-        GameSystemController.KeyTriggerTag = myTrigger;
+        GameSceneSystemController.KeyTriggerTag = myTrigger;
     }
 
-    public void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if(other.tag != "Player") { return; }
         hitPlayer = false;
         player = null;
         controller = null;
-        GameSystemController.KeyTriggerTag = GameSystemController.TriggerTag.Null;
+        GameSceneSystemController.KeyTriggerTag = GameSceneSystemController.TriggerTag.Null;
+    }
+
+    private void OnDestroy()
+    {
+        hitPlayer = false;
+        player = null;
+        controller = null;
+        GameSceneSystemController.KeyTriggerTag = GameSceneSystemController.TriggerTag.Null;
     }
 }

@@ -146,6 +146,7 @@ public class CharacterController : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (Time.timeScale <= 0) { return; }
         //“ü—Í‚ð‰ðœ
         input = false;
     }
@@ -153,6 +154,12 @@ public class CharacterController : MonoBehaviour
     protected virtual void UpdateMoveInput()
     {
         input = true;
+    }
+
+    public void Decele()
+    {
+        velocity = StopMoveVelocity();
+        characterRB.velocity = StopRigidBodyVelocity();
     }
 
     protected void Move()

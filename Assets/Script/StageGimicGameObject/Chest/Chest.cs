@@ -99,7 +99,6 @@ public class Chest : MonoBehaviour
             lidObject.transform.localRotation = Quaternion.Euler(rotate);
             stop = true;
             //蓋が空き切った時にアイテムクラスでプレイヤーに指定されたアイテムを取得させる
-            getItem.SetController(triggerCheck.GetController());
             getItem.Get();
         }
     }
