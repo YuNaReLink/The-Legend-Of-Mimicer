@@ -2,8 +2,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.Windows;
-using CharacterTag;
 using System.Collections.Generic;
+using UnityEngine.UIElements;
 
 
 public class PlayerController : CharacterController
@@ -59,9 +59,9 @@ public class PlayerController : CharacterController
     /// プレイヤーの攻撃行動を処理するクラス
     /// </summary>
     [SerializeField]
-    private TripleAttack tripleAttack = TripleAttack.Null;
+    private CharacterTag.TripleAttack tripleAttack = CharacterTag.TripleAttack.Null;
 
-    public TripleAttack TripleAttack { get { return tripleAttack; } set {  tripleAttack = value; } }
+    public CharacterTag.TripleAttack TripleAttack { get { return tripleAttack; } set {  tripleAttack = value; } }
 
     /// <summary>
     /// プレイヤーのダメージ処理を行うクラス
@@ -92,8 +92,8 @@ public class PlayerController : CharacterController
     /// プレイヤーが動かせるオブジェクトに触れてるか判定する
     /// </summary>
     [SerializeField]
-    private PushTag pushTag = PushTag.Null;
-    public PushTag PushTag { get { return pushTag; } set { pushTag = value; } }
+    private CharacterTag.PushTag pushTag = CharacterTag.PushTag.Null;
+    public CharacterTag.PushTag PushTag { get { return pushTag; } set { pushTag = value; } }
 
     /// <summary>
     /// パシフィックマテリアル
@@ -105,9 +105,9 @@ public class PlayerController : CharacterController
     /// ダメージ関係の変数
     /// </summary>
     [SerializeField]
-    private DamageTag damageTag = DamageTag.Null;
+    private CharacterTag.DamageTag damageTag = CharacterTag.DamageTag.Null;
 
-    public DamageTag DamageTag {  get { return damageTag; } set { damageTag = value; } }
+    public CharacterTag.DamageTag DamageTag {  get { return damageTag; } set { damageTag = value; } }
 
     [Header("プレイヤーが盾を構えた時に使うモーションClip")]
     [SerializeField]
@@ -139,6 +139,9 @@ public class PlayerController : CharacterController
     {
         base.Start();
 
+
+        currentState = CharacterTag.StateTag.GetUp;
+
         if (data != null)
         {
             maxHp = data.MaxHP;
@@ -153,12 +156,13 @@ public class PlayerController : CharacterController
         cameraObject = GameObject.FindWithTag("MainCamera");
         cameraScript = cameraObject.GetComponent<PlayerCameraController>();
 
+        obstacleCheck = GetComponent<ObstacleCheck>();
+        obstacleCheck?.SetController(this);
+
         keyInput = GetComponent<PlayerInput>();
         keyInput.SetController(this);
         keyInput?.Initialize();
 
-        obstacleCheck = GetComponent<ObstacleCheck>();
-        obstacleCheck?.SetController(this);
 
         fallDistanceCheck = new FallDistanceCheck(this);
         fallDistanceCheck?.Initialize();
@@ -188,14 +192,18 @@ public class PlayerController : CharacterController
     //入力処理を行う
     protected override void Update()
     {
+        //着地時の判定
+        LandingCheck();
+        if (obstacleCheck.IsSavePosition()&&landing)
+        {
+            landingPosition = transform.localPosition;
+        }
         base.Update();
 
         if (stopController) { return; }
         //タイマーの更新
         timer.TimerUpdate();
         
-        //着地時の判定
-        LandingCheck();
         //障害物との当たり判定
         obstacleCheck.WallCheckInput();
         //入力の更新
@@ -236,13 +244,13 @@ public class PlayerController : CharacterController
 
     private void SetPhysicMaterial()
     {
-        if (currentState != StateTag.Grab &&  !landing)
+        if (currentState != CharacterTag.StateTag.Grab &&  !landing)
         {
-            characterCollider.material = physicMaterials[(int)PhysicState.Jump];
+            characterCollider.material = physicMaterials[(int)CharacterTag.PhysicState.Jump];
         }
         else
         {
-            characterCollider.material = physicMaterials[(int)PhysicState.Land];
+            characterCollider.material = physicMaterials[(int)CharacterTag.PhysicState.Land];
         }
     }
 
@@ -258,18 +266,19 @@ public class PlayerController : CharacterController
     {
         switch (currentState)
         {
-            case StateTag.Idle:
-            case StateTag.Grab:
-            case StateTag.ClimbWall:
-            case StateTag.Attack:
-            case StateTag.JumpAttack:
-            case StateTag.SpinAttack:
-            case StateTag.Gurid:
-            case StateTag.Damage:
-            case StateTag.Die:
+            case CharacterTag.StateTag.GetUp:
+            case CharacterTag.StateTag.Idle:
+            case CharacterTag.StateTag.Grab:
+            case CharacterTag.StateTag.ClimbWall:
+            case CharacterTag.StateTag.Attack:
+            case CharacterTag.StateTag.JumpAttack:
+            case CharacterTag.StateTag.SpinAttack:
+            case CharacterTag.StateTag.Gurid:
+            case CharacterTag.StateTag.Damage:
+            case CharacterTag.StateTag.Die:
                 return;
         }
-        if(currentState == StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 && keyInput.Vertical == 0) { return; }
+        if(currentState == CharacterTag.StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 && keyInput.Vertical == 0) { return; }
         if(fallDistanceCheck.FallDamage || cameraScript.IsFPSMode()) { return; }
 
         input = true;
@@ -325,12 +334,12 @@ public class PlayerController : CharacterController
         Move();
         //プレイヤー自身の回転処理
         if (!input) { return; }
-        if(currentState == StateTag.ReadySpinAttack) { return; }
+        if(currentState == CharacterTag.StateTag.ReadySpinAttack) { return; }
         rotation.MathPlayerPos(transform);
         if (rotation.GetCameraVelocity() == Vector3.zero) { return; }
         if (obstacleCheck.IsMoveDirectionWallHitFlag()) { return; }
-        if(currentState == StateTag.Push) { return; }
-        if(currentState == StateTag.Damage) { return; }
+        if(currentState == CharacterTag.StateTag.Push) { return; }
+        if(currentState == CharacterTag.StateTag.Damage) { return; }
         transform.rotation = rotation.SelfRotation(this);
     }
 
@@ -339,7 +348,7 @@ public class PlayerController : CharacterController
         Vector3 vel = velocity;
         float h = keyInput.Horizontal;
         float v = keyInput.Vertical;
-        if (currentState == StateTag.Jump||currentState == StateTag.Rolling)
+        if (currentState == CharacterTag.StateTag.Jump||currentState == CharacterTag.StateTag.Rolling)
         {
             vel += transform.forward * _accele;
         }
@@ -360,7 +369,7 @@ public class PlayerController : CharacterController
 
     private float SetAccele(float _accele)
     {
-        if(currentState == StateTag.ReadySpinAttack)
+        if(currentState == CharacterTag.StateTag.ReadySpinAttack)
         {
             _accele *= 0.2f;
         }
@@ -370,7 +379,7 @@ public class PlayerController : CharacterController
 
     private float SetMaxSpeed(float _maxSpeed)
     {
-        if (currentState == StateTag.ReadySpinAttack)
+        if (currentState == CharacterTag.StateTag.ReadySpinAttack)
         {
             _maxSpeed *= 0.2f;
         }
@@ -386,9 +395,10 @@ public class PlayerController : CharacterController
     public override void Death()
     {
         base.Death();
+        vfxController.CreateVFX(VFXScriptableObject.VFXTag.Die, transform.position, 1f, Quaternion.identity);
     }
 
-    private void SetPushState(PushTag _pushTag){pushTag = _pushTag;}
+    private void SetPushState(CharacterTag.PushTag _pushTag){pushTag = _pushTag;}
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -405,7 +415,7 @@ public class PlayerController : CharacterController
         switch (other.tag)
         {
             case "Furniture":
-                SetPushState(PushTag.Start);
+                SetPushState(CharacterTag.PushTag.Start);
                 break;
             case "Damage":
                 DamageOrGuardCheck(other);
@@ -413,7 +423,7 @@ public class PlayerController : CharacterController
             default:
                 fallDistanceCheck.CollisionEnter();
                 if (!fallDistanceCheck.FallDamage) { return; }
-                damageTag = DamageTag.Fall;
+                damageTag = CharacterTag.DamageTag.Fall;
                 break;
         }
     }
@@ -422,13 +432,13 @@ public class PlayerController : CharacterController
     {
         switch (guardState)
         {
-            case GuardState.Null:
+            case CharacterTag.GuardState.Null:
                 //ダメージ発生時の処理
-                damageTag = DamageTag.NormalAttack;
+                damageTag = CharacterTag.DamageTag.NormalAttack;
                 damage.Attacker = other.gameObject;
                 break;
-            case GuardState.Normal:
-            case GuardState.Crouch:
+            case CharacterTag.GuardState.Normal:
+            case CharacterTag.GuardState.Crouch:
                 break;
         }
     }
@@ -439,22 +449,22 @@ public class PlayerController : CharacterController
         switch (collision.collider.tag)
         {
             case "Furniture":
-                PushTag tag = pushTag;
+                CharacterTag.PushTag tag = pushTag;
                 if (keyInput.Vertical != 0 || keyInput.Horizontal != 0)
                 {
                     switch (pushTag)
                     {
-                        case PushTag.Start:
-                            tag = PushTag.Pushing;
+                        case CharacterTag.PushTag.Start:
+                            tag = CharacterTag.PushTag.Pushing;
                             break;
-                        case PushTag.Null:
-                            tag = PushTag.Start;
+                        case CharacterTag.PushTag.Null:
+                            tag = CharacterTag.PushTag.Start;
                             break;
                     }
                 }
                 else
                 {
-                    tag = PushTag.Null;
+                    tag = CharacterTag.PushTag.Null;
                 }
                 SetPushState(tag);
                 break;
@@ -467,7 +477,7 @@ public class PlayerController : CharacterController
         switch (collision.collider.tag)
         {
             case "Furniture":
-                SetPushState(PushTag.Null);
+                SetPushState(CharacterTag.PushTag.Null);
                 break;
             default:
                 fallDistanceCheck.CollisionExit();

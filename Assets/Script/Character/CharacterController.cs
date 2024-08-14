@@ -92,6 +92,16 @@ public class CharacterController : MonoBehaviour
     public bool Landing { get { return landing; } set { landing = value; } }
 
     /// <summary>
+    /// 着地してる間取得する座標
+    /// </summary>
+    protected Vector3 landingPosition = Vector3.zero;
+
+    public Vector3 GetLandingPosition() 
+    {
+        return landingPosition; 
+    }
+
+    /// <summary>
     /// ジャンプフラグ
     /// </summary>
     [SerializeField]
@@ -110,12 +120,12 @@ public class CharacterController : MonoBehaviour
     public bool StopController { get { return stopController; } set { stopController = value; } }
 
     [SerializeField]
-    protected VFXScriptableObject vfxObjects = null;
-    public VFXScriptableObject GetVFXObjects() { return vfxObjects; }
+    protected VFXController vfxController = null;
+    public VFXController GetVFXController() { return vfxController; }
 
     protected virtual void Awake()
     {
-        
+
     }
 
     protected virtual void  Start()
@@ -131,6 +141,7 @@ public class CharacterController : MonoBehaviour
         characterCollider = GetComponent<Collider>();
         characterRB = GetComponent<Rigidbody>();
         groundCheck = GetComponent<GroundCheck>();
+        vfxController = GetComponent<VFXController>();
     }
 
     protected virtual void Update()

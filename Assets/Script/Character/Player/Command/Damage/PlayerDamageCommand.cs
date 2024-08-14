@@ -59,6 +59,7 @@ public class PlayerDamageCommand : InterfaceBaseCommand
                 if(data == null) { return; }
                 controller.HP-= data.BaseDamagePower;
                 controller.Knockback(attacker.transform.position,data.KnockBackPower);
+                controller.GetVFXController().CreateVFX(VFXScriptableObject.VFXTag.Damage,attacker.transform.position,1f,Quaternion.identity);
                 attacker = null;
                 controller.DamageTag = DamageTag.Null;
                 break;

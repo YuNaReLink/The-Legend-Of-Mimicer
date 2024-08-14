@@ -126,10 +126,8 @@ public class SpiderController : EnemyController
                 if (timer.GetTimerDamageCoolDown().IsEnabled()) { return; }
                 timer.GetTimerDamageCoolDown().StartTimer(1f);
                 damage.Attacker = other.gameObject;
-                //ToolController data = other.GetComponent<ToolController>();
-                //damage.DamageValue = data.GetDamage();
                 damage.DamageFlag = true;
-                Instantiate(vfxObjects.GetVFXArray()[(int)VFXScriptableObject.VFXTag.Damage], other.transform.position, Quaternion.identity);
+                vfxController.CreateVFX(VFXScriptableObject.VFXTag.Damage, other.transform.position,1f, Quaternion.identity);
                 break;
         }
     }

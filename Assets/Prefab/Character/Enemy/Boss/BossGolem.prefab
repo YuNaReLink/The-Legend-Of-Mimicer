@@ -687,13 +687,15 @@ GameObject:
   - component: {fileID: 4915082991154533488}
   - component: {fileID: 9104749675323322348}
   - component: {fileID: 7251201412158598548}
+  - component: {fileID: 484838467596148043}
+  - component: {fileID: 3763489184444664160}
   m_Layer: 0
   m_Name: BossGolem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1357216421320936970
 Transform:
   m_ObjectHideFlags: 0
@@ -789,6 +791,7 @@ MonoBehaviour:
   jumpPower: 0
   stopController: 0
   vfxObjects: {fileID: 11400000, guid: 6a7aa6f5786890b4785df01a4a27cb81, type: 2}
+  vfxController: {fileID: 0}
   data: {fileID: 11400000, guid: fdf98da741d8251408e5504be2a262e5, type: 2}
   foundPlayer: 0
   target: {fileID: 0}
@@ -796,6 +799,37 @@ MonoBehaviour:
   loiterRadius: 10
   stunFlag: 0
   revivalFlag: 0
+--- !u!114 &484838467596148043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845945369076765872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c31a24fc3a8cc54e89c06678c910b17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundCheckRadius: 0.4
+  groundCheckOffsetY: 0.45
+  groundCheckDistance: 0.2
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &3763489184444664160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845945369076765872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63e0a05d3439d9b4ba46147d1ad7dc35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vfxObjects: {fileID: 11400000, guid: 6a7aa6f5786890b4785df01a4a27cb81, type: 2}
 --- !u!1 &2125977167109061285
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ public class PlayerMotionName
 
     private string[] motionName = new string[]
     {
+        "getUp",
         "attack1",
         "attack2",
         "attack3",

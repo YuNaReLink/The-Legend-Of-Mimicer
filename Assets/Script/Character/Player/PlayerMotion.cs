@@ -209,6 +209,9 @@ public class PlayerMotion : MotionController
     {
         switch (motion)
         {
+            case "getUp":
+                controller.CurrentState = StateTag.Null;
+                break;
             case "attack1":
             case "attack2":
             case "attack3":

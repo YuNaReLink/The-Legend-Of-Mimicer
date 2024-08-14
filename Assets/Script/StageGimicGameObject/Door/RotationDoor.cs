@@ -17,10 +17,10 @@ public class RotationDoor : MonoBehaviour
     private Quaternion openRotation;
 
     [SerializeField]
-    private PlayerController controller = null;
-
+    private TriggerCheck triggerCheck = null;
     void Start()
     {
+        triggerCheck = GetComponent<TriggerCheck>();
         if (door != null)
         {
             closedRotation = door.transform.rotation;
@@ -36,8 +36,8 @@ public class RotationDoor : MonoBehaviour
 
     private void OpenDoor()
     {
-        if (controller == null) { return; }
-        if (controller.GetKeyInput().IsFKey())
+        if (triggerCheck.GetController() == null) { return; }
+        if (triggerCheck.GetController().GetKeyInput().IsFKey())
         {
             // FÉLÅ[Ç™âüÇ≥ÇÍÇΩÇÁäJï¬ÇêÿÇËë÷Ç¶ÇÈ
             open = true;
@@ -54,18 +54,5 @@ public class RotationDoor : MonoBehaviour
         {
             door.transform.rotation = Quaternion.Lerp(door.transform.rotation, closedRotation, Time.deltaTime * openSpeed);
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag != "Player") { return; }
-        controller = other.GetComponent<PlayerController>();
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.tag != "Player") { return; }
-        open = false;
-        controller = null;
     }
 }

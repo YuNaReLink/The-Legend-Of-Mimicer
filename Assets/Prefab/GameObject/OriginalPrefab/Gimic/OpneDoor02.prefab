@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3878306374283446830}
   - component: {fileID: 6073428943129445623}
+  - component: {fileID: 5427763079232527291}
   - component: {fileID: 6285250528523401841}
   m_Layer: 3
   m_Name: OpneDoor02
@@ -49,7 +50,21 @@ MonoBehaviour:
   door: {fileID: 4300679399592454958}
   open: 0
   openSpeed: 2
-  controller: {fileID: 0}
+  triggerCheck: {fileID: 0}
+--- !u!114 &5427763079232527291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5781971754383557093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31f32ef8ab3dd734fb79e1603dcf6ae1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTrigger: 1
+  hitPlayer: 0
 --- !u!135 &6285250528523401841
 SphereCollider:
   m_ObjectHideFlags: 0

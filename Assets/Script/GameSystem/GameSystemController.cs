@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class GameSystemController : MonoBehaviour
 {
+    public enum TriggerTag
+    {
+        Null,
+        Door,
+        Chest
+    }
+
+    private static TriggerTag keyTriggerTag = TriggerTag.Null;
+
+    public static TriggerTag KeyTriggerTag {  get { return keyTriggerTag; }set { keyTriggerTag = value; } }
+
     CursorController cursor = null;
 
     private void Awake()

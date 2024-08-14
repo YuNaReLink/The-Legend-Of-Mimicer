@@ -145,9 +145,9 @@ public class PlayerInput : MonoBehaviour
 
     public void Initialize()
     {
-
         rightHandInput = new RightHandInput(controller);
         leftHandInput = new LeftHandInput(controller);
+        GetUpInput();
     }
 
     private bool NoInputEnabled()
@@ -231,6 +231,11 @@ public class PlayerInput : MonoBehaviour
         rightMouseClick = InputManager.HoldMouseRight();
     }
 
+    public void GetUpInput()
+    {
+        controller.GetMotion().ChangeMotion(StateTag.GetUp);
+    }
+
     private void DamageInput()
     {
         controller.GetDamage().Input();
@@ -269,6 +274,7 @@ public class PlayerInput : MonoBehaviour
     {
         switch (controller.CurrentState)
         {
+            case StateTag.GetUp:
             case StateTag.Grab:
             case StateTag.Rolling:
             case StateTag.Attack:
@@ -293,6 +299,7 @@ public class PlayerInput : MonoBehaviour
     {
         switch (controller.CurrentState)
         {
+            case StateTag.GetUp:
             case StateTag.Grab:
             case StateTag.ClimbWall:
             case StateTag.Rolling:

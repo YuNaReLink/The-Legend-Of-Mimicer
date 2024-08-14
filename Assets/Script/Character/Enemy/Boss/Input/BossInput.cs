@@ -54,7 +54,7 @@ public class BossInput
         switch (controller.CurrentState)
         {
             case CharacterTag.StateTag.Damage:
-            case CharacterTag.StateTag.Revival:
+            case CharacterTag.StateTag.GetUp:
                 return;
         }
         //プレイヤーとの距離を計る
@@ -146,7 +146,7 @@ public class BossInput
         {
             case CharacterTag.StateTag.Attack:
             case CharacterTag.StateTag.Damage:
-            case CharacterTag.StateTag.Revival:
+            case CharacterTag.StateTag.GetUp:
                 return;
         }
         PlayerCameraController cameraController = controller.Target.GetCameraScript();
@@ -166,7 +166,7 @@ public class BossInput
     public void RevivalInput()
     {
         if (!controller.RevivalFlag) {  return; }
-        controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Revival);
+        controller.GetMotion().ChangeMotion(CharacterTag.StateTag.GetUp);
         controller.RevivalFlag = false;
     }
 

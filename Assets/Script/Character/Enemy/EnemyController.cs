@@ -89,7 +89,6 @@ public class EnemyController : CharacterController
 
     private void CreateDieEffect(float scale)
     {
-        GameObject vfx = Instantiate(vfxObjects.GetVFXArray()[(int)VFXScriptableObject.VFXTag.Die], transform.position, Quaternion.identity);
-        vfx.transform.localScale *= scale;
+        vfxController.CreateVFX(VFXScriptableObject.VFXTag.Die, transform.position,scale, Quaternion.identity);
     }
 }

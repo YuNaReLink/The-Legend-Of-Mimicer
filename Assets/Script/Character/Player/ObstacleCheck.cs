@@ -28,6 +28,11 @@ public class ObstacleCheck : MonoBehaviour
     private byte lowJumpCount = 0;
     public byte GetLowJumpCount() { return lowJumpCount; }
 
+    /// <summary>
+    /// 着地座標を保存するかしないかを決めるフラグ
+    /// </summary>
+    private bool savePosition = false;
+    public bool IsSavePosition() {  return savePosition; }
 
     public enum RayTag
     {
@@ -124,6 +129,14 @@ public class ObstacleCheck : MonoBehaviour
     private PlayerController controller;
 
     public void SetController(PlayerController _controller) { controller = _controller; }
+    private Vector3 CreateRayAdvanceDirection()
+    {
+        float h = controller.GetKeyInput().Horizontal;
+        float v = controller.GetKeyInput().Vertical;
+        Vector3 cameraForward = controller.GetCameraDirection(Camera.main.transform.forward);
+        Vector3 cameraRight = controller.GetCameraDirection(Camera.main.transform.right);
+        return h * cameraRight + v * cameraForward;
+    }
 
     private void FootFallJumpCheck()
     {
@@ -132,6 +145,15 @@ public class ObstacleCheck : MonoBehaviour
         Ray stepCheckRay = new Ray(transform.position + (transform.forward * stepCheckOffset) + (transform.up * stepUpCheckOffset), -transform.up);
         lowStep = Physics.Raycast(stepCheckRay, stepCheckDistance);
         Debug.DrawRay(stepCheckRay.origin, stepCheckRay.direction * stepCheckDistance, Color.white);
+    }
+
+    private void SaveResetLandingPosition()
+    {
+        savePosition = false;
+        //プレイヤーの前に段差があるかを確認
+        Ray saveCheckRay = new Ray(transform.position+(CreateRayAdvanceDirection() * 1.5f) + (transform.up * stepUpCheckOffset), -transform.up);
+        savePosition = Physics.Raycast(saveCheckRay, stepCheckDistance);
+        Debug.DrawRay(saveCheckRay.origin, saveCheckRay.direction * stepCheckDistance, Color.white);
     }
 
     private void InitializeFlag()
@@ -162,6 +184,7 @@ public class ObstacleCheck : MonoBehaviour
         if (climbFlag) { return; }
         if (grabCancel) { return; }
         FootFallJumpCheck();
+        SaveResetLandingPosition();
 
         DeltaTimeCountDown timerStopWallAction = controller.GetTimer().GetTimerWallActionStop();
 
@@ -244,7 +267,7 @@ public class ObstacleCheck : MonoBehaviour
         float v = controller.GetKeyInput().Vertical;
         Vector3 cameraForward = controller.GetCameraDirection(Camera.main.transform.forward);
         Vector3 cameraRight = controller.GetCameraDirection(Camera.main.transform.right);
-        Vector3 dir = h * cameraRight + v * cameraForward;
+        Vector3 dir = CreateRayAdvanceDirection();
         Ray[] wallCheckRay = new Ray[4];
         for (int i = 0; i < wallCheckRay.Length; i++)
         {

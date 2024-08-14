@@ -10,6 +10,8 @@ using UnityEngine;
 public class TriggerCheck : MonoBehaviour
 {
     [SerializeField]
+    private GameSystemController.TriggerTag myTrigger = GameSystemController.TriggerTag.Null;
+    [SerializeField]
     private bool hitPlayer = false;
     public bool IsHitPlayer() {  return hitPlayer; }
 
@@ -24,6 +26,7 @@ public class TriggerCheck : MonoBehaviour
         hitPlayer = true;
         player = other.gameObject;
         controller = player.GetComponent<PlayerController>();
+        GameSystemController.KeyTriggerTag = myTrigger;
     }
 
     public void OnTriggerExit(Collider other)
@@ -32,5 +35,6 @@ public class TriggerCheck : MonoBehaviour
         hitPlayer = false;
         player = null;
         controller = null;
+        GameSystemController.KeyTriggerTag = GameSystemController.TriggerTag.Null;
     }
 }

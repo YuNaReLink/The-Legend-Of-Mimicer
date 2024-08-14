@@ -63,7 +63,7 @@ public class BossController : EnemyController
             case CharacterTag.StateTag.Gurid:
             case CharacterTag.StateTag.Damage:
             case CharacterTag.StateTag.Die:
-            case CharacterTag.StateTag.Revival:
+            case CharacterTag.StateTag.GetUp:
                 return;
         }
         input = true;
@@ -121,7 +121,7 @@ public class BossController : EnemyController
             case CharacterTag.StateTag.Attack:
             case CharacterTag.StateTag.Gurid:
             case CharacterTag.StateTag.Damage:
-            case CharacterTag.StateTag.Revival:
+            case CharacterTag.StateTag.GetUp:
                 return;
         }
         if(target == null) { return; }

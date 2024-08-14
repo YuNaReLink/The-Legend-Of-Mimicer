@@ -23,7 +23,7 @@ namespace CharacterTag
         ChangeMode,
         Push,
         Pull,
-        Revival,
+        GetUp,
         DataEnd
     }
 

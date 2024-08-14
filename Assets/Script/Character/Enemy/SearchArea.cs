@@ -53,9 +53,10 @@ public class SearchArea : MonoBehaviour
             // Ray‚ªÅ‰‚É“–‚½‚Á‚½•¨‘Ì‚ğ’²‚×‚é
             foreach (var hit in hits)
             {
-                if (hit.collider.CompareTag("Obstacle") ||
-                    hit.collider.CompareTag("FocusArea")) { continue; }
-                if (!hit.collider.CompareTag("Player")) { return; }
+                //“–‚½‚Á‚½•¨‚ª•Ç‚È‚çbreak
+                if (hit.collider.CompareTag("Obstacle")) { break; }
+                if (hit.collider.CompareTag("FocusArea")||
+                    !hit.collider.CompareTag("Player")) { continue; }
                 //“G‚Ìó‘Ô‚ğƒZƒbƒg‚·‚é
                 controller.Target = other.GetComponent<PlayerController>();
             }
