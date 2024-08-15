@@ -17,7 +17,12 @@ public class GameUIController : MonoBehaviour
             playerUIController.Initilaize(this);
         }
     }
-    
+
+    private void Start()
+    {
+        GameManager.MenuEnabled = false;
+    }
+
     void Update()
     {
         playerUIController.PlayerUIUpdate();
