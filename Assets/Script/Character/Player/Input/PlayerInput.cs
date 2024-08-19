@@ -163,8 +163,6 @@ public class PlayerInput : MonoBehaviour
 
     public void UpdatePlayerInput()
     {
-        SystemInput();
-
         //É_ÉÅÅ[ÉWì¸óÕ
         DamageInput();
         if (!controller.DeathFlag)
@@ -188,7 +186,7 @@ public class PlayerInput : MonoBehaviour
             HoldToolInput();
         }
     }
-    private void SystemInput()
+    public void SystemInput()
     {
         if (InputManager.PushTabKey())
         {
@@ -304,7 +302,6 @@ public class PlayerInput : MonoBehaviour
 
         if (horidleNoEnabled||verIdleNoEnabled) { return; }
         controller.GetMotion().ChangeMotion(StateTag.Idle);
-        
     }
 
     private void RunInput()

@@ -171,7 +171,7 @@ public class PlayerController : CharacterController
         decorationController = GetComponent<PlayerDecorationController>();
         decorationController?.SetController(this);
 
-        rotation = new PlayerRotation(this);
+        rotation = new PlayerRotation(this,transform.rotation);
         timer = new PlayerTimers();
         timer?.InitializeAssignTimer();
 
@@ -189,7 +189,8 @@ public class PlayerController : CharacterController
     //入力処理を行う
     protected override void Update()
     {
-        if(Time.timeScale <= 0) { return; }
+        keyInput.SystemInput();
+        if (Time.timeScale <= 0) { return; }
         //着地時の判定
         LandingCheck();
         if (obstacleCheck.IsSavePosition()&&landing)
@@ -330,13 +331,8 @@ public class PlayerController : CharacterController
         }
         //移動RigidBodyに適用
         Move();
-        //プレイヤー自身の回転処理
-        if (!input) { return; }
-        if(currentState == CharacterTag.StateTag.ReadySpinAttack) { return; }
-        rotation.MathPlayerPos(transform);
-        if (rotation.GetCameraVelocity() == Vector3.zero) { return; }
-        if (obstacleCheck.IsMoveDirectionWallHitFlag()) { return; }
         if(RotateStopFlag()) { return; }
+        //プレイヤー自身の回転処理
         transform.rotation = rotation.SelfRotation(this);
     }
 
@@ -344,9 +340,14 @@ public class PlayerController : CharacterController
     {
         switch (currentState)
         {
+            case CharacterTag.StateTag.ReadySpinAttack:
+            case CharacterTag.StateTag.Rolling:
             case CharacterTag.StateTag.Push:
             case CharacterTag.StateTag.Damage:
             case CharacterTag.StateTag.WallJump:
+            case CharacterTag.StateTag.Grab:
+            case CharacterTag.StateTag.ClimbWall:
+            case CharacterTag.StateTag.Die:
                 return true;
         }
         return false;

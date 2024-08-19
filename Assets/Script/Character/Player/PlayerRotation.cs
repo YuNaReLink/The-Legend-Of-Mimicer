@@ -8,41 +8,13 @@ using UnityEngine;
 public class PlayerRotation
 {
     private PlayerController controller = null;
-    public PlayerRotation(PlayerController _controller)
+    public PlayerRotation(PlayerController _controller, Quaternion rotation)
     {
         controller = _controller;
+        targetRotation = rotation;
     }
-    /// <summary>
-    /// カメラの回転関係
-    /// </summary>
-    //プレイヤーの移動量
-    private Vector3 cameraVelocity;
-    public Vector3 GetCameraVelocity() { return cameraVelocity; }
-    //プレイヤーの進行方向に向くクォータニオン
-    private Quaternion playerRot;
-    //現在の回転各速度
-    private float currentAngularVelocity;
-    //最大の回転角速度[deg/s]
-    [SerializeField]
-    private float maxAngularVelocity = Mathf.Infinity;
-    //進行方向にかかるおおよその時間[s]
-    private float smoothTime = 0.05f;
-    //現在の向きと進行方向の角度
-    private float diffAngle;
-    //現在の回転する角度
-    private float rotAngle;
 
-    public void MathPlayerPos(Transform transform)
-    {
-        //現在の位置
-        controller.CurrentPos = transform.position;
-        //移動量計算
-        cameraVelocity = controller.CurrentPos - controller.PastPos;
-        //yだけ0
-        cameraVelocity.y = 0;
-        //過去の位置を更新
-        controller.PastPos = controller.CurrentPos;
-    }
+    private Quaternion targetRotation = Quaternion.identity;
 
     public Quaternion SelfRotation(PlayerController controller)
     {
@@ -74,6 +46,15 @@ public class PlayerRotation
         }
         else
         {
+            var horizontalRotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
+            var velocity = horizontalRotation * new Vector3(controller.GetKeyInput().Horizontal, 0, controller.GetKeyInput().Vertical).normalized;
+            var rotationSpeed = 600 * Time.deltaTime;
+            if (velocity.magnitude > 0.5f)
+            {
+                targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
+            }
+            return Quaternion.RotateTowards(controller.transform.rotation, targetRotation, rotationSpeed);
+            /*
             //そうじゃなければ通常の三人称カメラ処理
             playerRot = Quaternion.LookRotation(cameraVelocity, Vector3.up);
             diffAngle = Vector3.Angle(controller.transform.forward, cameraVelocity);
@@ -84,6 +65,7 @@ public class PlayerRotation
             // 回転を適用する
             rotAngle = currentAngularVelocity * Time.deltaTime;
             return Quaternion.RotateTowards(controller.transform.rotation, playerRot, rotAngle);
+             */
         }
     }
 }

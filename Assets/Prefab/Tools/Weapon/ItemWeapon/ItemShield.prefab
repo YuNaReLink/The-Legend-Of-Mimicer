@@ -49,7 +49,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 1025332976208471594, guid: fd55e165ea516174d83f760afc0d68b0, type: 3}
   toolTag: 1
-  controller: {fileID: 0}
 --- !u!114 &3315400749793113511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +152,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: fa0a723e3534aca47bcf60641f2f3a8d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 86a04bc5e0b3bc8448538e10c9e15af7, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

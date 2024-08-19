@@ -49,16 +49,13 @@ public class SearchArea : MonoBehaviour
         //サーチする角度内だったら発見
         if (angle <= searchAngle)
         {
-            RaycastHit[] hits = Physics.RaycastAll(ray.origin, ray.direction * distance);
-            // Rayが最初に当たった物体を調べる
-            foreach (var hit in hits)
+            // プレイヤーと敵の間に障害物がないかチェック
+            if (Physics.Raycast(ray, out hit, distance))
             {
-                //当たった物が壁ならbreak
-                if (hit.collider.CompareTag("Obstacle")) { break; }
-                if (hit.collider.CompareTag("FocusArea")||
-                    !hit.collider.CompareTag("Player")) { continue; }
-                //敵の状態をセットする
-                controller.Target = other.GetComponent<PlayerController>();
+                if (hit.collider.CompareTag("Player"))
+                {
+                    controller.Target = other.GetComponent<PlayerController>();
+                }
             }
         }
     }

@@ -136,7 +136,7 @@ public class SwordAttackCommand : BaseToolCommand
         if(controller.GetKeyInput().ThreeAttackCount >= (int)TripleAttack.Second) { return; }
         //回転攻撃準備動作開始フラグ
         bool readystartflag = controller.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("attack1")&&
-            controller.GetAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f;
+            controller.GetAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.7f;
         //回転攻撃動作開始フラグ
         bool spinflag = controller.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("readySpinAttack");
         //回転攻撃準備入力

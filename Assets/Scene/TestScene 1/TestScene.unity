@@ -3320,14 +3320,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spider
       objectReference: {fileID: 0}
-    - target: {fileID: 347817752896502674, guid: 10d81387fa392dc44b1da47128128423, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4222382247615916431, guid: 10d81387fa392dc44b1da47128128423, type: 3}
-      propertyPath: statusData
-      value: 
-      objectReference: {fileID: 11400000, guid: 3e0eb79e6af1f00468ac4cc5b9727431, type: 2}
     - target: {fileID: 7202614473235178191, guid: 10d81387fa392dc44b1da47128128423, type: 3}
       propertyPath: groundLayers.m_Bits
       value: 0
@@ -4591,7 +4583,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1845945369076765872, guid: 6c7915380e2229c4b923dcc992a7d388, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7251201412158598548, guid: 6c7915380e2229c4b923dcc992a7d388, type: 3}
       propertyPath: target

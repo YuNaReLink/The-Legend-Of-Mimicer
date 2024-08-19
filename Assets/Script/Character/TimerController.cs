@@ -13,6 +13,7 @@ public class TimerController
 
     public void TimerUpdate()
     {
+        if (Time.timeScale <= 0) { return; }
         foreach (var countdown in updateCountDowns)
         {
             if (countdown.IsEnabled())

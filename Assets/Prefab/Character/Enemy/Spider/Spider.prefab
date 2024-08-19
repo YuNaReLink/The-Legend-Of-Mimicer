@@ -69,7 +69,7 @@ MonoBehaviour:
   controller: {fileID: 0}
   collider: {fileID: 0}
   statusData: {fileID: 11400000, guid: 3e0eb79e6af1f00468ac4cc5b9727431, type: 2}
-  damageData: 1
+  itemData: {fileID: 0}
 --- !u!1 &347817752896502674
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,7 +253,7 @@ MonoBehaviour:
   groundCheckDistance: 0.2
   groundLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
 --- !u!114 &1712639282010056007
 MonoBehaviour:
   m_ObjectHideFlags: 0

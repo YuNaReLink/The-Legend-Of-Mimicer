@@ -138,7 +138,7 @@ public class SpiderController : EnemyController
         {
             case "Attack":
                 if (timer.GetTimerDamageCoolDown().IsEnabled()) { return; }
-                timer.GetTimerDamageCoolDown().StartTimer(1f);
+                timer.GetTimerDamageCoolDown().StartTimer(0.25f);
                 damage.Attacker = other.gameObject;
                 damage.DamageFlag = true;
                 vfxController.CreateVFX(VFXScriptableObject.VFXTag.Damage, other.transform.position,1f, Quaternion.identity);

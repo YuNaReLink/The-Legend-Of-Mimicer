@@ -221,6 +221,10 @@ public class PlayerCameraController : MonoBehaviour
         else if (!focusFlag && player.GetKeyInput().IsCKeyEnabled())
         {
             float playerRotationY = player.transform.rotation.eulerAngles.y;
+            if(playerRotationY > 180)
+            {
+                playerRotationY -= 360;
+            }
             float playerRotationX = player.transform.rotation.eulerAngles.x;
             rotation_hor = Mathf.Lerp(rotation_hor, playerRotationY, Time.deltaTime * resetCameraSpeed);
             rotation_ver = Mathf.Lerp(rotation_ver, playerRotationX, Time.deltaTime * resetCameraSpeed);
