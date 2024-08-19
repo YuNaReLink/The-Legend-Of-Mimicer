@@ -20,8 +20,7 @@ public class ToolController : MonoBehaviour
     [SerializeField]
     private WeaponStateData statusData = null;
     public WeaponStateData GetStatusData() {  return statusData; }
-
     [SerializeField]
-    protected float damageData = 1f;
-    public float GetDamage() {  return damageData; }
+    private ItemData itemData = null;
+    public ItemData GetItemData() { return itemData; }
 }

@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class GameManager
 {
+    public enum GameStateEnum
+    {
+        Null,
+        Title,
+        Game,
+        Pose,
+        GameClear,
+        GameOver,
+    }
+    private static GameStateEnum gameState = GameStateEnum.Null;
+    public static GameStateEnum GameState { get { return gameState; } set { gameState = value; } }
+
     /// <summary>
     /// ƒƒjƒ…[‚Ì•\¦
     /// </summary>

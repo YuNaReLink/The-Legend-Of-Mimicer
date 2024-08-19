@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FocusArea : MonoBehaviour
@@ -20,13 +18,21 @@ public class FocusArea : MonoBehaviour
     [SerializeField]
     private float searchAngle = 130f;
 
-    // Start is called before the first frame update
     void Start()
     {
         areaCollider = GetComponent<SphereCollider>();
         if (areaCollider == null)
         {
-            Debug.Log("areaColliderがアタッチされませんでした(Enemy)");
+            Debug.Log("areaColliderがアタッチされませんでした");
+        }
+    }
+
+    private void Update()
+    {
+        if(PlayerCameraController.LockObject == null) { return; }
+        if (!PlayerCameraController.LockObject.activeSelf)
+        {
+            PlayerCameraController.LockObject = null;
         }
     }
 

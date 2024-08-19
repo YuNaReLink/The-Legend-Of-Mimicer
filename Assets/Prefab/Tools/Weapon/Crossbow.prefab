@@ -613,7 +613,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
   collider: {fileID: 0}
-  damageData: 1
+  statusData: {fileID: 11400000, guid: d700cefbef5e6764bb87fd1a0f416648, type: 2}
+  itemData: {fileID: 11400000, guid: 16bc92532808f6e459945c28a111d3a9, type: 2}
 --- !u!1 &7270056177525370570
 GameObject:
   m_ObjectHideFlags: 0

@@ -171,6 +171,17 @@ public class ObstacleCheck : MonoBehaviour
         controller.CharacterRB.useGravity = true;
     }
 
+    private bool CheckPlayerPositionY()
+    {
+        Vector3 sub = controller.transform.position - controller.PastPos;
+        float dis = sub.magnitude;
+        if (dis > 0.1f)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public void WallCheckInput()
     {
         lowStep = true;
@@ -201,7 +212,8 @@ public class ObstacleCheck : MonoBehaviour
                 timerStopWallAction.OnCompleted += () =>
                 {
                     if (controller.GetKeyInput().Vertical == 0 &&
-                        controller.GetKeyInput().Horizontal == 0) { return; }
+                        controller.GetKeyInput().Horizontal == 0||
+                        CheckPlayerPositionY()) { return; }
                     stepJumpFlag = true;
                 };
                 return;
@@ -284,6 +296,23 @@ public class ObstacleCheck : MonoBehaviour
         {
             if (!cameraForwardWallFlagArray[i]) { continue; }
             if(!hitWallFlagArray[i]) { continue; }
+            return true;
+        }
+        return false;
+    }
+
+    public bool WallHitFlagCheck()
+    {
+        int hitcount = 0;
+        for(int i = 1;i < hitWallFlagArray.Length; i++)
+        {
+            if (hitWallFlagArray[i])
+            {
+                hitcount++;
+            }
+        }
+        if(hitcount > 0)
+        {
             return true;
         }
         return false;

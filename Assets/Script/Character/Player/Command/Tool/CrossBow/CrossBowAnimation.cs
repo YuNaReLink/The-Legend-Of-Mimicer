@@ -5,7 +5,7 @@ using UnityEngine;
 public class CrossBowAnimation : MonoBehaviour
 {
     [SerializeField]
-    private CrossBowShot shoot = null;
+    private CrossBowShoot shoot = null;
 
     [SerializeField]
     private Animator animator = null;
@@ -13,7 +13,6 @@ public class CrossBowAnimation : MonoBehaviour
 
     private string shootFlagName = "Fire";
 
-    // Update is called once per frame
     private void Update()
     {
         if (shoot.Fire)

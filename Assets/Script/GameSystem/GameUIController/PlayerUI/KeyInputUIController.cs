@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class KeyInputUIController : MonoBehaviour
 {
+    private PlayerController controller = null;
     public enum KeyUINumber
     {
         E,
@@ -21,15 +22,20 @@ public class KeyInputUIController : MonoBehaviour
     [SerializeField]
     private List<Image> keyImageArray = new List<Image>();
 
-    [SerializeField]
-    private ObjectList uiObjectList = null;
-
     private List<DeltaTimeCountDown> inputCoolDownsTimers = new List<DeltaTimeCountDown>();
+
+    private GameObject crossbowUI = null;
 
     private Text fKeyText = null;
 
     public void Initialize()
     {
+        GameUIController gameUIController = GetComponentInParent<GameUIController>();
+        if(gameUIController != null)
+        {
+            controller = gameUIController.GetPlayerUIController().GetPlayerController();
+        }
+
         GameObject child = null;
         Image image = null;
         for (int i = 0; i < transform.childCount; i++)
@@ -49,6 +55,12 @@ public class KeyInputUIController : MonoBehaviour
 
         }
 
+        child = keyUIObjectArray[(int)KeyUINumber.E].transform.GetChild(0).gameObject;
+        if(child != null)
+        {
+            crossbowUI = child;
+        }
+
         Text t = keyUIObjectArray[(int)KeyUINumber.F].GetComponentInChildren<Text>();
         if(t != null)
         {
@@ -63,8 +75,8 @@ public class KeyInputUIController : MonoBehaviour
         {
             inputCoolDownsTimers[i].Update();
         }
-
-        FKeyEnabledCheck();
+        CrossBowActiveCheck();
+        FKeyActiveCheck();
 
         EKeyUI();
         QKeyUI();
@@ -81,8 +93,19 @@ public class KeyInputUIController : MonoBehaviour
         keyUIObjectArray[(int)KeyUINumber.F].SetActive(active);
     }
 
+    private void CrossBowActiveCheck()
+    {
+        if (controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.CrossBow] != null)
+        {
+            crossbowUI.SetActive(true);
+        }
+        else
+        {
+            crossbowUI.SetActive(false);
+        }
+    }
 
-    private void FKeyEnabledCheck()
+    private void FKeyActiveCheck()
     {
         switch (GameSceneSystemController.KeyTriggerTag)
         {

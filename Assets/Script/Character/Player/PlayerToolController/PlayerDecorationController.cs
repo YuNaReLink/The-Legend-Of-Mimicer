@@ -20,12 +20,12 @@ public class PlayerDecorationController : MonoBehaviour
 
     void Update()
     {
-        SetActiveObject(PlayerToolController.ToolObjectTag.Sword, DecorationObjectTag.Scabbard);
+        SetActiveObject(ToolInventoryController.ToolObjectTag.Sword, DecorationObjectTag.Scabbard);
     }
 
-    private void SetActiveObject(PlayerToolController.ToolObjectTag tootag, DecorationObjectTag decotag)
+    private void SetActiveObject(ToolInventoryController.ToolObjectTag tootag, DecorationObjectTag decotag)
     {
-        if (controller.GetToolController().Tools[(int)tootag] == null)
+        if (controller.GetToolController().GetInventoryData().ToolItemList[(int)tootag] == null)
         {
             if(decorationObjects[(int)decotag].activeSelf == false) { return; }
             decorationObjects[(int)decotag].SetActive(false);

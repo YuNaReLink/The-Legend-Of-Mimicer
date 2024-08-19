@@ -7,15 +7,14 @@ using UnityEngine;
 /// </summary>
 public class PlayerRotation
 {
+    private PlayerController controller = null;
+    public PlayerRotation(PlayerController _controller)
+    {
+        controller = _controller;
+    }
     /// <summary>
     /// カメラの回転関係
     /// </summary>
-    //プレイヤーの現在の位置
-    private Vector3 currentPos;
-    public Vector3 GetCurrentPos() { return currentPos; }
-    //プレイヤーの過去の位置
-    private Vector3 pastPos;
-    public Vector3 GetPastPos() { return pastPos; }
     //プレイヤーの移動量
     private Vector3 cameraVelocity;
     public Vector3 GetCameraVelocity() { return cameraVelocity; }
@@ -36,13 +35,13 @@ public class PlayerRotation
     public void MathPlayerPos(Transform transform)
     {
         //現在の位置
-        currentPos = transform.position;
+        controller.CurrentPos = transform.position;
         //移動量計算
-        cameraVelocity = currentPos - pastPos;
+        cameraVelocity = controller.CurrentPos - controller.PastPos;
         //yだけ0
         cameraVelocity.y = 0;
         //過去の位置を更新
-        pastPos = currentPos;
+        controller.PastPos = controller.CurrentPos;
     }
 
     public Quaternion SelfRotation(PlayerController controller)

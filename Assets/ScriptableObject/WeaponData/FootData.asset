@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89801d59d890ea9449e741d17c07fec1, type: 3}
   m_Name: FootData
   m_EditorClassIdentifier: 
-  baseDamagePower: 1
+  baseDamagePower: 2
   knockBackPower: 25

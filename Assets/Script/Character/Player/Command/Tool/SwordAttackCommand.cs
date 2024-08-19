@@ -11,7 +11,7 @@ public class SwordAttackCommand : BaseToolCommand
     public SwordAttackCommand(PlayerController _controller)
     {
         controller = _controller;
-        collider = controller?.GetToolController().Tools[(int)PlayerToolController.ToolObjectTag.Sword].GetComponent<BoxCollider>();
+        collider = controller?.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Sword].GetComponent<BoxCollider>();
     }
 
     public ToolTag GetToolTag()
@@ -37,25 +37,38 @@ public class SwordAttackCommand : BaseToolCommand
     /// </summary>
     private void ThreeAttackInput()
     {
+        //指定した状態じゃなければ
         bool stopstate = controller.CurrentState == StateTag.Rolling || controller.CurrentState == StateTag.Damage;
         if (stopstate) { return; }
+        //着地判定
         if (!controller.Landing) { return; }
+        //キー入力
         if (!controller.GetKeyInput().LeftMouseDownClick) { return; }
         //左クリックを押した最初は長押しフラグをfalseに
         controller.GetKeyInput().LeftMouseClick = false;
         controller.BattleMode = true;
-        if (controller.GetKeyInput().ThreeAttackCount >= (int)TripleAttack.DataEnd) { return; }
         AnimatorStateInfo animInfo = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
         switch (controller.GetKeyInput().ThreeAttackCount)
         {
+            //一段目
             case 0:
-                AttackDetailHandle();
+                if (animInfo.IsName("attack3"))
+                {
+                    if (animInfo.normalizedTime < 0.6f) { return; }
+                    AttackDetailHandle();
+                }
+                else
+                {
+                    AttackDetailHandle();
+                }
                 break;
+            //二段目
             case 1:
                 if (!animInfo.IsName("attack1")) { return; }
                 if (animInfo.normalizedTime < 0.5f) { return; }
                 AttackDetailHandle();
                 break;
+            //三段目
             case 2:
                 if (!animInfo.IsName("attack2")) { return; }
                 if (animInfo.normalizedTime < 0.5f) { return; }
@@ -65,9 +78,17 @@ public class SwordAttackCommand : BaseToolCommand
     }
     private void AttackDetailHandle()
     {
+        //三段攻撃カウントenumに代入
         controller.TripleAttack = (TripleAttack)controller.GetKeyInput().ThreeAttackCount;
+        //三段目攻撃モーション再生
         controller.GetMotion().ChangeMotion(StateTag.Attack);
+        //三段攻撃カウントを加算
         controller.GetKeyInput().ThreeAttackCount++;
+        //三段目ならカウントを0にリセット
+        if(controller.GetKeyInput().ThreeAttackCount >= (int)TripleAttack.DataEnd)
+        {
+            controller.GetKeyInput().ThreeAttackCount = 0;
+        }
     }
     private bool CheckStopState()
     {
@@ -86,14 +107,18 @@ public class SwordAttackCommand : BaseToolCommand
 
     public void JumpAttackInput()
     {
+        //指定したモーションだったら
         if (CheckStopState()) { return; }
+        //移動キーが何も入力されていなかったら
         if(controller.GetKeyInput().Horizontal != 0&& controller.GetKeyInput().Vertical == 0) { return; }
+        //カメラ注目中のジャンプ斬り入力
         if (controller.GetKeyInput().ShiftKey&& controller.GetKeyInput().IsCKeyEnabled())
         {
             controller.GetTimer().GetTimerJumpAttackAccele().StartTimer(0.5f);
             controller.GetMotion().ChangeMotion(StateTag.JumpAttack);
             controller.GetKeyInput().ShiftKey = false;
         }
+        //空中にいる時のジャンプ斬り入力
         else if (controller.GetKeyInput().LeftMouseDownClick && !controller.Landing)
         {
             controller.GetTimer().GetTimerJumpAttackAccele().StartTimer(0.5f);
@@ -105,16 +130,21 @@ public class SwordAttackCommand : BaseToolCommand
 
     private void SpinAttackInput()
     {
+        //未着地判定
         if (!controller.Landing) { return; }
+        //三段攻撃が二段目以上なら
         if(controller.GetKeyInput().ThreeAttackCount >= (int)TripleAttack.Second) { return; }
+        //回転攻撃準備動作開始フラグ
         bool readystartflag = controller.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("attack1")&&
             controller.GetAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f;
-        
+        //回転攻撃動作開始フラグ
         bool spinflag = controller.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("readySpinAttack");
+        //回転攻撃準備入力
         if (controller.GetKeyInput().LeftMouseClick&&readystartflag)
         {
             controller.GetMotion().ChangeMotion(StateTag.ReadySpinAttack);
         }
+        //回転攻撃入力
         else if (!controller.GetKeyInput().LeftMouseClick&&spinflag)
         {
             controller.GetMotion().ChangeMotion(StateTag.SpinAttack);

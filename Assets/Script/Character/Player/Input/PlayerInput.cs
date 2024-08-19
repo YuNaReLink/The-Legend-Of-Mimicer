@@ -192,7 +192,15 @@ public class PlayerInput : MonoBehaviour
     {
         if (InputManager.PushTabKey())
         {
-            GameManager.MenuEnabled = !GameManager.MenuEnabled;
+            switch (GameManager.GameState)
+            {
+                case GameManager.GameStateEnum.Game:
+                    GameManager.GameState = GameManager.GameStateEnum.Pose;
+                    break;
+                case GameManager.GameStateEnum.Pose:
+                    GameManager.GameState = GameManager.GameStateEnum.Game;
+                    break;
+            }
         }
     }
 
@@ -413,7 +421,7 @@ public class PlayerInput : MonoBehaviour
         if (controller.MoveInput) { return; }
         if (!controller.Landing) { return; }
         if (!qKey) { return;}
-        if(controller.GetToolController().CurrentToolTag == PlayerToolController.ToolObjectTag.Bow) { return; }
+        if(controller.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.CrossBow) { return; }
         controller.BattleMode = !controller.BattleMode;
         controller.GetMotion().ChangeMotion(StateTag.ChangeMode);
     }
@@ -427,8 +435,9 @@ public class PlayerInput : MonoBehaviour
 
     private void HoldToolInput()
     {
+        //‰Eè“ü—Í
         rightHandInput.Execute();
-
+        //¶è“ü—Í
         leftHandInput.Execute();
     }
 }

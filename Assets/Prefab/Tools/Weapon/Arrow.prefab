@@ -153,7 +153,7 @@ MonoBehaviour:
   controller: {fileID: 0}
   collider: {fileID: 0}
   statusData: {fileID: 11400000, guid: d700cefbef5e6764bb87fd1a0f416648, type: 2}
-  damageData: 1
+  itemData: {fileID: 11400000, guid: 16bc92532808f6e459945c28a111d3a9, type: 2}
 --- !u!114 &1416688065515829856
 MonoBehaviour:
   m_ObjectHideFlags: 0

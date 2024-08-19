@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,10 +8,9 @@ public class TitleUIController : MonoBehaviour
         UIEvent01,
         UIEvent02,
     }
-    [SerializeField]
+
     private List<GameObject> titleSceneArray = new List<GameObject>();
 
-    [SerializeField]
     private List<BaseTitleUIConfiguration> titleUIConfigurations = new List<BaseTitleUIConfiguration>();
 
     void Start()

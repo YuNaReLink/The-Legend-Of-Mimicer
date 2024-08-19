@@ -2,7 +2,6 @@ using CharacterTag;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static PlayerToolController;
 
 public class RightHandInput
 {
@@ -30,15 +29,15 @@ public class RightHandInput
         BaseToolCommand tool = controller.RightCommand;
         switch (controller.GetToolController().CurrentToolTag)
         {
-            case ToolObjectTag.Null:
+            case ToolInventoryController.ToolObjectTag.Null:
                 tool = null;
                 break;
-            case ToolObjectTag.Sword:
+            case ToolInventoryController.ToolObjectTag.Sword:
                 tool = new SwordAttackCommand(controller);
                 break;
-            case ToolObjectTag.Bow:
-                GameObject crossBow = controller.GetToolController().Tools[(int)ToolObjectTag.Bow];
-                CrossBowShot shot = crossBow.GetComponent<CrossBowShot>();
+            case ToolInventoryController.ToolObjectTag.CrossBow:
+                GameObject crossBow = controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.CrossBow];
+                CrossBowShoot shot = crossBow.GetComponent<CrossBowShoot>();
                 tool = new CrossBowTool(controller,shot);
                 break;
         }
@@ -48,23 +47,23 @@ public class RightHandInput
     private void SetToolInput()
     {
         //仮のタグの入れ物を作成
-        ToolObjectTag tooltag = controller.GetToolController().CurrentToolTag; ;
+        ToolInventoryController.ToolObjectTag tooltag = controller.GetToolController().CurrentToolTag; ;
         //各入力に合ったタグを代入
         if (controller.GetKeyInput().LeftMouseDownClick)
         {
-            if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().Tools[(int)ToolObjectTag.Sword]))
+            if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Sword]))
             {
                 return;
             }
-            tooltag = ToolObjectTag.Sword;
+            tooltag = ToolInventoryController.ToolObjectTag.Sword;
         }
         else if (controller.GetKeyInput().EKey)
         {
-            if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().Tools[(int)ToolObjectTag.Bow]))
+            if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.CrossBow]))
             {
                 return;
             }
-            tooltag = ToolObjectTag.Bow;
+            tooltag = ToolInventoryController.ToolObjectTag.CrossBow;
             if (controller.BattleMode)
             {
                 controller.BattleMode = false;
@@ -73,17 +72,17 @@ public class RightHandInput
         }
         else if (controller.GetKeyInput().QKey)
         {
-            if (controller.GetToolController().CurrentToolTag == ToolObjectTag.Null)
+            if (controller.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.Null)
             {
-                if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().Tools[(int)ToolObjectTag.Sword]))
+                if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Sword]))
                 {
                     return;
                 }
-                tooltag = ToolObjectTag.Sword;
+                tooltag = ToolInventoryController.ToolObjectTag.Sword;
             }
             else
             {
-                tooltag = ToolObjectTag.Null;
+                tooltag = ToolInventoryController.ToolObjectTag.Null;
             }   
         }
         //同じタグならリターン

@@ -214,7 +214,6 @@ GameObject:
   - component: {fileID: 2930122255710493470}
   - component: {fileID: 6285384600429051626}
   - component: {fileID: 5085607257831151868}
-  - component: {fileID: 3517065142188926721}
   - component: {fileID: 1151272462068201039}
   - component: {fileID: 7840695295424365132}
   m_Layer: 0
@@ -238,6 +237,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8598720412964920891}
+  - {fileID: 3086798585304049105}
   - {fileID: 2347958931689681617}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -346,7 +346,7 @@ MonoBehaviour:
   cameraScript: {fileID: 0}
   keyInput: {fileID: 0}
   obstacleCheck: {fileID: 0}
-  toolController: {fileID: 0}
+  toolInventory: {fileID: 0}
   decorationController: {fileID: 0}
   rollCurve:
     serializedVersion: 2
@@ -457,7 +457,7 @@ MonoBehaviour:
   - 1
   - 0.7
   - 0.7
-  - 0.55
+  - 0.6
   hitWallFlagArray: 00000000
   wallJumpPower: 1500
   climbForward: 1.5
@@ -473,34 +473,6 @@ MonoBehaviour:
   cliffJump: 0
   cameraForwardWallFlagArray: 00000000
   controller: {fileID: 0}
---- !u!114 &3517065142188926721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4348658367534398464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80a22674f71ec57428a21e835e0c1db6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 0}
-  currentToolTag: -1
-  tools:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  toolControllers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  swordTransform: {fileID: 8495432417271610765}
-  crossBowTransform: {fileID: 7981790897428794811}
-  localCrossBowPos: {x: 1, y: -0.8, z: 1}
-  shieldTransform: {fileID: 495127051318679388}
-  rightHandTransform: {fileID: 1685056320766932114}
-  leftHandTransform: {fileID: 289584789202046710}
 --- !u!114 &1151272462068201039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,6 +501,79 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfxObjects: {fileID: 11400000, guid: d94f1fec5b4177f409d7485064fdbe30, type: 2}
+--- !u!1 &4734709010422126327
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3086798585304049105}
+  - component: {fileID: 4781722685982904292}
+  - component: {fileID: 2871169377768039812}
+  m_Layer: 0
+  m_Name: Inventory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3086798585304049105
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4734709010422126327}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 483470937212756178}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4781722685982904292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4734709010422126327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bec7da1f49833e74c956b3cb58b58813, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+  currentToolTag: -1
+  toolControllers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  swordTransform: {fileID: 8495432417271610765}
+  crossBowTransform: {fileID: 7981790897428794811}
+  localCrossBowPos: {x: 1, y: -0.8, z: 1}
+  shieldTransform: {fileID: 495127051318679388}
+  rightHandTransform: {fileID: 1685056320766932114}
+  leftHandTransform: {fileID: 289584789202046710}
+--- !u!114 &2871169377768039812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4734709010422126327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51119dec0421d5540a831bb7b428c5e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolItemList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &5572926992110469625
 GameObject:
   m_ObjectHideFlags: 0

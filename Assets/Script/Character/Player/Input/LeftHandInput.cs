@@ -18,7 +18,7 @@ public class LeftHandInput
 
     private void ShieldInput()
     {
-        if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().Tools[(int)PlayerToolController.ToolObjectTag.Shild]))
+        if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Shild]))
         {
             return;
         }

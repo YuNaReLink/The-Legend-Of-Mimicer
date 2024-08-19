@@ -69,7 +69,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
   collider: {fileID: 0}
-  damageData: 1
+  statusData: {fileID: 0}
+  itemData: {fileID: 11400000, guid: 4519563239009434199a0eb69a36a56f, type: 2}
 --- !u!1001 &2921198937667899379
 PrefabInstance:
   m_ObjectHideFlags: 0

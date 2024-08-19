@@ -28,10 +28,7 @@ public class CharacterController : MonoBehaviour
     protected MotionController motion = null;
     public MotionController GetMotion() {  return motion; }
 
-    protected virtual void SetMotionController()
-    {
-        motion = new MotionController();
-    }
+    protected virtual void SetMotionController(){motion = new MotionController();}
 
     /// <summary>
     /// HP関係の変数
@@ -81,6 +78,13 @@ public class CharacterController : MonoBehaviour
 
     public bool MoveInput { get { return input; } set { input = value; } }
 
+    //プレイヤーの現在の位置
+    protected Vector3 currentPos;
+    public Vector3 CurrentPos { get { return currentPos; }set { currentPos = value; } }
+    //プレイヤーの過去の位置
+    protected Vector3 pastPos;
+    public Vector3 PastPos { get { return pastPos; }set { pastPos = value; } }
+
     /// <summary>
     /// 着地判定
     /// </summary>
@@ -96,10 +100,7 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     protected Vector3 landingPosition = Vector3.zero;
 
-    public Vector3 GetLandingPosition() 
-    {
-        return landingPosition; 
-    }
+    public Vector3 GetLandingPosition() {return landingPosition; }
 
     /// <summary>
     /// ジャンプフラグ
@@ -123,10 +124,7 @@ public class CharacterController : MonoBehaviour
     protected VFXController vfxController = null;
     public VFXController GetVFXController() { return vfxController; }
 
-    protected virtual void Awake()
-    {
-
-    }
+    protected virtual void Awake(){}
 
     protected virtual void  Start()
     {

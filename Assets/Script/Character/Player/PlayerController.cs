@@ -1,9 +1,5 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.Windows;
 using System.Collections.Generic;
-using UnityEngine.UIElements;
 
 
 public class PlayerController : CharacterController
@@ -20,7 +16,7 @@ public class PlayerController : CharacterController
     public GameObject GetCameraObject() {  return cameraObject; }
     [SerializeField]
     private PlayerCameraController cameraScript = null;
-    public PlayerCameraController GetCameraScript() { return cameraScript; }
+    public PlayerCameraController GetCameraController() { return cameraScript; }
 
     [SerializeField]
     private PlayerInput keyInput = null;
@@ -37,13 +33,14 @@ public class PlayerController : CharacterController
     public FallDistanceCheck GetFallDistanceCheck() {  return fallDistanceCheck; }
 
     [SerializeField]
-    private PlayerToolController toolController = null;
-    public PlayerToolController GetToolController() { return toolController; }
+    private ToolInventoryController toolInventory = null;
+    public ToolInventoryController GetToolController() { return toolInventory; }
 
     [SerializeField]
     private PlayerDecorationController decorationController = null;
 
     private PlayerRotation rotation = null;
+    public PlayerRotation GetRotation() { return rotation; }
 
     private PlayerTimers timer = null;
     public PlayerTimers GetTimer() {  return timer; }
@@ -167,14 +164,14 @@ public class PlayerController : CharacterController
         fallDistanceCheck = new FallDistanceCheck(this);
         fallDistanceCheck?.Initialize();
 
-        toolController = GetComponent<PlayerToolController>();
-        toolController?.SetController(this);
-        toolController?.Initilaize();
+        toolInventory = GetComponentInChildren<ToolInventoryController>();
+        toolInventory?.SetController(this);
+        toolInventory?.Initilaize();
 
         decorationController = GetComponent<PlayerDecorationController>();
         decorationController?.SetController(this);
 
-        rotation = new PlayerRotation();
+        rotation = new PlayerRotation(this);
         timer = new PlayerTimers();
         timer?.InitializeAssignTimer();
 
@@ -213,7 +210,7 @@ public class PlayerController : CharacterController
 
 
         //武器や盾の位置を状態によって変える
-        toolController.UpdateProps();
+        toolInventory.UpdateProps();
 
         //特定のモーションを特定の条件で止めたり再生したりするメソッド
         motion.StopMotionCheck();

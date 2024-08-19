@@ -3,8 +3,6 @@ using UnityEngine.AI;
 
 public class SpiderController : EnemyController
 {
-    
-
     protected override void Start()
     {
         base.Start();

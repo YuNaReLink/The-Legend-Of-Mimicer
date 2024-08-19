@@ -75,7 +75,7 @@ public class PlayerMotion : MotionController
             controller.PastState != StateTag.WallJump;
 
         bool wallJumpStop = controller.CurrentState == StateTag.WallJump && _state != StateTag.Grab&&
-            !controller.GetObstacleCheck().IsClimbFlag();
+            !controller.GetObstacleCheck().IsClimbFlag()&&controller.GetObstacleCheck().WallHitFlagCheck();
         if (jumpStop||climbStop||wallJumpStop)
         {
             return true;
@@ -221,6 +221,7 @@ public class PlayerMotion : MotionController
                 controller.TripleAttack = TripleAttack.Null;
                 break;
             case "jumpAttack":
+                controller.GetKeyInput().ThreeAttackCount = 0;
                 controller.CurrentState = StateTag.Null;
                 break;
             case "spinAttack":

@@ -1,9 +1,12 @@
 using CharacterTag;
 using UnityEngine;
 
+/// <summary>
+/// 剣自身にアタッチするクラス
+/// エフェクトや当たり判定は剣自体が制御する考え方
+/// </summary>
 public class SwordController : ToolController
 {
-    [SerializeField]
     private SwordEffectController effect = null;
 
     private void Start()

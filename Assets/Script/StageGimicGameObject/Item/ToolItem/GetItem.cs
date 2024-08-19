@@ -12,7 +12,7 @@ public class GetItem : MonoBehaviour
     protected GameObject item = null;
 
     [SerializeField]
-    protected PlayerToolController.ToolObjectTag toolTag = PlayerToolController.ToolObjectTag.Null;
+    protected ToolInventoryController.ToolObjectTag toolTag = ToolInventoryController.ToolObjectTag.Null;
 
     protected TriggerCheck triggerCheck = null;
 
@@ -37,7 +37,7 @@ public class GetItem : MonoBehaviour
 
     public virtual void Get()
     {
-        PlayerToolController tool = triggerCheck.GetController().GetToolController();
+        ToolInventoryController tool = triggerCheck.GetController().GetToolController();
         tool.GetToolSetting(toolTag, item);
         Destroy(gameObject);
     }

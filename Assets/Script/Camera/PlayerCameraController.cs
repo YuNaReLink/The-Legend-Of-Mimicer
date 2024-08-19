@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
@@ -92,8 +89,31 @@ public class PlayerCameraController : MonoBehaviour
 
     private void Update()
     {
-        SetCameraMode();
+        switch (GameManager.GameState)
+        {
+            case GameManager.GameStateEnum.Game:
+                GameStateCameraControle();
+                break;
+            case GameManager.GameStateEnum.GameOver:
+                neckHeight -= 0.02f;
+                if(neckHeight < 0.5f)
+                {
+                    neckHeight = 0.5f;
+                }
+                distance_base -= 0.02f;
+                if (distance_base < 3.0f)
+                {
+                    distance_base = 3.0f;
+                }
+                break;
+            case GameManager.GameStateEnum.GameClear:
+                break;
+        }
+    }
 
+    private void GameStateCameraControle()
+    {
+        SetCameraMode();
         if (fpsMode)
         {
             Vector3 fpsPos = player.gameObject.transform.position;
@@ -124,12 +144,11 @@ public class PlayerCameraController : MonoBehaviour
                 distance_base = maxDistanceBase;
             }
 
-            if(Mathf.Abs(rotation_hor) >= 360)
+            if (Mathf.Abs(rotation_hor) >= 360)
             {
                 rotation_hor = 0;
             }
         }
-
     }
 
     private void SetCameraMode()
@@ -155,17 +174,27 @@ public class PlayerCameraController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (fpsMode)
+        switch (GameManager.GameState)
         {
-            cameracon();
-        }
-        else
-        {
-            MouseInputCamera();
+            case GameManager.GameStateEnum.Game:
+                if (fpsMode)
+                {
+                    FPSCamera();
+                }
+                else
+                {
+                    TPSCamera();
+                }
+                break;
+            case GameManager.GameStateEnum.GameOver:
+                GameOverCamera();
+                break;
+            case GameManager.GameStateEnum.GameClear:
+                break;
         }
     }
 
-    private void MouseInputCamera()
+    private void TPSCamera()
     {
         if (target == null||player == null)
         {
@@ -238,7 +267,7 @@ public class PlayerCameraController : MonoBehaviour
         transform.position += targettrack;
     }
 
-    void cameracon()
+    private void FPSCamera()
     {
         float x_Rotation = Input.GetAxis("Mouse X");
         float y_Rotation = Input.GetAxis("Mouse Y");
@@ -247,4 +276,50 @@ public class PlayerCameraController : MonoBehaviour
         transform.Rotate(0, x_Rotation, 0);
         transform.Rotate(-y_Rotation, 0, 0);
     }
+
+    private void GameOverCamera()
+    {
+        rotation_hor += 2f;
+        float dis = player.transform.rotation.eulerAngles.y + 145 - rotation_hor;
+        if(dis <= 0.1f)
+        {
+            rotation_hor = player.transform.rotation.eulerAngles.y + 145;
+        }
+        rotation_ver = 0;
+
+        //restrict vertical angle to -90 ~ +90
+        if (Mathf.Abs(rotation_ver) > 90)
+            rotation_ver = Mathf.Sign(rotation_ver) * 90;
+
+        //base vector to rotate
+        var rotation = Vector3.Normalize(initCameraRotation); //base(normalized)
+        rotation = Quaternion.Euler(rotation_ver, rotation_hor, 0) * rotation; //rotate vector
+
+        //カメラの埋まりを防ぐためにレイヤーを指定する
+        RaycastHit hit;
+        int layermask = 1 << 3; //1のビットを3レイヤー分(Floor_obstacleがある場所)だけ左シフト
+        float distance = distance_base; //copy default(mouseScroll zoom)
+        //スフィアレイキャストで埋まり防止
+        if (Physics.SphereCast(targettrack + Vector3.up * 1.7f, 0.5f,
+        rotation, out hit, distance, layermask))
+        {
+            distance = hit.distance; //overwrite copy
+        }
+
+        //turn self
+        transform.rotation = Quaternion.Euler(rotation_ver, rotation_hor, 0); //Quaternion IN!!
+
+        //turn around + zoom
+        transform.position = rotation * distance;
+
+        //回転の中心座標のYを調整
+        var necklevel = Vector3.up * neckHeight;
+        transform.position += necklevel;
+
+        //カメラの移動(Lerpを使って線形補間)
+        targettrack = Vector3.Lerp(
+            targettrack, target.transform.position, Time.deltaTime * 10);
+        transform.position += targettrack;
+    }
+
 }

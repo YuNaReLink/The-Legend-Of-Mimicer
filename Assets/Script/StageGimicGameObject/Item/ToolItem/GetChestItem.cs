@@ -7,7 +7,7 @@ public class GetChestItem : GetItem
 
     public override void Get()
     {
-        PlayerToolController tool = triggerCheck.GetController().GetToolController();
+        ToolInventoryController tool = triggerCheck.GetController().GetToolController();
         tool.GetToolSetting(toolTag, item);
     }
 }

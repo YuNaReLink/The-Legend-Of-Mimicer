@@ -13,6 +13,6 @@ public class ButtonCommand : MonoBehaviour
 
     public void BackGame()
     {
-        GameManager.MenuEnabled = false;
+        GameManager.GameState = GameManager.GameStateEnum.Game;
     }
 }

@@ -1,17 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CrossBowTool : BaseToolCommand
 {
     private PlayerController controller = null;
 
-    private CrossBowShot shot = null;
+    private CrossBowShoot shoot = null;
 
-    public CrossBowTool(PlayerController _controller,CrossBowShot _shot)
+    public CrossBowTool(PlayerController _controller,CrossBowShoot _shot)
     {
         controller = _controller;
-        shot = _shot;
+        shoot = _shot;
     }
 
     public ToolTag GetToolTag()
@@ -21,15 +19,16 @@ public class CrossBowTool : BaseToolCommand
 
     public void Input()
     {
-        if(controller.GetCameraScript() == null) { return; }
-        if (!controller.GetCameraScript().IsFPSMode()) { return; }
+        if(controller.GetCameraController() == null) { return; }
+        if (!controller.GetCameraController().IsFPSMode()) { return; }
         if (!controller.GetKeyInput().EKey) { return; }
+        if (controller.GetToolController().GetQuiver().Count <= 0) { return; }
         //–î‚ð”­ŽË
-        shot.ArrowFire();
+        if (shoot.ArrowFire())
+        {
+            controller.GetToolController().GetQuiver().Count--;
+        }
     }
 
-    public void Execute()
-    {
-
-    }
+    public void Execute(){}
 }
