@@ -21,7 +21,7 @@ public class PlayerRotation
         PlayerInput input = controller.GetKeyInput();
 
         //自身が動いてる場合の注目処理
-        if (PlayerCameraController.FocusFlag&& input.IsCKeyEnabled()&&
+        if (PlayerCameraController.FocusFlag&& input.IsCameraLockEnabled()&&
             PlayerCameraController.LockObject != null)
         {
             // 敵の方向ベクトルを取得
@@ -34,7 +34,7 @@ public class PlayerRotation
         }
         //条件に当てはまっていたらプレイヤーの向きを
         //カメラの方向によって取得しないようにする
-        else if (input.IsCKeyEnabled())
+        else if (input.IsCameraLockEnabled())
         {
             Vector3 forwardPos = new Vector3(0,0,2.5f);
             //前方方向を取得
@@ -46,6 +46,7 @@ public class PlayerRotation
         }
         else
         {
+            //そうじゃなければ通常の三人称カメラ処理
             var horizontalRotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
             var velocity = horizontalRotation * new Vector3(controller.GetKeyInput().Horizontal, 0, controller.GetKeyInput().Vertical).normalized;
             var rotationSpeed = 600 * Time.deltaTime;
@@ -54,18 +55,6 @@ public class PlayerRotation
                 targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
             }
             return Quaternion.RotateTowards(controller.transform.rotation, targetRotation, rotationSpeed);
-            /*
-            //そうじゃなければ通常の三人称カメラ処理
-            playerRot = Quaternion.LookRotation(cameraVelocity, Vector3.up);
-            diffAngle = Vector3.Angle(controller.transform.forward, cameraVelocity);
-            //回転速度を計算する
-            float targetRotationSpeed = Mathf.Min(diffAngle / smoothTime, maxAngularVelocity);
-            // 回転速度を調整する
-            currentAngularVelocity = Mathf.MoveTowards(currentAngularVelocity, targetRotationSpeed, maxAngularVelocity * Time.deltaTime);
-            // 回転を適用する
-            rotAngle = currentAngularVelocity * Time.deltaTime;
-            return Quaternion.RotateTowards(controller.transform.rotation, playerRot, rotAngle);
-             */
         }
     }
 }

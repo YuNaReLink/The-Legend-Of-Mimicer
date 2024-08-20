@@ -125,7 +125,7 @@ public class KeyInputUIController : MonoBehaviour
     private void EKeyUI()
     {
         if (inputCoolDownsTimers[(int)KeyUINumber.E].IsEnabled()) { return; }
-        if (InputManager.PushEKey())
+        if (InputManager.ToolButton())
         {
             keyImageArray[(int)KeyUINumber.E].color = new Color32(100, 100, 100, 255);
             inputCoolDownsTimers[(int)KeyUINumber.E].StartTimer(0.1f);
@@ -139,7 +139,7 @@ public class KeyInputUIController : MonoBehaviour
     private void QKeyUI()
     {
         if (inputCoolDownsTimers[(int)KeyUINumber.Q].IsEnabled()) { return; }
-        if (InputManager.PushQKey())
+        if (InputManager.ChangeButton())
         {
             keyImageArray[(int)KeyUINumber.Q].color = new Color32(100, 100, 100, 255);
             inputCoolDownsTimers[(int)KeyUINumber.Q].StartTimer(0.1f);
@@ -153,7 +153,7 @@ public class KeyInputUIController : MonoBehaviour
     private void CKeyUI()
     {
         if (inputCoolDownsTimers[(int)KeyUINumber.C].IsEnabled()) { return; }
-        if (InputManager.PushCKey())
+        if (InputManager.LockCameraButton())
         {
             keyImageArray[(int)KeyUINumber.C].color = new Color32(100, 100, 100, 255);
             inputCoolDownsTimers[(int)KeyUINumber.C].StartTimer(0.1f);
@@ -167,7 +167,7 @@ public class KeyInputUIController : MonoBehaviour
     private void FKeyUI()
     {
         if (inputCoolDownsTimers[(int)KeyUINumber.F].IsEnabled()) { return; }
-        if (InputManager.PushFKey())
+        if (InputManager.GetItemButton())
         {
             keyImageArray[(int)KeyUINumber.F].color = new Color32(100, 100, 100, 255);
             inputCoolDownsTimers[(int)KeyUINumber.F].StartTimer(0.1f);
@@ -180,7 +180,7 @@ public class KeyInputUIController : MonoBehaviour
     private void TabKeyUI()
     {
         if (inputCoolDownsTimers[(int)KeyUINumber.Tab].IsEnabled()) { return; }
-        if (InputManager.PushTabKey())
+        if (InputManager.MenuButton())
         {
             keyImageArray[(int)KeyUINumber.Tab].color = new Color32(100, 100, 100, 255);
             inputCoolDownsTimers[(int)KeyUINumber.Tab].StartTimer(0.1f);
@@ -193,7 +193,7 @@ public class KeyInputUIController : MonoBehaviour
     private void ShiftKeyUI()
     {
         if (inputCoolDownsTimers[(int)KeyUINumber.Shift].IsEnabled()) { return; }
-        if (InputManager.PushShiftKey())
+        if (InputManager.ActionButton())
         {
             keyImageArray[(int)KeyUINumber.Shift].color = new Color32(100, 100, 100, 255);
             inputCoolDownsTimers[(int)KeyUINumber.Shift].StartTimer(0.1f);

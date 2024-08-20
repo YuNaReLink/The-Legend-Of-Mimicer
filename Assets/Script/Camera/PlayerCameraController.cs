@@ -153,11 +153,11 @@ public class PlayerCameraController : MonoBehaviour
 
     private void SetCameraMode()
     {
-        if (InputManager.PushEKey())
+        if (InputManager.ToolButton())
         {
             fpsMode = true;
         }
-        if (InputManager.PushQKey()||InputManager.PushMouseLeft())
+        if (InputManager.ChangeButton() || InputManager.AttackButton())
         {
             fpsMode = false;
         }
@@ -203,9 +203,9 @@ public class PlayerCameraController : MonoBehaviour
         if(lockObject == null)
         {
             focusFlag = false;
-            player.GetKeyInput().CKey = false;
+            player.GetKeyInput().LockCamera = false;
         }
-        if (focusFlag&&player.GetKeyInput().IsCKeyEnabled())
+        if (focusFlag&&player.GetKeyInput().IsCameraLockEnabled())
         {
             Vector3 directionToEnemy = lockObject.transform.position - transform.position;
             // プレイヤーのローカル座標系でのカメラのオフセット
@@ -218,7 +218,7 @@ public class PlayerCameraController : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, player.transform.position + rotatedOffset, Time.deltaTime * 2.0f);
             return;
         }
-        else if (!focusFlag && player.GetKeyInput().IsCKeyEnabled())
+        else if (!focusFlag && player.GetKeyInput().IsCameraLockEnabled())
         {
             float playerRotationY = player.transform.rotation.eulerAngles.y;
             if(playerRotationY > 180)
@@ -232,13 +232,13 @@ public class PlayerCameraController : MonoBehaviour
         else
         {
             //カメラが回転するスピードを設定
-            rotation_hor += Input.GetAxis("Mouse X") * mouseXSpeed;
-            rotation_ver -= Input.GetAxis("Mouse Y") * mouseYSpeed;
+            rotation_hor += InputManager.CameraXInput() * mouseXSpeed;
+            rotation_ver -= InputManager.CameraYInput() * mouseYSpeed;
         }
 
-        //restrict vertical angle to -90 ~ +90
-        if (Mathf.Abs(rotation_ver) > 90)
-            rotation_ver = Mathf.Sign(rotation_ver) * 90;
+        //restrict vertical angle to -60 ~ +60
+        if (Mathf.Abs(rotation_ver) > 60)
+            rotation_ver = Mathf.Sign(rotation_ver) * 60;
 
         //base vector to rotate
         var rotation = Vector3.Normalize(initCameraRotation); //base(normalized)
@@ -273,12 +273,40 @@ public class PlayerCameraController : MonoBehaviour
 
     private void FPSCamera()
     {
-        float x_Rotation = Input.GetAxis("Mouse X");
-        float y_Rotation = Input.GetAxis("Mouse Y");
-        x_Rotation = x_Rotation * mouseXSpeed;
-        y_Rotation = y_Rotation * mouseYSpeed;
-        transform.Rotate(0, x_Rotation, 0);
-        transform.Rotate(-y_Rotation, 0, 0);
+        rotation_hor += InputManager.CameraXInput() * mouseXSpeed;
+        rotation_ver -= InputManager.CameraYInput() * mouseYSpeed;
+        //restrict vertical angle to -60 ~ +60
+        if (Mathf.Abs(rotation_ver) > 60)
+            rotation_ver = Mathf.Sign(rotation_ver) * 60;
+        //base vector to rotate
+        var rotation = Vector3.Normalize(initCameraRotation); //base(normalized)
+        rotation = Quaternion.Euler(rotation_ver, rotation_hor, 0) * rotation; //rotate vector
+
+        //カメラの埋まりを防ぐためにレイヤーを指定する
+        RaycastHit hit;
+        int layermask = 1 << 3; //1のビットを3レイヤー分(Floor_obstacleがある場所)だけ左シフト
+        float distance = distance_base; //copy default(mouseScroll zoom)
+        //スフィアレイキャストで埋まり防止
+        if (Physics.SphereCast(targettrack + Vector3.up * 1.7f, 0.5f,
+        rotation, out hit, distance, layermask))
+        {
+            distance = hit.distance; //overwrite copy
+        }
+
+        //turn self
+        transform.rotation = Quaternion.Euler(rotation_ver, rotation_hor, 0); //Quaternion IN!!
+
+        //turn around + zoom
+        transform.position = rotation * distance;
+
+        //回転の中心座標のYを調整
+        var necklevel = Vector3.up * neckHeight;
+        transform.position += necklevel;
+
+        //カメラの移動(Lerpを使って線形補間)
+        targettrack = Vector3.Lerp(
+            targettrack,target.transform.position, Time.deltaTime * 10);
+        transform.position += targettrack;
     }
 
     private void GameOverCamera()

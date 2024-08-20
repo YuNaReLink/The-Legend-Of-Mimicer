@@ -43,9 +43,9 @@ public class SwordAttackCommand : BaseToolCommand
         //着地判定
         if (!controller.Landing) { return; }
         //キー入力
-        if (!controller.GetKeyInput().LeftMouseDownClick) { return; }
+        if (!controller.GetKeyInput().AttackButton) { return; }
         //左クリックを押した最初は長押しフラグをfalseに
-        controller.GetKeyInput().LeftMouseClick = false;
+        controller.GetKeyInput().AttackHoldButton = false;
         controller.BattleMode = true;
         AnimatorStateInfo animInfo = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
         switch (controller.GetKeyInput().ThreeAttackCount)
@@ -65,13 +65,13 @@ public class SwordAttackCommand : BaseToolCommand
             //二段目
             case 1:
                 if (!animInfo.IsName("attack1")) { return; }
-                if (animInfo.normalizedTime < 0.5f) { return; }
+                if (animInfo.normalizedTime < 0.4f) { return; }
                 AttackDetailHandle();
                 break;
             //三段目
             case 2:
                 if (!animInfo.IsName("attack2")) { return; }
-                if (animInfo.normalizedTime < 0.5f) { return; }
+                if (animInfo.normalizedTime < 0.4f) { return; }
                 AttackDetailHandle();
                 break;
         }
@@ -112,18 +112,18 @@ public class SwordAttackCommand : BaseToolCommand
         //移動キーが何も入力されていなかったら
         if(controller.GetKeyInput().Horizontal != 0&& controller.GetKeyInput().Vertical == 0) { return; }
         //カメラ注目中のジャンプ斬り入力
-        if (controller.GetKeyInput().ShiftKey&& controller.GetKeyInput().IsCKeyEnabled())
+        if (controller.GetKeyInput().ActionButton&& controller.GetKeyInput().IsCameraLockEnabled())
         {
             controller.GetTimer().GetTimerJumpAttackAccele().StartTimer(0.5f);
             controller.GetMotion().ChangeMotion(StateTag.JumpAttack);
-            controller.GetKeyInput().ShiftKey = false;
+            controller.GetKeyInput().ActionButton = false;
         }
         //空中にいる時のジャンプ斬り入力
-        else if (controller.GetKeyInput().LeftMouseDownClick && !controller.Landing)
+        else if (controller.GetKeyInput().AttackButton && !controller.Landing)
         {
             controller.GetTimer().GetTimerJumpAttackAccele().StartTimer(0.5f);
             controller.GetMotion().ChangeMotion(StateTag.JumpAttack);
-            controller.GetKeyInput().LeftMouseDownClick = false;
+            controller.GetKeyInput().AttackButton = false;
             controller.BattleMode = true;
         }
     }
@@ -140,12 +140,12 @@ public class SwordAttackCommand : BaseToolCommand
         //回転攻撃動作開始フラグ
         bool spinflag = controller.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("readySpinAttack");
         //回転攻撃準備入力
-        if (controller.GetKeyInput().LeftMouseClick&&readystartflag)
+        if (controller.GetKeyInput().AttackHoldButton&&readystartflag)
         {
             controller.GetMotion().ChangeMotion(StateTag.ReadySpinAttack);
         }
         //回転攻撃入力
-        else if (!controller.GetKeyInput().LeftMouseClick&&spinflag)
+        else if (!controller.GetKeyInput().AttackHoldButton&&spinflag)
         {
             controller.GetMotion().ChangeMotion(StateTag.SpinAttack);
         }

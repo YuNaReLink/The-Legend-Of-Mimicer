@@ -75,10 +75,8 @@ public class Chest : MonoBehaviour
     private void OpenInput()
     {
         if (open) { return; }
-        if (InputManager.PushFKey())
-        {
-            open = true;
-        }
+        if (!triggerCheck.GetController().GetKeyInput().IsGetButton()) { return; }
+        open = true;
     }
 
     private void OpenCover()

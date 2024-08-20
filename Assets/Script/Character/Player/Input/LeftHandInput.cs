@@ -24,7 +24,7 @@ public class LeftHandInput
         }
         if (controller.LeftCommand == null)
         {
-            if (!controller.GetKeyInput().RightMouseClick && !controller.BattleMode) { return; }
+            if (!controller.GetKeyInput().GuardHoldButton && !controller.BattleMode) { return; }
             //‚‚ÌƒNƒ‰ƒX‚ğ¶¬‚·‚é
             controller.LeftCommand = new ShieldGuridCommand(controller);
         }

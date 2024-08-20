@@ -147,6 +147,12 @@ public class CharacterController : MonoBehaviour
         if (Time.timeScale <= 0) { return; }
         //“ü—Í‚ð‰ðœ
         input = false;
+        currentPos = transform.position;
+    }
+
+    protected void LateUpdate()
+    {
+        pastPos = currentPos;
     }
 
     protected virtual void UpdateMoveInput()

@@ -21,7 +21,7 @@ public class CrossBowTool : BaseToolCommand
     {
         if(controller.GetCameraController() == null) { return; }
         if (!controller.GetCameraController().IsFPSMode()) { return; }
-        if (!controller.GetKeyInput().EKey) { return; }
+        if (!controller.GetKeyInput().ToolButton) { return; }
         if (controller.GetToolController().GetQuiver().Count <= 0) { return; }
         //–î‚ð”­ŽË
         if (shoot.ArrowFire())

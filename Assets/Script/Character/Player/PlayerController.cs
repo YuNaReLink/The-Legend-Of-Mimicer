@@ -340,6 +340,8 @@ public class PlayerController : CharacterController
     {
         switch (currentState)
         {
+            case CharacterTag.StateTag.JumpAttack:
+            case CharacterTag.StateTag.SpinAttack:
             case CharacterTag.StateTag.ReadySpinAttack:
             case CharacterTag.StateTag.Rolling:
             case CharacterTag.StateTag.Push:

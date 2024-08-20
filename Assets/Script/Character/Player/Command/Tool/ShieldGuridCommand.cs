@@ -41,9 +41,9 @@ public class ShieldGuridCommand : BaseToolCommand
         if (CheckStopState()) { return; }
         if (controller.Landing)
         {
-            if (controller.GetKeyInput().IsCKeyEnabled())
+            if (controller.GetKeyInput().IsCameraLockEnabled())
             {
-                if (controller.GetKeyInput().RightMouseClick)
+                if (controller.GetKeyInput().GuardHoldButton)
                 {
                     controller.GuardState = GuardState.Normal;
                 }
@@ -54,7 +54,7 @@ public class ShieldGuridCommand : BaseToolCommand
             }
             else
             {
-                if (controller.GetKeyInput().RightMouseClick)
+                if (controller.GetKeyInput().GuardHoldButton)
                 {
                     controller.GuardState = GuardState.Crouch;
                 }

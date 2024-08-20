@@ -49,7 +49,7 @@ public class RightHandInput
         //仮のタグの入れ物を作成
         ToolInventoryController.ToolObjectTag tooltag = controller.GetToolController().CurrentToolTag; ;
         //各入力に合ったタグを代入
-        if (controller.GetKeyInput().LeftMouseDownClick)
+        if (controller.GetKeyInput().AttackButton)
         {
             if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Sword]))
             {
@@ -57,7 +57,7 @@ public class RightHandInput
             }
             tooltag = ToolInventoryController.ToolObjectTag.Sword;
         }
-        else if (controller.GetKeyInput().EKey)
+        else if (controller.GetKeyInput().ToolButton)
         {
             if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.CrossBow]))
             {
@@ -70,7 +70,7 @@ public class RightHandInput
                 controller.GetMotion().ChangeMotion(StateTag.ChangeMode);
             }
         }
-        else if (controller.GetKeyInput().QKey)
+        else if (controller.GetKeyInput().ChangeButton)
         {
             if (controller.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.Null)
             {

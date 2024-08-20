@@ -145,6 +145,14 @@ public class ObstacleCheck : MonoBehaviour
         Ray stepCheckRay = new Ray(transform.position + (transform.forward * stepCheckOffset) + (transform.up * stepUpCheckOffset), -transform.up);
         lowStep = Physics.Raycast(stepCheckRay, stepCheckDistance);
         Debug.DrawRay(stepCheckRay.origin, stepCheckRay.direction * stepCheckDistance, Color.white);
+        for(int i = 1; i < hitWallFlagArray.Length; i++)
+        {
+            if (hitWallFlagArray[i])
+            {
+                lowStep = true;
+                break;
+            }
+        }
     }
 
     private void SaveResetLandingPosition()
@@ -171,21 +179,18 @@ public class ObstacleCheck : MonoBehaviour
         controller.CharacterRB.useGravity = true;
     }
 
-    private bool CheckPlayerPositionY()
-    {
-        Vector3 sub = controller.transform.position - controller.PastPos;
-        float dis = sub.magnitude;
-        if (dis > 0.1f)
-        {
-            return true;
-        }
-        return false;
-    }
-
     public void WallCheckInput()
     {
         lowStep = true;
         MoveDirectionCheck();
+        switch (controller.CurrentState)
+        {
+            case StateTag.Attack:
+            case StateTag.SpinAttack:
+            case StateTag.ReadySpinAttack:
+            case StateTag.JumpAttack:
+                return;
+        }
         //壁があるかチェック、なかったら早期リターン
         bool wallhit = WallCheck();
         MoveInputCheck();
@@ -208,11 +213,12 @@ public class ObstacleCheck : MonoBehaviour
                 !hitWallFlagArray[(int)RayTag.Middle] && !hitWallFlagArray[(int)RayTag.Upper];
             if (stepCheck)
             {
-                timerStopWallAction.StartTimer(0.25f);
+                timerStopWallAction.StartTimer(0.1f);
                 timerStopWallAction.OnCompleted += () =>
                 {
                     if (controller.GetKeyInput().Vertical == 0 &&
-                        controller.GetKeyInput().Horizontal == 0) { return; }
+                        controller.GetKeyInput().Horizontal == 0&&
+                        !MovePositionCheck()) { return; }
                     stepJumpFlag = true;
                 };
                 return;
@@ -223,7 +229,7 @@ public class ObstacleCheck : MonoBehaviour
                 !hitWallFlagArray[(int)RayTag.Up] && !hitWallFlagArray[(int)RayTag.Upper];
             if (middleWallCheck)
             {
-                timerStopWallAction.StartTimer(0.25f);
+                timerStopWallAction.StartTimer(0.1f);
                 timerStopWallAction.OnCompleted += () =>
                 {
                     if (controller.GetKeyInput().Vertical == 0 &&
@@ -238,7 +244,7 @@ public class ObstacleCheck : MonoBehaviour
                 hitWallFlagArray[(int)RayTag.Up]&&!hitWallFlagArray[(int)RayTag.Upper];
             if (highWallCheck)
             {
-                timerStopWallAction.StartTimer(0.25f);
+                timerStopWallAction.StartTimer(0.1f);
                 timerStopWallAction.OnCompleted += () =>
                 {
                     if (controller.GetKeyInput().Vertical == 0 &&
@@ -260,6 +266,16 @@ public class ObstacleCheck : MonoBehaviour
                 return;
             }
         }
+    }
+
+    private bool MovePositionCheck()
+    {
+        Vector3 sub = controller.CurrentPos - controller.PastPos;
+        if(sub.magnitude > 0.01f)
+        {
+            return true;
+        }
+        return false;
     }
 
     private void MoveInputCheck()
@@ -326,7 +342,7 @@ public class ObstacleCheck : MonoBehaviour
         {
             //何も当たっていない時の条件
             if (hit[i].collider == null) { continue; }
-            //当たったものがもし敵だったら
+            //当たったものがもし特定のオブジェクトだったら
             if (hit[i].collider.gameObject.tag == "Enemy"||
                 hit[i].collider.gameObject.tag == "Furniture"||
                 hit[i].collider.gameObject.tag == "Damage"||
@@ -435,7 +451,7 @@ public class ObstacleCheck : MonoBehaviour
                 SetClimbPostion();
                 controller.GetMotion().ChangeMotion(StateTag.ClimbWall);
             }
-            else if (controller.GetKeyInput().IsDownKey())
+            else if (controller.GetKeyInput().Vertical < -0.5f)
             {
                 controller.GetTimer().GetTimerWallActionStop().StartTimer(0.25f);
                 stepJumpFlag = false;
@@ -452,7 +468,7 @@ public class ObstacleCheck : MonoBehaviour
 
     private bool MoveKeyInput(PlayerController controller)
     {
-        if (controller.GetKeyInput().IsUpKey())
+        if (controller.GetKeyInput().Vertical > 0.5f)
         {
             return true;
         }

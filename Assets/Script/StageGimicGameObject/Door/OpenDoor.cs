@@ -60,7 +60,7 @@ public class OpenDoor : MonoBehaviour
         //0”Ô–Ú:ƒL[“ü—Í‚Åì“®
         if (!open && !movePlayer && !close)
         {
-            if (InputManager.PushFKey()&& triggerCheck.IsHitPlayer())
+            if (InputManager.GetItemButton()&& triggerCheck.IsHitPlayer())
             {
                 start = true;
             }

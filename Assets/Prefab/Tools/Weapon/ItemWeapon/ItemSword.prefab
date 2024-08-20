@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 2350754362672890308}
   m_Layer: 0
   m_Name: ItemSword
-  m_TagString: Untagged
+  m_TagString: SearchArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -280,7 +280,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 147307405827914542, guid: e09a47eafc3d7a94881504ab85b9c75b, type: 3}
   toolTag: 0
-  controller: {fileID: 0}
 --- !u!114 &3920650063847729720
 MonoBehaviour:
   m_ObjectHideFlags: 0

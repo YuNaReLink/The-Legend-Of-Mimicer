@@ -55,11 +55,11 @@ public class PlayerInput : MonoBehaviour
     public DirectionTag PastDirection { get { return pastDirection; } set { pastDirection = value; } }
 
     /// <summary>
-    /// Shiftキー入力
+    /// アクションボタン入力
     /// </summary>
     [SerializeField]
-    private bool shiftKey = false;
-    public bool ShiftKey { get { return shiftKey; }set { shiftKey = value; } }
+    private bool actionButton = false;
+    public bool ActionButton { get { return actionButton; }set { actionButton = value; } }
     //ローリングを開始した時の初期位置
     [SerializeField]
     private Vector3 initVelocity = Vector3.zero;
@@ -74,51 +74,52 @@ public class PlayerInput : MonoBehaviour
 
 
     /// <summary>
-    /// Cキー入力
+    /// カメラ固定ボタン入力
     /// </summary>
     [SerializeField]
-    private bool cKey = false;
-    public bool CKey {  get { return cKey; } set { cKey = value; } }
+    private bool lockCamera = false;
+    public bool LockCamera {  get { return lockCamera; } set { lockCamera = value; } }
 
     [SerializeField]
-    private bool cKeyEnabled = false;
+    private bool cameraLockEnabled = false;
 
-    public bool IsCKeyEnabled() {  return cKeyEnabled; }
+    public bool IsCameraLockEnabled() {  return cameraLockEnabled; }
 
     /// <summary>
-    ///Qキー入力
+    ///切り替えボタン入力
     /// </summary>
     [SerializeField]
-    private bool qKey = false;
-    public bool QKey { get {return qKey; } set { qKey = value; } }
+    private bool changeButton = false;
+    public bool ChangeButton { get {return changeButton; } set { changeButton = value; } }
 
     /// <summary>
-    /// Eキー入力
+    /// 道具ボタン入力
     /// </summary>
     [SerializeField]
-    private bool eKey = false;
-    public bool EKey { get { return eKey; } set { eKey = value; } }
+    private bool toolButton = false;
+    public bool ToolButton { get { return toolButton; } set { toolButton = value; } }
 
     /// <summary>
-    /// 左クリック入力
+    /// 攻撃ボタン入力
     /// </summary>
     [SerializeField]
-    private bool leftMouseDownClick = false;
-    public bool LeftMouseDownClick { get { return leftMouseDownClick; } set { leftMouseDownClick = value; } }
+    private bool attackButton = false;
+    public bool AttackButton { get { return attackButton; } set { attackButton = value; } }
+
     //通常の攻撃カウント変数
     private byte threeAttackCount = 0;
     public byte ThreeAttackCount { get{ return threeAttackCount; }set{ threeAttackCount = value; } }
 
     [SerializeField]
-    private bool leftMouseClick = false;
-    public bool LeftMouseClick { get {return leftMouseClick; } set {leftMouseClick = value; } }
+    private bool attackHoldButton = false;
+    public bool AttackHoldButton { get {return attackHoldButton; } set {attackHoldButton = value; } }
 
     /// <summary>
-    /// 右クリック入力
+    /// 防御ボタン入力
     /// </summary>
     [SerializeField]
-    private bool rightMouseClick = false;
-    public bool RightMouseClick { get { return rightMouseClick; } set { rightMouseClick = value; } }
+    private bool guardHoldButton = false;
+    public bool GuardHoldButton { get { return guardHoldButton; } set { guardHoldButton = value; } }
 
     /// <summary>
     /// 右手に設定する道具のクラス
@@ -131,12 +132,12 @@ public class PlayerInput : MonoBehaviour
     private LeftHandInput leftHandInput = null;
 
     /// <summary>
-    /// ステージギミック関係のキー入力
+    /// ステージギミックのボタン入力
     /// </summary>
     [Header("ギミック関係のキー")]
     [SerializeField]
-    private bool fKey = false;
-    public bool IsFKey() {  return fKey; }
+    private bool getButton = false;
+    public bool IsGetButton() {  return getButton; }
 
     public void Initialize()
     {
@@ -188,7 +189,7 @@ public class PlayerInput : MonoBehaviour
     }
     public void SystemInput()
     {
-        if (InputManager.PushTabKey())
+        if (InputManager.MenuButton())
         {
             switch (GameManager.GameState)
             {
@@ -204,7 +205,7 @@ public class PlayerInput : MonoBehaviour
 
     public void UpdateGimicInput()
     {
-        fKey = InputManager.PushFKey();
+        getButton = Input.GetButtonDown("Get");
     }
 
     //入力キーの初期化
@@ -212,33 +213,33 @@ public class PlayerInput : MonoBehaviour
     {
         SetHorizontalAndVertical();
 
-        upKey = InputManager.PushWKey();
-        downKey = InputManager.PushSKey();
-        leftKey = InputManager.PushAKey();
-        rightKey = InputManager.PushDKey();
+        upKey = InputManager.UpButton();
+        downKey = InputManager.DownButton();
+        leftKey = InputManager.LeftButton();
+        rightKey = InputManager.RightButton();
 
         if (!controller.GetTimer().GetTimerRolling().IsEnabled()&&
             controller.CurrentState != StateTag.Null)
         {
-            shiftKey = InputManager.PushShiftKey();
+            actionButton = InputManager.ActionButton();
         }
         
         
-        cKey = InputManager.PushCKey();
+        lockCamera = InputManager.LockCameraButton();
 
-        if (cKey)
+        if (lockCamera)
         {
-            cKeyEnabled = !cKeyEnabled;
+            cameraLockEnabled = !cameraLockEnabled;
         }
 
-        qKey = InputManager.PushQKey();
+        changeButton = InputManager.ChangeButton();
 
-        eKey = InputManager.PushEKey();
+        toolButton = InputManager.ToolButton();
 
-        leftMouseDownClick = InputManager.PushMouseLeft();
-        leftMouseClick = InputManager.HoldMouseLeft();
+        attackButton = InputManager.AttackButton();
+        attackHoldButton = InputManager.AttackHoldButton();
 
-        rightMouseClick = InputManager.HoldMouseRight();
+        guardHoldButton = InputManager.GuardHoldButton();
     }
 
     public void GetUpInput()
@@ -276,8 +277,8 @@ public class PlayerInput : MonoBehaviour
         }
         //入力そのままで止める場合
         if (controller.GetObstacleCheck().CliffJumpFlag){return;}
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
+        horizontal = InputManager.HorizontalInput();
+        vertical = InputManager.VerticalInput();
     }
 
     private void IdleInput()
@@ -293,7 +294,7 @@ public class PlayerInput : MonoBehaviour
             case StateTag.SpinAttack:
                 return;
         }
-        bool stopstate = controller.CurrentState == StateTag.Idle&&rightMouseClick;
+        bool stopstate = controller.CurrentState == StateTag.Idle&&guardHoldButton;
         if (stopstate) { return; }
         if (!controller.Landing) { return; }
 
@@ -318,7 +319,7 @@ public class PlayerInput : MonoBehaviour
                 return;
         }
         if (horizontal == 0&& vertical == 0) { return; }
-        if (!cKeyEnabled)
+        if (!cameraLockEnabled)
         {
             currentDirection = DirectionTag.Null;
             controller.GetMotion().ChangeMotion(StateTag.Run);
@@ -359,8 +360,8 @@ public class PlayerInput : MonoBehaviour
         if (stopstate) { return; }
         if (!controller.Landing) { return; }
         if (controller.GetMotion().IsEndRollingMotionNameCheck()) { return; }
-        if (!shiftKey) { return; }
-        if (!cKeyEnabled) 
+        if (!actionButton) { return; }
+        if (!cameraLockEnabled) 
         {
             //完全に止まっていたらリターン
             if (vertical == 0&&horizontal == 0) { return; }
@@ -373,7 +374,7 @@ public class PlayerInput : MonoBehaviour
             controller.GetTimer().GetTimerNoAccele().StartTimer(0.4f);
             controller.GetMotion().ChangeMotion(StateTag.Rolling);
             //Shiftキーを無効にする
-            shiftKey = false;
+            actionButton = false;
         }
         else
         {
@@ -410,14 +411,14 @@ public class PlayerInput : MonoBehaviour
         controller.GetTimer().GetTimerNoAccele().StartTimer(noaccele);
         controller.GetMotion().ChangeMotion(StateTag.Rolling);
         //Shiftキーを無効にする
-        shiftKey = false;
+        actionButton = false;
     }
 
     private void ModeChangeInput()
     {
         if (controller.MoveInput) { return; }
         if (!controller.Landing) { return; }
-        if (!qKey) { return;}
+        if (!changeButton) { return;}
         if(controller.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.CrossBow) { return; }
         controller.BattleMode = !controller.BattleMode;
         controller.GetMotion().ChangeMotion(StateTag.ChangeMode);

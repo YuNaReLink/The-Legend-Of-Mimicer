@@ -401,17 +401,17 @@ MonoBehaviour:
   rightKey: 0
   currentDirection: 0
   pastDirection: 0
-  shiftKey: 0
+  actionButton: 0
   initVelocity: {x: 0, y: 0, z: 0}
   rollTimer: 0
-  cKey: 0
-  cKeyEnabled: 0
-  qKey: 0
-  eKey: 0
-  leftMouseDownClick: 0
-  leftMouseClick: 0
-  rightMouseClick: 0
-  fKey: 0
+  lockCamera: 0
+  cameraLockEnabled: 0
+  changeButton: 0
+  toolButton: 0
+  attackButton: 0
+  attackHoldButton: 0
+  guardHoldButton: 0
+  getButton: 0
 --- !u!114 &6285384600429051626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,7 +457,7 @@ MonoBehaviour:
   - 1
   - 0.7
   - 0.7
-  - 0.6
+  - 0.7
   hitWallFlagArray: 00000000
   wallJumpPower: 1500
   climbForward: 1.5
@@ -546,8 +546,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec7da1f49833e74c956b3cb58b58813, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
-  currentToolTag: -1
   toolControllers:
   - {fileID: 0}
   - {fileID: 0}
@@ -774,6 +772,14 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 88c3c6fb18ca72444a5246657584a146, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1206874426333947015, guid: 88c3c6fb18ca72444a5246657584a146, type: 3}
+      propertyPath: m_CastShadows
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -1206874426333947015, guid: 88c3c6fb18ca72444a5246657584a146, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 88c3c6fb18ca72444a5246657584a146, type: 3}
       propertyPath: m_Name

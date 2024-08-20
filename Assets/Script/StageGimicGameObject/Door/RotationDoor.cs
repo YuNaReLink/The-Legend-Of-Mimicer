@@ -37,7 +37,7 @@ public class RotationDoor : MonoBehaviour
     private void OpenDoor()
     {
         if (triggerCheck.GetController() == null) { return; }
-        if (InputManager.PushFKey())
+        if (InputManager.GetItemButton())
         {
             // FƒL[‚ª‰Ÿ‚³‚ê‚½‚çŠJ•Â‚ğØ‚è‘Ö‚¦‚é
             open = true;

@@ -31,7 +31,7 @@ public class GetItem : MonoBehaviour
         if (!triggerCheck.IsHitPlayer()) { return; }
         if(triggerCheck.GetController() == null) { return; }
         if(item == null) { return; }
-        if (!InputManager.PushFKey()) { return; }
+        if (!triggerCheck.GetController().GetKeyInput().IsGetButton()) { return; }
         Get();
     }
 

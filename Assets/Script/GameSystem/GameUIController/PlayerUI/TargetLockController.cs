@@ -19,7 +19,7 @@ public class TargetLockController : MonoBehaviour
     {
         return PlayerCameraController.FocusFlag &&
             PlayerCameraController.LockObject != null &&
-            playerConnectionUI.GetPlayerController().GetKeyInput().IsCKeyEnabled();
+            playerConnectionUI.GetPlayerController().GetKeyInput().IsCameraLockEnabled();
     }
 
     public void LockUIActiveCheck()

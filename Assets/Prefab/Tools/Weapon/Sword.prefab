@@ -172,7 +172,6 @@ MonoBehaviour:
   collider: {fileID: 0}
   statusData: {fileID: 11400000, guid: 36263985310dc4b47a04a7681f91d34a, type: 2}
   itemData: {fileID: 11400000, guid: a2530a803e016f4438eab9e407697c1f, type: 2}
-  effect: {fileID: 0}
 --- !u!1 &589098143679851100
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,6 +381,10 @@ PrefabInstance:
     - target: {fileID: 4740761344002358874, guid: 3aaad6c9e3507c6489d172384c89d89d, type: 3}
       propertyPath: TrailModule.textureScale.x
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740761344002358874, guid: 3aaad6c9e3507c6489d172384c89d89d, type: 3}
+      propertyPath: TrailModule.lifetime.scalar
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4740761344002358874, guid: 3aaad6c9e3507c6489d172384c89d89d, type: 3}
       propertyPath: TrailModule.widthOverTrail.scalar
