@@ -1877,6 +1877,8 @@ GameObject:
   - component: {fileID: 1733753635}
   - component: {fileID: 1733753636}
   - component: {fileID: 1733753637}
+  - component: {fileID: 1733753638}
+  - component: {fileID: 1733753639}
   m_Layer: 5
   m_Name: TitleUIConfiguration02
   m_TagString: Untagged
@@ -1927,6 +1929,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeEnd: 0
   uiObjectArray: []
+--- !u!114 &1733753638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733753634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b8569c1f85acb4983900a1260a00b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonList: []
+--- !u!114 &1733753639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733753634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 0
 --- !u!1 &2071891726
 GameObject:
   m_ObjectHideFlags: 0

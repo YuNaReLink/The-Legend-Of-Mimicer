@@ -32,7 +32,6 @@ public class ItemManager : MonoBehaviour
     private List<Text> itemTextList = new List<Text>();
 
     //アイテム数管理
-    [SerializeField]
     private Dictionary<ItemData,int> itemNumber = new Dictionary<ItemData,int>();
 
     //持ち物管理
@@ -42,6 +41,11 @@ public class ItemManager : MonoBehaviour
     //アイコン管理のリスト
     [SerializeField]
     private List<Image> iconList = new List<Image>();
+
+
+    //アイテム枠をボタンで選択するクラス
+    private MenuToggleController itemToggleController = null;
+    public MenuToggleController GetItemToggleController() { return itemToggleController; }
 
     public void AwakeInitialize()
     {
@@ -95,6 +99,23 @@ public class ItemManager : MonoBehaviour
             g = iconObjectList[i].transform.GetChild(1).gameObject;
             image = g.GetComponent<Image>();
             iconList.Add(image);
+        }
+        itemToggleController = GetComponentInChildren<MenuToggleController>();
+        if(itemToggleController != null)
+        {
+            List<Toggle> toggles = new List<Toggle>();
+            Toggle toggle = null;
+            g = null;
+            for(int i = 0; i < iconObjectList.Count; i++)
+            {
+                g = iconObjectList[i];
+                toggle = g.GetComponent<Toggle>();
+                if(toggle != null)
+                {
+                    toggles.Add(toggle);
+                }
+            }
+            itemToggleController.ToggleList = toggles;
         }
 
     }
@@ -162,13 +183,13 @@ public class ItemManager : MonoBehaviour
         switch (itemType)
         {
             case ItemData.Itemtype.Sowrd:
-                num = 1;
+                num = 0;
                 break;
             case ItemData.Itemtype.Shield:
-                num = 3;
+                num = 1;
                 break;
             case ItemData.Itemtype.CrossBow:
-                num = 5;
+                num = 2;
                 break;
         }
         return num;
@@ -237,36 +258,47 @@ public class ItemManager : MonoBehaviour
         Toggle tal = toggleGroup.ActiveToggles().FirstOrDefault();
         GameObject iconObject = tal.gameObject.transform.GetChild(1).gameObject;
         Image iconImage = iconObject.GetComponent<Image>();
-        for(int j = 0;j< getItemList.Count; j++)
+        if (iconImage.sprite != null)
         {
-            if (getItemList[j].ItemIcon == iconImage.sprite)
+            for (int j = 0; j < getItemList.Count; j++)
             {
-                parse = j;
-                break;
+                if (getItemList[j].ItemIcon == iconImage.sprite)
+                {
+                    parse = j;
+                    break;
+                }
             }
-        }
 
-        //持ち物リストの要素数がy以上かどうかを確認する
-        if(getItemList.Count >= parse)
-        {
-            if (getItemList.Count == 0){return;}
-            //選択されているトグルはアイコン表示されている
+            //持ち物リストの要素数がy以上かどうかを確認する
+            if (getItemList.Count >= parse)
+            {
+                if (getItemList.Count == 0) { return; }
+                //選択されているトグルはアイコン表示されている
 
-            //持ち物リストのy-1番の名前と個数をz,kに代入
-            string z = getItemList[parse].ItemName;
+                //持ち物リストのy-1番の名前と個数をz,kに代入
+                string z = getItemList[parse].ItemName;
 
-            itemTextList[0].text = z;
+                itemTextList[0].text = z;
 
-            string j = getItemList[parse].ItemExplanation;
-            itemTextList[1].text = j;
+                string j = getItemList[parse].ItemExplanation;
+                itemTextList[1].text = j;
+            }
+            else
+            {
+                for (int i = 0; i < itemTextList.Count; i++)
+                {
+                    itemTextList[i].text = null;
+                }
+            }
         }
         else
         {
-            for(int i = 0;i < itemTextList.Count; i++)
+            for (int i = 0; i < itemTextList.Count; i++)
             {
                 itemTextList[i].text = null;
             }
         }
+        
     }
 
 }

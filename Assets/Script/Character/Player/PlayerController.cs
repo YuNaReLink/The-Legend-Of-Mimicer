@@ -15,8 +15,8 @@ public class PlayerController : CharacterController
     private GameObject cameraObject = null;
     public GameObject GetCameraObject() {  return cameraObject; }
     [SerializeField]
-    private PlayerCameraController cameraScript = null;
-    public PlayerCameraController GetCameraController() { return cameraScript; }
+    private CameraController cameraScript = null;
+    public CameraController GetCameraController() { return cameraScript; }
 
     [SerializeField]
     private PlayerInput keyInput = null;
@@ -151,7 +151,7 @@ public class PlayerController : CharacterController
         base.InitializeAssign();
 
         cameraObject = GameObject.FindWithTag("MainCamera");
-        cameraScript = cameraObject.GetComponent<PlayerCameraController>();
+        cameraScript = cameraObject.GetComponent<CameraController>();
 
         obstacleCheck = GetComponent<ObstacleCheck>();
         obstacleCheck?.SetController(this);

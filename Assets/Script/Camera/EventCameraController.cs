@@ -5,7 +5,7 @@ using UnityEngine;
 public class EventCameraController : MonoBehaviour
 {
     [SerializeField]
-    private PlayerCameraController playerCamera = null;
+    private CameraController playerCamera = null;
 
     [SerializeField]
     private List<Transform> focusEventTransform = new List<Transform>();

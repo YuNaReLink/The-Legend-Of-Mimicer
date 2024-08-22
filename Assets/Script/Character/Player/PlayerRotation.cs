@@ -21,11 +21,11 @@ public class PlayerRotation
         PlayerInput input = controller.GetKeyInput();
 
         //自身が動いてる場合の注目処理
-        if (PlayerCameraController.FocusFlag&& input.IsCameraLockEnabled()&&
-            PlayerCameraController.LockObject != null)
+        if (CameraController.FocusFlag&& input.IsCameraLockEnabled()&&
+            CameraController.LockObject != null)
         {
             // 敵の方向ベクトルを取得
-            Vector3 targetObject = PlayerCameraController.LockObject.transform.position;
+            Vector3 targetObject = CameraController.LockObject.transform.position;
             targetObject.y = controller.transform.position.y;
             Vector3 enemyDirection = (targetObject - controller.transform.position).normalized;
             // プレイヤーが常に敵の方向を向く

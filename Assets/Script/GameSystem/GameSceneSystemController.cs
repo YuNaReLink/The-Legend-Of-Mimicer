@@ -6,8 +6,16 @@ public class GameSceneSystemController : MonoBehaviour
 {
     private static PlayerController playerController = null;
 
-    [SerializeField]
-    private GameObject gameClearTarget = null;
+    private static GameObject cameraFocusObject = null;
+    public static GameObject GetCameraFocusObject() { return cameraFocusObject; }
+
+    private static bool gameClearFlag = false;
+
+    public static void GameClearUpdate(GameObject o)
+    {
+        gameClearFlag = true;
+        cameraFocusObject = o;
+    }
 
     /// <summary>
     /// プレイヤーが操作可能なオブジェクトに当たっている時に
@@ -56,6 +64,7 @@ public class GameSceneSystemController : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log("G" + Input.GetAxis("MenuButtonY"));
         gameOverStartTimer.Update();
 
         switch (GameManager.GameState)
@@ -86,8 +95,8 @@ public class GameSceneSystemController : MonoBehaviour
 
     private void GameResultCheck()
     {
-        if (!playerController.DeathFlag&&gameClearTarget!=null) { return; }
-        if(gameClearTarget == null)
+        if (!playerController.DeathFlag&& !gameClearFlag) { return; }
+        if(gameClearFlag)
         {
             GameManager.GameState = GameManager.GameStateEnum.GameClear;
         }

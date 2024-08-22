@@ -149,7 +149,7 @@ public class BossInput
             case CharacterTag.StateTag.GetUp:
                 return;
         }
-        PlayerCameraController cameraController = controller.Target.GetCameraController();
+        CameraController cameraController = controller.Target.GetCameraController();
         if(cameraController == null) { return; }
         if (!cameraController.IsFPSMode()) { return; }
         controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Gurid);

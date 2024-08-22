@@ -97,7 +97,7 @@ public class BossMotionController : MotionController
                 controller.CurrentState = CharacterTag.StateTag.Null;
                 break;
             case "guard":
-                PlayerCameraController cameraController = controller.Target.GetCameraController();
+                CameraController cameraController = controller.Target.GetCameraController();
                 if (cameraController == null) { return; }
                 if (cameraController.IsFPSMode()) { return; }
                 controller.CurrentState = CharacterTag.StateTag.Null;
