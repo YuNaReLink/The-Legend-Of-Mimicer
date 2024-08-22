@@ -17,8 +17,8 @@ public class TargetLockController : MonoBehaviour
 
     private bool LockOnFlag()
     {
-        return PlayerCameraController.FocusFlag &&
-            PlayerCameraController.LockObject != null &&
+        return CameraController.FocusFlag &&
+            CameraController.LockObject != null &&
             playerConnectionUI.GetPlayerController().GetKeyInput().IsCameraLockEnabled();
     }
 
@@ -30,7 +30,7 @@ public class TargetLockController : MonoBehaviour
         {
             lockOnUI.SetActive(true);
             // 3Dオブジェクトのワールド座標をスクリーン座標に変換
-            Vector3 screenPosition = camera.WorldToScreenPoint(PlayerCameraController.LockObject.transform.position);
+            Vector3 screenPosition = camera.WorldToScreenPoint(CameraController.LockObject.transform.position);
 
             // CanvasのRectTransformを取得
             Canvas canvas = playerConnectionUI.GetGameUIController().GetComponent<Canvas>();

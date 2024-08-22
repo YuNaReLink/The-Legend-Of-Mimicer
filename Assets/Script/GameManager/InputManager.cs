@@ -16,10 +16,67 @@ public class InputManager
     public static bool ActionButton() {  return Input.GetButtonDown("Action"); }
     public static float HorizontalInput() { return Input.GetAxis("Horizontal"); }
     public static float VerticalInput() { return Input.GetAxis("Vertical"); }
-    public static bool UpButton() {  return Input.GetAxis("Vertical") > 0; }
-    public static bool DownButton() {  return Input.GetAxis("Vertical") < 0; }
-    public static bool LeftButton() {  return Input.GetAxis("Horizontal") > 0; }
-    public static bool RightButton() {  return Input.GetAxis("Horizontal") < 0; }
+
+    private static bool upFlag = false;
+    public static bool UpButton() 
+    {
+        if (Input.GetAxisRaw("MenuButtonY") > 0)
+        {
+            if (upFlag) { return false; }
+            upFlag = true;
+            return Input.GetAxisRaw("MenuButtonY") > 0;
+        }
+        else
+        {
+            upFlag = false;
+            return false;
+        }
+    }
+    private static bool downFlag = false;
+    public static bool DownButton() 
+    {
+        if (Input.GetAxisRaw("MenuButtonY") < 0)
+        {
+            if (downFlag) { return false; }
+            downFlag = true;
+            return Input.GetAxisRaw("MenuButtonY") < 0;
+        }
+        else
+        {
+            downFlag = false;
+            return false;
+        }
+    }
+    private static bool leftFlag = false;
+    public static bool LeftButton() 
+    {
+        if (Input.GetAxisRaw("MenuButtonX") < 0)
+        {
+            if (leftFlag) { return false; }
+            leftFlag = true;
+            return Input.GetAxisRaw("MenuButtonX") < 0;
+        }
+        else
+        {
+            leftFlag = false;
+            return false;
+        }
+    }
+    private static bool rightFlag = false;
+    public static bool RightButton() 
+    {
+        if (Input.GetAxisRaw("MenuButtonX") > 0)
+        {
+            if (rightFlag) { return false; }
+            rightFlag = true;
+            return Input.GetAxisRaw("MenuButtonX") > 0;
+        }
+        else
+        {
+            rightFlag = false;
+            return false;
+        }
+    }
     public static bool LockCameraButton() {  return Input.GetButtonDown("LockCamera"); }
     public static bool GetItemButton() {  return Input.GetButtonDown("Get"); }
     public static bool ChangeButton() {  return Input.GetButtonDown("Change"); }

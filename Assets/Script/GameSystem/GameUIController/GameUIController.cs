@@ -13,6 +13,11 @@ public class GameUIController : MonoBehaviour
     /// </summary>
     private GameOverUIController gameOverUIController = null;
 
+    /// <summary>
+    /// ゲームクリアUIを管理するクラス
+    /// </summary>
+    private GameClearUIController gameClearUIController = null; 
+
     private void Awake()
     {
         playerUIController = GetComponentInChildren<PlayerConnectionUI>();
@@ -26,6 +31,12 @@ public class GameUIController : MonoBehaviour
         {
             gameOverUIController.AwakeInitilaize();
         }
+
+        gameClearUIController = GetComponentInChildren<GameClearUIController>();
+        if (gameClearUIController != null)
+        {
+            gameClearUIController.AwakeInitilaize();
+        }
     }
 
     private void Start()
@@ -33,6 +44,8 @@ public class GameUIController : MonoBehaviour
         playerUIController.StartInitialize();
 
         gameOverUIController.StartInitialize();
+
+        gameClearUIController.StartInitialize();
     }
 
     void Update()
@@ -47,6 +60,7 @@ public class GameUIController : MonoBehaviour
                 GameOverUIStartCheck();
                 break;
             case GameManager.GameStateEnum.GameClear:
+                GameClearUIStartCheck();
                 break;
         }
     }
@@ -64,6 +78,19 @@ public class GameUIController : MonoBehaviour
         else
         {
             gameOverUIController.GameOverUIUpdate();
+        }
+    }
+
+    private void GameClearUIStartCheck()
+    {
+        if (!gameClearUIController.gameObject.activeSelf)
+        {
+            if(GameSceneSystemController.GetCameraFocusObject() != null) { return; }
+            gameClearUIController.gameObject.SetActive(true);
+        }
+        else
+        {
+            gameClearUIController.GameClearUIUpdate();
         }
     }
 }

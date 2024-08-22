@@ -13,24 +13,28 @@ public class TitleUIController : MonoBehaviour
 
     private List<BaseTitleUIConfiguration> titleUIConfigurations = new List<BaseTitleUIConfiguration>();
 
-    void Start()
+    private void Awake()
     {
         int childCount = transform.childCount;
-        if(childCount != 0)
+        if (childCount != 0)
         {
             GameObject uiEvent = null;
-            for(int i = 0; i < childCount; i++)
+            for (int i = 0; i < childCount; i++)
             {
                 uiEvent = transform.GetChild(i).gameObject;
                 titleSceneArray.Add(uiEvent);
                 BaseTitleUIConfiguration baseTitleUIConfiguration = uiEvent.GetComponent<BaseTitleUIConfiguration>();
-                if(baseTitleUIConfiguration != null)
+                if (baseTitleUIConfiguration != null)
                 {
                     baseTitleUIConfiguration.Initilaize();
                     titleUIConfigurations.Add(baseTitleUIConfiguration);
                 }
             }
         }
+    }
+
+    void Start()
+    {
     }
 
     private void Update()

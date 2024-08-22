@@ -74,17 +74,19 @@ public class EnemyController : CharacterController
     public override void Death()
     {
         base.Death();
-        timer.GetTimerDie().StartTimer(1f);
+        timer.GetTimerDie().StartTimer(GetDieTimerCount());
         timer.GetTimerDie().OnCompleted += () =>
         {
             CreateDieEffect(GetDieEffectScale());
             Destroy(gameObject);
-            if (gameObject == PlayerCameraController.LockObject)
+            if (gameObject == CameraController.LockObject)
             {
-                PlayerCameraController.LockObject = null;
+                CameraController.LockObject = null;
             }
         };
     }
+
+    protected virtual float GetDieTimerCount() { return 1f; }
 
     protected virtual float GetDieEffectScale() { return 1f; }
 

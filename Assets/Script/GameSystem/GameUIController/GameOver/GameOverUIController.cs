@@ -8,9 +8,9 @@ public class GameOverUIController : MonoBehaviour
 
     private FadeIn panelFadeIn = null;
 
-    private GameOverText gameOverText = null;
+    private FadeInText gameOverText = null;
 
-    private GameOverButtons gameOverButtons = null;
+    private MoverButton gameOverButtons = null;
 
     public void AwakeInitilaize()
     {
@@ -19,14 +19,14 @@ public class GameOverUIController : MonoBehaviour
         panelFadeIn = GetComponentInChildren<FadeIn>();
         gameOverUIObjectList.Add(panelFadeIn.gameObject);
 
-        gameOverText = GetComponentInChildren<GameOverText>();
+        gameOverText = GetComponentInChildren<FadeInText>();
         if(gameOverText != null)
         {
             gameOverText.AwakeInitilaize();
             gameOverUIObjectList.Add(gameOverText.gameObject);
         }
 
-        gameOverButtons = GetComponentInChildren<GameOverButtons>();
+        gameOverButtons = GetComponentInChildren<MoverButton>();
         gameOverUIObjectList.Add(gameOverButtons.gameObject);
     }
 

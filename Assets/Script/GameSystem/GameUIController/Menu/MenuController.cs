@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour
@@ -14,15 +15,20 @@ public class MenuController : MonoBehaviour
     }
     [SerializeField]
     private List<GameObject> menuButtonList = new List<GameObject>();
-    [SerializeField]
-    private List<Toggle> menuButtonToggle = new List<Toggle>();
 
     [SerializeField]
     private List<GameObject> menuInsideList = new List<GameObject>();
 
     private ItemManager itemManager = null;
     public ItemManager GetItemManager() {  return itemManager; }
-    
+    [SerializeField]
+    private MenuToggleController menuToggleController = null;
+    [SerializeField]
+    private MenuButtonController menuButtonController = null;
+
+    private int currentHorizontalIndex = 0;
+
+
     public void AwakeInitialize()
     {
         //子オブジェクトを取得処理
@@ -61,16 +67,40 @@ public class MenuController : MonoBehaviour
                 }
             }
         }
-        g = null;
-        Toggle toggle = null;
-        for(int i = 0;i < menuButtonList.Count; i++)
+        menuToggleController = GetComponent<MenuToggleController>();
+        if(menuToggleController != null)
         {
-            g = menuButtonList[i];
-            toggle = g.GetComponent<Toggle>();
-            if(toggle != null)
+            g = null;
+            Toggle toggle = null;
+            List<Toggle> menuButtonToggle = new List<Toggle>();
+            for(int i = 0;i < menuButtonList.Count; i++)
             {
-                menuButtonToggle.Add(toggle);
+                g = menuButtonList[i];
+                toggle = g.GetComponent<Toggle>();
+                if(toggle != null)
+                {
+                    menuButtonToggle.Add(toggle);
+                }
             }
+            menuToggleController.ToggleList = menuButtonToggle;
+        }
+
+        menuButtonController = GetComponent<MenuButtonController>();
+        if(menuButtonController != null)
+        {
+            g = null;
+            Button button = null;
+            List<Button> buttonList = new List<Button>();
+            for(int i = 0; i < menuInsideList[(int)MenuField.Option].transform.childCount; i++)
+            {
+                g = menuInsideList[(int)MenuField.Option].transform.GetChild(i).gameObject;
+                button = g.GetComponent<Button>();
+                if(button != null)
+                {
+                    buttonList.Add(button);
+                }
+            }
+            menuButtonController.ButtonList = buttonList;
         }
 
         if (menuInsideList[(int)MenuField.Inventory] != null)
@@ -99,11 +129,9 @@ public class MenuController : MonoBehaviour
 
     public void OpenMenuInitilaize()
     {
-        menuButtonToggle[(int)MenuField.Inventory].isOn = true;
-        for (int i = 1; i < menuButtonToggle.Count; i++)
-        {
-            menuButtonToggle[i].isOn = false;
-        }
+        // 最初のToggleを選択状態に設定
+        menuToggleController.ToggleList[(int)MenuField.Inventory].isOn = !menuToggleController.ToggleList[(int)MenuField.Inventory].isOn;
+        currentHorizontalIndex = 0;
     }
 
     public void MenuUpdate()
@@ -114,32 +142,59 @@ public class MenuController : MonoBehaviour
             itemManager.GetItemUpdate();
         }
 
-        for (int i = 0; i < menuButtonToggle.Count; i++)
+        if(currentHorizontalIndex <= 0)
         {
-            if (menuButtonToggle[i].isOn)
+            menuToggleController.ToggleYUpdate();
+
+            for (int i = 0; i < menuToggleController.ToggleList.Count; i++)
             {
-                if (!menuInsideList[i].activeSelf)
+                if (menuToggleController.ToggleList[i].isOn)
                 {
-                    menuInsideList[i].SetActive(true);
+                    if (!menuInsideList[i].activeSelf)
+                    {
+                        menuInsideList[i].SetActive(true);
+                    }
+                }
+                else
+                {
+                    if (menuInsideList[i].activeSelf)
+                    {
+                        menuInsideList[i].SetActive(false);
+                    }
                 }
             }
-            else
+        }
+        else if(currentHorizontalIndex > 0)
+        {
+            if (menuInsideList[(int)MenuField.Inventory].activeSelf)
             {
-                if (menuInsideList[i].activeSelf)
-                {
-                    menuInsideList[i].SetActive(false);
-                }
+                //インベントリ内のボタン操作
+                itemManager.GetItemToggleController().ToggleXUpdate();
             }
+            else if (menuInsideList[(int)MenuField.Option].activeSelf)
+            {
+                //オプション内のボタン操作
+                menuButtonController.ButtonUpdate();
+            }
+        }
+
+        if (InputManager.ActionButton()||Input.GetKeyDown(KeyCode.Escape))
+        {
+            currentHorizontalIndex = 0;
+        }
+        else if (InputManager.GetItemButton())
+        {
+            currentHorizontalIndex = 1;
         }
     }
 
     public void StatesButtonClick()
     {
-        menuButtonToggle[(int)MenuField.Inventory].isOn = true;
+        menuToggleController.ToggleList[(int)MenuField.Inventory].isOn = true;
     }
 
     public void OptionButtonClick()
     {
-        menuButtonToggle[(int)MenuField.Option].isOn = true;
+        menuToggleController.ToggleList[(int)MenuField.Option].isOn = true;
     }
 }

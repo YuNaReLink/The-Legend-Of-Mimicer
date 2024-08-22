@@ -18,7 +18,8 @@ public class BossWeakPoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag != "Attack") { return; }
+        ToolController toolController = other.GetComponent<ToolController>();
+        if(toolController == null) { return; }
         if(controller == null) { return; }
         switch (controller.CurrentState)
         {

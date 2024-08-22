@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameOverText : MonoBehaviour
+public class FadeInText : MonoBehaviour
 {
     private Text gameOverText = null;
 

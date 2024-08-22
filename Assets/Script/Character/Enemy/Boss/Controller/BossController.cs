@@ -109,12 +109,6 @@ public class BossController : EnemyController
         velocity = vel;
     }
 
-    public void Decele()
-    {
-        velocity = StopMoveVelocity();
-        characterRB.velocity = StopRigidBodyVelocity();
-    }
-
     private void TransformRotate()
     {
         switch (currentState)
@@ -130,6 +124,14 @@ public class BossController : EnemyController
         Quaternion targetRotation = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.5f * Time.deltaTime);
     }
+
+    public override void Death()
+    {
+        GameSceneSystemController.GameClearUpdate(this.gameObject);
+        base.Death();
+    }
+
+    protected override float GetDieTimerCount(){ return 5f;}
 
     protected override float GetDieEffectScale() { return 10f; }
 }

@@ -29,10 +29,10 @@ public class FocusArea : MonoBehaviour
 
     private void Update()
     {
-        if(PlayerCameraController.LockObject == null) { return; }
-        if (!PlayerCameraController.LockObject.activeSelf)
+        if(CameraController.LockObject == null) { return; }
+        if (!CameraController.LockObject.activeSelf)
         {
-            PlayerCameraController.LockObject = null;
+            CameraController.LockObject = null;
         }
     }
 
@@ -64,9 +64,9 @@ public class FocusArea : MonoBehaviour
 
     private void CheckSameEnemy(Collider other)
     {
-        if (PlayerCameraController.LockObject != null) { return; }
-        PlayerCameraController.FocusFlag = true;
-        PlayerCameraController.LockObject = other.gameObject;
+        if (CameraController.LockObject != null) { return; }
+        CameraController.FocusFlag = true;
+        CameraController.LockObject = other.gameObject;
     }
 
     private void OnTriggerExit(Collider other)
@@ -79,11 +79,11 @@ public class FocusArea : MonoBehaviour
 
     private void RemoveEnemyList(Collider other)
     {
-        if (PlayerCameraController.LockObject == null) { return; }
-        if (PlayerCameraController.LockObject == other.gameObject)
+        if (CameraController.LockObject == null) { return; }
+        if (CameraController.LockObject == other.gameObject)
         {
-            PlayerCameraController.FocusFlag = false;
-            PlayerCameraController.LockObject = null;
+            CameraController.FocusFlag = false;
+            CameraController.LockObject = null;
         }
     }
 }
