@@ -170,17 +170,25 @@ public class PlayerInput : MonoBehaviour
         {
             //入力初期化
             InitializeInput();
-            //落下入力
-            FallInput();
-            //押すことが可能なオブジェクトに対しての動作の入力
-            PushInput();
-            if (NoInputEnabled()) { return; }
-            //待機入力
-            IdleInput();
-            //移動入力
-            RunInput();
-            //回転入力
-            RollingInput();
+            if (!controller.GetCameraController().IsFPSMode())
+            {
+                //落下入力
+                FallInput();
+                //押すことが可能なオブジェクトに対しての動作の入力
+                PushInput();
+                if (NoInputEnabled()) { return; }
+                //待機入力
+                IdleInput();
+                //移動入力
+                RunInput();
+                //回転入力
+                RollingInput();
+            }
+            else
+            {
+                //待機入力
+                IdleInput();
+            }
             //収納・納刀入力
             ModeChangeInput();
             //手に持っている道具の入力
@@ -206,6 +214,18 @@ public class PlayerInput : MonoBehaviour
     public void UpdateGimicInput()
     {
         getButton = Input.GetButtonDown("Get");
+    }
+
+    public void UpdateSound()
+    {
+        switch (controller.CurrentState)
+        {
+            case StateTag.Attack:
+                AnimatorStateInfo animInfo = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
+                if (attackButton&& controller.BattleMode)
+                    controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.FirstAttack);
+                break;
+        }
     }
 
     //入力キーの初期化
@@ -354,10 +374,16 @@ public class PlayerInput : MonoBehaviour
 
     private void RollingInput()
     {
-        bool stopstate = controller.CurrentState == StateTag.Rolling || controller.CurrentState == StateTag.Rolling||
-            controller.CurrentState == StateTag.Attack||controller.CurrentState == StateTag.JumpAttack||
-            controller.CurrentState == StateTag.ReadySpinAttack||controller.CurrentState == StateTag.SpinAttack;
-        if (stopstate) { return; }
+        switch (controller.CurrentState)
+        {
+            case StateTag.Rolling:
+            case StateTag.Attack:
+            case StateTag.JumpAttack:
+            case StateTag.ReadySpinAttack:
+            case StateTag.SpinAttack:
+            case StateTag.GetUp:
+                return;
+        }
         if (!controller.Landing) { return; }
         if (controller.GetMotion().IsEndRollingMotionNameCheck()) { return; }
         if (!actionButton) { return; }
@@ -416,10 +442,18 @@ public class PlayerInput : MonoBehaviour
 
     private void ModeChangeInput()
     {
+        switch(controller.CurrentState)
+        {
+            case StateTag.Idle:
+                break;
+            default:
+                return;
+        }
         if (controller.MoveInput) { return; }
         if (!controller.Landing) { return; }
         if (!changeButton) { return;}
-        if(controller.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.CrossBow) { return; }
+        if(controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Sword])){ return; }
+        if (controller.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.CrossBow) { return; }
         controller.BattleMode = !controller.BattleMode;
         controller.GetMotion().ChangeMotion(StateTag.ChangeMode);
     }

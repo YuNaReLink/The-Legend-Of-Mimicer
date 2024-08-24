@@ -121,6 +121,12 @@ public class PlayerController : CharacterController
     private PlayerGimicController gimicController = null;
     public PlayerGimicController GimicController() {  return gimicController; }
 
+    /// <summary>
+    /// プレイヤーのサウンド管理のクラス
+    /// </summary>
+    private PlayerSoundController soundController = null;
+    public PlayerSoundController GetSoundController() { return soundController; }
+
     protected override void Awake()
     {
         base.Awake();
@@ -138,7 +144,7 @@ public class PlayerController : CharacterController
 
 
         currentState = CharacterTag.StateTag.GetUp;
-
+        soundController.AwakeInitilaize();
         if (data != null)
         {
             maxHp = data.MaxHP;
@@ -182,8 +188,9 @@ public class PlayerController : CharacterController
         animatorOverride = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = animatorOverride;
 
-
         gimicController = new PlayerGimicController();
+
+        soundController = GetComponent<PlayerSoundController>();
     }
 
     //入力処理を行う
@@ -306,7 +313,6 @@ public class PlayerController : CharacterController
         {
             rolling.Execute();
         }
-
         if(rightCommand != null)
         {
             rightCommand.Execute();
@@ -350,6 +356,7 @@ public class PlayerController : CharacterController
             case CharacterTag.StateTag.Grab:
             case CharacterTag.StateTag.ClimbWall:
             case CharacterTag.StateTag.Die:
+            case CharacterTag.StateTag.GetUp:
                 return true;
         }
         return false;

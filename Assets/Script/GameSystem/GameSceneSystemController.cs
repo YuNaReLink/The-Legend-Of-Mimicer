@@ -64,7 +64,7 @@ public class GameSceneSystemController : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("G" + Input.GetAxis("MenuButtonY"));
+        if (HitStopManager.instance.IsHitStop()) { return; }
         gameOverStartTimer.Update();
 
         switch (GameManager.GameState)
@@ -80,13 +80,19 @@ public class GameSceneSystemController : MonoBehaviour
         {
             cursor.SetCursorLookMode(CursorLockMode.None);
             cursor.SetCursorState(true);
-            Time.timeScale = 0;
+            if (Time.timeScale > 0)
+            {
+                Time.timeScale = 0;
+            }
         }
         else
         {
             cursor.SetCursorLookMode(CursorLockMode.Locked);
             cursor.SetCursorState(false);
-            Time.timeScale = 1f;
+            if(Time.timeScale <= 0)
+            {
+                Time.timeScale = 1f;
+            }
         }
 
         GameResultCheck();

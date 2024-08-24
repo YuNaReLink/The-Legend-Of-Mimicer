@@ -29,6 +29,7 @@ public class EnemyDamageCommand : InterfaceBaseCommand
         damageFlag = false;
         attacker = null;
         if(controller.HP > 0) { return; }
+        HitStopManager.instance.StartHitStop(0.1f);
         controller.Death();
     }
 

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    private Camera myCamera = null;
+
     [Header("カメラが追従するターゲット")]
     [SerializeField]
     private GameObject target;
@@ -80,6 +82,11 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
+        myCamera = GetComponent<Camera>();
+        if(myCamera == null)
+        {
+            Debug.LogError("カメラがアタッチされませんでした。");
+        }
         target = GameObject.FindWithTag("Player");
         if (target.tag == "Player")
         {
@@ -159,13 +166,29 @@ public class CameraController : MonoBehaviour
 
     private void SetCameraMode()
     {
+        switch (player.CurrentState)
+        {
+            case CharacterTag.StateTag.Idle:
+            case CharacterTag.StateTag.Run:
+                break;
+            default:
+                return;
+        }
         if (InputManager.ToolButton())
         {
             fpsMode = true;
+            for(int i = 0; i < player.GetRendererData().GetRendererList().Count; i++)
+            {
+                player.GetRendererData().GetRendererList()[i].enabled = false;
+            }
         }
         if (InputManager.ChangeButton() || InputManager.AttackButton())
         {
             fpsMode = false;
+            for (int i = 0; i < player.GetRendererData().GetRendererList().Count; i++)
+            {
+                player.GetRendererData().GetRendererList()[i].enabled = true;
+            }
         }
     }
 

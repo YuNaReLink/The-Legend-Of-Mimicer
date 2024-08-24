@@ -14,6 +14,13 @@ public class MenuToggleController : MonoBehaviour
 
     public void ToggleYUpdate()
     {
+        for (int i = 0; i < toggleList.Count; i++)
+        {
+            if (toggleList[i] == null)
+            {
+                return;
+            }
+        }
         if (InputManager.UpButton())
         {
             currentToggleIndex--;
@@ -38,6 +45,13 @@ public class MenuToggleController : MonoBehaviour
 
     public void ToggleXUpdate()
     {
+        for(int i = 0; i < toggleList.Count; i++)
+        {
+            if(toggleList[i] == null)
+            {
+                return;
+            }
+        }
         if (InputManager.LeftButton())
         {
             currentToggleIndex--;

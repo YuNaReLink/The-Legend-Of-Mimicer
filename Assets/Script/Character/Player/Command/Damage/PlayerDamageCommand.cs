@@ -39,6 +39,7 @@ public class PlayerDamageCommand : InterfaceBaseCommand
     public void Execute()
     {
         if (controller.DamageTag == DamageTag.Null) { return; }
+        controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Damage);
         Damage();
     }
 
