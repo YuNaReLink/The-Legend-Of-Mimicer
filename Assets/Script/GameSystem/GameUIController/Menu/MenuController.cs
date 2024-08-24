@@ -111,7 +111,6 @@ public class MenuController : MonoBehaviour
                 itemManager.AwakeInitialize();
             }
         }
-
     }
 
     public void StartInitialize()
@@ -136,6 +135,7 @@ public class MenuController : MonoBehaviour
 
     public void MenuUpdate()
     {
+        if(GameManager.GameState != GameManager.GameStateEnum.Pose) { return; }
         if (itemManager != null)
         {
             itemManager.ItemManagerUpdate();
@@ -146,6 +146,16 @@ public class MenuController : MonoBehaviour
         {
             menuToggleController.ToggleYUpdate();
 
+            for (int i = 0; i < menuToggleController.ToggleList.Count; i++)
+            {
+                if (menuInsideList[i].activeSelf)
+                {
+                    menuInsideList[i].SetActive(false);
+                }
+            }
+        }
+        else if(currentHorizontalIndex > 0)
+        {
             for (int i = 0; i < menuToggleController.ToggleList.Count; i++)
             {
                 if (menuToggleController.ToggleList[i].isOn)
@@ -163,9 +173,6 @@ public class MenuController : MonoBehaviour
                     }
                 }
             }
-        }
-        else if(currentHorizontalIndex > 0)
-        {
             if (menuInsideList[(int)MenuField.Inventory].activeSelf)
             {
                 //インベントリ内のボタン操作
@@ -178,6 +185,9 @@ public class MenuController : MonoBehaviour
             }
         }
 
+        //メニュー項目か詳細を切り替える
+        //0:メニュー項目ボタン処理
+        //1:メニュー詳細ボタン処理
         if (InputManager.ActionButton()||Input.GetKeyDown(KeyCode.Escape))
         {
             currentHorizontalIndex = 0;

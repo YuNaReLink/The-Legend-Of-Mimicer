@@ -100,7 +100,7 @@ MonoBehaviour:
   controller: {fileID: 0}
   collider: {fileID: 0}
   statusData: {fileID: 11400000, guid: e5d6fd4c312865149a86459fffe40369, type: 2}
-  damageData: 1
+  itemData: {fileID: 0}
 --- !u!1 &229100017155929816
 GameObject:
   m_ObjectHideFlags: 0
@@ -1813,6 +1813,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 844400526743935621}
+  - component: {fileID: 2051280423265057432}
   m_Layer: 0
   m_Name: SkinnedMeshes
   m_TagString: Untagged
@@ -1838,6 +1839,18 @@ Transform:
   - {fileID: 5468959674726556996}
   m_Father: {fileID: 1357216421320936970}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2051280423265057432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5027167731655402154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c831b93da321548905f6ec75ef701c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5110368833193833512
 GameObject:
   m_ObjectHideFlags: 0
@@ -2207,7 +2220,7 @@ MonoBehaviour:
   controller: {fileID: 0}
   collider: {fileID: 0}
   statusData: {fileID: 11400000, guid: e5d6fd4c312865149a86459fffe40369, type: 2}
-  damageData: 1
+  itemData: {fileID: 0}
 --- !u!1 &6395767054829027779
 GameObject:
   m_ObjectHideFlags: 0

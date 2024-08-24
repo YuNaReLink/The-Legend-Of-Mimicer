@@ -80,7 +80,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7809558811543690814}
   - component: {fileID: 2867811103640672385}
-  - component: {fileID: 5110177587239988541}
+  - component: {fileID: 3589985215272241472}
   - component: {fileID: 1264782400171577860}
   - component: {fileID: 4748190420336695491}
   - component: {fileID: 4081459926770389903}
@@ -132,8 +132,8 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!65 &5110177587239988541
-BoxCollider:
+--- !u!136 &3589985215272241472
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -150,9 +150,11 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1.5, z: 1}
-  m_Center: {x: 0, y: 0.7, z: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.220413
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.49216878, z: 0}
 --- !u!54 &1264782400171577860
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -697,7 +699,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 400102, guid: f5a9bd478ca094495a4520e37f57420d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8249526126804297410}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 100100, guid: f5a9bd478ca094495a4520e37f57420d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2099370287711402045}
   m_SourcePrefab: {fileID: 100100000, guid: f5a9bd478ca094495a4520e37f57420d, type: 3}
 --- !u!4 &5025871385281032205 stripped
 Transform:
@@ -709,3 +714,21 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400100, guid: f5a9bd478ca094495a4520e37f57420d, type: 3}
   m_PrefabInstance: {fileID: 5025871385281424107}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5025871385281326575 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100100, guid: f5a9bd478ca094495a4520e37f57420d, type: 3}
+  m_PrefabInstance: {fileID: 5025871385281424107}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2099370287711402045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025871385281326575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c831b93da321548905f6ec75ef701c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rendererList: []

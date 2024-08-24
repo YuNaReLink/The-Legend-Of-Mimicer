@@ -15,8 +15,12 @@ public class RollingCommand
         if (!timer.GetTimerRolling().IsEnabled()){ return; }
         controller.GetKeyInput().RollTimer += Time.deltaTime;
         float rollProgress = controller.GetKeyInput().RollTimer / timer.GetTimerRolling().GetInitCount();
+        if(rollProgress <= 0.05f)
+        {
+            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Rolling);
+        }
         //ローリングが終わったらローリング開始時の初速度をプレイヤーに返す
-        if(rollProgress > 1.0f)
+        else if(rollProgress > 1.0f)
         {
             //ローリングが終わったら初速度を代入
             controller.CharacterRB.velocity = controller.GetKeyInput().InitVelocity;

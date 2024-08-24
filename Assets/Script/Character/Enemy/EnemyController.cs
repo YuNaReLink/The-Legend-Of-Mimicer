@@ -32,6 +32,8 @@ public class EnemyController : CharacterController
 
     protected EnemyTimer timer = null;
     public EnemyTimer GetTimer() { return timer; }
+
+    
     protected override void Start()
     {
         base.Start();

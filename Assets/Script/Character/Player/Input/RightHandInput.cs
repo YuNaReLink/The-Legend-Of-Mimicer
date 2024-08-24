@@ -51,9 +51,13 @@ public class RightHandInput
         //各入力に合ったタグを代入
         if (controller.GetKeyInput().AttackButton)
         {
-            if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Sword]))
+            //剣がインベントリにないかチェック
+            bool nullSword = controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Sword]);
+            if (nullSword){return;}
+            //剣抜き出し時の時だけのサウンド再生
+            if(tooltag != ToolInventoryController.ToolObjectTag.Sword)
             {
-                return;
+                controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.FirstAttack);
             }
             tooltag = ToolInventoryController.ToolObjectTag.Sword;
         }
@@ -97,6 +101,7 @@ public class RightHandInput
         {
             if (controller.RightCommand.Equals(tool)) { return; }
         }
+        else if(controller.RightCommand == tool) { return; }
         controller.RightCommand = tool;
     }
 

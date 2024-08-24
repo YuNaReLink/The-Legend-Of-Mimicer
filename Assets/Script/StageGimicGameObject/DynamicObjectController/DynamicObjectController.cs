@@ -41,11 +41,6 @@ public class DynamicObjectController : MonoBehaviour
                 itemPositionList.Add(v);
             }
         }
-        //敵オブジェクトを非表示にする
-        if (dynamicObjectList[(int)DynamicObjectNumber.Enemys].activeSelf)
-        {
-            dynamicObjectList[(int)DynamicObjectNumber.Enemys].SetActive(false);
-        }
         CreateItem();
     }
 
@@ -69,13 +64,13 @@ public class DynamicObjectController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag != "Player") { return; }
-        ActiveEnemys(true);
+        //ActiveEnemys(true);
         CreateItem();
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.tag != "Player") { return; }
-        ActiveEnemys(false);
+        //ActiveEnemys(false);
     }
 }

@@ -8,6 +8,7 @@ public class Consumables : MonoBehaviour
     {
         Null = -1,
         Heart,
+        Arrow,
         DataEnd
     }
     public virtual ConsumablesTag GetConsumablesTag() { return ConsumablesTag.Null; }

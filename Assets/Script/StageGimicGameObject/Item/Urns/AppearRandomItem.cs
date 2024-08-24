@@ -12,8 +12,11 @@ public class AppearRandomItem : MonoBehaviour
     {
         Null = -1,
         Heart,
+        Arrow,
         DataEnd
     }
+    [SerializeField]
+    private ItemNumber number = ItemNumber.Null;
     //èoåªÇ≥ÇπÇÈämó¶ÇÃî‰ó¶
     public enum RandomRatio
     {
@@ -45,7 +48,7 @@ public class AppearRandomItem : MonoBehaviour
         int ratio = Random.Range(0, ratios[(int)ratioNum]);
         if (ratio < ratios[(int)ratioNum] / 1.5f)
         {
-            GameObject item = Instantiate(list.Objects[(int)ItemNumber.Heart], transform.position, Quaternion.identity);
+            GameObject item = Instantiate(list.Objects[(int)number], transform.position, Quaternion.identity);
             Lancher(item,other);
         }
     }

@@ -74,8 +74,6 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     [SerializeField]
     protected bool input = false;
-
-
     public bool MoveInput { get { return input; } set { input = value; } }
 
     //プレイヤーの現在の位置
@@ -124,6 +122,9 @@ public class CharacterController : MonoBehaviour
     protected VFXController vfxController = null;
     public VFXController GetVFXController() { return vfxController; }
 
+    protected RendererData rendererData = null;
+    public RendererData GetRendererData() { return rendererData; }
+
     protected virtual void Awake(){}
 
     protected virtual void  Start()
@@ -140,6 +141,11 @@ public class CharacterController : MonoBehaviour
         characterRB = GetComponent<Rigidbody>();
         groundCheck = GetComponent<GroundCheck>();
         vfxController = GetComponent<VFXController>();
+        rendererData = GetComponentInChildren<RendererData>();
+        if (rendererData != null)
+        {
+            rendererData.AwakeInitilaize();
+        }
     }
 
     protected virtual void Update()
