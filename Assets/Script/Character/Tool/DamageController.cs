@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class DamageController : ToolController
 {
+    public override ToolTag GetToolTag() { return ToolTag.Other; }
     private void Awake()
     {
         controller = GetComponentInParent<CharacterController>();

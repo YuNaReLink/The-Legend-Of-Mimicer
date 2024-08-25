@@ -11,7 +11,7 @@ public class SoundController : MonoBehaviour
     protected SoundClipData clipData = null;
     public SoundClipData GetClipData { get { return clipData; } }
 
-    public void AwakeInitilaize()
+    public virtual void AwakeInitilaize()
     {
         audioSource = GetComponent<AudioSource>();
         if(audioSource == null)

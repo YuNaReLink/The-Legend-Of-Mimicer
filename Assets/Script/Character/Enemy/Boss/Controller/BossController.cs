@@ -7,6 +7,12 @@ public class BossController : EnemyController
     private BossInput bossStateInput = null;
     public BossInput GetBossStateInput() {  return bossStateInput; }
 
+    private BossDamageCommand bossDamageCommand = null;
+    public BossDamageCommand GetBossDamageCommand() { return bossDamageCommand; }
+
+    private BossSoundController bossSoundController = null;
+    public BossSoundController GetBossSoundController() { return bossSoundController; }
+
     [SerializeField]
     private bool stunFlag = false;
     public bool StunFlag { get { return stunFlag; } set { stunFlag = value; } }
@@ -29,6 +35,16 @@ public class BossController : EnemyController
         else
         {
             bossStateInput.Initilaize();
+        }
+        bossDamageCommand = new BossDamageCommand(this);
+        if(bossDamageCommand == null)
+        {
+            Debug.LogError("bossDamageCommandÇ™ê∂ê¨Ç≥ÇÍÇƒÇ¢Ç‹ÇπÇÒ");
+        }
+        bossSoundController = GetComponent<BossSoundController>();
+        if(bossSoundController != null)
+        {
+            bossSoundController.AwakeInitilaize();
         }
     }
 
@@ -73,9 +89,9 @@ public class BossController : EnemyController
     private void UpdateCommand()
     {
         if (TargetStateCheck()) { return; }
-        if(damage != null)
+        if(bossDamageCommand != null)
         {
-            damage.Execute();
+            bossDamageCommand.Execute();
         }
         if (input)
         {

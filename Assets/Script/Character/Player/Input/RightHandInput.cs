@@ -67,6 +67,12 @@ public class RightHandInput
             {
                 return;
             }
+            //まだクロスボウのタグが入っていないなら
+            if(tooltag != ToolInventoryController.ToolObjectTag.CrossBow)
+            {
+                //ボタンフラグを解除
+                controller.GetKeyInput().ToolButton = false;
+            }
             tooltag = ToolInventoryController.ToolObjectTag.CrossBow;
             if (controller.BattleMode)
             {

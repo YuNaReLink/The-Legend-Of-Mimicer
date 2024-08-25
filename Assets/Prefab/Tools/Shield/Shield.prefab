@@ -69,7 +69,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
   collider: {fileID: 0}
-  statusData: {fileID: 0}
+  statusData: {fileID: 11400000, guid: 0ffd913832bf04747a127948b0498c07, type: 2}
   itemData: {fileID: 11400000, guid: 4519563239009434199a0eb69a36a56f, type: 2}
 --- !u!1001 &2921198937667899379
 PrefabInstance:

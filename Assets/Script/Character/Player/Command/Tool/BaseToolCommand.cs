@@ -10,6 +10,7 @@ public enum ToolTag
     Sword,
     Shield,
     CrossBow,
+    Other,
     DataEnd
 }
 /// <summary>

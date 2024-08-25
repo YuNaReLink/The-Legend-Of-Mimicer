@@ -120,6 +120,9 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private bool guardHoldButton = false;
     public bool GuardHoldButton { get { return guardHoldButton; } set { guardHoldButton = value; } }
+    [SerializeField]
+    private bool guardPushButton = false;
+    public bool GuardPushButton { get { return guardPushButton; } set { guardPushButton = value; } }
 
     /// <summary>
     /// ‰Eè‚Éİ’è‚·‚é“¹‹ï‚ÌƒNƒ‰ƒX
@@ -260,6 +263,7 @@ public class PlayerInput : MonoBehaviour
         attackHoldButton = InputManager.AttackHoldButton();
 
         guardHoldButton = InputManager.GuardHoldButton();
+        guardPushButton = InputManager.GuardPushButton();
     }
 
     public void GetUpInput()

@@ -27,6 +27,8 @@ public class CrossBowTool : BaseToolCommand
         if (shoot.ArrowFire())
         {
             controller.GetToolController().GetQuiver().Count--;
+            //–î”­ŽËŒø‰Ê‰¹
+            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Shot);
         }
     }
 

@@ -45,7 +45,7 @@ public class BossInput
         if (controller.DeathFlag) { return; }
         //どんな状況にも限らず処理させたい入力
         //ボスが倒れる処理
-        StunInput();
+        controller.GetBossDamageCommand().Input();
         //ボスが起き上がる処理
         RevivalInput();
         //ボスが特定の条件下でガードする処理
@@ -153,14 +153,6 @@ public class BossInput
         if(cameraController == null) { return; }
         if (!cameraController.IsFPSMode()) { return; }
         controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Gurid);
-    }
-
-    private void StunInput()
-    {
-        if (!controller.StunFlag) { return; }
-        controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Damage);
-        controller.GetTimer().GetTimerStun().StartTimer(5f);
-        controller.StunFlag = false;
     }
 
     public void RevivalInput()

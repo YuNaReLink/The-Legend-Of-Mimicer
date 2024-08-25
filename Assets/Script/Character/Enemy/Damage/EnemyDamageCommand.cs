@@ -2,33 +2,39 @@ using UnityEngine;
 
 public class EnemyDamageCommand : InterfaceBaseCommand
 {
-    private EnemyController controller = null;
+    protected EnemyController controller = null;
     public EnemyDamageCommand(EnemyController _controller)
     {
         controller = _controller;
     }
-    private GameObject attacker = null;
+    protected GameObject attacker = null;
     public GameObject Attacker { get { return attacker; } set { attacker = value; } }
 
-    private bool damageFlag = false;
+    protected bool damageFlag = false;
     public bool DamageFlag {  get { return damageFlag; } set { damageFlag = value; } }
 
-    public void Input()
+    public virtual void Input()
     {
 
     }
 
-    public void Execute()
+    public virtual void Execute()
     {
         if (!damageFlag) { return; }
         ToolController tool = attacker.GetComponent<ToolController>();
         if(tool == null) { return; }
         WeaponStateData data = tool.GetStatusData();
         controller.HP -= data.BaseDamagePower;
-        controller.Knockback(attacker.transform.position, data.KnockBackPower);
+        controller.GetKnockBackCommand().KnockBackFlag = true;
+        controller.GetKnockBackCommand().Attacker = attacker;
         damageFlag = false;
         attacker = null;
-        if(controller.HP > 0) { return; }
+        DeathCommand();
+    }
+
+    protected virtual void DeathCommand()
+    {
+        if (controller.HP > 0) { return; }
         HitStopManager.instance.StartHitStop(0.1f);
         controller.Death();
     }

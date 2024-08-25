@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ShieldController : ToolController
 {
+    public override ToolTag GetToolTag() { return ToolTag.Shield; }
     // Start is called before the first frame update
     void Start()
     {

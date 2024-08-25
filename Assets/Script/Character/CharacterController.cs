@@ -125,6 +125,9 @@ public class CharacterController : MonoBehaviour
     protected RendererData rendererData = null;
     public RendererData GetRendererData() { return rendererData; }
 
+    protected KnockBackCommand knockBackCommand = null;
+    public KnockBackCommand GetKnockBackCommand() { return knockBackCommand; }
+
     protected virtual void Awake(){}
 
     protected virtual void  Start()
@@ -146,6 +149,7 @@ public class CharacterController : MonoBehaviour
         {
             rendererData.AwakeInitilaize();
         }
+        knockBackCommand = new KnockBackCommand(this);
     }
 
     protected virtual void Update()
@@ -202,16 +206,15 @@ public class CharacterController : MonoBehaviour
         characterRB.AddForce(transform.forward * _accele, ForceMode.Acceleration);
     }
 
-    public void Knockback(Vector3 attacker, float power)
-    {
-        Vector3 direction = transform.position - attacker;
-        characterRB.AddForce(direction * power, ForceMode.VelocityChange);
-    }
-
     public virtual void Death()
     {
         if (death) { return; }
         motion.ChangeMotion(StateTag.Die);
         death = true;
+    }
+
+    public virtual void RecoveryHelth(int count)
+    {
+        hp+=count;
     }
 }

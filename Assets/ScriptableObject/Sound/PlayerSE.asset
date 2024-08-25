@@ -15,7 +15,18 @@ MonoBehaviour:
   audioClipList:
   - {fileID: 8300000, guid: 74e4d9c0e176cf3428ca6ca6022e37c5, type: 3}
   - {fileID: 8300000, guid: d5270d459c2d06c4ca8bda25e63d5ed1, type: 3}
+  - {fileID: 8300000, guid: d67818ff399eba046ad8d2ec9c9daf8e, type: 3}
+  - {fileID: 8300000, guid: 6429217235f8ae240931e191e736ce38, type: 3}
+  - {fileID: 8300000, guid: b5e7d1b7043a98c4290251658f66c7a9, type: 3}
   - {fileID: 8300000, guid: ece3379528a926945ac9f20e4fbfa27a, type: 3}
   - {fileID: 8300000, guid: 8c70112c89652a04eb501551c8fd33a0, type: 3}
   - {fileID: 8300000, guid: c2f3fd420c208dc4aac77dc3d1544bf4, type: 3}
   - {fileID: 8300000, guid: abc6af52caeefa442ba3da2ea7a46b51, type: 3}
+  - {fileID: 8300000, guid: af5f1b6187c88d541b5fcfe272587122, type: 3}
+  - {fileID: 8300000, guid: a011f347cdc5f2a4bb41f0dd95080463, type: 3}
+  - {fileID: 8300000, guid: a011f347cdc5f2a4bb41f0dd95080463, type: 3}
+  - {fileID: 8300000, guid: 23ab4c1788f35d843a6ed6edd15d631c, type: 3}
+  - {fileID: 8300000, guid: efa03810c50fc9442992984b591310a6, type: 3}
+  - {fileID: 8300000, guid: 0d455750946ba784a9148867a50240e6, type: 3}
+  - {fileID: 8300000, guid: 22f45ed455b2a3a4e9a49e81563fa7a6, type: 3}
+  - {fileID: 8300000, guid: 06e6b58d69eb28345abcfe1673956fec, type: 3}

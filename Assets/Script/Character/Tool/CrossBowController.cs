@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CrossBowController : ToolController
 {
+    public override ToolTag GetToolTag() { return ToolTag.CrossBow; }
     // Start is called before the first frame update
     void Start()
     {

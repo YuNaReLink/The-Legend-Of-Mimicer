@@ -400,6 +400,7 @@ public class ObstacleCheck : MonoBehaviour
             controller.JumpForce(lowStepJumpPower);
             cliffJump = true;
             controller.Jumping = true;
+            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Jump);
         }
     }
 
@@ -415,6 +416,7 @@ public class ObstacleCheck : MonoBehaviour
             controller.JumpForce(wallJumpPower);
             stepJumpFlag = false;
             controller.Jumping = true;
+            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Jump);
         }
     }
 
@@ -428,6 +430,7 @@ public class ObstacleCheck : MonoBehaviour
             grabFlag = true;
             wallJumpFlag = false;
             InitilaizeWallHitFlag();
+            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Jump);
         }
     }
 
@@ -442,6 +445,7 @@ public class ObstacleCheck : MonoBehaviour
                 controller.CharacterRB.useGravity = false;
                 controller.CharacterRB.velocity = Vector3.zero;
                 controller.Velocity = controller.StopMoveVelocity();
+                controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Grab);
             }
             controller.Velocity = controller.StopMoveVelocity();
             controller.CharacterRB.velocity = controller.StopRigidBodyVelocity();
@@ -450,6 +454,7 @@ public class ObstacleCheck : MonoBehaviour
             {
                 SetClimbPostion();
                 controller.GetMotion().ChangeMotion(StateTag.ClimbWall);
+                controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Climb);
             }
             else if (controller.GetKeyInput().Vertical < -0.5f)
             {
@@ -498,6 +503,7 @@ public class ObstacleCheck : MonoBehaviour
             controller.Velocity = controller.StopMoveVelocity();
             SetClimbPostion();
             controller.GetMotion().ChangeMotion(StateTag.ClimbWall);
+            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Climb);
         }
 
         if (!climbFlag) { return; }
