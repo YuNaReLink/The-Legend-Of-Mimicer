@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class ToolController : MonoBehaviour
 {
+    public virtual ToolTag GetToolTag() { return ToolTag.Null; }
     [SerializeField]
     protected CharacterController controller = null;
     public void SetController(CharacterController _controller)

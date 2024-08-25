@@ -4746,7 +4746,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1845945369076765872, guid: 6c7915380e2229c4b923dcc992a7d388, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7251201412158598548, guid: 6c7915380e2229c4b923dcc992a7d388, type: 3}
       propertyPath: target
@@ -5738,6 +5738,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 845745995567362498, guid: 262754149fa85cd41bf9d0c29bb8fc8e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1743178625528583273, guid: 262754149fa85cd41bf9d0c29bb8fc8e, type: 3}
       propertyPath: mouseXSpeed
       value: 5

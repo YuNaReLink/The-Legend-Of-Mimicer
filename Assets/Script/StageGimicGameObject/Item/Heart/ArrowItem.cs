@@ -10,9 +10,12 @@ public class ArrowItem : Consumables
 
     protected override void OnTriggerEnter(Collider other)
     {
-        var quiver = other.GetComponentInChildren<Quiver>();
+        var player = other.GetComponent<PlayerController>();
+        if(player == null) { return; }
+        var quiver = player.gameObject.GetComponentInChildren<Quiver>();
         if(quiver == null) { return; }
         quiver.AddArrow(count);
+        GetCommand(player,count);
         base.OnTriggerEnter(other);
     }
 }

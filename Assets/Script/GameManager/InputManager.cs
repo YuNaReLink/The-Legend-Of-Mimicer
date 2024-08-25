@@ -10,6 +10,21 @@ public class InputManager
     public static bool AttackHoldButton() { return Input.GetButton("Attack"); }
     public static bool PushMouseRight() { return Input.GetMouseButtonDown(1); }
     public static bool GuardHoldButton() { return Input.GetAxis("Guard") > 0.5f; }
+    private static bool guardPush = false;
+    public static bool GuardPushButton()
+    {
+        if(Input.GetAxis("Guard") > 0)
+        {
+            if (guardPush) { return false; }
+            guardPush = true;
+            return Input.GetAxis("Guard") > 0;
+        }
+        else
+        {
+            guardPush = false;
+            return false;
+        }
+    }
     public static bool PushMouseMiddle() { return Input.GetMouseButtonDown(2); }
     public static bool MenuButton() {  return Input.GetButtonDown("Menu"); }
     public static bool PushESCKey() {  return Input.GetKeyDown(KeyCode.Escape); }

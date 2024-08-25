@@ -69,6 +69,10 @@ public class ShieldGuridCommand : BaseToolCommand
             controller.GuardState = GuardState.Normal;
         }
         GuardStateInput();
+        if (controller.GetKeyInput().GuardPushButton)
+        {
+            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.ShildPosture);
+        }
     }
 
     private void GuardStateInput()

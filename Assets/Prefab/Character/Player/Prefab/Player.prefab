@@ -217,7 +217,6 @@ GameObject:
   - component: {fileID: 1151272462068201039}
   - component: {fileID: 7840695295424365132}
   - component: {fileID: 1755012261737006107}
-  - component: {fileID: 6848780365785660165}
   - component: {fileID: 594869213626691746}
   m_Layer: 0
   m_Name: Player
@@ -518,14 +517,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 594869213626691746}
   clipData: {fileID: 11400000, guid: b2309f9cf2ea4c249a4c51153c280f68, type: 2}
---- !u!81 &6848780365785660165
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4348658367534398464}
-  m_Enabled: 1
 --- !u!82 &594869213626691746
 AudioSource:
   m_ObjectHideFlags: 0
@@ -550,7 +541,7 @@ AudioSource:
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 0
+  BypassEffects: 1
   BypassListenerEffects: 0
   BypassReverbZones: 0
   rolloffCustomCurve:
@@ -582,7 +573,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.75
       inSlope: 0
       outSlope: 0
       tangentMode: 0

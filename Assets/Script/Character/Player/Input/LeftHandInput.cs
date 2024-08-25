@@ -24,9 +24,15 @@ public class LeftHandInput
         }
         if (controller.LeftCommand == null)
         {
-            if (!controller.GetKeyInput().GuardHoldButton && !controller.BattleMode) { return; }
-            //盾のクラスを生成する
-            controller.LeftCommand = new ShieldGuridCommand(controller);
+            if (controller.GetKeyInput().GuardHoldButton)
+            {
+                //盾のクラスを生成する
+                controller.LeftCommand = new ShieldGuridCommand(controller);
+            }
+            else
+            {
+                controller.LeftCommand = null;
+            }
         }
         if (controller.LeftCommand == null) { return; }
         //盾の入力

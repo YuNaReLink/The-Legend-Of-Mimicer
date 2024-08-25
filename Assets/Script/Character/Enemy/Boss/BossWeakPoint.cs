@@ -29,8 +29,8 @@ public class BossWeakPoint : MonoBehaviour
                 break;
             case CharacterTag.StateTag.Damage:
                 controller.GetVFXController().CreateVFX(VFXScriptableObject.VFXTag.Damage, other.transform.position, 1f, Quaternion.identity);
-                controller.GetDamage().Attacker = other.gameObject;
-                controller.GetDamage().DamageFlag = true;
+                controller.GetBossDamageCommand().Attacker = other.gameObject;
+                controller.GetBossDamageCommand().DamageFlag = true;
                 break;
         }
     }

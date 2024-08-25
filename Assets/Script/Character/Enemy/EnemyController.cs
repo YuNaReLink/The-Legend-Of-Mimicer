@@ -10,9 +10,11 @@ public class EnemyController : CharacterController
     public EnemyScriptableObject GetData() {  return data; }
 
     protected NavMeshController navMeshController = null;
+    public NavMeshController GetNavMeshController() { return navMeshController; }
 
     [SerializeField]
     protected bool foundPlayer = false;
+    public bool FoundPlayer { get { return foundPlayer; }set { foundPlayer = value; } }
     [SerializeField]
     protected PlayerController target = null;
     public PlayerController Target { get { return target; } set { target = value; } }

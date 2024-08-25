@@ -3,6 +3,12 @@ using UnityEngine.AI;
 
 public class SpiderController : EnemyController
 {
+    private SpiderInput spiderInput = null;
+
+    private SpiderSoundController spiderSoundController = null;
+    public SpiderSoundController GetSpiderSoundController() {  return spiderSoundController; }
+    protected SpiderDamageCommand spiderDamage = null;
+    public SpiderDamageCommand GetSpiderDamage() { return spiderDamage; }
     protected override void Start()
     {
         base.Start();
@@ -12,103 +18,27 @@ public class SpiderController : EnemyController
     {
         base.InitializeAssign();
         navMeshController = new NavMeshController(GetComponent<NavMeshAgent>(), this);
+        spiderInput = GetComponent<SpiderInput>();
+        if(spiderInput != null)
+        {
+            spiderInput.SetController(this);
+        }
+        spiderSoundController = GetComponent<SpiderSoundController>();
+        if(spiderSoundController != null)
+        {
+            spiderSoundController.AwakeInitilaize();
+        }
+        spiderDamage = new SpiderDamageCommand(this);
     }
 
     protected override void Update()
     {
         if (Time.timeScale <= 0) { return; }
+        spiderSoundController.TimerUpdate();
         base.Update();
-        if (death) { return; }
-        DamageInput();
-
-        if (!foundPlayer)
-        {
-            LoiterInput();
-        }
-        else
-        {
-            FoundNavigateInput();
-        }
+        spiderInput.Execute();
     }
 
-    private void DamageInput()
-    {
-        damage.Execute();
-    }
-
-    private void LoiterInput()
-    {
-        if(target != null)
-        {
-            foundPlayer = true;
-        }
-        switch (currentState)
-        {
-            case CharacterTag.StateTag.Idle:
-            case CharacterTag.StateTag.Attack:
-                IdleInput();
-                break;
-            case CharacterTag.StateTag.Run:
-                WalkInput();
-                break;
-        }
-    }
-
-    private void IdleInput()
-    {
-        if (timer.GetTimerIdle().IsEnabled()) { return; }
-        motion.ChangeMotion(CharacterTag.StateTag.Run);
-        navMeshController.SetGoalPosition();
-    }
-    private void WalkInput()
-    {
-        bool arrival = navMeshController.Arrival();
-        if (arrival)
-        {
-            motion.ChangeMotion(CharacterTag.StateTag.Idle);
-            navMeshController.PositionReset();
-            characterRB.velocity = Vector3.zero;
-            timer.GetTimerIdle().StartTimer(3f);
-        }
-    }
-
-    private void FoundNavigateInput()
-    {
-        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
-        if (info.IsName("attack")) { return; }
-        if(target != null)
-        {
-            if (timer.GetTimerAttackCoolDown().IsEnabled())
-            {
-                motion.ChangeMotion(CharacterTag.StateTag.Idle);
-                navMeshController.PositionReset();
-                characterRB.velocity = Vector3.zero;
-                return;
-            }
-            Vector3 sub = transform.position - target.transform.position;
-            float dis = sub.magnitude;
-            if(dis > 2f)
-            {
-                motion.ChangeMotion(CharacterTag.StateTag.Run);
-                navMeshController.SetTargetPosition();
-            }
-            else
-            {
-                AttackInput();
-            }
-        }
-        else
-        {
-            foundPlayer = false;
-        }
-    }
-
-    private void AttackInput()
-    {
-        motion.ChangeMotion(CharacterTag.StateTag.Attack);
-        navMeshController.PositionReset();
-        timer.GetTimerAttackCoolDown().StartTimer(3f);
-    }
     protected override void UpdateMoveInput()
     {
         switch (currentState)
@@ -124,25 +54,55 @@ public class SpiderController : EnemyController
 
     private void FixedUpdate()
     {
+        if (death) { return; }
+        MoveCommand();
         if (!input)
         {
             Decele();
         }
+        if(spiderDamage != null)
+        {
+            spiderDamage.Execute();
+        }
+        if(knockBackCommand != null)
+        {
+            knockBackCommand.Execute();
+        }
+    }
+
+    private void MoveCommand()
+    {
+        if(currentState != CharacterTag.StateTag.Run) { return; }
+        spiderSoundController.FixedPlaySESound((int)SpiderSoundController.SpiderSoundTag.Foot);
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        string tag = other.tag;
-        switch (tag)
+        ToolController tool = other.GetComponent<ToolController>();
+        if(tool != null)
         {
-            case "Attack":
-                if (timer.GetTimerDamageCoolDown().IsEnabled()) { return; }
-                timer.GetTimerDamageCoolDown().StartTimer(0.25f);
-                damage.Attacker = other.gameObject;
-                damage.DamageFlag = true;
-                vfxController.CreateVFX(VFXScriptableObject.VFXTag.Damage, other.transform.position,1f, Quaternion.identity);
-                break;
+            switch (tool.GetToolTag())
+            {
+                case ToolTag.Shield:
+                case ToolTag.Other:
+                    return;
+            }
+            if (timer.GetTimerDamageCoolDown().IsEnabled()) { return; }
+            timer.GetTimerDamageCoolDown().StartTimer(0.25f);
+            spiderDamage.Attacker = other.gameObject;
+            spiderDamage.DamageFlag = true;
+            vfxController.CreateVFX(VFXScriptableObject.VFXTag.Damage, other.transform.position,1f, Quaternion.identity);
+        }
+        else
+        {
+            PlayerController player = other.GetComponent<PlayerController>();
+            if(player == null) { return; }
+            if (player.LeftCommand == null) { return; }
+            GameObject shild = other.GetComponentInChildren<ShieldController>().gameObject;
+            if(shild == null) { return; }
+            knockBackCommand.KnockBackFlag = true;
+            knockBackCommand.Attacker = shild;
         }
     }
 

@@ -325,6 +325,10 @@ public class PlayerController : CharacterController
         {
             damage.Execute();
         }
+        if(knockBackCommand != null)
+        {
+            knockBackCommand.Execute();
+        }
         //à⁄ìÆèàóù
         if (!timer.GetTimerRolling().IsEnabled())
         {
@@ -410,6 +414,16 @@ public class PlayerController : CharacterController
         base.Death();
         vfxController.CreateVFX(VFXScriptableObject.VFXTag.Die, transform.position, 1f, Quaternion.identity);
     }
+    public override void RecoveryHelth(int count)
+    {
+        base.RecoveryHelth(count);
+        soundController.PlaySESound((int)PlayerSoundController.PlayerSoundTag.GetHeart);
+    }
+    public void GetArrow(int count)
+    {
+        toolInventory.GetQuiver().AddArrow(count);
+        soundController.PlaySESound((int)PlayerSoundController.PlayerSoundTag.GetItem);
+    }
 
     private void SetPushState(CharacterTag.PushTag _pushTag){pushTag = _pushTag;}
 
@@ -452,6 +466,9 @@ public class PlayerController : CharacterController
                 break;
             case CharacterTag.GuardState.Normal:
             case CharacterTag.GuardState.Crouch:
+                knockBackCommand.KnockBackFlag = true;
+                knockBackCommand.Attacker = other.gameObject;
+                soundController.PlaySESound((int)PlayerSoundController.PlayerSoundTag.Guard);
                 break;
         }
     }

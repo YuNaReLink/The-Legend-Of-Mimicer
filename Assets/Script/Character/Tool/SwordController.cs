@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class SwordController : ToolController
 {
+    public override ToolTag GetToolTag() { return ToolTag.Sword; }
     private SwordEffectController effect = null;
 
     private void Start()

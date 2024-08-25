@@ -59,7 +59,8 @@ public class PlayerDamageCommand : InterfaceBaseCommand
                 WeaponStateData data = tool.GetStatusData();
                 if(data == null) { return; }
                 controller.HP-= data.BaseDamagePower;
-                controller.Knockback(attacker.transform.position,data.KnockBackPower);
+                controller.GetKnockBackCommand().KnockBackFlag = true;
+                controller.GetKnockBackCommand().Attacker = attacker;
                 controller.GetVFXController().CreateVFX(VFXScriptableObject.VFXTag.Damage,attacker.transform.position,1f,Quaternion.identity);
                 attacker = null;
                 controller.DamageTag = DamageTag.Null;
