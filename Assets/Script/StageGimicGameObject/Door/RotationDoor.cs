@@ -18,6 +18,17 @@ public class RotationDoor : MonoBehaviour
 
     [SerializeField]
     private TriggerCheck triggerCheck = null;
+
+    private SoundController soundController = null;
+
+    private void Awake()
+    {
+        soundController = GetComponent<SoundController>();
+        if(soundController != null)
+        {
+            soundController.AwakeInitilaize();
+        }
+    }
     void Start()
     {
         triggerCheck = GetComponent<TriggerCheck>();
@@ -41,6 +52,7 @@ public class RotationDoor : MonoBehaviour
         {
             // FƒL[‚ª‰Ÿ‚³‚ê‚½‚çŠJ•Â‚ğØ‚è‘Ö‚¦‚é
             open = true;
+            soundController.PlaySESound((int)SoundTagList.OpenDoorSoundTag.Open);
         }
     }
 

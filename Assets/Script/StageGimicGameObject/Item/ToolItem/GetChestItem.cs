@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GetChestItem : GetItem
 {
-
     public override void Get()
     {
         ToolInventoryController tool = triggerCheck.GetController().GetToolController();

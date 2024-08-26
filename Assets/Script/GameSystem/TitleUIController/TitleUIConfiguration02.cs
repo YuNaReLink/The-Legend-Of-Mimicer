@@ -25,10 +25,19 @@ public class TitleUIConfiguration02 : BaseTitleUIConfiguration
             }
             menuButtonController.ButtonList = buttonList;
         }
+        menuButtonController.AwakeInitilaize();
     }
 
     private void Update()
     {
         menuButtonController.ButtonUpdate();
+        if (menuButtonController.ButtonIndexCheck())
+        {
+            titleUIController.GetCanvasSoundController().PlaySESound((int)CanvasSoundController.CanvasSoundTag.Select);
+        }
+        if (menuButtonController.DesideCheck())
+        {
+            titleUIController.GetCanvasSoundController().PlaySESound((int)CanvasSoundController.CanvasSoundTag.Select);
+        }
     }
 }

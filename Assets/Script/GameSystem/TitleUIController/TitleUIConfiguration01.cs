@@ -83,6 +83,7 @@ public class TitleUIConfiguration01 : BaseTitleUIConfiguration
             fadeEnd = true;
             titleImage.color = new Color(1f, 1f, 1f, 1f);
             startText.color = new Color(1f, 1f, 1f, 1f);
+            titleUIController.GetCanvasSoundController().PlaySESound((int)CanvasSoundController.CanvasSoundTag.Deside);
         }
     }
 

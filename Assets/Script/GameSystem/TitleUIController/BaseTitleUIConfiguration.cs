@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BaseTitleUIConfiguration : MonoBehaviour
 {
+    protected TitleUIController titleUIController = null;
+    public TitleUIController GetTitleUIController() { return titleUIController; }
+    public void SetTitleUIController(TitleUIController titleUI) { titleUIController = titleUI; }
     [SerializeField]
     protected bool fadeEnd = false;
     public bool IsFadeEnd() { return fadeEnd; }

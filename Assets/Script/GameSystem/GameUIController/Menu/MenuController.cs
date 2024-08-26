@@ -23,11 +23,15 @@ public class MenuController : MonoBehaviour
     public ItemManager GetItemManager() {  return itemManager; }
     [SerializeField]
     private MenuToggleController menuToggleController = null;
+
+    private Toggle mouseDesideToggle = null;
+
     [SerializeField]
     private MenuButtonController menuButtonController = null;
 
     private int currentHorizontalIndex = 0;
 
+    private GameUIController gameUIController = null;
 
     public void AwakeInitialize()
     {
@@ -83,6 +87,7 @@ public class MenuController : MonoBehaviour
                 }
             }
             menuToggleController.ToggleList = menuButtonToggle;
+            menuToggleController.AwakeInitilaize();
         }
 
         menuButtonController = GetComponent<MenuButtonController>();
@@ -101,6 +106,7 @@ public class MenuController : MonoBehaviour
                 }
             }
             menuButtonController.ButtonList = buttonList;
+            menuButtonController.AwakeInitilaize();
         }
 
         if (menuInsideList[(int)MenuField.Inventory] != null)
@@ -111,6 +117,8 @@ public class MenuController : MonoBehaviour
                 itemManager.AwakeInitialize();
             }
         }
+
+        gameUIController = GetComponentInParent<GameUIController>();
     }
 
     public void StartInitialize()
@@ -145,12 +153,24 @@ public class MenuController : MonoBehaviour
         if(currentHorizontalIndex <= 0)
         {
             menuToggleController.ToggleYUpdate();
+            if (menuToggleController.ToggleIndexCheck())
+            {
+                gameUIController.GetCanvasSoundController().PlaySESound((int)CanvasSoundController.CanvasSoundTag.Select);
+            }
 
             for (int i = 0; i < menuToggleController.ToggleList.Count; i++)
             {
                 if (menuInsideList[i].activeSelf)
                 {
                     menuInsideList[i].SetActive(false);
+                }
+                if (menuToggleController.ToggleList[i].isOn)
+                {
+                    if(menuToggleController.ToggleList[i] != mouseDesideToggle)
+                    {
+                        mouseDesideToggle = menuToggleController.ToggleList[i];
+                        gameUIController.GetCanvasSoundController().PlaySESound((int)CanvasSoundController.CanvasSoundTag.Select);
+                    }
                 }
             }
         }
@@ -163,6 +183,11 @@ public class MenuController : MonoBehaviour
                     if (!menuInsideList[i].activeSelf)
                     {
                         menuInsideList[i].SetActive(true);
+                    }
+                    if (menuToggleController.ToggleList[i] != mouseDesideToggle)
+                    {
+                        mouseDesideToggle = menuToggleController.ToggleList[i];
+                        gameUIController.GetCanvasSoundController().PlaySESound((int)CanvasSoundController.CanvasSoundTag.Select);
                     }
                 }
                 else
@@ -177,11 +202,23 @@ public class MenuController : MonoBehaviour
             {
                 //インベントリ内のボタン操作
                 itemManager.GetItemToggleController().ToggleXUpdate();
+                if (itemManager.GetItemToggleController().ToggleIndexCheck())
+                {
+                    gameUIController.GetCanvasSoundController().PlaySESound((int)CanvasSoundController.CanvasSoundTag.Select);
+                }
             }
             else if (menuInsideList[(int)MenuField.Option].activeSelf)
             {
                 //オプション内のボタン操作
                 menuButtonController.ButtonUpdate();
+                if (menuButtonController.ButtonIndexCheck())
+                {
+                    gameUIController.GetCanvasSoundController().PlaySESound((int)CanvasSoundController.CanvasSoundTag.Select);
+                }
+                if (menuButtonController.DesideCheck())
+                {
+                    gameUIController.GetCanvasSoundController().PlaySESound((int)CanvasSoundController.CanvasSoundTag.Deside);
+                }
             }
         }
 
@@ -191,10 +228,12 @@ public class MenuController : MonoBehaviour
         if (InputManager.ActionButton()||Input.GetKeyDown(KeyCode.Escape))
         {
             currentHorizontalIndex = 0;
+            gameUIController.GetCanvasSoundController().PlaySESound((int)CanvasSoundController.CanvasSoundTag.Cancel);
         }
         else if (InputManager.GetItemButton())
         {
             currentHorizontalIndex = 1;
+            gameUIController.GetCanvasSoundController().PlaySESound((int)CanvasSoundController.CanvasSoundTag.Deside);
         }
     }
 

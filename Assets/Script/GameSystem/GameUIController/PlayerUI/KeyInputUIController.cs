@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class KeyInputUIController : MonoBehaviour
 {
+    private GameUIController gameUIController = null;
     private PlayerController controller = null;
     public enum KeyUINumber
     {
@@ -30,7 +31,7 @@ public class KeyInputUIController : MonoBehaviour
 
     public void Initialize()
     {
-        GameUIController gameUIController = GetComponentInParent<GameUIController>();
+        gameUIController = GetComponentInParent<GameUIController>();
         if(gameUIController != null)
         {
             controller = gameUIController.GetPlayerUIController().GetPlayerController();
@@ -169,6 +170,12 @@ public class KeyInputUIController : MonoBehaviour
         if (inputCoolDownsTimers[(int)KeyUINumber.F].IsEnabled()) { return; }
         if (InputManager.GetItemButton())
         {
+            switch (GameSceneSystemController.KeyTriggerTag)
+            {
+                case GameSceneSystemController.TriggerTag.Item:
+                    gameUIController.GetKeySoundController().PlaySESound((int)SoundTagList.GetToolSoundTag.Get);
+                    break;
+            }
             keyImageArray[(int)KeyUINumber.F].color = new Color32(100, 100, 100, 255);
             inputCoolDownsTimers[(int)KeyUINumber.F].StartTimer(0.1f);
         }
