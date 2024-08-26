@@ -11,6 +11,18 @@ public class MenuToggleController : MonoBehaviour
     private List<Toggle> toggleList; 
     public List<Toggle> ToggleList { get { return toggleList; } set { toggleList = value; } }
     private int currentToggleIndex = 0;
+    private int pastToggleIndex = 0;
+    private bool selectFlag = false;
+    [SerializeField]
+    private GraphicRaycaster graphicRaycaster; // UIのGraphicRaycaster
+    [SerializeField]
+    private EventSystem eventSystem; // EventSystem
+    private Toggle mouseOverToggle = null;
+
+    public void AwakeInitilaize()
+    {
+        graphicRaycaster = GetComponentInParent<GraphicRaycaster>();
+    }
 
     public void ToggleYUpdate()
     {
@@ -70,5 +82,40 @@ public class MenuToggleController : MonoBehaviour
             }
             toggleList[currentToggleIndex].isOn = !toggleList[currentToggleIndex].isOn;
         }
+    }
+
+    public bool ToggleIndexCheck()
+    {
+        if(currentToggleIndex == pastToggleIndex) { return false; }
+        pastToggleIndex = currentToggleIndex;
+        return true;
+    }
+
+    private bool CheckIfMouseOverButton()
+    {
+        // PointerEventDataを作成
+        PointerEventData pointerEventData = new PointerEventData(eventSystem);
+        pointerEventData.position = Input.mousePosition;
+
+        // Raycast結果を格納するリスト
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+
+        // GraphicRaycasterでRaycastを実行
+        graphicRaycaster.Raycast(pointerEventData, raycastResults);
+        // レイが何かに当たったかどうかをチェック
+        foreach (RaycastResult result in raycastResults)
+        {
+            // Buttonコンポーネントがあるか確認
+            Toggle toggle = result.gameObject.GetComponent<Toggle>();
+            if (toggle != null)
+            {
+                if (toggle == mouseOverToggle) { return false; }
+                mouseOverToggle = toggle;
+                Debug.Log("マウスがUIのButtonオブジェクトに当たりました！");
+                // ボタンがクリックされた時の処理を追加
+                return true; // 最初にヒットしたボタンの処理のみ実行
+            }
+        }
+        return false;
     }
 }

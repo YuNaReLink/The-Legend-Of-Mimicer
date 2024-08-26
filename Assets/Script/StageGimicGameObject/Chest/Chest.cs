@@ -50,12 +50,29 @@ public class Chest : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GetChestItem getItem = null;
-    private void Start()
+
+    private ChestSoundController soundController = null;
+
+    private void Awake()
     {
         triggerCheck = GetComponentInChildren<TriggerCheck>();
-
+        if(triggerCheck == null)
+        {
+            Debug.LogWarning("TriggerCheckがアタッチされていません");
+        }
         getItem = GetComponent<GetChestItem>();
-
+        if(getItem == null)
+        {
+            Debug.LogWarning("GetChestItemがアタッチされていません");
+        }
+        soundController = GetComponent<ChestSoundController>();
+        if(soundController != null)
+        {
+            soundController.AwakeInitilaize();
+        }
+    }
+    private void Start()
+    {
         open = false;
         stop = false;
 
@@ -77,6 +94,7 @@ public class Chest : MonoBehaviour
         if (open) { return; }
         if (!triggerCheck.GetController().GetKeyInput().IsGetButton()) { return; }
         open = true;
+        soundController.PlaySESound((int)ChestSoundController.ChestSoundTag.Open);
     }
 
     private void OpenCover()

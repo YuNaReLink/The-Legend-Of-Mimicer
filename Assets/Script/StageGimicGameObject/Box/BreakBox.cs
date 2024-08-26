@@ -4,21 +4,56 @@ using UnityEngine;
 
 public class BreakBox : MonoBehaviour
 {
-    [SerializeField]
-    private bool breakFlag = false;
+    private float breakSpeed = 1.0f;
+    private MeshRenderer meshRenderer = null;
+    private BoxCollider boxCollider = null;
+    private BreakSoundController soundController = null;
+    private List<GameObject> spriteObjectList = new List<GameObject>();
 
-
-    private void Update()
+    private void Awake()
     {
-        if (breakFlag)
+        meshRenderer = GetComponent<MeshRenderer>();
+        if(meshRenderer == null)
         {
-            Destroy(gameObject);
+            Debug.LogWarning("meshRendererがアタッチされていません");
+        }
+        boxCollider = GetComponent<BoxCollider>();
+        if(boxCollider == null)
+        {
+            Debug.LogWarning("boxRendererがアタッチされていません");
+        }
+        soundController = GetComponent<BreakSoundController>();
+        if(soundController == null)
+        {
+            Debug.LogWarning("soundControllerがアタッチされていません");
+        }
+        GameObject g = null;
+        for(int i = 0;i < transform.childCount; i++)
+        {
+            g = transform.GetChild(i).gameObject;
+            spriteObjectList.Add(g);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Attack") { return; }
-        breakFlag = true;
+        if(soundController != null)
+        {
+            soundController.PlaySESound((int)BreakSoundController.BreakSoundTag.Break);
+        }
+        if(meshRenderer != null)
+        {
+            meshRenderer.enabled = false;
+        }
+        if(boxCollider != null)
+        {
+            boxCollider.enabled = false;
+        }
+        for(int i = 0;i < spriteObjectList.Count; i++)
+        {
+            spriteObjectList[i].SetActive(false);
+        }
+        Destroy(gameObject, breakSpeed);
     }
 }

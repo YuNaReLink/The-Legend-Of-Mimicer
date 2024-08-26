@@ -47,6 +47,8 @@ public class ItemManager : MonoBehaviour
     private MenuToggleController itemToggleController = null;
     public MenuToggleController GetItemToggleController() { return itemToggleController; }
 
+    private GameUIController gameUIController = null;
+
     public void AwakeInitialize()
     {
         //親からPlayerControllerを取得
@@ -117,7 +119,7 @@ public class ItemManager : MonoBehaviour
             }
             itemToggleController.ToggleList = toggles;
         }
-
+        gameUIController = GetComponentInParent<GameUIController>();
     }
 
     public void StartInitialize()
@@ -251,9 +253,9 @@ public class ItemManager : MonoBehaviour
     public void SlotUpdate()
     {
         //スロット更新処理
-
+        gameUIController.GetCanvasSoundController().PlaySESound((int)CanvasSoundController.CanvasSoundTag.Select);
         //選択されているトグル(選択されているアイテムスロット)を代入
-        
+
         int parse = 0;
         Toggle tal = toggleGroup.ActiveToggles().FirstOrDefault();
         GameObject iconObject = tal.gameObject.transform.GetChild(1).gameObject;

@@ -16,7 +16,13 @@ public class GameUIController : MonoBehaviour
     /// <summary>
     /// ゲームクリアUIを管理するクラス
     /// </summary>
-    private GameClearUIController gameClearUIController = null; 
+    private GameClearUIController gameClearUIController = null;
+    [SerializeField]
+    private CanvasSoundController canvasSoundController = null;
+    public CanvasSoundController GetCanvasSoundController() { return canvasSoundController; }
+    [SerializeField]
+    private SoundController keySoundController = null;
+    public SoundController GetKeySoundController() {return keySoundController; }
 
     private void Awake()
     {
@@ -25,17 +31,25 @@ public class GameUIController : MonoBehaviour
         {
             playerUIController.AwakeInitilaize(this);
         }
-
         gameOverUIController = GetComponentInChildren<GameOverUIController>();
         if(gameOverUIController != null)
         {
             gameOverUIController.AwakeInitilaize();
         }
-
         gameClearUIController = GetComponentInChildren<GameClearUIController>();
         if (gameClearUIController != null)
         {
             gameClearUIController.AwakeInitilaize();
+        }
+        canvasSoundController = GetComponent<CanvasSoundController>();
+        if(canvasSoundController  != null)
+        {
+            canvasSoundController.AwakeInitilaize();
+        }
+        keySoundController = playerUIController.GetKeyInputUIController().gameObject.GetComponentInChildren<SoundController>();
+        if(keySoundController != null)
+        {
+            keySoundController.AwakeInitilaize();
         }
     }
 

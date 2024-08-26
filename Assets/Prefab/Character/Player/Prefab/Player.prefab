@@ -413,6 +413,7 @@ MonoBehaviour:
   attackButton: 0
   attackHoldButton: 0
   guardHoldButton: 0
+  guardPushButton: 0
   getButton: 0
 --- !u!114 &6285384600429051626
 MonoBehaviour:
@@ -461,7 +462,7 @@ MonoBehaviour:
   - 0.7
   - 0.7
   hitWallFlagArray: 00000000
-  wallJumpPower: 1500
+  wallJumpPower: 2000
   climbForward: 1.5
   climbUp: 2
   stepJumpFlag: 0

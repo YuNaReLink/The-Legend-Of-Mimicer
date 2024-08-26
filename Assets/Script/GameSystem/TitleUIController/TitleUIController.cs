@@ -13,6 +13,8 @@ public class TitleUIController : MonoBehaviour
 
     private List<BaseTitleUIConfiguration> titleUIConfigurations = new List<BaseTitleUIConfiguration>();
 
+    private CanvasSoundController canvasSoundController = null;
+    public CanvasSoundController GetCanvasSoundController() { return canvasSoundController; }
     private void Awake()
     {
         int childCount = transform.childCount;
@@ -27,9 +29,16 @@ public class TitleUIController : MonoBehaviour
                 if (baseTitleUIConfiguration != null)
                 {
                     baseTitleUIConfiguration.Initilaize();
+                    baseTitleUIConfiguration.SetTitleUIController(this);
                     titleUIConfigurations.Add(baseTitleUIConfiguration);
                 }
             }
+        }
+
+        canvasSoundController = GetComponent<CanvasSoundController>();
+        if(canvasSoundController != null)
+        {
+            canvasSoundController.AwakeInitilaize();
         }
     }
 

@@ -2,6 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace SoundTagList
+{
+    public enum GetToolSoundTag
+    {
+        Get
+    }
+
+    public enum OpenDoorSoundTag
+    {
+        Open
+    }
+}
+
 public class SoundController : MonoBehaviour
 {
     public virtual SoundManager.SoundType GetSoundType() { return SoundManager.SoundType.Null; }
@@ -16,7 +29,11 @@ public class SoundController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         if(audioSource == null)
         {
-            Debug.LogWarning("AudioSourceがアタッチされていない");
+            audioSource = GetComponentInParent<AudioSource>();
+            if (audioSource == null)
+            {
+                Debug.LogWarning("AudioSourceがアタッチされていない");
+            }
         }
     }
 
