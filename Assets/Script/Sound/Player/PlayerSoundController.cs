@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerSoundController : SoundController
 {
-    public override SoundManager.SoundType GetSoundType(){return SoundManager.SoundType.SE;}
     public enum PlayerSoundTag
     {
         Foot,

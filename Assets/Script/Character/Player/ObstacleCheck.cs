@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using CharacterTag;
-using System.ComponentModel;
 
 public class ObstacleCheck : MonoBehaviour
 {
@@ -32,7 +29,7 @@ public class ObstacleCheck : MonoBehaviour
     /// 着地座標を保存するかしないかを決めるフラグ
     /// </summary>
     private bool savePosition = false;
-    public bool IsSavePosition() {  return savePosition; }
+    public bool IsSavePosition() { return savePosition; }
 
     public enum RayTag
     {
@@ -91,7 +88,7 @@ public class ObstacleCheck : MonoBehaviour
     //高い壁を登るジャンプフラグ
     [SerializeField]
     private bool wallJumpFlag = false;
-    public bool IsWallJumpFlag() { return  wallJumpFlag; }
+    public bool IsWallJumpFlag() { return wallJumpFlag; }
 
     [SerializeField]
     private bool grabFlag = false;
@@ -100,12 +97,12 @@ public class ObstacleCheck : MonoBehaviour
 
     [SerializeField]
     private bool grabCancel = false;
-    public bool GrabCancel {  get { return grabCancel; } set { grabCancel = value; } }
+    public bool GrabCancel { get { return grabCancel; } set { grabCancel = value; } }
 
 
     [SerializeField]
     private bool climbFlag = false;
-    public bool IsClimbFlag() {  return climbFlag; }
+    public bool IsClimbFlag() { return climbFlag; }
 
     [SerializeField]
     private Vector3 climbOldPos = Vector3.zero;
@@ -145,7 +142,7 @@ public class ObstacleCheck : MonoBehaviour
         Ray stepCheckRay = new Ray(transform.position + (transform.forward * stepCheckOffset) + (transform.up * stepUpCheckOffset), -transform.up);
         lowStep = Physics.Raycast(stepCheckRay, stepCheckDistance);
         Debug.DrawRay(stepCheckRay.origin, stepCheckRay.direction * stepCheckDistance, Color.white);
-        for(int i = 1; i < hitWallFlagArray.Length; i++)
+        for (int i = 1; i < hitWallFlagArray.Length; i++)
         {
             if (hitWallFlagArray[i])
             {
@@ -159,7 +156,7 @@ public class ObstacleCheck : MonoBehaviour
     {
         savePosition = false;
         //プレイヤーの前に段差があるかを確認
-        Ray saveCheckRay = new Ray(transform.position+(CreateRayAdvanceDirection() * 1.5f) + (transform.up * stepUpCheckOffset), -transform.up);
+        Ray saveCheckRay = new Ray(transform.position + (CreateRayAdvanceDirection() * 1.5f) + (transform.up * stepUpCheckOffset), -transform.up);
         savePosition = Physics.Raycast(saveCheckRay, stepCheckDistance);
         Debug.DrawRay(saveCheckRay.origin, saveCheckRay.direction * stepCheckDistance, Color.white);
     }
@@ -191,6 +188,7 @@ public class ObstacleCheck : MonoBehaviour
             case StateTag.JumpAttack:
                 return;
         }
+        if (controller.GetCameraController().IsFPSMode()) { return; }
         //壁があるかチェック、なかったら早期リターン
         bool wallhit = WallCheck();
         MoveInputCheck();
@@ -209,7 +207,7 @@ public class ObstacleCheck : MonoBehaviour
             if (controller.GetTimer().GetTimerWallActionStop().IsEnabled()) { return; }
             //段差のチェック
             bool stepCheck =
-                hitWallFlagArray[(int)RayTag.Bottom] &&!hitWallFlagArray[(int)RayTag.Up]&&
+                hitWallFlagArray[(int)RayTag.Bottom] && !hitWallFlagArray[(int)RayTag.Up] &&
                 !hitWallFlagArray[(int)RayTag.Middle] && !hitWallFlagArray[(int)RayTag.Upper];
             if (stepCheck)
             {
@@ -217,7 +215,7 @@ public class ObstacleCheck : MonoBehaviour
                 timerStopWallAction.OnCompleted += () =>
                 {
                     if (controller.GetKeyInput().Vertical == 0 &&
-                        controller.GetKeyInput().Horizontal == 0&&
+                        controller.GetKeyInput().Horizontal == 0 &&
                         !MovePositionCheck()) { return; }
                     stepJumpFlag = true;
                 };
@@ -241,7 +239,7 @@ public class ObstacleCheck : MonoBehaviour
             //プレイヤーよりも少し高い壁かチェック
             bool highWallCheck =
                 hitWallFlagArray[(int)RayTag.Middle] &&
-                hitWallFlagArray[(int)RayTag.Up]&&!hitWallFlagArray[(int)RayTag.Upper];
+                hitWallFlagArray[(int)RayTag.Up] && !hitWallFlagArray[(int)RayTag.Upper];
             if (highWallCheck)
             {
                 timerStopWallAction.StartTimer(0.1f);
@@ -271,7 +269,7 @@ public class ObstacleCheck : MonoBehaviour
     private bool MovePositionCheck()
     {
         Vector3 sub = controller.CurrentPos - controller.PastPos;
-        if(sub.magnitude > 0.01f)
+        if (sub.magnitude > 0.01f)
         {
             return true;
         }
@@ -281,7 +279,7 @@ public class ObstacleCheck : MonoBehaviour
     private void MoveInputCheck()
     {
         if (!grabFlag) { return; }
-        if(!hitWallFlagArray[(int)RayTag.Bottom] || !hitWallFlagArray[(int)RayTag.Middle] ||
+        if (!hitWallFlagArray[(int)RayTag.Bottom] || !hitWallFlagArray[(int)RayTag.Middle] ||
             hitWallFlagArray[(int)RayTag.Up] || hitWallFlagArray[(int)RayTag.Upper])
         {
             grabFlag = false;
@@ -308,14 +306,14 @@ public class ObstacleCheck : MonoBehaviour
     public bool WallHitFlagCheck()
     {
         int hitcount = 0;
-        for(int i = 1;i < hitWallFlagArray.Length; i++)
+        for (int i = 1; i < hitWallFlagArray.Length; i++)
         {
             if (hitWallFlagArray[i])
             {
                 hitcount++;
             }
         }
-        if(hitcount > 0)
+        if (hitcount > 0)
         {
             return true;
         }
@@ -327,7 +325,7 @@ public class ObstacleCheck : MonoBehaviour
         Ray[] wallCheckRay = new Ray[4];
         //  壁判定を格納
         RaycastHit[] hit = new RaycastHit[4];
-        for(int i = 0; i < wallCheckRay.Length; i++)
+        for (int i = 0; i < wallCheckRay.Length; i++)
         {
             //光線を作成
             wallCheckRay[i] = new Ray(transform.position + Vector3.up * wallCheckoffsetArray[i], transform.forward);
@@ -336,17 +334,17 @@ public class ObstacleCheck : MonoBehaviour
             //光線の可視化
             Debug.DrawRay(wallCheckRay[i].origin, wallCheckRay[i].direction * wallCheckDistanceArray[i], Color.red);
         }
-        
+
         //レイキャストで当たっているものがなかったらリターン
         for (int i = 0; i < hit.Length; i++)
         {
             //何も当たっていない時の条件
             if (hit[i].collider == null) { continue; }
             //当たったものがもし特定のオブジェクトだったら
-            if (hit[i].collider.gameObject.tag == "Enemy"||
-                hit[i].collider.gameObject.tag == "Furniture"||
-                hit[i].collider.gameObject.tag == "Damage"||
-                hit[i].collider.gameObject.tag == "SearchArea"||
+            if (hit[i].collider.gameObject.tag == "Enemy" ||
+                hit[i].collider.gameObject.tag == "Furniture" ||
+                hit[i].collider.gameObject.tag == "Damage" ||
+                hit[i].collider.gameObject.tag == "SearchArea" ||
                 hit[i].collider.gameObject.tag == "Decoration")
             {
                 InitilaizeWallHitFlag();
@@ -358,7 +356,7 @@ public class ObstacleCheck : MonoBehaviour
 
     private void InitilaizeWallHitFlag()
     {
-        for(int i = 0;i< hitWallFlagArray.Length; i++)
+        for (int i = 0; i < hitWallFlagArray.Length; i++)
         {
             hitWallFlagArray[i] = false;
         }
@@ -379,7 +377,6 @@ public class ObstacleCheck : MonoBehaviour
 
     private void LowStepCommand()
     {
-        
         //掴まっているか
         if (grabFlag) { return; }
         //登っているか
@@ -392,7 +389,7 @@ public class ObstacleCheck : MonoBehaviour
         if (!lowStep && controller.Landing)
         {
             lowJumpCount++;
-            if(lowJumpCount > 2)
+            if (lowJumpCount > 2)
             {
                 lowJumpCount = 0;
             }
@@ -436,48 +433,51 @@ public class ObstacleCheck : MonoBehaviour
 
     private void GrabCommand()
     {
+        if(controller.CurrentState == StateTag.Jump)
+        {
+            cliffJump = false;
+        }
         bool grabCheck = grabFlag && hitWallFlagArray[(int)RayTag.Bottom] && hitWallFlagArray[(int)RayTag.Middle] &&
             !hitWallFlagArray[(int)RayTag.Up] && !hitWallFlagArray[(int)RayTag.Upper];
-        if (grabCheck)
+        if (!grabCheck)
         {
-            if (controller.CharacterRB.useGravity)
-            {
-                controller.CharacterRB.useGravity = false;
-                controller.CharacterRB.velocity = Vector3.zero;
-                controller.Velocity = controller.StopMoveVelocity();
-                controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Grab);
-            }
-            controller.Velocity = controller.StopMoveVelocity();
-            controller.CharacterRB.velocity = controller.StopRigidBodyVelocity();
+            return;
+        }
+        if (controller.CharacterRB.useGravity)
+        {
+            controller.CharacterRB.useGravity = false;
+            controller.CharacterRB.velocity = Vector3.zero;
+            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Grab);
+        }
+        controller.Velocity = controller.StopMoveVelocity();
+        controller.CharacterRB.velocity = controller.StopMoveVelocity();
+        if (MoveKeyInput()&& controller.GetCameraController().IsCameraVerticalRotation())
+        {
+            SetClimbPostion();
+            controller.GetMotion().ChangeMotion(StateTag.ClimbWall);
+            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Climb);
+        }
+        else if (controller.GetKeyInput().Vertical <= -1.0f&& controller.GetCameraController().IsCameraVerticalRotation())
+        {
+            controller.GetTimer().GetTimerWallActionStop().StartTimer(0.25f);
+            stepJumpFlag = false;
+            noGarbToClimbFlag = false;
+            wallJumpFlag = false;
+            grabFlag = false;
+            climbFlag = false;
+            controller.CharacterRB.useGravity = true;
+            controller.GetMotion().ChangeMotion(StateTag.Fall);
+            grabCancel = true;
+        }
+        else
+        {
             controller.GetMotion().ChangeMotion(StateTag.Grab);
-            if (MoveKeyInput(controller))
-            {
-                SetClimbPostion();
-                controller.GetMotion().ChangeMotion(StateTag.ClimbWall);
-                controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Climb);
-            }
-            else if (controller.GetKeyInput().Vertical < -0.5f)
-            {
-                controller.GetTimer().GetTimerWallActionStop().StartTimer(0.25f);
-                stepJumpFlag = false;
-                noGarbToClimbFlag = false;
-                wallJumpFlag = false;
-                grabFlag = false;
-                climbFlag = false;
-                controller.CharacterRB.useGravity = true;
-                controller.GetMotion().ChangeMotion(StateTag.Fall);
-                grabCancel = true;
-            }
         }
     }
 
-    private bool MoveKeyInput(PlayerController controller)
+    private bool MoveKeyInput()
     {
-        if (controller.GetKeyInput().Vertical > 0.5f)
-        {
-            return true;
-        }
-        return false;
+        return controller.GetKeyInput().Vertical >= 1.0f;
     }
 
     private void SetClimbPostion()

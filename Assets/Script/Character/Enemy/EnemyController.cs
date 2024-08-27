@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class EnemyController : CharacterController
 {
@@ -96,6 +93,6 @@ public class EnemyController : CharacterController
 
     private void CreateDieEffect(float scale)
     {
-        vfxController.CreateVFX(VFXScriptableObject.VFXTag.Die, transform.position,scale, Quaternion.identity);
+        vfxController.CreateVFX((int)EffectTagList.CharacterEffectTag.Death, transform.position,scale, Quaternion.identity);
     }
 }

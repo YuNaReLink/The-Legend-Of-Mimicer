@@ -92,7 +92,7 @@ public class SpiderController : EnemyController
             timer.GetTimerDamageCoolDown().StartTimer(0.25f);
             spiderDamage.Attacker = other.gameObject;
             spiderDamage.DamageFlag = true;
-            vfxController.CreateVFX(VFXScriptableObject.VFXTag.Damage, other.transform.position,1f, Quaternion.identity);
+            vfxController.CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position,1f, Quaternion.identity);
         }
         else
         {

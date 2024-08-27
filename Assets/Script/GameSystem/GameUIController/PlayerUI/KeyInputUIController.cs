@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,6 +28,9 @@ public class KeyInputUIController : MonoBehaviour
 
     private Text fKeyText = null;
 
+    public GameObject SelfObject() { return gameObject; }
+    public bool IsActiveObject() { return gameObject.activeSelf; }
+    public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
     public void Initialize()
     {
         gameUIController = GetComponentInParent<GameUIController>();

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,22 +11,27 @@ public class GameOverUIController : MonoBehaviour
 
     private MoverButton gameOverButtons = null;
 
+    public GameObject SelfObject() { return gameObject; }
+    public bool IsActiveObject() { return gameObject.activeSelf; }
+
+    public void SetActiveObject(bool enabled) {  gameObject.SetActive(enabled); }
+
     public void AwakeInitilaize()
     {
         gameOverUIObjectList.Clear();
 
         panelFadeIn = GetComponentInChildren<FadeIn>();
-        gameOverUIObjectList.Add(panelFadeIn.gameObject);
+        gameOverUIObjectList.Add(panelFadeIn.SelfObject());
 
         gameOverText = GetComponentInChildren<FadeInText>();
         if(gameOverText != null)
         {
             gameOverText.AwakeInitilaize();
-            gameOverUIObjectList.Add(gameOverText.gameObject);
+            gameOverUIObjectList.Add(gameOverText.SelfObject());
         }
 
         gameOverButtons = GetComponentInChildren<MoverButton>();
-        gameOverUIObjectList.Add(gameOverButtons.gameObject);
+        gameOverUIObjectList.Add(gameOverButtons.SelfObject());
     }
 
     public void StartInitialize()

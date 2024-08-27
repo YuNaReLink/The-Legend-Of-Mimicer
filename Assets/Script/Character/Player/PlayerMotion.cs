@@ -229,6 +229,10 @@ public class PlayerMotion : MotionController
                 controller.CurrentState = StateTag.Null;
                 controller.TripleAttack = TripleAttack.Null;
                 break;
+            case "storing":
+            case "posture":
+                controller.CurrentState = StateTag.Null;
+                break;
             case "DamageLanding":
             case "damageImpact":
                 controller.GetKeyInput().ThreeAttackCount = 0;

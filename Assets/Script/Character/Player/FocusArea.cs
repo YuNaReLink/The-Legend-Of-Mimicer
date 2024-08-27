@@ -36,6 +36,15 @@ public class FocusArea : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag != "Target") { return; }
+        if (!GameSceneSystemController.BattleStart)
+        {
+            GameSceneSystemController.BattleStart = true;
+        }
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.tag != "Target") { return; }
@@ -74,6 +83,10 @@ public class FocusArea : MonoBehaviour
         if (other.tag == "Target")
         {
             RemoveEnemyList(other);
+            if (GameSceneSystemController.BattleStart)
+            {
+                GameSceneSystemController.BattleStart = false;
+            }
         }
     }
 

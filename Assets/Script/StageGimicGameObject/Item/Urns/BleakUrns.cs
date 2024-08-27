@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BleakUrns : MonoBehaviour
@@ -8,6 +6,7 @@ public class BleakUrns : MonoBehaviour
     private MeshRenderer meshRenderer = null;
     private MeshCollider meshCollider = null;
     private BreakSoundController soundController = null;
+    private VFXController effectController = null;
 
     [SerializeField]
     private float breakSpeed = 0.5f;
@@ -34,6 +33,11 @@ public class BleakUrns : MonoBehaviour
         {
             Debug.LogWarning("soundControllerがアタッチされていません");
         }
+        effectController = GetComponent<VFXController>();
+        if(effectController == null)
+        {
+            Debug.Log("effectControllerがアタッチされていません");
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -52,6 +56,7 @@ public class BleakUrns : MonoBehaviour
             meshCollider.enabled = false;
         }
         appearItem.Execute(other);
+        effectController.CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, transform.position, 1f, Quaternion.identity);
         Destroy(gameObject,breakSpeed);
     }
 }

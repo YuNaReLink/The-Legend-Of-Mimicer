@@ -42,6 +42,11 @@ public class GameSceneSystemController : MonoBehaviour
 
     private static DeltaTimeCountDown gameOverStartTimer = null;
 
+    private static bool battleStart = false;
+    public static bool BattleStart { get { return battleStart; } set { battleStart = value; } }
+
+    private static GameSoundController gameSoundController = null;
+    public static GameSoundController GetGameSoundController() { return gameSoundController; }
     private void Awake()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -52,6 +57,12 @@ public class GameSceneSystemController : MonoBehaviour
         cursor = CursorController.GetInstance();
 
         gameOverStartTimer = new DeltaTimeCountDown();
+
+        gameSoundController = GetComponent<GameSoundController>();
+        if(gameSoundController != null)
+        {
+            gameSoundController.AwakeInitilaize();
+        }
     }
 
     private void Start()
@@ -60,12 +71,19 @@ public class GameSceneSystemController : MonoBehaviour
         cursor.SetCursorState(false);
 
         GameManager.GameState = GameManager.GameStateEnum.Game;
+
+        gameSoundController.PlayBGM((int)GameSoundController.GameBGMSoundTag.Stage);
     }
 
     private void Update()
     {
         if (HitStopManager.instance.IsHitStop()) { return; }
         gameOverStartTimer.Update();
+        gameSoundController.GameSoundUpdate();
+        if(CameraController.LockObject == null)
+        {
+            battleStart = false;
+        }
 
         switch (GameManager.GameState)
         {

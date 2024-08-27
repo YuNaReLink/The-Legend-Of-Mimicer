@@ -173,7 +173,7 @@ public class CharacterController : MonoBehaviour
     public void Decele()
     {
         velocity = StopMoveVelocity();
-        characterRB.velocity = StopRigidBodyVelocity();
+        characterRB.velocity = velocity;
     }
 
     protected void Move()
@@ -181,10 +181,6 @@ public class CharacterController : MonoBehaviour
         characterRB.velocity = new Vector3(velocity.x, characterRB.velocity.y, velocity.z);
     }
     public Vector3 StopMoveVelocity()
-    {
-        return new Vector3(0, characterRB.velocity.y, 0);
-    }
-    public Vector3 StopRigidBodyVelocity()
     {
         return new Vector3(0, characterRB.velocity.y, 0);
     }
@@ -216,5 +212,9 @@ public class CharacterController : MonoBehaviour
     public virtual void RecoveryHelth(int count)
     {
         hp+=count;
+        if(hp > maxHp)
+        {
+            hp = maxHp;
+        }
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +7,7 @@ public class BreakBox : MonoBehaviour
     private MeshRenderer meshRenderer = null;
     private BoxCollider boxCollider = null;
     private BreakSoundController soundController = null;
+    private VFXController effectController = null;
     private List<GameObject> spriteObjectList = new List<GameObject>();
 
     private void Awake()
@@ -26,6 +26,11 @@ public class BreakBox : MonoBehaviour
         if(soundController == null)
         {
             Debug.LogWarning("soundControllerがアタッチされていません");
+        }
+        effectController = GetComponent<VFXController>();
+        if (effectController == null)
+        {
+            Debug.Log("effectControllerがアタッチされていません");
         }
         GameObject g = null;
         for(int i = 0;i < transform.childCount; i++)
@@ -54,6 +59,7 @@ public class BreakBox : MonoBehaviour
         {
             spriteObjectList[i].SetActive(false);
         }
+        effectController.CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, transform.position, 2f, Quaternion.identity);
         Destroy(gameObject, breakSpeed);
     }
 }

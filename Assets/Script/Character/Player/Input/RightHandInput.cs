@@ -1,6 +1,7 @@
 using CharacterTag;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class RightHandInput
@@ -43,6 +44,37 @@ public class RightHandInput
         }
         SetTool(tool);
     }
+    private bool CheckStopState()
+    {
+        StateTag state = controller.CurrentState;
+        switch (state)
+        {
+            case StateTag.Null:
+            case StateTag.Idle:
+            case StateTag.Run:
+            case StateTag.Jump:
+            case StateTag.Fall:
+            case StateTag.ChangeMode:
+                return false;
+        }
+        return true;
+    }
+
+    private bool NoChangeModeState()
+    {
+        StateTag state = controller.CurrentState;
+        switch (state)
+        {
+            case StateTag.Idle:
+            case StateTag.ChangeMode:
+                if (controller.GetKeyInput().GuardHoldButton)
+                {
+                    return false;
+                }
+                return true;
+        }
+        return false;
+    }
 
     private void SetToolInput()
     {
@@ -53,7 +85,7 @@ public class RightHandInput
         {
             //剣がインベントリにないかチェック
             bool nullSword = controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Sword]);
-            if (nullSword){return;}
+            if (nullSword||CheckStopState()){return;}
             //剣抜き出し時の時だけのサウンド再生
             if(tooltag != ToolInventoryController.ToolObjectTag.Sword)
             {
@@ -61,7 +93,7 @@ public class RightHandInput
             }
             tooltag = ToolInventoryController.ToolObjectTag.Sword;
         }
-        else if (controller.GetKeyInput().ToolButton)
+        else if (controller.GetKeyInput().ToolButton&&controller.GetCameraController().IsFPSMode())
         {
             if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.CrossBow]))
             {
@@ -82,7 +114,8 @@ public class RightHandInput
         }
         else if (controller.GetKeyInput().ChangeButton)
         {
-            if (controller.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.Null)
+            if (!NoChangeModeState()) { return; }
+            if (controller.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.Null&&controller.BattleMode)
             {
                 if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Sword]))
                 {

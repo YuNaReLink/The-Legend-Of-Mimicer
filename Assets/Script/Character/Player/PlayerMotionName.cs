@@ -14,12 +14,16 @@ public class PlayerMotionName
 
     private string[] motionName = new string[]
     {
+        "idle",
+        "weaponIdle",
         "getUp",
         "attack1",
         "attack2",
         "attack3",
         "jumpAttack",
         "spinAttack",
+        "storing",
+        "posture",
         "DamageLanding",
         "damageImpact"
     };

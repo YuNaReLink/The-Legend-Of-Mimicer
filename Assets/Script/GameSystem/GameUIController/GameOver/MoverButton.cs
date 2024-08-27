@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MoverButton : MonoBehaviour
@@ -10,7 +7,9 @@ public class MoverButton : MonoBehaviour
 
     [SerializeField]
     private float moveTime = 10f;
-
+    public GameObject SelfObject() { return gameObject; }
+    public bool IsActiveObject() { return gameObject.activeSelf; }
+    public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
     public void MoveButtons(Vector2 pos)
     {
         if (rectTransform == null) { return; }

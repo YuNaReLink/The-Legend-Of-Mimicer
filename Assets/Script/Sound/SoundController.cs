@@ -17,7 +17,9 @@ namespace SoundTagList
 
 public class SoundController : MonoBehaviour
 {
-    public virtual SoundManager.SoundType GetSoundType() { return SoundManager.SoundType.Null; }
+    [SerializeField]
+    protected SoundManager.SoundType soundType = SoundManager.SoundType.Null;
+    public SoundManager.SoundType GetSoundType() { return soundType; }
     [SerializeField]
     protected AudioSource audioSource = null;
     [SerializeField]

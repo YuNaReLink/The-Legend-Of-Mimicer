@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class BossSoundController : SoundController
 {
-    public override SoundManager.SoundType GetSoundType() { return SoundManager.SoundType.SE; }
     public enum BossSoundTag
     {
         Foot,
         Attack,
         Damage,
-        WeakPointsDamage
+        WeakPointsDamage,
     }
 
     private DeltaTimeCountDown moveSECoolDown = null;

@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class TitleSceneController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    /// <summary>
+    /// カーソルを表示・非表示を管理するクラス
+    /// </summary>
+    CursorController cursor = null;
+
+    private void Awake()
+    {
+        cursor = CursorController.GetInstance();
+    }
     void Start()
     {
         Time.timeScale = 1f;
+        cursor.SetCursorLookMode(CursorLockMode.None);
+        cursor.SetCursorState(true);
     }
 }

@@ -462,7 +462,7 @@ MonoBehaviour:
   - 0.7
   - 0.7
   hitWallFlagArray: 00000000
-  wallJumpPower: 2000
+  wallJumpPower: 1500
   climbForward: 1.5
   climbUp: 2
   stepJumpFlag: 0
@@ -516,6 +516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb184a7f6206aa54f9c0567d4392d515, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundType: 1
   audioSource: {fileID: 594869213626691746}
   clipData: {fileID: 11400000, guid: b2309f9cf2ea4c249a4c51153c280f68, type: 2}
 --- !u!82 &594869213626691746

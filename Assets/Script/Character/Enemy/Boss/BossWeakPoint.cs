@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossWeakPoint : MonoBehaviour
@@ -24,11 +22,11 @@ public class BossWeakPoint : MonoBehaviour
         switch (controller.CurrentState)
         {
             case CharacterTag.StateTag.Attack:
-                controller.GetVFXController().CreateVFX(VFXScriptableObject.VFXTag.Damage, other.transform.position, 1f, Quaternion.identity);
+                controller.GetVFXController().CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position, 1f, Quaternion.identity);
                 controller.StunFlag = true;
                 break;
             case CharacterTag.StateTag.Damage:
-                controller.GetVFXController().CreateVFX(VFXScriptableObject.VFXTag.Damage, other.transform.position, 1f, Quaternion.identity);
+                controller.GetVFXController().CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position, 1f, Quaternion.identity);
                 controller.GetBossDamageCommand().Attacker = other.gameObject;
                 controller.GetBossDamageCommand().DamageFlag = true;
                 break;
