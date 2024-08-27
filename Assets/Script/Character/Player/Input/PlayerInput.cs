@@ -167,6 +167,7 @@ public class PlayerInput : MonoBehaviour
 
     public void UpdatePlayerInput()
     {
+        ForcedRelease();
         //É_ÉÅÅ[ÉWì¸óÕ
         DamageInput();
         if (!controller.DeathFlag)
@@ -227,6 +228,27 @@ public class PlayerInput : MonoBehaviour
                 AnimatorStateInfo animInfo = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
                 if (attackButton&& controller.BattleMode)
                     controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.FirstAttack);
+                break;
+        }
+    }
+
+    private void ForcedRelease()
+    {
+        switch (controller.CurrentState)
+        {
+            case StateTag.Attack:
+            case StateTag.JumpAttack:
+            case StateTag.SpinAttack:
+                break;
+            default:
+                if(controller.TripleAttack != TripleAttack.Null)
+                {
+                    controller.TripleAttack = TripleAttack.Null;
+                }
+                if(threeAttackCount > 0)
+                {
+                    threeAttackCount = 0;
+                }
                 break;
         }
     }
@@ -293,11 +315,23 @@ public class PlayerInput : MonoBehaviour
     private void SetHorizontalAndVertical()
     {
         //ì¸óÕé©ëÃÇè¡Ç∑èÍçá
-        bool stopinput = controller.CurrentState == StateTag.Damage|| controller.CurrentState == StateTag.Gurid;
-        if (stopinput) {
-            vertical = 0f;
-            horizontal = 0f;
-            return; 
+        switch (controller.CurrentState)
+        {
+            case StateTag.Damage:
+            case StateTag.Gurid:
+                vertical = 0f;
+                horizontal = 0f;
+                return;
+            case StateTag.Grab:
+            case StateTag.ClimbWall:
+            case StateTag.WallJump:
+                if (!controller.GetCameraController().IsCameraVerticalRotation())
+                {
+                    vertical = 0f;
+                    horizontal = 0f;
+                    return;
+                }
+                break;
         }
         //ì¸óÕÇªÇÃÇ‹Ç‹Ç≈é~ÇﬂÇÈèÍçá
         if (controller.GetObstacleCheck().CliffJumpFlag){return;}
@@ -317,6 +351,12 @@ public class PlayerInput : MonoBehaviour
             case StateTag.ReadySpinAttack:
             case StateTag.SpinAttack:
                 return;
+            case StateTag.ChangeMode:
+                if (!controller.GetCameraController().IsFPSMode())
+                {
+                    return;
+                }
+                break;
         }
         bool stopstate = controller.CurrentState == StateTag.Idle&&guardHoldButton;
         if (stopstate) { return; }
@@ -456,7 +496,7 @@ public class PlayerInput : MonoBehaviour
         if (controller.MoveInput) { return; }
         if (!controller.Landing) { return; }
         if (!changeButton) { return;}
-        if(controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Sword])){ return; }
+        if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Sword])){ return; }
         if (controller.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.CrossBow) { return; }
         controller.BattleMode = !controller.BattleMode;
         controller.GetMotion().ChangeMotion(StateTag.ChangeMode);

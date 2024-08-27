@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Data/Create ObjectList")]
 public class ObjectList : ScriptableObject
 {
     [SerializeField]

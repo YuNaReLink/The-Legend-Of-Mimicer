@@ -100,6 +100,9 @@ public class SwordAttackCommand : BaseToolCommand
             case StateTag.Null:
             case StateTag.JumpAttack:
             case StateTag.Attack:
+            case StateTag.Grab:
+            case StateTag.ClimbWall:
+            case StateTag.WallJump:
                 return true;
         }
         return false;

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,22 +11,28 @@ public class GameClearUIController : MonoBehaviour
 
     private MoverButton gameClearButtons = null;
 
+    public GameObject SelfObject() { return gameObject; }
+
+    public bool IsActiveObject() { return gameObject.activeSelf; }
+
+    public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
+
     public void AwakeInitilaize()
     {
         gameClearUIObjectList.Clear();
 
         panelFadeIn = GetComponentInChildren<FadeIn>();
-        gameClearUIObjectList.Add(panelFadeIn.gameObject);
+        gameClearUIObjectList.Add(panelFadeIn.SelfObject());
 
         gameClearText = GetComponentInChildren<FadeInText>();
         if (gameClearText != null)
         {
             gameClearText.AwakeInitilaize();
-            gameClearUIObjectList.Add(gameClearText.gameObject);
+            gameClearUIObjectList.Add(gameClearText.SelfObject());
         }
 
         gameClearButtons = GetComponentInChildren<MoverButton>();
-        gameClearUIObjectList.Add(gameClearButtons.gameObject);
+        gameClearUIObjectList.Add(gameClearButtons.SelfObject());
     }
 
     public void StartInitialize()

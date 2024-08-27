@@ -46,7 +46,7 @@ public class GameUIController : MonoBehaviour
         {
             canvasSoundController.AwakeInitilaize();
         }
-        keySoundController = playerUIController.GetKeyInputUIController().gameObject.GetComponentInChildren<SoundController>();
+        keySoundController = playerUIController.GetKeyInputUIController().SelfObject().GetComponentInChildren<SoundController>();
         if(keySoundController != null)
         {
             keySoundController.AwakeInitilaize();
@@ -64,6 +64,9 @@ public class GameUIController : MonoBehaviour
 
     void Update()
     {
+        //ÉQÅ[ÉÄÇÃèÛë‘Ç…âeãøÇ≥ÇÍÇ»Ç¢UIÇÃèàóù
+        playerUIController.AllGameSceneUpdatePlayerUI();
+        //à»â∫ÇÕÉQÅ[ÉÄÇÃèÛë‘Ç…ÇÊÇ¡ÇƒåƒÇ—èoÇ≥ÇÍÇÈUIèàóù
         switch (GameManager.GameState)
         {
             case GameManager.GameStateEnum.Game:
@@ -81,13 +84,13 @@ public class GameUIController : MonoBehaviour
 
     private void GameOverUIStartCheck()
     {
-        if (!gameOverUIController.gameObject.activeSelf)
+        if (!gameOverUIController.IsActiveObject())
         {
             PlayerController controller = playerUIController.GetPlayerController();
             Animator animator =controller.GetAnimator();
             AnimatorStateInfo animInfo = animator.GetCurrentAnimatorStateInfo(0);
             if (!animInfo.IsName("death")|| animInfo.normalizedTime < 1.0f) { return; }
-            gameOverUIController.gameObject.SetActive(true);
+            gameOverUIController.SetActiveObject(true);
         }
         else
         {
@@ -97,10 +100,10 @@ public class GameUIController : MonoBehaviour
 
     private void GameClearUIStartCheck()
     {
-        if (!gameClearUIController.gameObject.activeSelf)
+        if (!gameClearUIController.IsActiveObject())
         {
             if(GameSceneSystemController.GetCameraFocusObject() != null) { return; }
-            gameClearUIController.gameObject.SetActive(true);
+            gameClearUIController.SetActiveObject(true);
         }
         else
         {

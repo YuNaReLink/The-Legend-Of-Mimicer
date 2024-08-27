@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Data/Create WeaponStateData")]
 public class WeaponStateData : ScriptableObject
 {
     [SerializeField]

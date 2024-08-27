@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56cb6321c3080ba42a8d0928561ab693, type: 3}
+  m_Name: GameStageBGM
+  m_EditorClassIdentifier: 
+  audioClipList:
+  - {fileID: 8300000, guid: e0d76c6684e40be4cb9a34523b162954, type: 3}
+  - {fileID: 8300000, guid: 07f6bab202dac134098ad0dfeca50ef1, type: 3}
+  - {fileID: 8300000, guid: 82cfdc5ff29c3e74190865bd7343075b, type: 3}
+  - {fileID: 8300000, guid: 4e5a949d42405024eaa947b927bce5f2, type: 3}
+  - {fileID: 8300000, guid: a396c5c95ec54444b8cc075f687acd6a, type: 3}

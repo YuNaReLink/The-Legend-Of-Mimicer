@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossController : EnemyController
@@ -143,7 +141,7 @@ public class BossController : EnemyController
 
     public override void Death()
     {
-        GameSceneSystemController.GameClearUpdate(this.gameObject);
+        GameSceneSystemController.GameClearUpdate(gameObject);
         base.Death();
     }
 

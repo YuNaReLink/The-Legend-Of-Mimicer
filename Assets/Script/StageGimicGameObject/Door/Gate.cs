@@ -24,6 +24,17 @@ public class Gate : MonoBehaviour
     [SerializeField]
     private float openSpeed = 5f;
 
+    private SoundController soundController = null;
+
+    private void Awake()
+    {
+        soundController = GetComponent<SoundController>();
+        if(soundController != null)
+        {
+            soundController.AwakeInitilaize();
+        }
+    }
+
     void Start()
     {
         for(int i = 0;i < transform.childCount; i++)
@@ -59,6 +70,7 @@ public class Gate : MonoBehaviour
         if (truecount >= switchGimics.Count)
         {
             openGate = true;
+            soundController.PlaySESound((int)SoundTagList.OpenDoorSoundTag.Open);
         }
     }
 

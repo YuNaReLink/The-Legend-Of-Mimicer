@@ -131,8 +131,8 @@ public class CameraController : MonoBehaviour
         if(player == null) { return; }
         if (fpsMode)
         {
-            Vector3 fpsPos = player.gameObject.transform.position;
-            fpsPos.y = player.gameObject.transform.position.y + neckHeight;
+            Vector3 fpsPos = player.transform.position;
+            fpsPos.y = player.transform.position.y + neckHeight;
             transform.position = fpsPos;
             // 現在の回転角度を取得
             Vector3 currentRotation = transform.eulerAngles;
@@ -245,10 +245,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private void TPSCamera()
     {
-        if (target == null||player == null)
-        {
-            return;
-        }
+        if (target == null||player == null){return;}
         if(lockObject == null)
         {
             focusFlag = false;
@@ -267,16 +264,9 @@ public class CameraController : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, player.transform.position + rotatedOffset, Time.deltaTime * 2.0f);
             return;
         }
-        else if (!focusFlag && player.GetKeyInput().IsCameraLockEnabled())
+        else if (!focusFlag && player.GetKeyInput().IsCameraLockEnabled() || NoTPSCameraState())
         {
-            float playerRotationY = player.transform.rotation.eulerAngles.y;
-            if(playerRotationY > 180)
-            {
-                playerRotationY -= 360;
-            }
-            float playerRotationX = player.transform.rotation.eulerAngles.x;
-            rotation_hor = Mathf.Lerp(rotation_hor, playerRotationY, Time.deltaTime * resetCameraSpeed);
-            rotation_ver = Mathf.Lerp(rotation_ver, playerRotationX, Time.deltaTime * resetCameraSpeed);
+            ResetCameraAngles(resetCameraSpeed);
         }
         else
         {
@@ -286,6 +276,42 @@ public class CameraController : MonoBehaviour
         }
 
         MoveCameraPositionAndRotatetion();
+    }
+    /// <summary>
+    /// Stateの状態によってカメラの方向をリセットするか決めるフラグ
+    /// </summary>
+    /// <returns></returns>
+    private bool NoTPSCameraState()
+    {
+        switch (player.CurrentState)
+        {
+            case CharacterTag.StateTag.Grab:
+            case CharacterTag.StateTag.ClimbWall:
+            case CharacterTag.StateTag.WallJump:
+                return true;
+        }
+        return false;
+    }
+    /// <summary>
+    /// カメラの方向をプレイヤーをバックに映す位置に線形補間で移動
+    /// 引数で移動するスピードを設定
+    /// </summary>
+    /// <param name="speed"></param>
+    public void ResetCameraAngles(float speed)
+    {
+        float playerRotationY = player.transform.rotation.eulerAngles.y;
+        if (playerRotationY > 180)
+        {
+            playerRotationY -= 360;
+        }
+        float playerRotationX = player.transform.rotation.eulerAngles.x;
+        rotation_hor = Mathf.Lerp(rotation_hor, playerRotationY, Time.deltaTime * speed);
+        rotation_ver = Mathf.Lerp(rotation_ver, playerRotationX, Time.deltaTime * speed);
+    }
+
+    public bool IsCameraVerticalRotation()
+    {
+        return rotation_ver  - player.transform.rotation.eulerAngles.x < 0.1f;
     }
 
     private void FPSCamera()

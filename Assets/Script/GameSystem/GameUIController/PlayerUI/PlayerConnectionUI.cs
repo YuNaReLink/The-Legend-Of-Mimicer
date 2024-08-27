@@ -102,10 +102,14 @@ public class PlayerConnectionUI : MonoBehaviour
             menuActiveController.StartInitialize();
         }
     }
+
+    public void AllGameSceneUpdatePlayerUI()
+    {
+        playerLifeUI.LifeUpdate(playerController.HP);
+    }
     //GameUIControllerÇÃUpdateÇ…ãLèqÇ∑ÇÈä÷êî
     public void PlayerUIUpdate()
     {
-        playerLifeUI.LifeUpdate(playerController.HP);
 
         if (playerController.GetCameraController().IsFPSMode()&&playerController.GetToolController().GetQuiver() != null)
         {

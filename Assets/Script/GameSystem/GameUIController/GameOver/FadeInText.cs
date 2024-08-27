@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +12,9 @@ public class FadeInText : MonoBehaviour
 
     private bool textFadeEnd = false;
     public bool IsTextFadeEnd() { return textFadeEnd; }
-
+    public GameObject SelfObject() { return gameObject; }
+    public bool IsActiveObject() { return gameObject.activeSelf; }
+    public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
     public void AwakeInitilaize()
     {
         gameOverText = GetComponent<Text>();

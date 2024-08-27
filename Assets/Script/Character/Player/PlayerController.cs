@@ -127,6 +127,9 @@ public class PlayerController : CharacterController
     private PlayerSoundController soundController = null;
     public PlayerSoundController GetSoundController() { return soundController; }
 
+    public GameObject SelfObject() { return gameObject; }
+    public bool IsActiveObject() { return gameObject.activeSelf; }
+    public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
     protected override void Awake()
     {
         base.Awake();
@@ -141,8 +144,6 @@ public class PlayerController : CharacterController
     protected override void Start()
     {
         base.Start();
-
-
         currentState = CharacterTag.StateTag.GetUp;
         soundController.AwakeInitilaize();
         if (data != null)
@@ -412,7 +413,7 @@ public class PlayerController : CharacterController
     public override void Death()
     {
         base.Death();
-        vfxController.CreateVFX(VFXScriptableObject.VFXTag.Die, transform.position, 1f, Quaternion.identity);
+        vfxController.CreateVFX((int)EffectTagList.CharacterEffectTag.Death, transform.position, 1f, Quaternion.identity);
     }
     public override void RecoveryHelth(int count)
     {

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ArrowItem : Consumables
@@ -12,7 +10,7 @@ public class ArrowItem : Consumables
     {
         var player = other.GetComponent<PlayerController>();
         if(player == null) { return; }
-        var quiver = player.gameObject.GetComponentInChildren<Quiver>();
+        var quiver = player.SelfObject().GetComponentInChildren<Quiver>();
         if(quiver == null) { return; }
         quiver.AddArrow(count);
         GetCommand(player,count);

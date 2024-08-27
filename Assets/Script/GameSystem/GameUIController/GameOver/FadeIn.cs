@@ -10,7 +10,10 @@ public class FadeIn : MonoBehaviour
     private float fadeTime = 2f;
     private bool fadeEnd = false;
     public bool IsFadeEnd() { return fadeEnd; }
+    public GameObject SelfObject() { return gameObject; }
+    public bool IsActiveObject() { return gameObject.activeSelf; }
 
+    public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
 
     public void StartFadeIn()
     {

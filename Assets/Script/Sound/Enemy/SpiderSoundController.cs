@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpiderSoundController : SoundController
 {
-    public override SoundManager.SoundType GetSoundType() { return SoundManager.SoundType.SE; }
     public enum SpiderSoundTag
     {
         Foot,
