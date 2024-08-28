@@ -16,7 +16,14 @@ public class ToolInventoryController : MonoBehaviour
     }
 
     private ToolObjectTag currentToolTag = ToolObjectTag.Null;
-    public ToolObjectTag CurrentToolTag { get{ return currentToolTag; }set { currentToolTag = value; } }
+    private bool currentToolChange = false;
+    public ToolObjectTag CurrentToolTag => currentToolTag;
+    public bool IsCurrentToolChange => currentToolChange;
+    public void ChangeToolTag(ToolObjectTag tooltag)
+    {
+        currentToolTag = tooltag;
+        currentToolChange = true;
+    }
 
     private InventoryData inventoryData = null;
     public InventoryData GetInventoryData() {  return inventoryData; }
@@ -39,6 +46,9 @@ public class ToolInventoryController : MonoBehaviour
         }
         return true;
     }
+
+    public bool CheckNullTool(ToolInventoryController.ToolObjectTag toolTag) =>
+        CheckNullToolObject(inventoryData.ToolItemList[(int)toolTag]);
 
     /// <summary>
     /// 道具の管理クラスのリスト
@@ -84,8 +94,9 @@ public class ToolInventoryController : MonoBehaviour
     }
 
 
-    public void UpdateProps()
+    public void UpdateTool()
     {
+        currentToolChange = false;
         ChangeSwordTransform();
         ChangeCrossBowTransform();
         ChangeShieldTransform();
@@ -170,7 +181,7 @@ public class ToolInventoryController : MonoBehaviour
         if (inventoryData.ToolItemList[(int)ToolObjectTag.CrossBow] == null) { return; }
         if (currentToolTag == ToolObjectTag.CrossBow)
         {
-            SetToolPosition(ToolObjectTag.CrossBow, controller.GetCameraObject().transform);
+            SetToolPosition(ToolObjectTag.CrossBow, controller.GetCameraController().transform);
             inventoryData.ToolItemList[(int)ToolObjectTag.CrossBow].transform.localPosition = localCrossBowPos;
         }
         else

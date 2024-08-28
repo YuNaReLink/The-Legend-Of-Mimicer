@@ -328,21 +328,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: -1
   pastState: -1
-  animator: {fileID: 0}
   maxHp: 0
   hp: 0
   death: 0
   velocity: {x: 0, y: 0, z: 0}
   guardState: -1
-  characterCollider: {fileID: 0}
-  characterRB: {fileID: 0}
   input: 0
-  groundCheck: {fileID: 0}
   landing: 0
   jumping: 0
   jumpPower: 0
   stopController: 0
-  vfxController: {fileID: 0}
   data: {fileID: 11400000, guid: 2a35ea8483179074b998d0a286b0cccb, type: 2}
   cameraObject: {fileID: 0}
   cameraScript: {fileID: 0}
@@ -500,7 +495,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4348658367534398464}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63e0a05d3439d9b4ba46147d1ad7dc35, type: 3}
+  m_Script: {fileID: 11500000, guid: 1c163434f25faf6448499d1ea550c5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   vfxObjects: {fileID: 11400000, guid: d94f1fec5b4177f409d7485064fdbe30, type: 2}

@@ -215,8 +215,7 @@ public class ObstacleCheck : MonoBehaviour
                 timerStopWallAction.OnCompleted += () =>
                 {
                     if (controller.GetKeyInput().Vertical == 0 &&
-                        controller.GetKeyInput().Horizontal == 0 &&
-                        !MovePositionCheck()) { return; }
+                        controller.GetKeyInput().Horizontal == 0) { return; }
                     stepJumpFlag = true;
                 };
                 return;
@@ -264,16 +263,6 @@ public class ObstacleCheck : MonoBehaviour
                 return;
             }
         }
-    }
-
-    private bool MovePositionCheck()
-    {
-        Vector3 sub = controller.CurrentPos - controller.PastPos;
-        if (sub.magnitude > 0.01f)
-        {
-            return true;
-        }
-        return false;
     }
 
     private void MoveInputCheck()

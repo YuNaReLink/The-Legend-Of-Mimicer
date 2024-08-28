@@ -2,77 +2,76 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private Camera myCamera = null;
+    private Camera              myCamera = null;
 
     [Header("カメラが追従するターゲット")]
     [SerializeField]
-    private GameObject target;
-    [Header("ターゲットがプレイヤーの時にアタッチされるインスタンス宣言")]
-    [SerializeField]
-    private PlayerController player;
+    private GameObject          target;
+
+    private PlayerController    player;
 
     [Header("カメラとターゲットの初期距離")]
     [SerializeField]
-    private float distance_base = 10.0f;
+    private float               distance_base = 10.0f;
     [SerializeField]
-    private float maxDistanceBase = 10.0f;
+    private float               maxDistanceBase = 10.0f;
     [Header("カメラのX移動スピード")]
     [SerializeField]
-    private float mouseXSpeed = 3.0f;
+    private float               mouseXSpeed = 3.0f;
     [Header("カメラのY移動スピード")]
     [SerializeField]
-    private float mouseYSpeed = 1.5f;
+    private float               mouseYSpeed = 1.5f;
 
     /// <summary>
     /// カメラの回転量を保持するもの
     /// </summary>
     [SerializeField]
-    private float rotation_hor;
+    private float               rotation_hor;
     [SerializeField]
-    private float rotation_ver;
+    private float               rotation_ver;
 
     [SerializeField]
-    private float resetCameraSpeed = 5.0f;
+    private float               resetCameraSpeed = 5.0f;
 
-    private Vector3 targettrack;
+    private Vector3             targettrack;
     [Header("=================")]
     [SerializeField]
-    private float desiredDistanceBehindPlayer = 3.0f;
+    private float               desiredDistanceBehindPlayer = 3.0f;
     [SerializeField]
-    private float focusCameraPosX = 1.5f;
+    private float               focusCameraPosX = 1.5f;
     [SerializeField]
-    private float focusCameraPosY = 2.0f;
+    private float               focusCameraPosY = 2.0f;
 
     [SerializeField]
-    private Vector3 initCameraRotation = new Vector3(0, 0.2f, -5);
+    private Vector3             initCameraRotation = new Vector3(0, 0.2f, -5);
     // カメラとプレイヤーの距離
     [SerializeField]
-    private float baseDistance = 2;
+    private float               baseDistance = 2;
     // カメラの高さ
     [SerializeField]
-    private float height = 1.0f;
+    private float               height = 1.0f;
     // カメラの動きの滑らかさ
     [SerializeField]
-    private float damping = 10.0f;
+    private float               damping = 10.0f;
 
     [SerializeField]
-    private float neckHeight = 0;
+    private float               neckHeight = 0;
 
     [SerializeField]
-    private float testHor = 0;
+    private float               testHor = 0;
 
     //注目するためのフラグ
-    private static bool focusFlag = false;
+    private static bool         focusFlag = false;
 
-    public static bool FocusFlag { get { return focusFlag; } set { focusFlag = value; } }
+    public static bool          FocusFlag { get { return focusFlag; } set { focusFlag = value; } }
 
     //注目する座標を保持するもの
-    private static GameObject lockObject;
+    private static GameObject   lockObject;
 
-    public static GameObject LockObject { get { return lockObject; }set { lockObject = value; } }
+    public static GameObject    LockObject { get { return lockObject; }set { lockObject = value; } }
 
     [SerializeField]
-    private bool fpsMode = false;
+    private bool                fpsMode = false;
     public bool IsFPSMode() {  return fpsMode; }
 
     private void Awake()
@@ -88,7 +87,7 @@ public class CameraController : MonoBehaviour
             Debug.LogError("カメラがアタッチされませんでした。");
         }
         target = GameObject.FindWithTag("Player");
-        if (target.tag == "Player")
+        if (target != null && player == null)
         {
             player = target.GetComponent<PlayerController>();
         }
@@ -96,6 +95,8 @@ public class CameraController : MonoBehaviour
         rotation_hor = 0f;
         rotation_ver = 0f;
         targettrack = Vector3.zero;
+
+        distance_base = maxDistanceBase;
     }
 
     private void Update()
@@ -127,8 +128,8 @@ public class CameraController : MonoBehaviour
 
     private void GameStateCameraControle()
     {
-        SetCameraMode();
         if(player == null) { return; }
+        SetCameraMode();
         if (fpsMode)
         {
             Vector3 fpsPos = player.transform.position;
@@ -143,52 +144,23 @@ public class CameraController : MonoBehaviour
             // 回転角度を設定
             transform.eulerAngles = currentRotation;
         }
-        else
+        if (Mathf.Abs(rotation_hor) >= 360)
         {
-
-            //カメラとプレイヤーとの距離が1.0fに設定
-            distance_base -= Input.mouseScrollDelta.y * 0.5f;
-            if (distance_base < 1.0f)
-            {
-                distance_base = 1.0f;
-            }
-            else if (distance_base > maxDistanceBase)
-            {
-                distance_base = maxDistanceBase;
-            }
-
-            if (Mathf.Abs(rotation_hor) >= 360)
-            {
-                rotation_hor = 0;
-            }
+            rotation_hor = 0;
         }
     }
 
     private void SetCameraMode()
     {
-        switch (player.CurrentState)
+        ChangeFpsMode(player.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.CrossBow);
+    }
+
+    void ChangeFpsMode(bool mode)
+    {
+        fpsMode = mode;
+        foreach (var renderer in player.GetRendererData().GetRendererList())
         {
-            case CharacterTag.StateTag.Idle:
-            case CharacterTag.StateTag.Run:
-                break;
-            default:
-                return;
-        }
-        if (InputManager.ToolButton())
-        {
-            fpsMode = true;
-            for(int i = 0; i < player.GetRendererData().GetRendererList().Count; i++)
-            {
-                player.GetRendererData().GetRendererList()[i].enabled = false;
-            }
-        }
-        if (InputManager.ChangeButton() || InputManager.AttackButton())
-        {
-            fpsMode = false;
-            for (int i = 0; i < player.GetRendererData().GetRendererList().Count; i++)
-            {
-                player.GetRendererData().GetRendererList()[i].enabled = true;
-            }
+            renderer.enabled = !mode;
         }
     }
 
@@ -207,8 +179,8 @@ public class CameraController : MonoBehaviour
             case GameManager.GameStateEnum.GameOver:
                 break;
             case GameManager.GameStateEnum.GameClear:
-                if(target == GameSceneSystemController.GetCameraFocusObject()) { return; }
-                GameObject o = GameSceneSystemController.GetCameraFocusObject();
+                if(target == GameSceneSystemController.Instance.GetCameraFocusObject()) { return; }
+                GameObject o = GameSceneSystemController.Instance.GetCameraFocusObject();
                 if(o.GetComponent<BossController>() == null) { return; }
                 target = o;
                 break;
@@ -249,7 +221,6 @@ public class CameraController : MonoBehaviour
         if(lockObject == null)
         {
             focusFlag = false;
-            player.GetKeyInput().LockCamera = false;
         }
         if (focusFlag&&player.GetKeyInput().IsCameraLockEnabled())
         {
@@ -300,7 +271,7 @@ public class CameraController : MonoBehaviour
     public void ResetCameraAngles(float speed)
     {
         float playerRotationY = player.transform.rotation.eulerAngles.y;
-        if (playerRotationY > 180)
+        if (playerRotationY - rotation_hor > 180)
         {
             playerRotationY -= 360;
         }

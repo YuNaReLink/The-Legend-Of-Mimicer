@@ -413,7 +413,8 @@ PrefabInstance:
       value: Room03
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8677637206069310449, guid: e0a7cc4a32422e046b773b3d8f397be9, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e0a7cc4a32422e046b773b3d8f397be9, type: 3}
@@ -1331,6 +1332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e545472806b02b146acc82a3a3f12403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundType: 0
   audioSource: {fileID: 0}
   clipData: {fileID: 11400000, guid: 251fc5507deedeb47990ddc8604e8cd8, type: 2}
 --- !u!82 &598085713
@@ -1848,6 +1850,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1195481981}
   - component: {fileID: 1195481980}
+  - component: {fileID: 1195481983}
   - component: {fileID: 1195481982}
   m_Layer: 0
   m_Name: TitleController
@@ -1979,6 +1982,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1195481983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195481979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dda09b7bc5b8924aae846941d5e98d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundType: 0
+  audioSource: {fileID: 0}
+  clipData: {fileID: 11400000, guid: 2072445065aacea4a8ba5af5501349f0, type: 2}
 --- !u!1 &1274481420
 GameObject:
   m_ObjectHideFlags: 0

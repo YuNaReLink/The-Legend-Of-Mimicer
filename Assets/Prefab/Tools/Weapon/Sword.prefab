@@ -379,7 +379,19 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 4740761344002358874, guid: 3aaad6c9e3507c6489d172384c89d89d, type: 3}
+      propertyPath: ShapeModule.type
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740761344002358874, guid: 3aaad6c9e3507c6489d172384c89d89d, type: 3}
+      propertyPath: emitterVelocityMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740761344002358874, guid: 3aaad6c9e3507c6489d172384c89d89d, type: 3}
       propertyPath: TrailModule.textureScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740761344002358874, guid: 3aaad6c9e3507c6489d172384c89d89d, type: 3}
+      propertyPath: ShapeModule.radiusThickness
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4740761344002358874, guid: 3aaad6c9e3507c6489d172384c89d89d, type: 3}

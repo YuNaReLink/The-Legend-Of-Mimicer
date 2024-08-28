@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 3451543530175248201}
   m_Layer: 3
   m_Name: Fence_01
-  m_TagString: Obstacle
+  m_TagString: Decoration
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6143327382123120946
 Transform:

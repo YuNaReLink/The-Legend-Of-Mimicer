@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2021071498212989143}
   m_Layer: 0
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: SearchArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,7 +67,7 @@ GameObject:
   - component: {fileID: 8513270383507056083}
   m_Layer: 0
   m_Name: ArrowItem
-  m_TagString: Untagged
+  m_TagString: SearchArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

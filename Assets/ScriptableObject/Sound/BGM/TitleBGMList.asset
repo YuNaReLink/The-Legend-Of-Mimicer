@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbbd519199e742a4581d6778f58b4380, type: 3}
-  m_Name: PlayerVFX
+  m_Script: {fileID: 11500000, guid: 56cb6321c3080ba42a8d0928561ab693, type: 3}
+  m_Name: TitleBGMList
   m_EditorClassIdentifier: 
-  vfxArray:
-  - {fileID: 100004, guid: fb7b0526ade434043b350a180d741cf3, type: 3}
-  - {fileID: 100004, guid: fb7b0526ade434043b350a180d741cf3, type: 3}
+  audioClipList:
+  - {fileID: 8300000, guid: 3186635da0a970d45909fa861f0f1144, type: 3}

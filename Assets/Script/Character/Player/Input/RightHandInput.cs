@@ -16,34 +16,12 @@ public class RightHandInput
     public void Execute()
     {
         //右手クラスに道具コマンドを設定する処理
-        SetRightTool();
-        //右手の入力
-        if (controller.RightCommand == null) { return; }
-        controller.RightCommand.Input();
-    }
-
-    private void SetRightTool()
-    {
-        //各入力でタグを設定する処理
         SetToolInput();
-
-        BaseToolCommand tool = controller.RightCommand;
-        switch (controller.GetToolController().CurrentToolTag)
-        {
-            case ToolInventoryController.ToolObjectTag.Null:
-                tool = null;
-                break;
-            case ToolInventoryController.ToolObjectTag.Sword:
-                tool = new SwordAttackCommand(controller);
-                break;
-            case ToolInventoryController.ToolObjectTag.CrossBow:
-                GameObject crossBow = controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.CrossBow];
-                CrossBowShoot shot = crossBow.GetComponent<CrossBowShoot>();
-                tool = new CrossBowTool(controller,shot);
-                break;
-        }
-        SetTool(tool);
+        //右手の入力
+        if (controller.RightAction == null) { return; }
+        controller.RightAction.Input();
     }
+
     private bool CheckStopState()
     {
         StateTag state = controller.CurrentState;
@@ -76,72 +54,83 @@ public class RightHandInput
         return false;
     }
 
+    private bool IsSwordCheck() => controller.GetToolController().CheckNullTool(ToolInventoryController.ToolObjectTag.Sword);
+    private bool IsCrossBowCheck() => controller.GetToolController().CheckNullTool(ToolInventoryController.ToolObjectTag.CrossBow);
+
     private void SetToolInput()
     {
         //仮のタグの入れ物を作成
-        ToolInventoryController.ToolObjectTag tooltag = controller.GetToolController().CurrentToolTag; ;
+        var tooltag = controller.GetToolController().CurrentToolTag;
         //各入力に合ったタグを代入
         if (controller.GetKeyInput().AttackButton)
         {
             //剣がインベントリにないかチェック
-            bool nullSword = controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Sword]);
-            if (nullSword||CheckStopState()){return;}
-            //剣抜き出し時の時だけのサウンド再生
-            if(tooltag != ToolInventoryController.ToolObjectTag.Sword)
-            {
-                controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.FirstAttack);
-            }
+            if (IsSwordCheck() || CheckStopState()) { return; }
             tooltag = ToolInventoryController.ToolObjectTag.Sword;
         }
-        else if (controller.GetKeyInput().ToolButton&&controller.GetCameraController().IsFPSMode())
+        else if (controller.GetKeyInput().ToolButton)
         {
-            if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.CrossBow]))
-            {
-                return;
-            }
-            //まだクロスボウのタグが入っていないなら
-            if(tooltag != ToolInventoryController.ToolObjectTag.CrossBow)
-            {
-                //ボタンフラグを解除
-                controller.GetKeyInput().ToolButton = false;
-            }
+            if (IsCrossBowCheck()) { return; }
             tooltag = ToolInventoryController.ToolObjectTag.CrossBow;
+        }
+        else if (controller.GetKeyInput().ChangeButton)
+        {
+            if (!NoChangeModeState()) { return; }
+            if (tooltag == ToolInventoryController.ToolObjectTag.Null && controller.BattleMode)
+            {
+                if (IsSwordCheck()) { return; }
+                tooltag = ToolInventoryController.ToolObjectTag.Sword;
+            }
+            else
+            {
+                tooltag = ToolInventoryController.ToolObjectTag.Null;
+            }
+        }
+        //同じタグならリターン
+        if(controller.GetToolController().CurrentToolTag == tooltag) { return; }
+        //あったらそのオブジェクトのタグを代入
+        ChangeControllerToolTag(tooltag); ;
+    }
+
+    private void ChangeControllerToolTag(ToolInventoryController.ToolObjectTag tooltag)
+    {
+        controller.GetToolController().ChangeToolTag(tooltag);
+
+        if (tooltag == ToolInventoryController.ToolObjectTag.CrossBow)
+        {
             if (controller.BattleMode)
             {
                 controller.BattleMode = false;
                 controller.GetMotion().ChangeMotion(StateTag.ChangeMode);
             }
         }
-        else if (controller.GetKeyInput().ChangeButton)
+
+        //変更されたツールのコマンドを生成する
+        BaseToolAction tool = controller.RightAction;
+        switch (controller.GetToolController().CurrentToolTag)
         {
-            if (!NoChangeModeState()) { return; }
-            if (controller.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.Null&&controller.BattleMode)
-            {
-                if (controller.GetToolController().CheckNullToolObject(controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.Sword]))
-                {
-                    return;
-                }
-                tooltag = ToolInventoryController.ToolObjectTag.Sword;
-            }
-            else
-            {
-                tooltag = ToolInventoryController.ToolObjectTag.Null;
-            }   
+            case ToolInventoryController.ToolObjectTag.Null:
+                tool = null;
+                break;
+            case ToolInventoryController.ToolObjectTag.Sword:
+                tool = new SwordAttackCommand(controller);
+                break;
+            case ToolInventoryController.ToolObjectTag.CrossBow:
+                GameObject crossBow = controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.CrossBow];
+                CrossBowShoot shot = crossBow.GetComponent<CrossBowShoot>();
+                tool = new CrossBowTool(controller, shot);
+                break;
         }
-        //同じタグならリターン
-        if(controller.GetToolController().CurrentToolTag == tooltag) { return; }
-        //あったらそのオブジェクトのタグを代入
-        controller.GetToolController().CurrentToolTag = tooltag;
+        SetTool(tool);
     }
 
-    private void SetTool(BaseToolCommand tool)
+    private void SetTool(BaseToolAction tool)
     {
-        if (controller.RightCommand != null)
+        if (controller.RightAction != null)
         {
-            if (controller.RightCommand.Equals(tool)) { return; }
+            if (controller.RightAction.Equals(tool)) { return; }
         }
-        else if(controller.RightCommand == tool) { return; }
-        controller.RightCommand = tool;
+        controller.RightAction = tool;
     }
 
 }

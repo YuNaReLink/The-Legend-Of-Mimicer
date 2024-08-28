@@ -1176,6 +1176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbc2b5d0a4f8a874ca61e302d62bff25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundType: 0
   audioSource: {fileID: 8922540797906015299}
   clipData: {fileID: 11400000, guid: 912f7cdd698936147a55921d4579aeb0, type: 2}
 --- !u!1 &2005100794799180757
@@ -3243,6 +3244,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fe9cb4eb7a96ae46ae2e44e72e5c6ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasSoundController: {fileID: 0}
+  keySoundController: {fileID: 0}
 --- !u!114 &7806010799588899660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3255,6 +3258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e545472806b02b146acc82a3a3f12403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundType: 0
   audioSource: {fileID: 0}
   clipData: {fileID: 11400000, guid: 251fc5507deedeb47990ddc8604e8cd8, type: 2}
 --- !u!82 &8922540797906015299
@@ -6039,7 +6043,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -510, y: 60}
+  m_AnchoredPosition: {x: -510, y: 50}
   m_SizeDelta: {x: 700, y: 780}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4419188783213883816

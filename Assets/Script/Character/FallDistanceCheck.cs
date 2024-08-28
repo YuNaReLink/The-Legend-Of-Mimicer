@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class FallDistanceCheck
 {
+    //参照用プレイヤーコントローラー
     private PlayerController controller;
+    //コンストラクタから取得
     public FallDistanceCheck(PlayerController _controller)
     {
         controller = _controller;
@@ -26,8 +28,7 @@ public class FallDistanceCheck
     private bool fallDamage = false;
     public bool FallDamage {  get { return fallDamage; } set { fallDamage = value; } }
 
-    public void SetController(PlayerController _controller) {  controller = _controller; }
-
+    //初期化
     public void Initialize()
     {
         fallenDistance = 0f;

@@ -65,7 +65,11 @@ public class GameSoundController : SoundController
         {
             case GameManager.GameStateEnum.Game:
             case GameManager.GameStateEnum.Pose:
-                if (GameSceneSystemController.BattleStart)
+                if (GameSceneSystemController.Instance.BossBattleStart)
+                {
+                    PlayBGM((int)GameBGMSoundTag.BossBattle);
+                }
+                else if (GameSceneSystemController.Instance.BattleStart)
                 {
                     PlayBGM((int)GameBGMSoundTag.Battle);
                 }

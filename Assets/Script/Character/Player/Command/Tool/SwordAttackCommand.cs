@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CharacterTag;
 
-public class SwordAttackCommand : BaseToolCommand
+public class SwordAttackCommand : BaseToolAction
 {
     private PlayerController controller = null;
 
@@ -52,6 +52,10 @@ public class SwordAttackCommand : BaseToolCommand
         {
             //ˆê’i–Ú
             case 0:
+                if (controller.GetToolController().IsCurrentToolChange)
+                {
+                    controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.FirstAttack);
+                }
                 if (animInfo.IsName("attack3"))
                 {
                     if (animInfo.normalizedTime < 0.6f) { return; }

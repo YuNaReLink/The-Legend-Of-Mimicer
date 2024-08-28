@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 3824268098953665540}
   m_Layer: 3
   m_Name: WoodPlank_03
-  m_TagString: Obstacle
+  m_TagString: Decoration
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1107406304231971054
 Transform:

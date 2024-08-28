@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: BoxSEList
   m_EditorClassIdentifier: 
   audioClipList:
-  - {fileID: 8300000, guid: 40df6c2f27920434e8a643cd167675bb, type: 3}
+  - {fileID: 8300000, guid: f2c0f41e8ad8a124c822b9fe2e910951, type: 3}

@@ -17,7 +17,7 @@ public enum ToolTag
 /// 各道具にあった入力・実行を行うクラスのInterface
 /// </summary>
 
-public interface BaseToolCommand
+public interface BaseToolAction
 {
     public ToolTag GetToolTag();
     public void Input();

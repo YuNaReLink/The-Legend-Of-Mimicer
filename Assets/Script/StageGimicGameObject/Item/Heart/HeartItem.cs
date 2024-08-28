@@ -11,10 +11,11 @@ public class HeartItem : Consumables
     {
         _player.RecoveryHelth(count);
     }
+    
     protected override void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Player") { return; }
-        PlayerController player = other.GetComponent<PlayerController>();
+        player = other.GetComponent<PlayerController>();
         if(player == null) { return; }
         GetCommand(player,count);
         base.OnTriggerEnter(other);

@@ -151,11 +151,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 138304229593889868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c15ac6807613344b94f5668aa022fec, type: 3}
+  m_Script: {fileID: 11500000, guid: dbc2b5d0a4f8a874ca61e302d62bff25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundType: 0
-  audioSource: {fileID: 5075440338236417139}
+  soundType: 1
+  audioSource: {fileID: 0}
   clipData: {fileID: 11400000, guid: 3efc7cf89f90bb84dadd7ebd05a2887b, type: 2}
 --- !u!82 &5075440338236417139
 AudioSource:
@@ -262,7 +262,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 138304229593889868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63e0a05d3439d9b4ba46147d1ad7dc35, type: 3}
+  m_Script: {fileID: 11500000, guid: 1c163434f25faf6448499d1ea550c5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   vfxObjects: {fileID: 11400000, guid: e7c398bd49649d94fb09e764bbe93ffd, type: 2}

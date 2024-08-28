@@ -5,33 +5,36 @@ using UnityEngine;
 
 public class RotationDoor : MonoBehaviour
 {
-    [SerializeField]
     private GameObject door = null;
 
     [SerializeField]
     private bool open = false;
 
+    // 開くスピードを調整するための変数
     [SerializeField]
-    private float openSpeed = 2.0f; // 開くスピードを調整するための変数
+    private float moveSpeed = 2.0f; 
     private Quaternion closedRotation;
     private Quaternion openRotation;
 
-    [SerializeField]
     private TriggerCheck triggerCheck = null;
 
     private SoundController soundController = null;
 
+    private DeltaTimeCountDown closeTimer = null;
+
     private void Awake()
     {
+        door = transform.GetChild(0).gameObject;
+        triggerCheck = GetComponent<TriggerCheck>();
         soundController = GetComponent<SoundController>();
         if(soundController != null)
         {
             soundController.AwakeInitilaize();
         }
+        closeTimer = new DeltaTimeCountDown();
     }
     void Start()
     {
-        triggerCheck = GetComponent<TriggerCheck>();
         if (door != null)
         {
             closedRotation = door.transform.rotation;
@@ -41,14 +44,23 @@ public class RotationDoor : MonoBehaviour
 
     void Update()
     {
-        OpenDoor();
-        MoveDoor();
+        closeTimer.Update();
+        if (closeTimer.IsEnabled()) { return; }
+        OpenInput();
+        if (open)
+        {
+            Open();
+        }
+        else
+        {
+            Close();
+        }
     }
 
-    private void OpenDoor()
+    private void OpenInput()
     {
         if (triggerCheck.GetController() == null) { return; }
-        if (InputManager.GetItemButton())
+        if (InputManager.GetItemButton()&& !open)
         {
             // Fキーが押されたら開閉を切り替える
             open = true;
@@ -56,15 +68,19 @@ public class RotationDoor : MonoBehaviour
         }
     }
 
-    private void MoveDoor()
+    private void Open()
     {
-        if (open)
+        door.transform.rotation = Quaternion.Lerp(door.transform.rotation, openRotation, Time.deltaTime * moveSpeed);
+        Vector3 sub = door.transform.rotation.eulerAngles - openRotation.eulerAngles;
+        if(sub.magnitude < 0.1f)
         {
-            door.transform.rotation = Quaternion.Lerp(door.transform.rotation, openRotation, Time.deltaTime * openSpeed);
+            closeTimer.StartTimer(5f);
+            open = false;
         }
-        else
-        {
-            door.transform.rotation = Quaternion.Lerp(door.transform.rotation, closedRotation, Time.deltaTime * openSpeed);
-        }
+    }
+
+    private void Close()
+    {
+        door.transform.rotation = Quaternion.Lerp(door.transform.rotation, closedRotation, Time.deltaTime * moveSpeed);
     }
 }

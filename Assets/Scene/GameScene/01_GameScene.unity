@@ -682,6 +682,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dangon01
       objectReference: {fileID: 0}
+    - target: {fileID: 4294909061483791967, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.2000012
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862870685416746974, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 8057471966561015173, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6150005
+      objectReference: {fileID: 0}
+    - target: {fileID: 8080369773327417917, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.2000003
+      objectReference: {fileID: 0}
+    - target: {fileID: 8090729525937202895, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.1999993
+      objectReference: {fileID: 0}
+    - target: {fileID: 8259862092683880412, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.61500144
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299797512864103697, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

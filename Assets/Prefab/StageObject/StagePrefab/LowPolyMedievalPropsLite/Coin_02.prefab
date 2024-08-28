@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 6937406102878121397}
   m_Layer: 3
   m_Name: Coin_02
-  m_TagString: Obstacle
+  m_TagString: Decoration
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &482580162165316587
 Transform:

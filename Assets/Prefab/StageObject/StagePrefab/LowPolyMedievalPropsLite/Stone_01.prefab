@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 7269326415265582628}
   m_Layer: 3
   m_Name: Stone_01
-  m_TagString: Obstacle
+  m_TagString: Decoration
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6981021406093221523
 Transform:

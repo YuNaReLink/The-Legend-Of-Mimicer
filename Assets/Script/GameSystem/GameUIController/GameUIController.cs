@@ -102,7 +102,7 @@ public class GameUIController : MonoBehaviour
     {
         if (!gameClearUIController.IsActiveObject())
         {
-            if(GameSceneSystemController.GetCameraFocusObject() != null) { return; }
+            if(GameSceneSystemController.Instance.GetCameraFocusObject() != null) { return; }
             gameClearUIController.SetActiveObject(true);
         }
         else

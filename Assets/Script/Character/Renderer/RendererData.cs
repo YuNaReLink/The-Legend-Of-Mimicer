@@ -7,7 +7,7 @@ public class RendererData : MonoBehaviour
     [SerializeField]
     private List<Renderer> rendererList = new List<Renderer>();
 
-    public List<Renderer> GetRendererList() {  return rendererList; }
+    public IReadOnlyList<Renderer> GetRendererList() {  return rendererList; }
 
     public void AwakeInitilaize()
     {

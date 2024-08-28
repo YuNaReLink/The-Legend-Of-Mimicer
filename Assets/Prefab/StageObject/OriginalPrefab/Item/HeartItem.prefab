@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5212329228214373284}
   m_Layer: 2
   m_Name: HeartItem
-  m_TagString: Untagged
+  m_TagString: SearchArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 1127876622495464095}
   m_Layer: 2
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: SearchArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CharacterTag;
 
-public class ShieldGuridCommand : BaseToolCommand
+public class ShieldGuridCommand : BaseToolAction
 {
     private PlayerController controller = null;
 
@@ -45,6 +45,10 @@ public class ShieldGuridCommand : BaseToolCommand
             {
                 if (controller.GetKeyInput().GuardHoldButton)
                 {
+                    if (controller.GetKeyInput().GuardPushButton && controller.GuardState == GuardState.Null)
+                    {
+                        controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.ShildPosture);
+                    }
                     controller.GuardState = GuardState.Normal;
                 }
                 else
@@ -56,6 +60,10 @@ public class ShieldGuridCommand : BaseToolCommand
             {
                 if (controller.GetKeyInput().GuardHoldButton)
                 {
+                    if (controller.GetKeyInput().GuardPushButton && controller.GuardState == GuardState.Null)
+                    {
+                        controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.ShildPosture);
+                    }
                     controller.GuardState = GuardState.Crouch;
                 }
                 else
@@ -66,13 +74,13 @@ public class ShieldGuridCommand : BaseToolCommand
         }
         else
         {
+            if (controller.GetKeyInput().GuardPushButton && controller.GuardState == GuardState.Null)
+            {
+                controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.ShildPosture);
+            }
             controller.GuardState = GuardState.Normal;
         }
         GuardStateInput();
-        if (controller.GetKeyInput().GuardPushButton)
-        {
-            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.ShildPosture);
-        }
     }
 
     private void GuardStateInput()

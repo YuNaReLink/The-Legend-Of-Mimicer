@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 271371040557023877}
   m_Layer: 3
   m_Name: Jug_02
-  m_TagString: Obstacle
+  m_TagString: Decoration
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &84408140781914504
 Transform:

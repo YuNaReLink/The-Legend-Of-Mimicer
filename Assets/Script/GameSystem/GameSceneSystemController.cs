@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class GameSceneSystemController : MonoBehaviour
 {
-    private static PlayerController playerController = null;
+    private static GameSceneSystemController instance;
+    public static GameSceneSystemController Instance => instance;
 
-    private static GameObject cameraFocusObject = null;
-    public static GameObject GetCameraFocusObject() { return cameraFocusObject; }
+    private PlayerController playerController = null;
+    public PlayerController PlayerController { get { return playerController; }set { playerController = value; } }
+
+    private GameObject cameraFocusObject = null;
+    public GameObject GetCameraFocusObject() { return cameraFocusObject; }
 
     private static bool gameClearFlag = false;
 
-    public static void GameClearUpdate(GameObject o)
+    public void GameClearUpdate(GameObject o)
     {
         gameClearFlag = true;
         cameraFocusObject = o;
@@ -31,30 +35,27 @@ public class GameSceneSystemController : MonoBehaviour
     /// <summary>
     /// 上記の内容を保存するstatic型のインスタンス宣言
     /// </summary>
-    private static TriggerTag keyTriggerTag = TriggerTag.Null;
+    private TriggerTag keyTriggerTag = TriggerTag.Null;
 
-    public static TriggerTag KeyTriggerTag {  get { return keyTriggerTag; }set { keyTriggerTag = value; } }
+    public TriggerTag KeyTriggerTag {  get { return keyTriggerTag; }set { keyTriggerTag = value; } }
 
-    /// <summary>
-    /// カーソルを表示・非表示を管理するクラス
-    /// </summary>
-    CursorController cursor = null;
+    private DeltaTimeCountDown gameOverStartTimer = null;
 
-    private static DeltaTimeCountDown gameOverStartTimer = null;
+    private bool battleStart = false;
+    public bool BattleStart { get { return battleStart; } set { battleStart = value; } }
 
-    private static bool battleStart = false;
-    public static bool BattleStart { get { return battleStart; } set { battleStart = value; } }
+    private bool bossBattleStart = false;
+    public bool BossBattleStart { get { return bossBattleStart; }set { bossBattleStart = value; } }
 
-    private static GameSoundController gameSoundController = null;
-    public static GameSoundController GetGameSoundController() { return gameSoundController; }
+    private GameSoundController gameSoundController = null;
+    public GameSoundController GetGameSoundController() { return gameSoundController; }
     private void Awake()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject player = GameObject.FindWithTag("Player");
         if(player != null)
         {
             playerController = player.GetComponent<PlayerController>();
         }
-        cursor = CursorController.GetInstance();
 
         gameOverStartTimer = new DeltaTimeCountDown();
 
@@ -63,12 +64,21 @@ public class GameSceneSystemController : MonoBehaviour
         {
             gameSoundController.AwakeInitilaize();
         }
+
+        if(instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
     }
 
     private void Start()
     {
-        cursor.SetCursorLookMode(CursorLockMode.Locked);
-        cursor.SetCursorState(false);
+        CursorController.GetInstance().SetCursorLookMode(CursorLockMode.Locked);
+        CursorController.GetInstance().SetCursorState(false);
 
         GameManager.GameState = GameManager.GameStateEnum.Game;
 
@@ -96,8 +106,8 @@ public class GameSceneSystemController : MonoBehaviour
 
         if (GameManager.GameState == GameManager.GameStateEnum.Pose)
         {
-            cursor.SetCursorLookMode(CursorLockMode.None);
-            cursor.SetCursorState(true);
+            CursorController.GetInstance().SetCursorLookMode(CursorLockMode.None);
+            CursorController.GetInstance().SetCursorState(true);
             if (Time.timeScale > 0)
             {
                 Time.timeScale = 0;
@@ -105,8 +115,8 @@ public class GameSceneSystemController : MonoBehaviour
         }
         else
         {
-            cursor.SetCursorLookMode(CursorLockMode.Locked);
-            cursor.SetCursorState(false);
+            CursorController.GetInstance().SetCursorLookMode(CursorLockMode.Locked);
+            CursorController.GetInstance().SetCursorState(false);
             if(Time.timeScale <= 0)
             {
                 Time.timeScale = 1f;
@@ -128,7 +138,7 @@ public class GameSceneSystemController : MonoBehaviour
         {
             GameManager.GameState = GameManager.GameStateEnum.GameOver;
         }
-        cursor.SetCursorLookMode(CursorLockMode.None);
-        cursor.SetCursorState(true);
+        CursorController.GetInstance().SetCursorLookMode(CursorLockMode.None);
+        CursorController.GetInstance().SetCursorState(true);
     }
 }

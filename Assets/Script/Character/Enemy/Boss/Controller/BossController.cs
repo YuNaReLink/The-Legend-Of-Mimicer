@@ -97,7 +97,7 @@ public class BossController : EnemyController
         }
         else
         {
-            Decele();
+            StopMove();
         }
         Move();
         TransformRotate();
@@ -141,7 +141,11 @@ public class BossController : EnemyController
 
     public override void Death()
     {
-        GameSceneSystemController.GameClearUpdate(gameObject);
+        if (GameSceneSystemController.Instance != null)
+        {
+            GameSceneSystemController.Instance.BossBattleStart = false;
+        }
+        GameSceneSystemController.Instance.GameClearUpdate(gameObject);
         base.Death();
     }
 

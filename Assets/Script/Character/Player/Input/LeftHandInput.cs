@@ -22,20 +22,20 @@ public class LeftHandInput
         {
             return;
         }
-        if (controller.LeftCommand == null)
+        if (controller.LeftAction == null)
         {
             if (controller.GetKeyInput().GuardHoldButton)
             {
                 //èÇÇÃÉNÉâÉXÇê∂ê¨Ç∑ÇÈ
-                controller.LeftCommand = new ShieldGuridCommand(controller);
+                controller.LeftAction = new ShieldGuridCommand(controller);
             }
             else
             {
-                controller.LeftCommand = null;
+                controller.LeftAction = null;
             }
         }
-        if (controller.LeftCommand == null) { return; }
+        if (controller.LeftAction == null) { return; }
         //èÇÇÃì¸óÕ
-        controller.LeftCommand.Input();
+        controller.LeftAction.Input();
     }
 }

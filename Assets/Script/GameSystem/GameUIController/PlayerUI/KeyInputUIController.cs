@@ -110,7 +110,7 @@ public class KeyInputUIController : MonoBehaviour
 
     private void FKeyActiveCheck()
     {
-        switch (GameSceneSystemController.KeyTriggerTag)
+        switch (GameSceneSystemController.Instance.KeyTriggerTag)
         {
             case GameSceneSystemController.TriggerTag.Null:
                 OutputText("", false);
@@ -172,7 +172,7 @@ public class KeyInputUIController : MonoBehaviour
         if (inputCoolDownsTimers[(int)KeyUINumber.F].IsEnabled()) { return; }
         if (InputManager.GetItemButton())
         {
-            switch (GameSceneSystemController.KeyTriggerTag)
+            switch (GameSceneSystemController.Instance.KeyTriggerTag)
             {
                 case GameSceneSystemController.TriggerTag.Item:
                     gameUIController.GetKeySoundController().PlaySESound((int)SoundTagList.GetToolSoundTag.Get);
