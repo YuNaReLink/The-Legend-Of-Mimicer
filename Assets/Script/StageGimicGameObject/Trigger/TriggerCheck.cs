@@ -26,7 +26,7 @@ public class TriggerCheck : MonoBehaviour
         hitPlayer = true;
         player = other.gameObject;
         controller = player.GetComponent<PlayerController>();
-        GameSceneSystemController.KeyTriggerTag = myTrigger;
+        GameSceneSystemController.Instance.KeyTriggerTag = myTrigger;
     }
 
     private void OnTriggerExit(Collider other)
@@ -35,7 +35,7 @@ public class TriggerCheck : MonoBehaviour
         hitPlayer = false;
         player = null;
         controller = null;
-        GameSceneSystemController.KeyTriggerTag = GameSceneSystemController.TriggerTag.Null;
+        GameSceneSystemController.Instance.KeyTriggerTag = GameSceneSystemController.TriggerTag.Null;
     }
 
     private void OnDestroy()
@@ -43,6 +43,6 @@ public class TriggerCheck : MonoBehaviour
         hitPlayer = false;
         player = null;
         controller = null;
-        GameSceneSystemController.KeyTriggerTag = GameSceneSystemController.TriggerTag.Null;
+        GameSceneSystemController.Instance.KeyTriggerTag = GameSceneSystemController.TriggerTag.Null;
     }
 }

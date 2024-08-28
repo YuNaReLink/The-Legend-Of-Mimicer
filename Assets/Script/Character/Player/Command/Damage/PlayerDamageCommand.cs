@@ -22,11 +22,11 @@ public class PlayerDamageCommand : InterfaceBaseCommand
         switch (controller.DamageTag)
         {
             case DamageTag.Fall:
-                controller.GetMotion().ChangeMotion(StateTag.Damage);
+                controller.GetMotion().ForcedChangeMotion(StateTag.Damage);
                 controller.GetFallDistanceCheck().FallDamage = false;
                 break;
             case DamageTag.NormalAttack:
-                controller.GetMotion().ChangeMotion(StateTag.Damage);
+                controller.GetMotion().ForcedChangeMotion(StateTag.Damage);
                 break;
             case DamageTag.GreatAttack:
                 break;

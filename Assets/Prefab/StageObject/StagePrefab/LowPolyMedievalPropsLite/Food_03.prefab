@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 1740044312513956998}
   m_Layer: 3
   m_Name: Food_03
-  m_TagString: Obstacle
+  m_TagString: Decoration
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7403953810883250732
 Transform:

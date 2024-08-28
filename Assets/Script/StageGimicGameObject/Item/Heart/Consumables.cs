@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Consumables : MonoBehaviour
 {
+    protected PlayerController player = null;
     public enum ConsumablesTag
     {
         Null = -1,
@@ -16,8 +17,20 @@ public class Consumables : MonoBehaviour
         _player.GetArrow(count);
     }
 
+    protected virtual float GetItemPositionY()
+    {
+        return 3f;
+    }
+
+    protected void Update()
+    {
+        if (player == null) { return; }
+        transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 3f, player.transform.position.z);
+        transform.Rotate(0,1,0);
+    }
+
     protected virtual void OnTriggerEnter(Collider other)
     {
-        Destroy(gameObject);
+        Destroy(gameObject,1f);
     }
 }

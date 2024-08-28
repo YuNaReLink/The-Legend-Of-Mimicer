@@ -15,8 +15,13 @@ namespace EffectTagList
     {
         Break
     }
+
+    public enum SwordHitTag
+    {
+        Hit
+    }
 }
-public class VFXController : MonoBehaviour
+public class EffectController : MonoBehaviour
 {
     [SerializeField]
     private VFXScriptableObject vfxObjects = null;

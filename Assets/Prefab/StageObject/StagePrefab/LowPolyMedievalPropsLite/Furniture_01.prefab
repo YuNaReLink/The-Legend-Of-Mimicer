@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 4503773982791944912}
   m_Layer: 3
   m_Name: Furniture_01
-  m_TagString: Obstacle
+  m_TagString: Decoration
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5294220334779307404
 Transform:

@@ -15,6 +15,10 @@ public class FoundPlayerArea : MonoBehaviour
         PlayerController player = other.gameObject.GetComponent<PlayerController>();
         if(player == null) { return; }
         controller.Target = player;
+        if(GameSceneSystemController.Instance != null)
+        {
+            GameSceneSystemController.Instance.BossBattleStart = true;
+        }
         Destroy(gameObject);
     }
 
@@ -24,6 +28,10 @@ public class FoundPlayerArea : MonoBehaviour
         PlayerController player = other.gameObject.GetComponent<PlayerController>();
         if (player == null) { return; }
         controller.Target = player;
+        if(GameSceneSystemController.Instance != null)
+        {
+            GameSceneSystemController.Instance.BossBattleStart = true;
+        }
         Destroy(gameObject);
     }
 

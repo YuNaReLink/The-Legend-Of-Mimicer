@@ -832,21 +832,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: -1
   pastState: -1
-  animator: {fileID: 0}
   maxHp: 0
   hp: 0
   death: 0
   velocity: {x: 0, y: 0, z: 0}
   guardState: -1
-  characterCollider: {fileID: 0}
-  characterRB: {fileID: 0}
   input: 0
-  groundCheck: {fileID: 0}
   landing: 0
   jumping: 0
   jumpPower: 0
   stopController: 0
-  vfxController: {fileID: 0}
   data: {fileID: 11400000, guid: fdf98da741d8251408e5504be2a262e5, type: 2}
   foundPlayer: 0
   target: {fileID: 0}
@@ -881,7 +876,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1845945369076765872}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63e0a05d3439d9b4ba46147d1ad7dc35, type: 3}
+  m_Script: {fileID: 11500000, guid: 1c163434f25faf6448499d1ea550c5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   vfxObjects: {fileID: 11400000, guid: 6a7aa6f5786890b4785df01a4a27cb81, type: 2}

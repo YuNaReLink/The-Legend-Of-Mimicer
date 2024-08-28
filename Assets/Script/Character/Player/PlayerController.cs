@@ -8,143 +8,117 @@ public class PlayerController : CharacterController
     /// ScriptableObjectデータ
     /// </summary>
     [SerializeField]
-    private PlayerScriptableObject data;
-    public PlayerScriptableObject GetData() { return data; }
-
+    private PlayerScriptableObject          data;
+    public PlayerScriptableObject           GetData() { return data; }
+    /// <summary>
+    /// カメラ制御をまとめたクラス
+    /// </summary>
     [SerializeField]
-    private GameObject cameraObject = null;
-    public GameObject GetCameraObject() {  return cameraObject; }
-    [SerializeField]
-    private CameraController cameraScript = null;
-    public CameraController GetCameraController() { return cameraScript; }
-
-    [SerializeField]
-    private PlayerInput keyInput = null;
-
-    public PlayerInput GetKeyInput() { return keyInput; }
-
-    [SerializeField]
-    private ObstacleCheck obstacleCheck = null;
-
-    public ObstacleCheck GetObstacleCheck() { return obstacleCheck; }
-
-    private FallDistanceCheck fallDistanceCheck = null;
-
-    public FallDistanceCheck GetFallDistanceCheck() {  return fallDistanceCheck; }
-
-    [SerializeField]
-    private ToolInventoryController toolInventory = null;
-    public ToolInventoryController GetToolController() { return toolInventory; }
-
-    [SerializeField]
-    private PlayerDecorationController decorationController = null;
-
-    private PlayerRotation rotation = null;
-    public PlayerRotation GetRotation() { return rotation; }
-
-    private PlayerTimers timer = null;
-    public PlayerTimers GetTimer() {  return timer; }
-
+    private CameraController                cameraController = null;
+    public CameraController                 GetCameraController() { return cameraController; }
+    /// <summary>
+    /// プレイヤーのキー入力をまとめたクラス
+    /// </summary>
+    private PlayerInput                     keyInput = null;
+    public PlayerInput                      GetKeyInput() { return keyInput; }
+    /// <summary>
+    /// プレイヤーの壁、崖との判定処理をまとめたクラス
+    /// </summary>
+    private ObstacleCheck                   obstacleCheck = null;
+    public ObstacleCheck                    GetObstacleCheck() { return obstacleCheck; }
+    /// <summary>
+    /// プレイヤーの落下処理をまとめたクラス
+    /// </summary>
+    private FallDistanceCheck               fallDistanceCheck = null;
+    public FallDistanceCheck                GetFallDistanceCheck() {  return fallDistanceCheck; }
+    /// <summary>
+    /// プレイヤーの道具の処理をまとめたクラス
+    /// </summary>
+    private ToolInventoryController         toolInventory = null;
+    public ToolInventoryController          GetToolController() { return toolInventory; }
+    /// <summary>
+    /// プレイヤーの道具とは違う装飾品の設定を行うクラス
+    /// </summary>
+    private PlayerDecorationController      decorationController = null;
+    /// <summary>
+    /// プレイヤーの回転をまとめたクラス
+    /// </summary>
+    private PlayerRotation                  rotation = null;
+    /// <summary>
+    /// プレイヤーで使うタイマーをまとめたクラス
+    /// </summary>
+    private PlayerTimers                    timer = null;
+    public PlayerTimers                     GetTimer() {  return timer; }
     /// <summary>
     /// プレイヤーの回避行動を処理するクラス
     /// </summary>
-    private RollingCommand rolling;
+    private RollingCommand                  rolling = null;
     [SerializeField]
-    private AnimationCurve rollCurve;
-    public AnimationCurve GetRollCurve() { return rollCurve; }
+    private AnimationCurve                  rollCurve = null;
+    public AnimationCurve                   GetRollCurve() { return rollCurve; }
     /// <summary>
     /// プレイヤーの攻撃行動を処理するクラス
     /// </summary>
     [SerializeField]
-    private CharacterTag.TripleAttack tripleAttack = CharacterTag.TripleAttack.Null;
-
-    public CharacterTag.TripleAttack TripleAttack { get { return tripleAttack; } set {  tripleAttack = value; } }
-
+    private CharacterTag.TripleAttack       tripleAttack = CharacterTag.TripleAttack.Null;
+    public CharacterTag.TripleAttack        TripleAttack { get { return tripleAttack; } set {  tripleAttack = value; } }
     /// <summary>
     /// プレイヤーのダメージ処理を行うクラス
     /// </summary>
-    private PlayerDamageCommand damage = null;
-    public PlayerDamageCommand GetDamage() { return damage; }
-
+    private PlayerDamageCommand             damage = null;
+    public PlayerDamageCommand              GetDamage() { return damage; }
     /// <summary>
     /// プレイヤーの各右・左の道具の処理を生成するクラス
     /// </summary>
-    [SerializeField]
-    private BaseToolCommand rightCommand = null;
-
-    public BaseToolCommand RightCommand { get { return rightCommand; }set { rightCommand = value; } }
-
-    [SerializeField]
-    private BaseToolCommand leftCommand = null;
-    public BaseToolCommand LeftCommand { get {return leftCommand; }set { leftCommand = value; } }
-
-
+    private BaseToolAction                  rightAction = null;
+    public BaseToolAction                   RightAction { get { return rightAction; }set { rightAction = value; } }
+    private BaseToolAction                  leftAction = null;
+    public BaseToolAction                   LeftAction { get {return leftAction; }set { leftAction = value; } }
     /// <summary>
     /// プレイヤーが戦闘状態かそうじゃないか
     /// </summary>
-    private bool battleMode = false;
-    public bool BattleMode { get { return battleMode; }set { battleMode = value; } }
-
+    [SerializeField]
+    private bool                            battleMode = false;
+    public bool                             BattleMode { get { return battleMode; }set { battleMode = value; } }
     /// <summary>
     /// プレイヤーが動かせるオブジェクトに触れてるか判定する
     /// </summary>
     [SerializeField]
-    private CharacterTag.PushTag pushTag = CharacterTag.PushTag.Null;
-    public CharacterTag.PushTag PushTag { get { return pushTag; } set { pushTag = value; } }
-
+    private CharacterTag.PushTag            pushTag = CharacterTag.PushTag.Null;
+    public CharacterTag.PushTag             PushTag  => pushTag;
     /// <summary>
     /// パシフィックマテリアル
     /// </summary>
     [SerializeField]
-    private List<PhysicMaterial> physicMaterials = new List<PhysicMaterial>();
-
+    private List<PhysicMaterial>            physicMaterials = new List<PhysicMaterial>();
     /// <summary>
     /// ダメージ関係の変数
     /// </summary>
     [SerializeField]
-    private CharacterTag.DamageTag damageTag = CharacterTag.DamageTag.Null;
-
-    public CharacterTag.DamageTag DamageTag {  get { return damageTag; } set { damageTag = value; } }
-
+    private CharacterTag.DamageTag          damageTag = CharacterTag.DamageTag.Null;
+    public CharacterTag.DamageTag           DamageTag {  get { return damageTag; } set { damageTag = value; } }
     [Header("プレイヤーが盾を構えた時に使うモーションClip")]
     [SerializeField]
-    private AnimationClip clip = null;
-    public AnimationClip GetClip() {  return clip; }
+    private AnimationClip                   clip = null;
+    public AnimationClip                    GetClip() {  return clip; }
     [SerializeField]
-    private AnimationClip nullClip = null;
-    public AnimationClip GetNullClip() { return nullClip; }
-
-
-    /// <summary>
-    /// プレイヤーのステージとのギミックのフラグをまとめてるクラス
-    /// </summary>
-    private PlayerGimicController gimicController = null;
-    public PlayerGimicController GimicController() {  return gimicController; }
-
+    private AnimationClip                   nullClip = null;
+    public AnimationClip                    GetNullClip() { return nullClip; }
     /// <summary>
     /// プレイヤーのサウンド管理のクラス
     /// </summary>
-    private PlayerSoundController soundController = null;
-    public PlayerSoundController GetSoundController() { return soundController; }
-
-    public GameObject SelfObject() { return gameObject; }
-    public bool IsActiveObject() { return gameObject.activeSelf; }
-    public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
+    private PlayerSoundController           soundController = null;
+    public PlayerSoundController            GetSoundController() { return soundController; }
+    protected override void                 SetMotionController(){motion = new PlayerMotion(this);}
     protected override void Awake()
     {
         base.Awake();
         InitializeAssign();
     }
-
-    protected override void SetMotionController()
-    {
-        motion = new PlayerMotion(this);
-    }
-
     protected override void Start()
     {
         base.Start();
-        currentState = CharacterTag.StateTag.GetUp;
+        //サウンドコントローラーのAwake時の初期化
         soundController.AwakeInitilaize();
         if (data != null)
         {
@@ -157,8 +131,11 @@ public class PlayerController : CharacterController
     {
         base.InitializeAssign();
 
-        cameraObject = GameObject.FindWithTag("MainCamera");
-        cameraScript = cameraObject.GetComponent<CameraController>();
+        GameObject cameraObject = GameObject.FindWithTag("MainCamera");
+        if(cameraObject != null)
+        {
+            cameraController = cameraObject.GetComponent<CameraController>();
+        }
 
         obstacleCheck = GetComponent<ObstacleCheck>();
         obstacleCheck?.SetController(this);
@@ -189,8 +166,6 @@ public class PlayerController : CharacterController
         animatorOverride = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = animatorOverride;
 
-        gimicController = new PlayerGimicController();
-
         soundController = GetComponent<PlayerSoundController>();
     }
 
@@ -219,7 +194,7 @@ public class PlayerController : CharacterController
 
 
         //武器や盾の位置を状態によって変える
-        toolInventory.UpdateProps();
+        toolInventory.UpdateTool();
 
         //特定のモーションを特定の条件で止めたり再生したりするメソッド
         motion.StopMotionCheck();
@@ -286,7 +261,7 @@ public class PlayerController : CharacterController
                 return;
         }
         if(currentState == CharacterTag.StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 && keyInput.Vertical == 0) { return; }
-        if(fallDistanceCheck.FallDamage || cameraScript.IsFPSMode()) { return; }
+        if(fallDistanceCheck.FallDamage || cameraController.IsFPSMode()) { return; }
 
         input = true;
     }
@@ -314,13 +289,13 @@ public class PlayerController : CharacterController
         {
             rolling.Execute();
         }
-        if(rightCommand != null)
+        if(rightAction != null)
         {
-            rightCommand.Execute();
+            rightAction.Execute();
         }
-        if(leftCommand != null)
+        if(leftAction != null)
         {
-            leftCommand.Execute();
+            leftAction.Execute();
         }
         if(damage != null)
         {
@@ -338,7 +313,7 @@ public class PlayerController : CharacterController
         //入力がなかった場合停止処理
         if (!input)
         {
-            Decele();
+            StopMove();
         }
         //移動RigidBodyに適用
         Move();

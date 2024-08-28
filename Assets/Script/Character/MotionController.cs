@@ -13,9 +13,8 @@ public class MotionController
     /// <param name="_state"></param>
     public virtual void ChangeMotion(StateTag _state) { }
 
+    public virtual void ForcedChangeMotion(StateTag _state) { }
     public virtual bool MotionEndCheck() { return false; }
-
-    public virtual bool IsMotionNameCheck(string name) { return false; }
 
     public virtual bool IsEndRollingMotionNameCheck() { return false; }
 

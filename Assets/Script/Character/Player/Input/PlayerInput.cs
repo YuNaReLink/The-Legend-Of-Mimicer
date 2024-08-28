@@ -21,12 +21,12 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private float horizontal = 0;
 
-    public float Horizontal {  get { return horizontal; } set { horizontal = value; } }
+    public float Horizontal => horizontal;
 
     [SerializeField]
     private float vertical = 0;
 
-    public float Vertical { get { return vertical; } set { vertical = value; } }
+    public float Vertical => vertical;
 
     [SerializeField]
     private bool upKey;
@@ -68,17 +68,11 @@ public class PlayerInput : MonoBehaviour
     private float rollTimer = 0.0f;
     public float RollTimer { get { return rollTimer; }set { rollTimer = value; } }
 
-
-    private float magnitudeSpeed = 0;
-    public float MagnitudeSpeed { get { return magnitudeSpeed; } set { magnitudeSpeed = value; } }
-
-
     /// <summary>
     /// カメラ固定ボタン入力
     /// </summary>
     [SerializeField]
     private bool lockCamera = false;
-    public bool LockCamera {  get { return lockCamera; } set { lockCamera = value; } }
 
     [SerializeField]
     private bool cameraLockEnabled = false;
@@ -90,14 +84,14 @@ public class PlayerInput : MonoBehaviour
     /// </summary>
     [SerializeField]
     private bool changeButton = false;
-    public bool ChangeButton { get {return changeButton; } set { changeButton = value; } }
+    public bool ChangeButton => changeButton;
 
     /// <summary>
     /// 道具ボタン入力
     /// </summary>
     [SerializeField]
     private bool toolButton = false;
-    public bool ToolButton { get { return toolButton; } set { toolButton = value; } }
+    public bool ToolButton => toolButton;
 
     /// <summary>
     /// 攻撃ボタン入力
@@ -119,10 +113,10 @@ public class PlayerInput : MonoBehaviour
     /// </summary>
     [SerializeField]
     private bool guardHoldButton = false;
-    public bool GuardHoldButton { get { return guardHoldButton; } set { guardHoldButton = value; } }
+    public bool GuardHoldButton => guardHoldButton;
     [SerializeField]
     private bool guardPushButton = false;
-    public bool GuardPushButton { get { return guardPushButton; } set { guardPushButton = value; } }
+    public bool GuardPushButton => guardPushButton;
 
     /// <summary>
     /// 右手に設定する道具のクラス
@@ -214,22 +208,9 @@ public class PlayerInput : MonoBehaviour
             }
         }
     }
-
     public void UpdateGimicInput()
     {
         getButton = Input.GetButtonDown("Get");
-    }
-
-    public void UpdateSound()
-    {
-        switch (controller.CurrentState)
-        {
-            case StateTag.Attack:
-                AnimatorStateInfo animInfo = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
-                if (attackButton&& controller.BattleMode)
-                    controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.FirstAttack);
-                break;
-        }
     }
 
     private void ForcedRelease()
@@ -252,45 +233,35 @@ public class PlayerInput : MonoBehaviour
                 break;
         }
     }
-
     //入力キーの初期化
     private void InitializeInput()
     {
         SetHorizontalAndVertical();
-
         upKey = InputManager.UpButton();
         downKey = InputManager.DownButton();
         leftKey = InputManager.LeftButton();
         rightKey = InputManager.RightButton();
-
         if (!controller.GetTimer().GetTimerRolling().IsEnabled()&&
             controller.CurrentState != StateTag.Null)
         {
             actionButton = InputManager.ActionButton();
         }
-        
-        
         lockCamera = InputManager.LockCameraButton();
-
         if (lockCamera)
         {
             cameraLockEnabled = !cameraLockEnabled;
         }
-
         changeButton = InputManager.ChangeButton();
-
         toolButton = InputManager.ToolButton();
-
         attackButton = InputManager.AttackButton();
         attackHoldButton = InputManager.AttackHoldButton();
-
         guardHoldButton = InputManager.GuardHoldButton();
         guardPushButton = InputManager.GuardPushButton();
     }
 
     public void GetUpInput()
     {
-        controller.GetMotion().ChangeMotion(StateTag.GetUp);
+        controller.GetMotion().ForcedChangeMotion(StateTag.GetUp);
     }
 
     private void DamageInput()
@@ -515,5 +486,10 @@ public class PlayerInput : MonoBehaviour
         rightHandInput.Execute();
         //左手入力
         leftHandInput.Execute();
+    }
+
+    private void DeathInput()
+    {
+
     }
 }

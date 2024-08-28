@@ -69,7 +69,7 @@ public class PlayerMotion : MotionController
             anim.GetCurrentAnimatorStateInfo(0).IsName("DamageLanding")&&
             !MotionEndCheck();
         bool jumpStop = controller.CurrentState == StateTag.Jump&&!controller.Landing&&
-            _state != StateTag.Grab&& _state != StateTag.JumpAttack;
+            _state != StateTag.Grab&& _state != StateTag.ClimbWall && _state != StateTag.JumpAttack;
 
         bool climbStop = controller.CurrentState == StateTag.ClimbWall && !controller.CharacterRB.useGravity && 
             controller.PastState != StateTag.WallJump;
@@ -80,12 +80,8 @@ public class PlayerMotion : MotionController
         {
             return true;
         }
-
-
         return false;
     }
-
-
     public override bool MotionEndCheck()
     {
         Animator anim = controller.GetAnimator();
@@ -94,15 +90,36 @@ public class PlayerMotion : MotionController
         return false;
     }
 
-    public override bool IsMotionNameCheck(string name)
+    public override void ForcedChangeMotion(StateTag _state)
     {
+        //アニメーターを代入
         Animator anim = controller.GetAnimator();
-        AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
-        if (animInfo.IsName(name))
-        {
-            return true;
-        }
-        return false;
+        //入力クラスの代入
+        PlayerInput input = controller.GetKeyInput();
+
+        if (controller.CurrentState == _state) { return; }
+
+        //状態の数値を代入
+        int statenumber = (int)_state;
+        int dirnumber = (int)input.CurrentDirection;
+        int jumpCount = controller.GetObstacleCheck().GetLowJumpCount();
+        int threeAttackCount = (int)controller.TripleAttack;
+        int damageCount = (int)controller.DamageTag;
+        int pushingcount = (int)controller.PushTag;
+
+        //過去と現在の状態を記録
+        controller.PastState = controller.CurrentState;
+        controller.CurrentState = _state;
+        input.PastDirection = input.CurrentDirection;
+
+        //アニメーション遷移の設定
+        anim.SetBool(boolname, controller.BattleMode);
+        anim.SetInteger(statename, statenumber);
+        anim.SetInteger(dirname, dirnumber);
+        anim.SetInteger(jumpcountname, jumpCount);
+        anim.SetInteger(threeattackname, threeAttackCount);
+        anim.SetInteger(damagename, damageCount);
+        anim.SetInteger(pushingname, pushingcount);
     }
 
     public override bool IsEndRollingMotionNameCheck()
@@ -120,12 +137,10 @@ public class PlayerMotion : MotionController
         }
         return false;
     }
-
     public override void Change(AnimationClip clip)
     {
         AllocateMotion("noGuard", clip);
     }
-
     private void AllocateMotion(string name, AnimationClip clip)
     {
         AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[controller.GetAnimator().layerCount];
@@ -148,8 +163,6 @@ public class PlayerMotion : MotionController
             }
         }
     }
-
-
     public override void StopMotionCheck()
     {
         Animator anim = controller.GetAnimator();
@@ -165,7 +178,6 @@ public class PlayerMotion : MotionController
             }
         }
     }
-
     private void StopMotionCommand(string motion, Animator anim)
     {
         switch (motion)
@@ -185,7 +197,6 @@ public class PlayerMotion : MotionController
                 break;
         }
     }
-
     //保持してるモーション名が終わったか判定する処理
     public override void EndMotionNameCheck()
     {
@@ -203,7 +214,6 @@ public class PlayerMotion : MotionController
             }
         }
     }
-
     //モーションが終わった時にする処理
     private void EndMotionCommand(string motion)
     {

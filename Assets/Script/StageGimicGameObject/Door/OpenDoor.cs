@@ -76,7 +76,7 @@ public class OpenDoor : MonoBehaviour
                 open = true;
                 hitExecute.enabled = false;
                 triggerCheck.GetController().StopController = true;
-                triggerCheck.GetController().Decele();
+                triggerCheck.GetController().StopMove();
                 triggerCheck.GetController().GetMotion().ChangeMotion(CharacterTag.StateTag.Idle);
                 start = false;
                 return;

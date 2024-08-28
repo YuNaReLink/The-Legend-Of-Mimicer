@@ -6,8 +6,8 @@ public class BreakBox : MonoBehaviour
     private float breakSpeed = 1.0f;
     private MeshRenderer meshRenderer = null;
     private BoxCollider boxCollider = null;
-    private BreakSoundController soundController = null;
-    private VFXController effectController = null;
+    private SoundController soundController = null;
+    private EffectController effectController = null;
     private List<GameObject> spriteObjectList = new List<GameObject>();
 
     private void Awake()
@@ -22,12 +22,12 @@ public class BreakBox : MonoBehaviour
         {
             Debug.LogWarning("boxRendererがアタッチされていません");
         }
-        soundController = GetComponent<BreakSoundController>();
+        soundController = GetComponent<SoundController>();
         if(soundController == null)
         {
             Debug.LogWarning("soundControllerがアタッチされていません");
         }
-        effectController = GetComponent<VFXController>();
+        effectController = GetComponent<EffectController>();
         if (effectController == null)
         {
             Debug.Log("effectControllerがアタッチされていません");
@@ -45,7 +45,7 @@ public class BreakBox : MonoBehaviour
         if (other.tag != "Attack") { return; }
         if(soundController != null)
         {
-            soundController.PlaySESound((int)BreakSoundController.BreakSoundTag.Break);
+            soundController.PlaySESound((int)SoundTagList.BreakSoundTag.Break);
         }
         if(meshRenderer != null)
         {

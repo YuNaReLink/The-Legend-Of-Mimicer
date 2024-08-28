@@ -49,10 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4ae2042a7b84a04aaaaef873c0c3514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  door: {fileID: 102513732899383687}
   open: 0
   openSpeed: 2
-  triggerCheck: {fileID: 0}
 --- !u!135 &5114639447900501847
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -100,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbc2b5d0a4f8a874ca61e302d62bff25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundType: 1
   audioSource: {fileID: 0}
   clipData: {fileID: 11400000, guid: 08041ffa4d039fd48bc426fdd5cea647, type: 2}
 --- !u!82 &8746936410518382147
@@ -256,7 +255,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8971399676813624536, guid: 03020aab9adeeb54f9194380cf49b4a7, type: 3}
       propertyPath: m_TagString
-      value: Obstacle
+      value: Decoration
       objectReference: {fileID: 0}
     - target: {fileID: 8971399676813624536, guid: 03020aab9adeeb54f9194380cf49b4a7, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -267,11 +266,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03020aab9adeeb54f9194380cf49b4a7, type: 3}
---- !u!1 &102513732899383687 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8971399676813624536, guid: 03020aab9adeeb54f9194380cf49b4a7, type: 3}
-  m_PrefabInstance: {fileID: 9073877811614641503}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &102513732899747239 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8971399676813138168, guid: 03020aab9adeeb54f9194380cf49b4a7, type: 3}

@@ -58,7 +58,7 @@ public class SpiderController : EnemyController
         MoveCommand();
         if (!input)
         {
-            Decele();
+            StopMove();
         }
         if(spiderDamage != null)
         {
@@ -98,7 +98,7 @@ public class SpiderController : EnemyController
         {
             PlayerController player = other.GetComponent<PlayerController>();
             if(player == null) { return; }
-            if (player.LeftCommand == null) { return; }
+            if (player.LeftAction == null) { return; }
             GameObject shild = other.GetComponentInChildren<ShieldController>().gameObject;
             if(shild == null) { return; }
             knockBackCommand.KnockBackFlag = true;

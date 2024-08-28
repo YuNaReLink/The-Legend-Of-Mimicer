@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dbbd519199e742a4581d6778f58b4380, type: 3}
-  m_Name: BreakVFX
+  m_Name: EnemyEffect
   m_EditorClassIdentifier: 
   vfxArray:
-  - {fileID: 1040608886635896, guid: fd858eee49cd54c4a94db386cec5188c, type: 3}
+  - {fileID: 7728366230342544413, guid: 212ef1a41838ce044a9ac54994866708, type: 3}
+  - {fileID: 100004, guid: 7867af58a6ec48846ae807eb4022fbaa, type: 3}

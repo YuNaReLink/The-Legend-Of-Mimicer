@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 9067593395148121216}
   m_Layer: 3
   m_Name: Bucket_01
-  m_TagString: Obstacle
+  m_TagString: Decoration
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7367973044878609258
 Transform:
@@ -169,6 +169,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 17bcc91624435ad4a8625475c75054b4, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 17bcc91624435ad4a8625475c75054b4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -11,7 +11,13 @@ public class HitStopManager : MonoBehaviour
 
     private void Start()
     {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     // ヒットストップを開始する関数

@@ -4,19 +4,27 @@ using UnityEngine;
 
 public class TitleSceneController : MonoBehaviour
 {
-    /// <summary>
-    /// カーソルを表示・非表示を管理するクラス
-    /// </summary>
-    CursorController cursor = null;
+    private TitleSoundController soundController = null;
 
     private void Awake()
     {
-        cursor = CursorController.GetInstance();
+        soundController = GetComponent<TitleSoundController>();
+        if (soundController != null)
+        {
+            soundController.AwakeInitilaize();
+        }
     }
     void Start()
     {
+        GameManager.GameState = GameManager.GameStateEnum.Title;
         Time.timeScale = 1f;
-        cursor.SetCursorLookMode(CursorLockMode.None);
-        cursor.SetCursorState(true);
+        CursorController.GetInstance().SetCursorLookMode(CursorLockMode.None);
+        CursorController.GetInstance().SetCursorState(true);
+        soundController.PlayBGM((int)TitleSoundController.TitleBGMTag.Title);
+    }
+
+    private void Update()
+    {
+        soundController.TitleSoundUpdate();
     }
 }

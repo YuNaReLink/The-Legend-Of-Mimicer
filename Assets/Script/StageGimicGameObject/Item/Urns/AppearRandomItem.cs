@@ -4,7 +4,7 @@ public class AppearRandomItem : MonoBehaviour
 {
     //出現させるアイテムのリスト
     [SerializeField]
-    private ObjectList list = null;
+    private ObjectList      list = null;
     //アイテムの番号
     public enum ItemNumber
     {
@@ -14,7 +14,7 @@ public class AppearRandomItem : MonoBehaviour
         DataEnd
     }
     [SerializeField]
-    private ItemNumber number = ItemNumber.Null;
+    private ItemNumber      number = ItemNumber.Null;
     //出現させる確率の比率
     public enum RandomRatio
     {
@@ -26,26 +26,31 @@ public class AppearRandomItem : MonoBehaviour
     }
     //確率の比率の数値
     [SerializeField]
-    private int[] ratios = new int[]
+    private int[]           ratios = new int[]
     {
-        100,
-        500,
-        1000,
+        101,
+        501,
+        1001,
     };
     //比率設定
     [SerializeField]
-    private RandomRatio ratioNum = RandomRatio.Low;
+    private RandomRatio     ratioNum = RandomRatio.Low;
 
     [SerializeField]
-    private float lancherPowerY = 25f;
+    private float           lancherPowerY = 25f;
     [SerializeField]
-    private float lancherPowerX = 5f;
+    private float           lancherPowerX = 5f;
 
     public void Execute(Collider other)
     {
         int ratio = Random.Range(0, ratios[(int)ratioNum]);
         if (ratio < ratios[(int)ratioNum] / 1.5f)
         {
+            if(number == ItemNumber.Null)
+            {
+                int num = Random.Range(0, 2);
+                number = (ItemNumber)num;
+            }
             GameObject item = Instantiate(list.Objects[(int)number], transform.position, Quaternion.identity);
             Lancher(item,other);
         }

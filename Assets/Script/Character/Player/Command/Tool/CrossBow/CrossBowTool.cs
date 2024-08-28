@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CrossBowTool : BaseToolCommand
+public class CrossBowTool : BaseToolAction
 {
     private PlayerController controller = null;
 
