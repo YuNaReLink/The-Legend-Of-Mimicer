@@ -102,15 +102,14 @@ public class PlayerConnectionUI : MonoBehaviour
             menuActiveController.StartInitialize();
         }
     }
-
     public void AllGameSceneUpdatePlayerUI()
     {
         playerLifeUI.LifeUpdate(playerController.HP);
     }
     //GameUIControllerのUpdateに記述する関数
-    public void PlayerUIUpdate()
+    public void GamingEnabledUIUpdate()
     {
-
+        //クロスボウで使う矢の残矢のカウントを表示するUIの処理
         if (playerController.GetCameraController().IsFPSMode()&&playerController.GetToolController().GetQuiver() != null)
         {
             if (!playerUIList[(int)PlayerUINumber.ArrowCount].activeSelf)
@@ -126,11 +125,24 @@ public class PlayerConnectionUI : MonoBehaviour
                 playerUIList[(int)PlayerUINumber.ArrowCount].SetActive(false);
             }
         }
-
+        keyInputUIController.ActiveKeyUI(true);
+        //キー入力UIの処理
         keyInputUIController.KeyUIInputUpdate();
-
+        //ターゲットに注目した時にターゲットに表示するUIの処理
         targetLockController.LockUIActiveCheck();
-
+        //メニューUIの処理
         menuActiveController.MenuActiveUpdate();
+    }
+    public void PoseingEnabledUIUpdate()
+    {
+        //メニューUIの処理
+        menuActiveController.MenuActiveUpdate();
+        keyInputUIController.ActiveKeyUI(false);
+        targetLockController.ActiveLockUI(false);
+    }
+    public void EndGameUIUpdate()
+    {
+        keyInputUIController.ActiveKeyUI(false);
+        targetLockController.ActiveLockUI(false);
     }
 }

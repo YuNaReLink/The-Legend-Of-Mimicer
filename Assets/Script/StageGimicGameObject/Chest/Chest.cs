@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Chest : MonoBehaviour
@@ -9,49 +6,49 @@ public class Chest : MonoBehaviour
     /// 蓋のオブジェクトの入れ物
     /// </summary>
     [SerializeField]
-    private GameObject lidObject = null;
+    private GameObject              lidObject = null;
     /// <summary>
     /// 初期の角度を保存
     /// </summary>
     [SerializeField]
-    private Vector3 baseRotate = Vector3.zero;
+    private Vector3                 baseRotate = Vector3.zero;
     /// <summary>
     /// 開く角度を保存するもの
     /// </summary>
     [SerializeField]
-    private Vector3 openRotate = Vector3.zero;
+    private Vector3                 openRotate = Vector3.zero;
     /// <summary>
     /// 宝箱が開く回転角度X
     /// </summary>
     [SerializeField]
-    private float openRotateX = -100;
+    private float                   openRotateX = -100;
     /// <summary>
     /// 宝箱の開くスピード
     /// </summary>
     [SerializeField]
-    private float openSpeed = 5f;
+    private float                   openSpeed = 5f;
     /// <summary>
     /// プレイヤーが宝箱周辺の当たり判定に当たっているか調べるためのクラス
     /// </summary>
     [SerializeField]
-    private TriggerCheck triggerCheck = null;
+    private TriggerCheck            triggerCheck = null;
     /// <summary>
     /// 宝箱を開くためのフラグ
     /// </summary>
     [SerializeField]
-    private bool open = false;
+    private bool                    open = false;
     /// <summary>
     /// 宝箱を開き終わった時のフラグ
     /// </summary>
     [SerializeField]
-    private bool stop = false;
+    private bool                    stop = false;
     /// <summary>
     /// アイテムをプレイヤーに取得させるクラス
     /// </summary>
     [SerializeField]
-    private GetChestItem getItem = null;
+    private GetChestItem            getItem = null;
 
-    private ChestSoundController soundController = null;
+    private SoundController         soundController = null;
 
     private void Awake()
     {
@@ -65,10 +62,14 @@ public class Chest : MonoBehaviour
         {
             Debug.LogWarning("GetChestItemがアタッチされていません");
         }
-        soundController = GetComponent<ChestSoundController>();
+        soundController = GetComponent<SoundController>();
         if(soundController != null)
         {
             soundController.AwakeInitilaize();
+        }
+        else
+        {
+            Debug.LogError("ChestSoundControllerがアタッチされていません");
         }
     }
     private void Start()
@@ -84,6 +85,10 @@ public class Chest : MonoBehaviour
     private void Update()
     {
         if (!triggerCheck.IsHitPlayer()) { return; }
+        if (open)
+        {
+            triggerCheck.SetTriggerTag(false);
+        }
         if (stop) { return; }
         OpenInput();
         OpenCover();
@@ -94,7 +99,9 @@ public class Chest : MonoBehaviour
         if (open) { return; }
         if (!triggerCheck.GetController().GetKeyInput().IsGetButton()) { return; }
         open = true;
-        soundController.PlaySESound((int)ChestSoundController.ChestSoundTag.Open);
+        soundController.PlaySESound((int)SoundTagList.ChestSoundTag.Open);
+        triggerCheck.SetTriggerTag(false);
+        triggerCheck.SetHide(true);
     }
 
     private void OpenCover()

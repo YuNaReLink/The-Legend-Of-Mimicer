@@ -1,8 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class BossDamageCommand : EnemyDamageCommand
+/// <summary>
+/// EnemyDamageCommandを継承したBossのダメージ処理を行う
+/// クラス
+/// </summary>
+public class BossDamageCommand : EnemyDamageCommand, InterfaceBaseInput
 {
     private BossController bossController = null;
     public BossDamageCommand(BossController _bossController) : base(_bossController)
@@ -11,15 +12,19 @@ public class BossDamageCommand : EnemyDamageCommand
         bossController = _bossController;
     }
 
-    public override void Input()
+    public void Input()
     {
         StunInput();
     }
+    private const float stunTimerCount = 5f;
     private void StunInput()
     {
+        //怯みフラグがfalseなら早期リターン
         if (!bossController.StunFlag) { return; }
-        bossController.GetMotion().ChangeMotion(CharacterTag.StateTag.Damage);
-        bossController.GetTimer().GetTimerStun().StartTimer(5f);
+        //ダメージ状態を設定
+        bossController.GetMotion().ChangeMotion(CharacterTagList.StateTag.Damage);
+        //怯みを維持するためにタイマーをスタート
+        bossController.GetTimer().GetTimerStun().StartTimer(stunTimerCount);
     }
 
     public override void Execute()
@@ -36,8 +41,11 @@ public class BossDamageCommand : EnemyDamageCommand
 
     private void StunCommand()
     {
+        //怯みフラグがfalseなら早期リターン
         if (!bossController.StunFlag) { return; }
+        //怯みモーションを開始
         bossController.GetBossSoundController().PlaySESound((int)BossSoundController.BossSoundTag.WeakPointsDamage);
+        //怯みフラグを有効にする
         bossController.StunFlag = false;
     }
 }

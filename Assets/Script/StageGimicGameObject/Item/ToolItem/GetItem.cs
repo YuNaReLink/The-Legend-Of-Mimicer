@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -9,12 +7,12 @@ using UnityEngine;
 public class GetItem : MonoBehaviour
 {
     [SerializeField]
-    protected GameObject item = null;
+    protected GameObject                                item = null;
 
     [SerializeField]
-    protected ToolInventoryController.ToolObjectTag toolTag = ToolInventoryController.ToolObjectTag.Null;
+    protected ToolInventoryController.ToolObjectTag     toolTag = ToolInventoryController.ToolObjectTag.Null;
 
-    protected TriggerCheck triggerCheck = null;
+    protected TriggerCheck                              triggerCheck = null;
 
     private void Awake()
     {

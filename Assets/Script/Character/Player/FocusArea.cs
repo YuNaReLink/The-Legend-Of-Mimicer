@@ -1,22 +1,27 @@
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーの視界クラス
+/// 視界にするオブジェクトにアタッチして
+/// ターゲットにロックオンする処理をする
+/// </summary>
 public class FocusArea : MonoBehaviour
 {
     [SerializeField]
-    private PlayerController controller;
+    private PlayerController    controller = null;
     [SerializeField]
-    private SphereCollider areaCollider;
+    private SphereCollider      areaCollider = null;
 
     private Ray ray;
-    private RaycastHit hit;
+    private RaycastHit          hit;
     //Rayを飛ばす方向
-    private Vector3 direction;
+    private Vector3             direction = Vector3.zero;
     //Rayを飛ばす距離
     [SerializeField]
-    private float distance = 10f;
+    private float               distance = 10f;
 
     [SerializeField]
-    private float searchAngle = 130f;
+    private float               searchAngle = 130f;
 
     void Start()
     {
@@ -26,7 +31,6 @@ public class FocusArea : MonoBehaviour
             Debug.Log("areaColliderがアタッチされませんでした");
         }
     }
-
     private void Update()
     {
         if(CameraController.LockObject == null) { return; }
@@ -35,7 +39,6 @@ public class FocusArea : MonoBehaviour
             CameraController.LockObject = null;
         }
     }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Target") { return; }
@@ -44,7 +47,6 @@ public class FocusArea : MonoBehaviour
             GameSceneSystemController.Instance.BattleStart = true;
         }
     }
-
     private void OnTriggerStay(Collider other)
     {
         if (other.tag != "Target") { return; }
@@ -70,14 +72,12 @@ public class FocusArea : MonoBehaviour
             }
         }
     }
-
     private void CheckSameEnemy(Collider other)
     {
         if (CameraController.LockObject != null) { return; }
         CameraController.FocusFlag = true;
         CameraController.LockObject = other.gameObject;
     }
-
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Target")
@@ -89,7 +89,6 @@ public class FocusArea : MonoBehaviour
             }
         }
     }
-
     private void RemoveEnemyList(Collider other)
     {
         if (CameraController.LockObject == null) { return; }

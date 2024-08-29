@@ -1,26 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class RotationDoor : MonoBehaviour
 {
-    private GameObject door = null;
-
+    /// <summary>
+    /// 開く扉のオブジェクト
+    /// </summary>
+    private GameObject          door = null;
+    /// <summary>
+    /// 扉が開くためのフラグ
+    /// </summary>
     [SerializeField]
-    private bool open = false;
+    private bool                open = false;
 
-    // 開くスピードを調整するための変数
+    //開くスピードを調整するための変数
     [SerializeField]
-    private float moveSpeed = 2.0f; 
-    private Quaternion closedRotation;
-    private Quaternion openRotation;
-
-    private TriggerCheck triggerCheck = null;
-
-    private SoundController soundController = null;
-
-    private DeltaTimeCountDown closeTimer = null;
+    private float               moveSpeed = 2.0f; 
+    /// <summary>
+    /// 閉まった時の回転角度
+    /// </summary>
+    private Quaternion          closedRotation;
+    /// <summary>
+    /// 開いた時の回転角度
+    /// </summary>
+    private Quaternion          openRotation;
+    /// <summary>
+    /// 扉を開くためにプレイヤーとの当たり判定を行っているクラス
+    /// </summary>
+    private TriggerCheck        triggerCheck = null;
+    /// <summary>
+    /// 扉の効果音の管理を行うクラス
+    /// </summary>
+    private SoundController     soundController = null;
+    /// <summary>
+    /// 扉が閉まるまでのカウント
+    /// </summary>
+    private DeltaTimeCountDown  closeTimer = null;
 
     private void Awake()
     {
@@ -65,6 +79,7 @@ public class RotationDoor : MonoBehaviour
             // Fキーが押されたら開閉を切り替える
             open = true;
             soundController.PlaySESound((int)SoundTagList.OpenDoorSoundTag.Open);
+            triggerCheck.SetTriggerTag(false);
         }
     }
 
@@ -74,8 +89,15 @@ public class RotationDoor : MonoBehaviour
         Vector3 sub = door.transform.rotation.eulerAngles - openRotation.eulerAngles;
         if(sub.magnitude < 0.1f)
         {
-            closeTimer.StartTimer(5f);
             open = false;
+            closeTimer.StartTimer(5f);
+            closeTimer.OnCompleted += () =>
+            {
+                if(triggerCheck.GetController() != null)
+                {
+                    triggerCheck.SetTriggerTag(true);
+                }
+            };
         }
     }
 

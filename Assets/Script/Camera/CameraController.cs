@@ -256,9 +256,9 @@ public class CameraController : MonoBehaviour
     {
         switch (player.CurrentState)
         {
-            case CharacterTag.StateTag.Grab:
-            case CharacterTag.StateTag.ClimbWall:
-            case CharacterTag.StateTag.WallJump:
+            case CharacterTagList.StateTag.Grab:
+            case CharacterTagList.StateTag.ClimbWall:
+            case CharacterTagList.StateTag.WallJump:
                 return true;
         }
         return false;

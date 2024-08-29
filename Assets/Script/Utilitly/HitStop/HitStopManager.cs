@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ヒットストップを行うシングルトンクラス
+/// シーンのヒエラルキーのオブジェクトにアタッチして使用
+/// </summary>
 public class HitStopManager : MonoBehaviour
 {
     // どこからでも呼び出せるようにする

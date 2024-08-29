@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// タイトルシーン全体で行う処理を管理するクラス
+/// </summary>
 public class TitleSceneController : MonoBehaviour
 {
     private TitleSoundController soundController = null;

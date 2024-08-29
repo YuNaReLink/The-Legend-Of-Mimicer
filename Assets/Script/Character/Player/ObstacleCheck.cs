@@ -1,5 +1,4 @@
 using UnityEngine;
-using CharacterTag;
 
 public class ObstacleCheck : MonoBehaviour
 {
@@ -7,29 +6,29 @@ public class ObstacleCheck : MonoBehaviour
     /// 崖から落ちる時に行うジャンプの判定を行う変数
     /// </summary>
     [SerializeField]
-    private float stepCheckOffset = 0.5f;
+    private float               stepCheckOffset = 0.5f;
     [SerializeField]
-    private float stepUpCheckOffset = 0.4f;
+    private float               stepUpCheckOffset = 0.4f;
     [SerializeField]
-    private float stepCheckDistance = 0.7f;
+    private float               stepCheckDistance = 0.7f;
 
 
     [SerializeField]
-    private bool lowStep = false;
-    public bool IsLowStep() { return lowStep; }
+    private bool                lowStep = false;
+    public bool                 IsLowStep() { return lowStep; }
 
     [SerializeField]
-    private float lowStepJumpPower = 1250;
+    private float               lowStepJumpPower = 1250;
 
     [SerializeField]
-    private byte lowJumpCount = 0;
-    public byte GetLowJumpCount() { return lowJumpCount; }
+    private byte                lowJumpCount = 0;
+    public byte                 GetLowJumpCount() { return lowJumpCount; }
 
     /// <summary>
     /// 着地座標を保存するかしないかを決めるフラグ
     /// </summary>
-    private bool savePosition = false;
-    public bool IsSavePosition() { return savePosition; }
+    private bool                savePosition = false;
+    public bool                 IsSavePosition() { return savePosition; }
 
     public enum RayTag
     {
@@ -44,7 +43,7 @@ public class ObstacleCheck : MonoBehaviour
     /// 壁を登るための判定を行う変数
     /// </summary>
     [SerializeField]
-    private float[] wallCheckoffsetArray = new float[]
+    private float[]             wallCheckoffsetArray = new float[]
     {
         4f,
         2f,
@@ -52,7 +51,7 @@ public class ObstacleCheck : MonoBehaviour
         0.25f
     };
     [SerializeField]
-    private float[] wallCheckDistanceArray = new float[]
+    private float[]             wallCheckDistanceArray = new float[]
     {
         1f,
         0.7f,
@@ -60,70 +59,70 @@ public class ObstacleCheck : MonoBehaviour
         0.7f
     };
     [SerializeField]
-    private bool[] hitWallFlagArray = new bool[4];
+    private bool[]              hitWallFlagArray = new bool[4];
 
 
     [SerializeField]
-    private float wallJumpPower;
+    private float               wallJumpPower;
 
-    public void SetWallJumpPower(float _power) { wallJumpPower = _power; }
+    public void                 SetWallJumpPower(float _power) { wallJumpPower = _power; }
 
     /// <summary>
     /// 崖を登るための変数
     /// </summary>
     [SerializeField]
-    private float climbForward = 1.5f;
+    private float               climbForward = 1.5f;
 
     [SerializeField]
-    private float climbUp = 2.35f;
+    private float               climbUp = 2.35f;
 
     //段差ジャンプフラグ
     [SerializeField]
-    private bool stepJumpFlag = false;
-    public bool IsStepJumpFlag() { return stepJumpFlag; }
+    private bool                stepJumpFlag = false;
+    public bool                 IsStepJumpFlag() { return stepJumpFlag; }
 
     [SerializeField]
-    private bool noGarbToClimbFlag = false;
+    private bool                noGarbToClimbFlag = false;
 
     //高い壁を登るジャンプフラグ
     [SerializeField]
-    private bool wallJumpFlag = false;
-    public bool IsWallJumpFlag() { return wallJumpFlag; }
+    private bool                wallJumpFlag = false;
+    public bool                 IsWallJumpFlag() { return wallJumpFlag; }
 
     [SerializeField]
-    private bool grabFlag = false;
+    private bool                grabFlag = false;
 
-    public bool IsGrabFlag() { return grabFlag; }
-
-    [SerializeField]
-    private bool grabCancel = false;
-    public bool GrabCancel { get { return grabCancel; } set { grabCancel = value; } }
-
+    public bool                 IsGrabFlag() { return grabFlag; }
 
     [SerializeField]
-    private bool climbFlag = false;
-    public bool IsClimbFlag() { return climbFlag; }
+    private bool                grabCancel = false;
+    public bool                 GrabCancel { get { return grabCancel; } set { grabCancel = value; } }
+
 
     [SerializeField]
-    private Vector3 climbOldPos = Vector3.zero;
+    private bool                climbFlag = false;
+    public bool                 IsClimbFlag() { return climbFlag; }
+
     [SerializeField]
-    private Vector3 climbPos = Vector3.zero;
+    private Vector3             climbOldPos = Vector3.zero;
+    [SerializeField]
+    private Vector3             climbPos = Vector3.zero;
 
     //崖をジャンプしたか判定するbool型
     [SerializeField]
-    private bool cliffJump = false;
+    private bool                cliffJump = false;
 
-    public bool CliffJumpFlag { get { return cliffJump; } set { cliffJump = value; } }
+    public bool                 CliffJumpFlag { get { return cliffJump; } set { cliffJump = value; } }
 
     /// <summary>
     /// カメラの向きを考慮した壁との当たり判定フラグ
     /// </summary>
 
     [SerializeField]
-    private bool[] cameraForwardWallFlagArray = new bool[4];
+    private bool[]              cameraForwardWallFlagArray = new bool[4];
 
     [SerializeField]
-    private PlayerController controller;
+    private PlayerController    controller = null;
 
     public void SetController(PlayerController _controller) { controller = _controller; }
     private Vector3 CreateRayAdvanceDirection()
@@ -163,8 +162,8 @@ public class ObstacleCheck : MonoBehaviour
 
     private void InitializeFlag()
     {
-        bool state = controller.CurrentState != StateTag.ClimbWall && controller.CurrentState != StateTag.Grab &&
-            controller.CurrentState != StateTag.WallJump;
+        bool state = controller.CurrentState != CharacterTagList.StateTag.ClimbWall && controller.CurrentState != CharacterTagList.StateTag.Grab &&
+            controller.CurrentState != CharacterTagList.StateTag.WallJump;
         bool initwallhitflag = !hitWallFlagArray[(int)RayTag.Bottom] && !hitWallFlagArray[(int)RayTag.Middle] &&
             !hitWallFlagArray[(int)RayTag.Up] && !hitWallFlagArray[(int)RayTag.Upper];
         if (!initwallhitflag || !state) { return; }
@@ -182,10 +181,10 @@ public class ObstacleCheck : MonoBehaviour
         MoveDirectionCheck();
         switch (controller.CurrentState)
         {
-            case StateTag.Attack:
-            case StateTag.SpinAttack:
-            case StateTag.ReadySpinAttack:
-            case StateTag.JumpAttack:
+            case CharacterTagList.StateTag.Attack:
+            case CharacterTagList.StateTag.SpinAttack:
+            case CharacterTagList.StateTag.ReadySpinAttack:
+            case CharacterTagList.StateTag.JumpAttack:
                 return;
         }
         if (controller.GetCameraController().IsFPSMode()) { return; }
@@ -369,8 +368,8 @@ public class ObstacleCheck : MonoBehaviour
         //掴まっているか
         if (grabFlag) { return; }
         //登っているか
-        bool enabledstate = controller.CurrentState == StateTag.ClimbWall || controller.CurrentState == StateTag.Grab ||
-            controller.CurrentState == StateTag.WallJump;
+        bool enabledstate = controller.CurrentState == CharacterTagList.StateTag.ClimbWall || controller.CurrentState == CharacterTagList.StateTag.Grab ||
+            controller.CurrentState == CharacterTagList.StateTag.WallJump;
         if (enabledstate) { return; }
         if (stepJumpFlag) { return; }
         if (climbFlag) { return; }
@@ -382,11 +381,11 @@ public class ObstacleCheck : MonoBehaviour
             {
                 lowJumpCount = 0;
             }
-            controller.GetMotion().ChangeMotion(StateTag.Jump);
+            controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Jump);
             controller.JumpForce(lowStepJumpPower);
             cliffJump = true;
             controller.Jumping = true;
-            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Jump);
+            controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Jump);
         }
     }
 
@@ -398,11 +397,11 @@ public class ObstacleCheck : MonoBehaviour
         {
             lowJumpCount = 0;
             controller.CharacterRB.velocity = Vector3.zero;
-            controller.GetMotion().ChangeMotion(StateTag.Jump);
+            controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Jump);
             controller.JumpForce(wallJumpPower);
             stepJumpFlag = false;
             controller.Jumping = true;
-            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Jump);
+            controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Jump);
         }
     }
 
@@ -411,18 +410,18 @@ public class ObstacleCheck : MonoBehaviour
 
         if (wallJumpFlag && controller.MoveInput)
         {
-            controller.GetMotion().ChangeMotion(StateTag.WallJump);
+            controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.WallJump);
             controller.JumpForce(wallJumpPower);
             grabFlag = true;
             wallJumpFlag = false;
             InitilaizeWallHitFlag();
-            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Jump);
+            controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Jump);
         }
     }
 
     private void GrabCommand()
     {
-        if(controller.CurrentState == StateTag.Jump)
+        if(controller.CurrentState == CharacterTagList.StateTag.Jump)
         {
             cliffJump = false;
         }
@@ -436,15 +435,15 @@ public class ObstacleCheck : MonoBehaviour
         {
             controller.CharacterRB.useGravity = false;
             controller.CharacterRB.velocity = Vector3.zero;
-            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Grab);
+            controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Grab);
         }
         controller.Velocity = controller.StopMoveVelocity();
         controller.CharacterRB.velocity = controller.StopMoveVelocity();
         if (MoveKeyInput()&& controller.GetCameraController().IsCameraVerticalRotation())
         {
             SetClimbPostion();
-            controller.GetMotion().ChangeMotion(StateTag.ClimbWall);
-            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Climb);
+            controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.ClimbWall);
+            controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Climb);
         }
         else if (controller.GetKeyInput().Vertical <= -1.0f&& controller.GetCameraController().IsCameraVerticalRotation())
         {
@@ -455,12 +454,12 @@ public class ObstacleCheck : MonoBehaviour
             grabFlag = false;
             climbFlag = false;
             controller.CharacterRB.useGravity = true;
-            controller.GetMotion().ChangeMotion(StateTag.Fall);
+            controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Fall);
             grabCancel = true;
         }
         else
         {
-            controller.GetMotion().ChangeMotion(StateTag.Grab);
+            controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Grab);
         }
     }
 
@@ -491,8 +490,8 @@ public class ObstacleCheck : MonoBehaviour
             controller.CharacterRB.velocity = Vector3.zero;
             controller.Velocity = controller.StopMoveVelocity();
             SetClimbPostion();
-            controller.GetMotion().ChangeMotion(StateTag.ClimbWall);
-            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Climb);
+            controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.ClimbWall);
+            controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Climb);
         }
 
         if (!climbFlag) { return; }
@@ -517,7 +516,7 @@ public class ObstacleCheck : MonoBehaviour
             grabFlag = false;
             lowStep = false;
             controller.CharacterRB.useGravity = true;
-            controller.GetMotion().ChangeMotion(StateTag.Idle);
+            controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Idle);
         }
     }
     //  イージング関数

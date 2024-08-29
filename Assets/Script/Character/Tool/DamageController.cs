@@ -1,6 +1,3 @@
-using CharacterTag;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageController : ToolController
@@ -31,11 +28,11 @@ public class DamageController : ToolController
 
     private bool CheckAttackState()
     {
-        StateTag state = controller.CurrentState;
-        switch (state)
+        Animator anim = controller.GetAnimator();
+        AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
+        if (animInfo.IsName("attack"))
         {
-            case StateTag.Attack:
-                return true;
+            return true;
         }
         return false;
     }

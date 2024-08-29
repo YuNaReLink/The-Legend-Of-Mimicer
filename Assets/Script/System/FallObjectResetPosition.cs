@@ -1,7 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーがステージから落ちた時の処理を行うクラス
+/// プレイヤーがステージから落ちたら最後に着地していたところに
+/// 位置を設定する処理を行う
+/// </summary>
 public class FallObjectResetPosition : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)

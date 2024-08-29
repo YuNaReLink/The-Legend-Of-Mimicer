@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class KnockBackCommand : InterfaceBaseCommand
+public class KnockBackCommand : InterfaceBaseCommand, InterfaceBaseInput
 {
     private CharacterController controller = null;
     public KnockBackCommand(CharacterController _controller)

@@ -1,4 +1,4 @@
-using CharacterTag;
+using CharacterTagList;
 using UnityEngine;
 
 /// <summary>

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMotion : MotionController
@@ -11,12 +9,12 @@ public class EnemyMotion : MotionController
         controller = _controller;
     }
 
-    public overrideÅ@void ChangeMotion(CharacterTag.StateTag tag)
+    public overrideÅ@void ChangeMotion(CharacterTagList.StateTag tag)
     {
         if (tag == controller.CurrentState) { return; }
         controller.PastState = controller.CurrentState;
         controller.CurrentState = tag;
         Animator anim = controller.GetAnimator();
-        anim.SetInteger(statename, (int)tag);
+        anim.SetInteger(stateName, (int)tag);
     }
 }

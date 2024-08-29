@@ -1,33 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// OpenDoorクラスと一緒に使うクラス
+/// 檻付の扉の檻を解除するクラス
+/// </summary>
 public class MoveCage : MonoBehaviour
 {
     [SerializeField]
-    private bool open = false;
+    private bool            open = false;
     [SerializeField]
-    private Vector3 goleCagePos = new Vector3(0, 7, 0);
+    private Vector3         goleCagePos = new Vector3(0, 7, 0);
 
     [SerializeField]
-    private float openSpeed = 10f;
+    private float           openSpeed = 10f;
 
     [SerializeField]
-    private OpenDoor door = null;
+    private OpenDoor        door = null;
+    private SphereCollider  sphereCollider = null;
 
     [SerializeField]
-    private SwitchGimic switchGimic = null;
+    private SwitchGimic     switchGimic = null;
 
-    void Start()
+    private void Awake()
+    {
+        sphereCollider = GetComponentInParent<SphereCollider>();
+    }
+
+    private void Start()
     {
         open = false;
         if(door != null)
         {
             door.enabled = false;
+            sphereCollider.enabled = false;
         }
     }
 
-    void Update()
+    private void Update()
     {
         if(switchGimic == null) { return; }
         if (switchGimic.IsSwitchFlag())
@@ -49,6 +58,7 @@ public class MoveCage : MonoBehaviour
             if(door != null)
             {
                 door.enabled = true;
+                sphereCollider.enabled = true;
             }
             if(switchGimic != null)
             {

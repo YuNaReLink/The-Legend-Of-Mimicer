@@ -25,6 +25,11 @@ public class FadeInText : MonoBehaviour
         }
     }
 
+    public void StartInitilaize()
+    {
+        textFadeEnd = false;
+    }
+
     public void GameOverTextUpdate()
     {
         if (textFadeEnd) { return; }

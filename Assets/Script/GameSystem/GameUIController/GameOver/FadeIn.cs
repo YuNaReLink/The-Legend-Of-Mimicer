@@ -15,6 +15,16 @@ public class FadeIn : MonoBehaviour
 
     public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
 
+    public void AwakeInitilaize()
+    {
+        panel = GetComponent<Image>();
+    }
+
+    public void StartInitilaize()
+    {
+        fadeEnd = false;
+    }
+
     public void StartFadeIn()
     {
         if (fadeEnd) { return;}

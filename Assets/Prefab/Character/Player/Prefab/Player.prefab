@@ -216,7 +216,7 @@ GameObject:
   - component: {fileID: 5085607257831151868}
   - component: {fileID: 1151272462068201039}
   - component: {fileID: 7840695295424365132}
-  - component: {fileID: 1755012261737006107}
+  - component: {fileID: 8480225175748394788}
   - component: {fileID: 594869213626691746}
   m_Layer: 0
   m_Name: Player
@@ -339,12 +339,7 @@ MonoBehaviour:
   jumpPower: 0
   stopController: 0
   data: {fileID: 11400000, guid: 2a35ea8483179074b998d0a286b0cccb, type: 2}
-  cameraObject: {fileID: 0}
-  cameraScript: {fileID: 0}
-  keyInput: {fileID: 0}
-  obstacleCheck: {fileID: 0}
-  toolInventory: {fileID: 0}
-  decorationController: {fileID: 0}
+  cameraController: {fileID: 0}
   rollCurve:
     serializedVersion: 2
     m_Curve:
@@ -370,6 +365,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   tripleAttack: -1
+  battleMode: 0
   pushTag: -1
   physicMaterials:
   - {fileID: 13400000, guid: 88ce9b980ecb25a4e85448abd1f0195a, type: 2}
@@ -389,7 +385,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db479c22fd810fb458544fbd2bf54c4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
   horizontal: 0
   vertical: 0
   upKey: 0
@@ -399,8 +394,6 @@ MonoBehaviour:
   currentDirection: 0
   pastDirection: 0
   actionButton: 0
-  initVelocity: {x: 0, y: 0, z: 0}
-  rollTimer: 0
   lockCamera: 0
   cameraLockEnabled: 0
   changeButton: 0
@@ -499,7 +492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfxObjects: {fileID: 11400000, guid: d94f1fec5b4177f409d7485064fdbe30, type: 2}
---- !u!114 &1755012261737006107
+--- !u!114 &8480225175748394788
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -508,11 +501,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4348658367534398464}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb184a7f6206aa54f9c0567d4392d515, type: 3}
+  m_Script: {fileID: 11500000, guid: dbc2b5d0a4f8a874ca61e302d62bff25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   soundType: 1
-  audioSource: {fileID: 594869213626691746}
+  audioSource: {fileID: 0}
   clipData: {fileID: 11400000, guid: b2309f9cf2ea4c249a4c51153c280f68, type: 2}
 --- !u!82 &594869213626691746
 AudioSource:

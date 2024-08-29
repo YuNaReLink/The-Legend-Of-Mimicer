@@ -1,140 +1,129 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using CharacterTag;
+using CharacterTagList;
 
 public class PlayerInput : MonoBehaviour
 {
-
-
-    [SerializeField]
-    private PlayerController controller;
-    public void SetController(PlayerController _controller) {  controller = _controller; }
-
-    /// <summary>
-    /// マウス入力
-    /// </summary>
+    private PlayerController        controller = null;
+    public void                     SetController(PlayerController _controller) {  controller = _controller; }
 
     /// <summary>
     /// XY移動入力
     /// </summary>
     [SerializeField]
-    private float horizontal = 0;
+    private float                   horizontal = 0;
 
-    public float Horizontal => horizontal;
-
-    [SerializeField]
-    private float vertical = 0;
-
-    public float Vertical => vertical;
+    public float                    Horizontal => horizontal;
 
     [SerializeField]
-    private bool upKey;
-    public bool IsUpKey() { return upKey; }
+    private float                   vertical = 0;
+
+    public float                    Vertical => vertical;
+
     [SerializeField]
-    private bool downKey;
-    public bool IsDownKey() { return downKey; }
+    private bool                    upKey;
+    public bool                     IsUpKey() { return upKey; }
     [SerializeField]
-    private bool leftKey;
-    public bool IsLeftKey() { return leftKey; }
+    private bool                    downKey;
+    public bool                     IsDownKey() { return downKey; }
     [SerializeField]
-    private bool rightKey;
-    public bool IsRightKey() { return rightKey; }
+    private bool                    leftKey;
+    public bool                     IsLeftKey() { return leftKey; }
+    [SerializeField]
+    private bool                    rightKey;
+    public bool                     IsRightKey() { return rightKey; }
 
     /// <summary>
     /// プレイヤーが注目してる時の方向を判断する変数
     /// </summary>
     [SerializeField]
-    private DirectionTag currentDirection;
+    private DirectionTag            currentDirection;
 
-    public DirectionTag CurrentDirection { get { return currentDirection; }set { currentDirection = value; } }
+    public DirectionTag             CurrentDirection { get { return currentDirection; }set { currentDirection = value; } }
 
     [SerializeField]
-    private DirectionTag pastDirection;
+    private DirectionTag            pastDirection;
 
-    public DirectionTag PastDirection { get { return pastDirection; } set { pastDirection = value; } }
+    public DirectionTag             PastDirection { get { return pastDirection; } set { pastDirection = value; } }
 
     /// <summary>
     /// アクションボタン入力
     /// </summary>
     [SerializeField]
-    private bool actionButton = false;
-    public bool ActionButton { get { return actionButton; }set { actionButton = value; } }
+    private bool                    actionButton = false;
+    public bool                     ActionButton { get { return actionButton; }set { actionButton = value; } }
     //ローリングを開始した時の初期位置
-    [SerializeField]
-    private Vector3 initVelocity = Vector3.zero;
-    public Vector3 InitVelocity { get { return initVelocity; } set { initVelocity = value; } }
-    [SerializeField]
-    private float rollTimer = 0.0f;
-    public float RollTimer { get { return rollTimer; }set { rollTimer = value; } }
+    private Vector3                 initVelocity = Vector3.zero;
+    public Vector3                  InitVelocity { get { return initVelocity; } set { initVelocity = value; } }
+
+    private float                   rollTimer = 0.0f;
+    public float                    RollTimer { get { return rollTimer; }set { rollTimer = value; } }
 
     /// <summary>
     /// カメラ固定ボタン入力
     /// </summary>
     [SerializeField]
-    private bool lockCamera = false;
+    private bool                    lockCamera = false;
 
     [SerializeField]
-    private bool cameraLockEnabled = false;
+    private bool                    cameraLockEnabled = false;
 
-    public bool IsCameraLockEnabled() {  return cameraLockEnabled; }
+    public bool                     IsCameraLockEnabled() {  return cameraLockEnabled; }
 
     /// <summary>
     ///切り替えボタン入力
     /// </summary>
     [SerializeField]
-    private bool changeButton = false;
-    public bool ChangeButton => changeButton;
+    private bool                    changeButton = false;
+    public bool                     ChangeButton => changeButton;
 
     /// <summary>
     /// 道具ボタン入力
     /// </summary>
     [SerializeField]
-    private bool toolButton = false;
-    public bool ToolButton => toolButton;
+    private bool                    toolButton = false;
+    public bool                     ToolButton => toolButton;
 
     /// <summary>
     /// 攻撃ボタン入力
     /// </summary>
     [SerializeField]
-    private bool attackButton = false;
-    public bool AttackButton { get { return attackButton; } set { attackButton = value; } }
+    private bool                    attackButton = false;
+    public bool                     AttackButton { get { return attackButton; } set { attackButton = value; } }
 
     //通常の攻撃カウント変数
-    private byte threeAttackCount = 0;
-    public byte ThreeAttackCount { get{ return threeAttackCount; }set{ threeAttackCount = value; } }
+    private byte                    threeAttackCount = 0;
+    public byte                     ThreeAttackCount { get{ return threeAttackCount; }set{ threeAttackCount = value; } }
 
     [SerializeField]
-    private bool attackHoldButton = false;
-    public bool AttackHoldButton { get {return attackHoldButton; } set {attackHoldButton = value; } }
+    private bool                    attackHoldButton = false;
+    public bool                     AttackHoldButton { get {return attackHoldButton; } set {attackHoldButton = value; } }
 
     /// <summary>
     /// 防御ボタン入力
     /// </summary>
     [SerializeField]
-    private bool guardHoldButton = false;
-    public bool GuardHoldButton => guardHoldButton;
+    private bool                    guardHoldButton = false;
+    public bool                     GuardHoldButton => guardHoldButton;
     [SerializeField]
-    private bool guardPushButton = false;
-    public bool GuardPushButton => guardPushButton;
+    private bool                    guardPushButton = false;
+    public bool                     GuardPushButton => guardPushButton;
 
     /// <summary>
     /// 右手に設定する道具のクラス
     /// </summary>
-    private RightHandInput rightHandInput = null;
+    private RightHandInput          rightHandInput = null;
 
     /// <summary>
     /// 左手に設定する道具のクラス
     /// </summary>
-    private LeftHandInput leftHandInput = null;
+    private LeftHandInput           leftHandInput = null;
 
     /// <summary>
     /// ステージギミックのボタン入力
     /// </summary>
-    [Header("ギミック関係のキー")]
     [SerializeField]
-    private bool getButton = false;
-    public bool IsGetButton() {  return getButton; }
+    private bool                    getButton = false;
+    public bool                     IsGetButton() {  return getButton; }
 
     public void Initialize()
     {
@@ -180,7 +169,7 @@ public class PlayerInput : MonoBehaviour
                 //移動入力
                 RunInput();
                 //回転入力
-                RollingInput();
+                controller.GetRolling().Input();
             }
             else
             {
@@ -387,79 +376,12 @@ public class PlayerInput : MonoBehaviour
         controller.GetMotion().ChangeMotion(StateTag.Run);
     }
 
-    private void RollingInput()
-    {
-        switch (controller.CurrentState)
-        {
-            case StateTag.Rolling:
-            case StateTag.Attack:
-            case StateTag.JumpAttack:
-            case StateTag.ReadySpinAttack:
-            case StateTag.SpinAttack:
-            case StateTag.GetUp:
-                return;
-        }
-        if (!controller.Landing) { return; }
-        if (controller.GetMotion().IsEndRollingMotionNameCheck()) { return; }
-        if (!actionButton) { return; }
-        if (!cameraLockEnabled) 
-        {
-            //完全に止まっていたらリターン
-            if (vertical == 0&&horizontal == 0) { return; }
-            currentDirection = DirectionTag.Up;
-            //ローリングの移動を行うための初速度を代入
-            initVelocity = controller.CharacterRB.velocity;
-            rollTimer = 0.0f;
-
-            controller.GetTimer().GetTimerRolling().StartTimer(0.4f);
-            controller.GetTimer().GetTimerNoAccele().StartTimer(0.4f);
-            controller.GetMotion().ChangeMotion(StateTag.Rolling);
-            //Shiftキーを無効にする
-            actionButton = false;
-        }
-        else
-        {
-            if (controller.BattleMode && (vertical > 0|| vertical == 0 && horizontal == 0)) { return; }
-            if (vertical > 0 || vertical == 0 && horizontal == 0)
-            {
-                currentDirection = DirectionTag.Up;
-            }
-            DirectionRollingInput();
-        }
-    }
-
-    private void DirectionRollingInput()
-    {
-        float rollingcount = 0.4f;
-        float noaccele = 0.4f;
-        if (horizontal > 0)
-        {
-            currentDirection = DirectionTag.Right;
-        }
-        if (horizontal < 0)
-        {
-            currentDirection = DirectionTag.Left;
-        }
-        if (vertical < 0&& horizontal == 0)
-        {
-            rollingcount = 0.5f;
-            noaccele = 0.5f;
-            currentDirection = DirectionTag.Down;
-        }
-        initVelocity = controller.CharacterRB.velocity;
-        rollTimer = 0.0f;
-        controller.GetTimer().GetTimerRolling().StartTimer(rollingcount);
-        controller.GetTimer().GetTimerNoAccele().StartTimer(noaccele);
-        controller.GetMotion().ChangeMotion(StateTag.Rolling);
-        //Shiftキーを無効にする
-        actionButton = false;
-    }
-
     private void ModeChangeInput()
     {
         switch(controller.CurrentState)
         {
             case StateTag.Idle:
+            case StateTag.ChangeMode:
                 break;
             default:
                 return;
@@ -486,10 +408,5 @@ public class PlayerInput : MonoBehaviour
         rightHandInput.Execute();
         //左手入力
         leftHandInput.Execute();
-    }
-
-    private void DeathInput()
-    {
-
     }
 }

@@ -1,17 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CrossBowAnimation : MonoBehaviour
 {
     [SerializeField]
-    private CrossBowShoot shoot = null;
+    private CrossBowShoot       shoot = null;
 
     [SerializeField]
-    private Animator animator = null;
-    public Animator GetAnimator() { return animator; }
+    private Animator            animator = null;
+    public Animator             GetAnimator() { return animator; }
 
-    private string shootFlagName = "Fire";
+    private string              shootFlagName = "Fire";
 
     private void Update()
     {

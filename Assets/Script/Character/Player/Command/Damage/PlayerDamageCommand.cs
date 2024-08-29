@@ -1,34 +1,31 @@
-using CharacterTag;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDamageCommand : InterfaceBaseCommand
+public class PlayerDamageCommand : InterfaceBaseCommand, InterfaceBaseInput
 {
-    private PlayerController controller = null;
+    private PlayerController        controller = null;
     public PlayerDamageCommand(PlayerController _controller)
     {
         controller = _controller;
     }
 
-    private GameObject attacker = null;
-    public GameObject Attacker { get { return attacker; }set { attacker = value; } }
+    private GameObject              attacker = null;
+    public GameObject               Attacker { get { return attacker; }set { attacker = value; } }
     /// <summary>
     /// ダメージ時に発生する状態とモーションを適用する
     /// </summary>
     public void Input()
     {
-        if(controller.DamageTag == DamageTag.Null) { return; }
+        if(controller.DamageTag == CharacterTagList.DamageTag.Null) { return; }
         switch (controller.DamageTag)
         {
-            case DamageTag.Fall:
-                controller.GetMotion().ForcedChangeMotion(StateTag.Damage);
+            case CharacterTagList.DamageTag.Fall:
+                controller.GetMotion().ForcedChangeMotion(CharacterTagList.StateTag.Damage);
                 controller.GetFallDistanceCheck().FallDamage = false;
                 break;
-            case DamageTag.NormalAttack:
-                controller.GetMotion().ForcedChangeMotion(StateTag.Damage);
+            case CharacterTagList.DamageTag.NormalAttack:
+                controller.GetMotion().ForcedChangeMotion(CharacterTagList.StateTag.Damage);
                 break;
-            case DamageTag.GreatAttack:
+            case CharacterTagList.DamageTag.GreatAttack:
                 break;
         }
     }
@@ -38,8 +35,8 @@ public class PlayerDamageCommand : InterfaceBaseCommand
     /// </summary>
     public void Execute()
     {
-        if (controller.DamageTag == DamageTag.Null) { return; }
-        controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Damage);
+        if (controller.DamageTag == CharacterTagList.DamageTag.Null) { return; }
+        controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Damage);
         Damage();
     }
 
@@ -47,12 +44,12 @@ public class PlayerDamageCommand : InterfaceBaseCommand
     {
         switch (controller.DamageTag)
         {
-            case DamageTag.Fall:
+            case CharacterTagList.DamageTag.Fall:
                 controller.HP--;
-                controller.DamageTag = DamageTag.Null;
+                controller.DamageTag = CharacterTagList.DamageTag.Null;
                 break;
-            case DamageTag.NormalAttack:
-            case DamageTag.GreatAttack:
+            case CharacterTagList.DamageTag.NormalAttack:
+            case CharacterTagList.DamageTag.GreatAttack:
                 if (attacker == null) { return; }
                 ToolController tool = attacker.GetComponent<ToolController>();
                 if (tool == null) { return; }
@@ -61,9 +58,9 @@ public class PlayerDamageCommand : InterfaceBaseCommand
                 controller.HP-= data.BaseDamagePower;
                 controller.GetKnockBackCommand().KnockBackFlag = true;
                 controller.GetKnockBackCommand().Attacker = attacker;
-                controller.GetVFXController().CreateVFX((int)EffectTagList.CharacterEffectTag.Damage,attacker.transform.position,1f,Quaternion.identity);
+                controller.GetEffectController().CreateVFX((int)EffectTagList.CharacterEffectTag.Damage,attacker.transform.position,1f,Quaternion.identity);
                 attacker = null;
-                controller.DamageTag = DamageTag.Null;
+                controller.DamageTag = CharacterTagList.DamageTag.Null;
                 break;
         }
         if(controller.HP > 0) { return; }

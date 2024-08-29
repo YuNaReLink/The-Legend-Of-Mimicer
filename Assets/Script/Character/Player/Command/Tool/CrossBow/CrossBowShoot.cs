@@ -3,16 +3,16 @@ using UnityEngine;
 public class CrossBowShoot : MonoBehaviour
 {
     [SerializeField]
-    private GameObject arrow = null;
+    private GameObject          arrow = null;
     [SerializeField]
-    private float bulletSpeed = 5f;
+    private float               bulletSpeed = 5f;
     [SerializeField]
-    private Transform arrowTransform = null;
+    private Transform           arrowTransform = null;
 
-    private bool fire = false;
-    public bool Fire { get { return fire; }set { fire = value; } }
+    private bool                fire = false;
+    public bool                 Fire { get { return fire; }set { fire = value; } }
 
-    private CrossBowAnimation animation = null;
+    private CrossBowAnimation   animation = null;
 
     public bool ArrowFire()
     {

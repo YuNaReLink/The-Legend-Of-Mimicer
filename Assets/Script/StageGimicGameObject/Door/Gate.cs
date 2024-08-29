@@ -1,30 +1,47 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Gate : MonoBehaviour
 {
+    /// <summary>
+    /// ゲートオブジェクトの変数
+    /// </summary>
     [SerializeField]
-    private GameObject gateGameObject = null;
-
+    private GameObject          gateGameObject = null;
+    /// <summary>
+    /// 最初のゲートの位置を保存する変数
+    /// </summary>
     [SerializeField]
-    private Vector3 baseGatePosition = Vector3.zero;
+    private Vector3             baseGatePosition = Vector3.zero;
+    /// <summary>
+    /// ゲートの移動先位置を保存する変数
+    /// </summary>
     [SerializeField]
-    private Vector3 goleGatePosition = Vector3.zero;
+    private Vector3             goleGatePosition = Vector3.zero;
+    /// <summary>
+    /// 移動する速度
+    /// </summary>
     [SerializeField]
-    private float golePositionY = 10f;
-
+    private float               golePositionY = 10f;
+    /// <summary>
+    /// 扉を開くためのスイッチクラスを格納するリスト
+    /// </summary>
     [SerializeField]
-    private List<SwitchGimic> switchGimics = new List<SwitchGimic>();
-
-
+    private List<SwitchGimic>   switchGimics = new List<SwitchGimic>();
+    /// <summary>
+    /// 扉を開けるためのフラグ
+    /// </summary>
     [SerializeField]
-    private bool openGate = false;
-
+    private bool                openGate = false;
+    /// <summary>
+    /// 扉の開く速度
+    /// </summary>
     [SerializeField]
-    private float openSpeed = 5f;
-
-    private SoundController soundController = null;
+    private float               openSpeed = 5f;
+    /// <summary>
+    /// 扉の効果音を管理するクラス
+    /// </summary>
+    private SoundController     soundController = null;
 
     private void Awake()
     {
@@ -35,7 +52,7 @@ public class Gate : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         for(int i = 0;i < transform.childCount; i++)
         {
@@ -48,7 +65,7 @@ public class Gate : MonoBehaviour
     }
 
 
-    void Update()
+    private void Update()
     {
         CheckSwitch();
 

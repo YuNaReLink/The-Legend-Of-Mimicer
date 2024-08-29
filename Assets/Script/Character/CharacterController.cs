@@ -1,4 +1,4 @@
-using CharacterTag;
+using CharacterTagList;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -68,7 +68,7 @@ public class CharacterController : MonoBehaviour
     public Rigidbody                        CharacterRB { get { return characterRB; } set { characterRB = value; } }
     
     /// <summary>
-    /// 動いているかいないかを判定するものの集まり
+    /// 動いているかいないかを判定するフラグ
     /// </summary>
     [SerializeField]
     protected bool                          input = false;
@@ -106,18 +106,28 @@ public class CharacterController : MonoBehaviour
     [SerializeField]
     protected bool                          stopController = false;
     public bool                             StopController { get { return stopController; } set { stopController = value; } }
-
-    protected EffectController                 vfxController = null;
-    public EffectController                    GetVFXController() { return vfxController; }
-
+    /// <summary>
+    /// エフェクトを管理するクラス
+    /// </summary>
+    protected EffectController              effectController = null;
+    public EffectController                 GetEffectController() { return effectController; }
+    /// <summary>
+    /// オブジェクトのMeshRendererを取得、保持するクラス
+    /// </summary>
     protected RendererData                  rendererData = null;
     public RendererData                     GetRendererData() { return rendererData; }
-
+    /// <summary>
+    /// ノックバックの処理を行うクラス
+    /// </summary>
     protected KnockBackCommand              knockBackCommand = null;
     public KnockBackCommand                 GetKnockBackCommand() { return knockBackCommand; }
-    public GameObject SelfObject() { return gameObject; }
-    public bool IsActiveObject() { return gameObject.activeSelf; }
-    public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
+    /// <summary>
+    /// オブジェクトの表示、非表示を設定する関数3選
+    /// </summary>
+    /// <returns></returns>
+    public GameObject                       SelfObject() { return gameObject; }
+    public bool                             IsActiveObject() { return gameObject.activeSelf; }
+    public void                             SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
     protected virtual void Awake(){}
     protected virtual void InitializeAssign()
     {
@@ -126,17 +136,21 @@ public class CharacterController : MonoBehaviour
         {
             Debug.LogError("Animatorがアタッチされていません");
         }
+
         SetMotionController();
+
         characterCollider = GetComponent<Collider>();
         if(characterCollider == null)
         {
             Debug.Log("Colliderがアタッチされていません");
         }
+
         characterRB = GetComponent<Rigidbody>();
         if(characterRB == null)
         {
             Debug.LogError("Rigidbodyがアタッチされていません");
         }
+
         groundCheck = GetComponent<GroundCheck>();
         if (groundCheck == null)
         {
@@ -144,11 +158,13 @@ public class CharacterController : MonoBehaviour
             groundCheck = GetComponent<GroundCheck>();
             Debug.Log("GroundCheckがアタッチされていなかったのでアタッチしました");
         }
-        vfxController = GetComponent<EffectController>();
-        if(vfxController == null)
+
+        effectController = GetComponent<EffectController>();
+        if(effectController == null)
         {
             Debug.LogError("EffectController");
         }
+
         rendererData = GetComponentInChildren<RendererData>();
         if (rendererData != null)
         {
@@ -158,6 +174,7 @@ public class CharacterController : MonoBehaviour
         {
             Debug.LogError("Rrndererがアタッチされていません");
         }
+
         knockBackCommand = new KnockBackCommand(this);
     }
 
@@ -167,8 +184,6 @@ public class CharacterController : MonoBehaviour
         velocity = Vector3.zero;
         input = false;
     }
-
-
     protected virtual void Update()
     {
         if (Time.timeScale <= 0) { return; }
@@ -224,7 +239,6 @@ public class CharacterController : MonoBehaviour
     public virtual void Death()
     {
         if (death) { return; }
-        motion.ForcedChangeMotion(StateTag.Die);
         death = true;
     }
     /// <summary>

@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
+/// <summary>
+/// 左手に持つ道具(盾)の処理を行うクラス
+/// </summary>
 public class LeftHandInput
 {
     private PlayerController controller;
@@ -27,7 +27,7 @@ public class LeftHandInput
             if (controller.GetKeyInput().GuardHoldButton)
             {
                 //盾のクラスを生成する
-                controller.LeftAction = new ShieldGuridCommand(controller);
+                controller.LeftAction = new ShieldGuridAction(controller);
             }
             else
             {

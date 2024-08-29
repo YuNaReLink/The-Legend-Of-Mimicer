@@ -53,6 +53,7 @@ public class PlayerController : CharacterController
     /// プレイヤーの回避行動を処理するクラス
     /// </summary>
     private RollingCommand                  rolling = null;
+    public RollingCommand                   GetRolling() { return rolling; }
     [SerializeField]
     private AnimationCurve                  rollCurve = null;
     public AnimationCurve                   GetRollCurve() { return rollCurve; }
@@ -60,8 +61,8 @@ public class PlayerController : CharacterController
     /// プレイヤーの攻撃行動を処理するクラス
     /// </summary>
     [SerializeField]
-    private CharacterTag.TripleAttack       tripleAttack = CharacterTag.TripleAttack.Null;
-    public CharacterTag.TripleAttack        TripleAttack { get { return tripleAttack; } set {  tripleAttack = value; } }
+    private CharacterTagList.TripleAttack       tripleAttack = CharacterTagList.TripleAttack.Null;
+    public CharacterTagList.TripleAttack        TripleAttack { get { return tripleAttack; } set {  tripleAttack = value; } }
     /// <summary>
     /// プレイヤーのダメージ処理を行うクラス
     /// </summary>
@@ -70,10 +71,10 @@ public class PlayerController : CharacterController
     /// <summary>
     /// プレイヤーの各右・左の道具の処理を生成するクラス
     /// </summary>
-    private BaseToolAction                  rightAction = null;
-    public BaseToolAction                   RightAction { get { return rightAction; }set { rightAction = value; } }
-    private BaseToolAction                  leftAction = null;
-    public BaseToolAction                   LeftAction { get {return leftAction; }set { leftAction = value; } }
+    private InterfaceBaseToolAction                  rightAction = null;
+    public InterfaceBaseToolAction                   RightAction { get { return rightAction; }set { rightAction = value; } }
+    private InterfaceBaseToolAction                  leftAction = null;
+    public InterfaceBaseToolAction                   LeftAction { get {return leftAction; }set { leftAction = value; } }
     /// <summary>
     /// プレイヤーが戦闘状態かそうじゃないか
     /// </summary>
@@ -84,8 +85,8 @@ public class PlayerController : CharacterController
     /// プレイヤーが動かせるオブジェクトに触れてるか判定する
     /// </summary>
     [SerializeField]
-    private CharacterTag.PushTag            pushTag = CharacterTag.PushTag.Null;
-    public CharacterTag.PushTag             PushTag  => pushTag;
+    private CharacterTagList.PushTag            pushTag = CharacterTagList.PushTag.Null;
+    public CharacterTagList.PushTag             PushTag  => pushTag;
     /// <summary>
     /// パシフィックマテリアル
     /// </summary>
@@ -95,8 +96,8 @@ public class PlayerController : CharacterController
     /// ダメージ関係の変数
     /// </summary>
     [SerializeField]
-    private CharacterTag.DamageTag          damageTag = CharacterTag.DamageTag.Null;
-    public CharacterTag.DamageTag           DamageTag {  get { return damageTag; } set { damageTag = value; } }
+    private CharacterTagList.DamageTag          damageTag = CharacterTagList.DamageTag.Null;
+    public CharacterTagList.DamageTag           DamageTag {  get { return damageTag; } set { damageTag = value; } }
     [Header("プレイヤーが盾を構えた時に使うモーションClip")]
     [SerializeField]
     private AnimationClip                   clip = null;
@@ -107,8 +108,8 @@ public class PlayerController : CharacterController
     /// <summary>
     /// プレイヤーのサウンド管理のクラス
     /// </summary>
-    private PlayerSoundController           soundController = null;
-    public PlayerSoundController            GetSoundController() { return soundController; }
+    private SoundController                 soundController = null;
+    public SoundController                  GetSoundController() { return soundController; }
     protected override void                 SetMotionController(){motion = new PlayerMotion(this);}
     protected override void Awake()
     {
@@ -166,7 +167,7 @@ public class PlayerController : CharacterController
         animatorOverride = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = animatorOverride;
 
-        soundController = GetComponent<PlayerSoundController>();
+        soundController = GetComponent<SoundController>();
     }
 
     //入力処理を行う
@@ -226,13 +227,13 @@ public class PlayerController : CharacterController
 
     private void SetPhysicMaterial()
     {
-        if (currentState != CharacterTag.StateTag.Grab &&  !landing)
+        if (currentState != CharacterTagList.StateTag.Grab &&  !landing)
         {
-            characterCollider.material = physicMaterials[(int)CharacterTag.PhysicState.Jump];
+            characterCollider.material = physicMaterials[(int)CharacterTagList.PhysicState.Jump];
         }
         else
         {
-            characterCollider.material = physicMaterials[(int)CharacterTag.PhysicState.Land];
+            characterCollider.material = physicMaterials[(int)CharacterTagList.PhysicState.Land];
         }
     }
 
@@ -248,19 +249,19 @@ public class PlayerController : CharacterController
     {
         switch (currentState)
         {
-            case CharacterTag.StateTag.GetUp:
-            case CharacterTag.StateTag.Idle:
-            case CharacterTag.StateTag.Grab:
-            case CharacterTag.StateTag.ClimbWall:
-            case CharacterTag.StateTag.Attack:
-            case CharacterTag.StateTag.JumpAttack:
-            case CharacterTag.StateTag.SpinAttack:
-            case CharacterTag.StateTag.Gurid:
-            case CharacterTag.StateTag.Damage:
-            case CharacterTag.StateTag.Die:
+            case CharacterTagList.StateTag.GetUp:
+            case CharacterTagList.StateTag.Idle:
+            case CharacterTagList.StateTag.Grab:
+            case CharacterTagList.StateTag.ClimbWall:
+            case CharacterTagList.StateTag.Attack:
+            case CharacterTagList.StateTag.JumpAttack:
+            case CharacterTagList.StateTag.SpinAttack:
+            case CharacterTagList.StateTag.Gurid:
+            case CharacterTagList.StateTag.Damage:
+            case CharacterTagList.StateTag.Die:
                 return;
         }
-        if(currentState == CharacterTag.StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 && keyInput.Vertical == 0) { return; }
+        if(currentState == CharacterTagList.StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 && keyInput.Vertical == 0) { return; }
         if(fallDistanceCheck.FallDamage || cameraController.IsFPSMode()) { return; }
 
         input = true;
@@ -285,10 +286,6 @@ public class PlayerController : CharacterController
         {
             fallDistanceCheck.Execute();
         }
-        if (rolling != null)
-        {
-            rolling.Execute();
-        }
         if(rightAction != null)
         {
             rightAction.Execute();
@@ -296,6 +293,11 @@ public class PlayerController : CharacterController
         if(leftAction != null)
         {
             leftAction.Execute();
+        }
+        //InterfaceBaseCommand,InterfaceBaseInputを実装してるクラス↓
+        if (rolling != null)
+        {
+            rolling.Execute();
         }
         if(damage != null)
         {
@@ -305,6 +307,7 @@ public class PlayerController : CharacterController
         {
             knockBackCommand.Execute();
         }
+
         //移動処理
         if (!timer.GetTimerRolling().IsEnabled())
         {
@@ -326,17 +329,17 @@ public class PlayerController : CharacterController
     {
         switch (currentState)
         {
-            case CharacterTag.StateTag.JumpAttack:
-            case CharacterTag.StateTag.SpinAttack:
-            case CharacterTag.StateTag.ReadySpinAttack:
-            case CharacterTag.StateTag.Rolling:
-            case CharacterTag.StateTag.Push:
-            case CharacterTag.StateTag.Damage:
-            case CharacterTag.StateTag.WallJump:
-            case CharacterTag.StateTag.Grab:
-            case CharacterTag.StateTag.ClimbWall:
-            case CharacterTag.StateTag.Die:
-            case CharacterTag.StateTag.GetUp:
+            case CharacterTagList.StateTag.JumpAttack:
+            case CharacterTagList.StateTag.SpinAttack:
+            case CharacterTagList.StateTag.ReadySpinAttack:
+            case CharacterTagList.StateTag.Rolling:
+            case CharacterTagList.StateTag.Push:
+            case CharacterTagList.StateTag.Damage:
+            case CharacterTagList.StateTag.WallJump:
+            case CharacterTagList.StateTag.Grab:
+            case CharacterTagList.StateTag.ClimbWall:
+            case CharacterTagList.StateTag.Die:
+            case CharacterTagList.StateTag.GetUp:
                 return true;
         }
         return false;
@@ -347,7 +350,7 @@ public class PlayerController : CharacterController
         Vector3 vel = velocity;
         float h = keyInput.Horizontal;
         float v = keyInput.Vertical;
-        if (currentState == CharacterTag.StateTag.Jump||currentState == CharacterTag.StateTag.Rolling)
+        if (currentState == CharacterTagList.StateTag.Jump||currentState == CharacterTagList.StateTag.Rolling)
         {
             vel += transform.forward * _accele;
         }
@@ -368,7 +371,7 @@ public class PlayerController : CharacterController
 
     private float SetAccele(float _accele)
     {
-        if(currentState == CharacterTag.StateTag.ReadySpinAttack)
+        if(currentState == CharacterTagList.StateTag.ReadySpinAttack)
         {
             _accele *= 0.2f;
         }
@@ -378,7 +381,7 @@ public class PlayerController : CharacterController
 
     private float SetMaxSpeed(float _maxSpeed)
     {
-        if (currentState == CharacterTag.StateTag.ReadySpinAttack)
+        if (currentState == CharacterTagList.StateTag.ReadySpinAttack)
         {
             _maxSpeed *= 0.2f;
         }
@@ -388,20 +391,21 @@ public class PlayerController : CharacterController
     public override void Death()
     {
         base.Death();
-        vfxController.CreateVFX((int)EffectTagList.CharacterEffectTag.Death, transform.position, 1f, Quaternion.identity);
+        motion.ForcedChangeMotion(CharacterTagList.StateTag.Die);
+        effectController.CreateVFX((int)EffectTagList.CharacterEffectTag.Death, transform.position, 1f, Quaternion.identity);
     }
     public override void RecoveryHelth(int count)
     {
         base.RecoveryHelth(count);
-        soundController.PlaySESound((int)PlayerSoundController.PlayerSoundTag.GetHeart);
+        soundController.PlaySESound((int)SoundTagList.PlayerSoundTag.GetHeart);
     }
     public void GetArrow(int count)
     {
         toolInventory.GetQuiver().AddArrow(count);
-        soundController.PlaySESound((int)PlayerSoundController.PlayerSoundTag.GetItem);
+        soundController.PlaySESound((int)SoundTagList.PlayerSoundTag.GetItem);
     }
 
-    private void SetPushState(CharacterTag.PushTag _pushTag){pushTag = _pushTag;}
+    private void SetPushState(CharacterTagList.PushTag _pushTag){pushTag = _pushTag;}
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -418,7 +422,7 @@ public class PlayerController : CharacterController
         switch (other.tag)
         {
             case "Furniture":
-                SetPushState(CharacterTag.PushTag.Start);
+                SetPushState(CharacterTagList.PushTag.Start);
                 break;
             case "Damage":
                 DamageOrGuardCheck(other);
@@ -426,7 +430,7 @@ public class PlayerController : CharacterController
             default:
                 fallDistanceCheck.CollisionEnter();
                 if (!fallDistanceCheck.FallDamage) { return; }
-                damageTag = CharacterTag.DamageTag.Fall;
+                damageTag = CharacterTagList.DamageTag.Fall;
                 break;
         }
     }
@@ -435,16 +439,16 @@ public class PlayerController : CharacterController
     {
         switch (guardState)
         {
-            case CharacterTag.GuardState.Null:
+            case CharacterTagList.GuardState.Null:
                 //ダメージ発生時の処理
-                damageTag = CharacterTag.DamageTag.NormalAttack;
+                damageTag = CharacterTagList.DamageTag.NormalAttack;
                 damage.Attacker = other.gameObject;
                 break;
-            case CharacterTag.GuardState.Normal:
-            case CharacterTag.GuardState.Crouch:
+            case CharacterTagList.GuardState.Normal:
+            case CharacterTagList.GuardState.Crouch:
                 knockBackCommand.KnockBackFlag = true;
                 knockBackCommand.Attacker = other.gameObject;
-                soundController.PlaySESound((int)PlayerSoundController.PlayerSoundTag.Guard);
+                soundController.PlaySESound((int)SoundTagList.PlayerSoundTag.Guard);
                 break;
         }
     }
@@ -455,22 +459,22 @@ public class PlayerController : CharacterController
         switch (collision.collider.tag)
         {
             case "Furniture":
-                CharacterTag.PushTag tag = pushTag;
+                CharacterTagList.PushTag tag = pushTag;
                 if (keyInput.Vertical != 0 || keyInput.Horizontal != 0)
                 {
                     switch (pushTag)
                     {
-                        case CharacterTag.PushTag.Start:
-                            tag = CharacterTag.PushTag.Pushing;
+                        case CharacterTagList.PushTag.Start:
+                            tag = CharacterTagList.PushTag.Pushing;
                             break;
-                        case CharacterTag.PushTag.Null:
-                            tag = CharacterTag.PushTag.Start;
+                        case CharacterTagList.PushTag.Null:
+                            tag = CharacterTagList.PushTag.Start;
                             break;
                     }
                 }
                 else
                 {
-                    tag = CharacterTag.PushTag.Null;
+                    tag = CharacterTagList.PushTag.Null;
                 }
                 SetPushState(tag);
                 break;
@@ -483,7 +487,7 @@ public class PlayerController : CharacterController
         switch (collision.collider.tag)
         {
             case "Furniture":
-                SetPushState(CharacterTag.PushTag.Null);
+                SetPushState(CharacterTagList.PushTag.Null);
                 break;
             default:
                 fallDistanceCheck.CollisionExit();

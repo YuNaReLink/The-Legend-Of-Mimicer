@@ -3,26 +3,30 @@ using UnityEngine;
 
 public class GameClearUIController : MonoBehaviour
 {
-    private List<GameObject> gameClearUIObjectList = new List<GameObject>();
+    private List<GameObject>        gameClearUIObjectList = new List<GameObject>();
 
-    private FadeIn panelFadeIn = null;
+    private FadeIn                  panelFadeIn = null;
 
-    private FadeInText gameClearText = null;
+    private FadeInText              gameClearText = null;
 
-    private MoverButton gameClearButtons = null;
+    private MoverButton             gameClearButtons = null;
 
-    public GameObject SelfObject() { return gameObject; }
+    public GameObject               SelfObject() { return gameObject; }
 
-    public bool IsActiveObject() { return gameObject.activeSelf; }
+    public bool                     IsActiveObject() { return gameObject.activeSelf; }
 
-    public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
+    public void                     SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
 
     public void AwakeInitilaize()
     {
         gameClearUIObjectList.Clear();
 
         panelFadeIn = GetComponentInChildren<FadeIn>();
-        gameClearUIObjectList.Add(panelFadeIn.SelfObject());
+        if (panelFadeIn != null)
+        {
+            panelFadeIn.AwakeInitilaize();
+            gameClearUIObjectList.Add(panelFadeIn.SelfObject());
+        }
 
         gameClearText = GetComponentInChildren<FadeInText>();
         if (gameClearText != null)
@@ -32,11 +36,17 @@ public class GameClearUIController : MonoBehaviour
         }
 
         gameClearButtons = GetComponentInChildren<MoverButton>();
-        gameClearUIObjectList.Add(gameClearButtons.SelfObject());
+        if(gameClearButtons != null)
+        {
+            gameClearButtons.AwakeInitilaize();
+            gameClearUIObjectList.Add(gameClearButtons.SelfObject());
+        }
     }
 
     public void StartInitialize()
     {
+        panelFadeIn.StartInitilaize();
+        gameClearText.StartInitilaize();
         gameObject.SetActive(false);
     }
 

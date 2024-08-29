@@ -1,9 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// タイトルシーンの画面UI構成が二つあるうちの二つ目を処理する
+/// クラス
+/// </summary>
 public class TitleUIConfiguration02 : BaseTitleUIConfiguration
 {
 
