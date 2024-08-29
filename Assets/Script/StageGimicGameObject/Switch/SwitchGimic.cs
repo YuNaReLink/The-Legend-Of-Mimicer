@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ギミックの一つのスイッチの処理を行うクラス
+/// </summary>
 public class SwitchGimic : MonoBehaviour
 {
     /// <summary>

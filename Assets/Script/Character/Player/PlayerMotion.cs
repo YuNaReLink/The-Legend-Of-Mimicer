@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CharacterTag;
+using CharacterTagList;
 
 public class PlayerMotion : MotionController
 {
@@ -43,7 +43,7 @@ public class PlayerMotion : MotionController
 
         //アニメーション遷移の設定
         anim.SetBool(boolname, controller.BattleMode);
-        anim.SetInteger(statename, statenumber);
+        anim.SetInteger(stateName, statenumber);
         anim.SetInteger(dirname, dirnumber);
         anim.SetInteger(jumpcountname, jumpCount);
         anim.SetInteger(threeattackname, threeAttackCount);
@@ -114,7 +114,7 @@ public class PlayerMotion : MotionController
 
         //アニメーション遷移の設定
         anim.SetBool(boolname, controller.BattleMode);
-        anim.SetInteger(statename, statenumber);
+        anim.SetInteger(stateName, statenumber);
         anim.SetInteger(dirname, dirnumber);
         anim.SetInteger(jumpcountname, jumpCount);
         anim.SetInteger(threeattackname, threeAttackCount);

@@ -1,6 +1,8 @@
 
-
-namespace CharacterTag
+/// <summary>
+/// Characterクラスを継承したクラスで使用するタグをまとめたnamespace
+/// </summary>
+namespace CharacterTagList
 {
     public enum StateTag
     {

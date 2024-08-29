@@ -28,7 +28,7 @@ public class TargetLockController : MonoBehaviour
         bool lockOn = LockOnFlag();
         if(lockOn)
         {
-            lockOnUI.SetActive(true);
+            ActiveLockUI(true);
             // 3Dオブジェクトのワールド座標をスクリーン座標に変換
             Vector3 screenPosition = camera.WorldToScreenPoint(CameraController.LockObject.transform.position);
 
@@ -46,7 +46,13 @@ public class TargetLockController : MonoBehaviour
         }
         else
         {
-            lockOnUI.SetActive(false);
+            ActiveLockUI(false);
         }
+    }
+
+    public void ActiveLockUI(bool active)
+    {
+        if (lockOnUI.activeSelf == active) { return; }
+        lockOnUI.SetActive(active);
     }
 }

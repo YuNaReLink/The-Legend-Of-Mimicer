@@ -1,5 +1,8 @@
-using UnityEngine;
 
+/// <summary>
+/// プレイヤーで使うモーションを
+/// それぞれ使用するのに必要な名前だけまとめたクラス
+/// </summary>
 public class PlayerMotionName
 {
     private string[] rollingName = new string[]

@@ -1,32 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FallDistanceCheck
 {
     //参照用プレイヤーコントローラー
-    private PlayerController controller;
+    private PlayerController    controller = null;
     //コンストラクタから取得
     public FallDistanceCheck(PlayerController _controller)
     {
         controller = _controller;
     }
     //　落ちた場所
-    private float fallenPosition = 0f;
+    private float               fallenPosition = 0f;
     //落下してから地面に落ちるまでの距離
-    private float fallenDistance = 0f;
+    private float               fallenDistance = 0f;
     //どのぐらいの高さからダメージを与えるか
-    private const float takeDamageDistance = 10f;
+    private const float         takeDamageDistance = 10f;
     /// <summary>
     /// 落ちてるかどうかのフラグ
     /// </summary>
-    private bool fall = false;
-    public bool Fall {  get { return fall; } set { fall = value; } }
+    private bool                fall = false;
     /// <summary>
     /// 落下ダメージを与えるかどうかのフラグ
     /// </summary>
-    private bool fallDamage = false;
-    public bool FallDamage {  get { return fallDamage; } set { fallDamage = value; } }
+    private bool                fallDamage = false;
+    public bool                 FallDamage {  get { return fallDamage; } set { fallDamage = value; } }
 
     //初期化
     public void Initialize()

@@ -71,7 +71,7 @@ public class GameSceneSystemController : MonoBehaviour
             return;
         }
         instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
     }
 
@@ -79,7 +79,8 @@ public class GameSceneSystemController : MonoBehaviour
     {
         CursorController.GetInstance().SetCursorLookMode(CursorLockMode.Locked);
         CursorController.GetInstance().SetCursorState(false);
-
+        gameClearFlag = false;
+        bossBattleStart = false;
         GameManager.GameState = GameManager.GameStateEnum.Game;
 
         gameSoundController.PlayBGM((int)GameSoundController.GameBGMSoundTag.Stage);

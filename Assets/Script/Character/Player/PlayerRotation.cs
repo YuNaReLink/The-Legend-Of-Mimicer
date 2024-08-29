@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,14 +5,14 @@ using UnityEngine;
 /// </summary>
 public class PlayerRotation
 {
-    private PlayerController controller = null;
+    private PlayerController    controller = null;
     public PlayerRotation(PlayerController _controller, Quaternion rotation)
     {
         controller = _controller;
         targetRotation = rotation;
     }
 
-    private Quaternion targetRotation = Quaternion.identity;
+    private Quaternion          targetRotation = Quaternion.identity;
 
     public Quaternion SelfRotation(PlayerController controller)
     {

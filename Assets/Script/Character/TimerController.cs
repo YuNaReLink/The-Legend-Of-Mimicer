@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// タイマーの基底クラス
+/// このクラスを基底に継承先で
+/// タイマーをまとめて処理を行う
+/// </summary>
 public class TimerController
 {
     /// <summary>

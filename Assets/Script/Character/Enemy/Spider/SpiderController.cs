@@ -3,15 +3,28 @@ using UnityEngine.AI;
 
 public class SpiderController : EnemyController
 {
-    private SpiderInput spiderInput = null;
-
-    private SpiderSoundController spiderSoundController = null;
-    public SpiderSoundController GetSpiderSoundController() {  return spiderSoundController; }
-    protected SpiderDamageCommand spiderDamage = null;
-    public SpiderDamageCommand GetSpiderDamage() { return spiderDamage; }
+    /// <summary>
+    /// クモの状態の入力を管理するクラス
+    /// </summary>
+    private SpiderInput             spiderInput = null;
+    public SpiderInput              GetSpiderInput() { return spiderInput; }
+    /// <summary>
+    /// クモの効果音を管理するクラス
+    /// </summary>
+    private SpiderSoundController   spiderSoundController = null;
+    public SpiderSoundController    GetSpiderSoundController() {  return spiderSoundController; }
+    /// <summary>
+    /// クモのダメージ&死亡時の処理の管理を行うクラス
+    /// </summary>
+    protected SpiderDamageCommand   spiderDamage = null;
     protected override void Start()
     {
         base.Start();
+    }
+
+    protected override void SetMotionController()
+    {
+        motion = new SpiderMotionController(this);
     }
 
     protected override void InitializeAssign()
@@ -37,16 +50,17 @@ public class SpiderController : EnemyController
         spiderSoundController.TimerUpdate();
         base.Update();
         spiderInput.Execute();
+        motion.EndMotionNameCheck();
     }
 
     protected override void UpdateMoveInput()
     {
         switch (currentState)
         {
-            case CharacterTag.StateTag.Idle:
-            case CharacterTag.StateTag.Attack:
-            case CharacterTag.StateTag.Damage:
-            case CharacterTag.StateTag.Die:
+            case CharacterTagList.StateTag.Idle:
+            case CharacterTagList.StateTag.Attack:
+            case CharacterTagList.StateTag.Damage:
+            case CharacterTagList.StateTag.Die:
                 return;
         }
         input = true;
@@ -55,8 +69,11 @@ public class SpiderController : EnemyController
     private void FixedUpdate()
     {
         if (death) { return; }
-        MoveCommand();
-        if (!input)
+        if (input)
+        {
+            MoveCommand();
+        }
+        else
         {
             StopMove();
         }
@@ -72,11 +89,8 @@ public class SpiderController : EnemyController
 
     private void MoveCommand()
     {
-        if(currentState != CharacterTag.StateTag.Run) { return; }
         spiderSoundController.FixedPlaySESound((int)SpiderSoundController.SpiderSoundTag.Foot);
     }
-
-
     private void OnTriggerEnter(Collider other)
     {
         ToolController tool = other.GetComponent<ToolController>();
@@ -92,7 +106,7 @@ public class SpiderController : EnemyController
             timer.GetTimerDamageCoolDown().StartTimer(0.25f);
             spiderDamage.Attacker = other.gameObject;
             spiderDamage.DamageFlag = true;
-            vfxController.CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position,1f, Quaternion.identity);
+            effectController.CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position,1f, Quaternion.identity);
         }
         else
         {

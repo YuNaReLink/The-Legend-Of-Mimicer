@@ -1,8 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// タイトルシーンの画面UI構成が二つあるうちの一つ目を処理する
+/// クラス
+/// </summary>
 public class TitleUIConfiguration01 : BaseTitleUIConfiguration
 {
     private enum GUINumber
@@ -12,11 +14,11 @@ public class TitleUIConfiguration01 : BaseTitleUIConfiguration
         DataEnd
     }
 
-    Image titleImage = null;
-    Color titleColor;
+    Image       titleImage = null;
+    Color       titleColor;
 
-    Text  startText = null;
-    Color startColor;
+    Text        startText = null;
+    Color       startColor;
 
     public override void Initilaize()
     {

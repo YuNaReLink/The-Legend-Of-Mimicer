@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1368611748388124117}
   - component: {fileID: 5753502581744669306}
   - component: {fileID: 6437675181901552518}
-  - component: {fileID: 1135217056508133658}
+  - component: {fileID: 19914708101746277}
   - component: {fileID: 8128289202157137572}
   m_Layer: 3
   m_Name: Chest
@@ -73,7 +73,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 7184392552541862705, guid: eacf9ea5fc283164bab09e9826d20bd0, type: 3}
   toolTag: 2
---- !u!114 &1135217056508133658
+--- !u!114 &19914708101746277
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -82,11 +82,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1811446504936964220}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d545164f7e8eb9242ac72d48cb408b43, type: 3}
+  m_Script: {fileID: 11500000, guid: dbc2b5d0a4f8a874ca61e302d62bff25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundType: 0
-  audioSource: {fileID: 8128289202157137572}
+  soundType: 1
+  audioSource: {fileID: 0}
   clipData: {fileID: 11400000, guid: aa6693d2f4cbebb4a9fe05e9119f481d, type: 2}
 --- !u!82 &8128289202157137572
 AudioSource:
@@ -251,6 +251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myTrigger: 2
+  hide: 0
   hitPlayer: 0
 --- !u!1001 &754066625989461479
 PrefabInstance:

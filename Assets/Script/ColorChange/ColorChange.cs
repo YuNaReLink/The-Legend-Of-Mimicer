@@ -1,7 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// オブジェクトのマテリアルを変更することに使用
+/// 現在はスイッチオブジェクトに使用
+/// </summary>
 public class ColorChange : MonoBehaviour
 {
     public enum MaterialTag
@@ -13,11 +16,11 @@ public class ColorChange : MonoBehaviour
     }
 
     [SerializeField]
-    private List<Material> materialsArray = new List<Material>();
+    private List<Material>  materialsArray = new List<Material>();
     [SerializeField]
-    private MeshRenderer meshRenderer = null;
+    private MeshRenderer    meshRenderer = null;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         meshRenderer = GetComponent<MeshRenderer>();

@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
+/// <summary>
+/// EnemyDamageCommandを継承したクモのダメージ処理を行うクラス
+/// </summary>
 public class SpiderDamageCommand : EnemyDamageCommand
 {
     private SpiderController spiderController = null;
@@ -9,10 +9,6 @@ public class SpiderDamageCommand : EnemyDamageCommand
     {
         controller = _controller;
         spiderController = _controller;
-    }
-    public override void Input()
-    {
-
     }
 
     public override void Execute()

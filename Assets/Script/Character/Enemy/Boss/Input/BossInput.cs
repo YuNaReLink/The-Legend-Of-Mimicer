@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossInput
@@ -13,15 +11,15 @@ public class BossInput
     /// <summary>
     ///プレイヤーがボスと最大距離離れた時の基準
     /// </summary>
-    private float maxMoveDistance = 12.0f;
+    private const float maxMoveDistance = 12.0f;
     /// <summary>
     /// プレイヤーがボスに最低限近づいた時に攻撃する基準
     /// </summary>
-    private float minAttackDistance = 4.0f;
+    private const float minAttackDistance = 4.0f;
 
     public void Initilaize()
     {
-        controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Idle);
+        controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Idle);
     }
 
     /// <summary>
@@ -53,8 +51,8 @@ public class BossInput
         if (controller.GetTimer().GetTimerStun().IsEnabled()) { return; }
         switch (controller.CurrentState)
         {
-            case CharacterTag.StateTag.Damage:
-            case CharacterTag.StateTag.GetUp:
+            case CharacterTagList.StateTag.Damage:
+            case CharacterTagList.StateTag.GetUp:
                 return;
         }
         //プレイヤーとの距離を計る
@@ -110,33 +108,33 @@ public class BossInput
     {
         switch (controller.CurrentState)
         {
-            case CharacterTag.StateTag.Attack:
-            case CharacterTag.StateTag.Gurid:
+            case CharacterTagList.StateTag.Attack:
+            case CharacterTagList.StateTag.Gurid:
                 return;
         }
-        controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Idle);
+        controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Idle);
     }
 
     private void WalkInput()
     {
         switch (controller.CurrentState)
         {
-            case CharacterTag.StateTag.Attack:
-            case CharacterTag.StateTag.Gurid:
+            case CharacterTagList.StateTag.Attack:
+            case CharacterTagList.StateTag.Gurid:
                 return;
         }
-        controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Run);
+        controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Run);
     }
 
     private void AttackInput()
     {
         switch (controller.CurrentState)
         {
-            case CharacterTag.StateTag.Gurid:
-            case CharacterTag.StateTag.Attack:
+            case CharacterTagList.StateTag.Gurid:
+            case CharacterTagList.StateTag.Attack:
                 return;
         }
-        controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Attack);
+        controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Attack);
         controller.GetTimer().GetTimerAttackCoolDown().StartTimer(5f);
     }
 
@@ -144,21 +142,21 @@ public class BossInput
     {
         switch (controller.CurrentState)
         {
-            case CharacterTag.StateTag.Attack:
-            case CharacterTag.StateTag.Damage:
-            case CharacterTag.StateTag.GetUp:
+            case CharacterTagList.StateTag.Attack:
+            case CharacterTagList.StateTag.Damage:
+            case CharacterTagList.StateTag.GetUp:
                 return;
         }
         CameraController cameraController = controller.Target.GetCameraController();
         if(cameraController == null) { return; }
         if (!cameraController.IsFPSMode()) { return; }
-        controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Gurid);
+        controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Gurid);
     }
 
     public void RevivalInput()
     {
         if (!controller.RevivalFlag) {  return; }
-        controller.GetMotion().ChangeMotion(CharacterTag.StateTag.GetUp);
+        controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.GetUp);
         controller.RevivalFlag = false;
     }
 

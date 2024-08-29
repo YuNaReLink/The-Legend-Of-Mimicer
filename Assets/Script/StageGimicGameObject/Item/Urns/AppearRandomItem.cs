@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/// <summary>
+/// 壺を破壊した時にアイテムを生成するためのクラス
+/// </summary>
 public class AppearRandomItem : MonoBehaviour
 {
     //出現させるアイテムのリスト

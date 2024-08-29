@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ステージ内で復活させたいオブジェクトを復活させる処理をするクラス
+/// 現在はステージにある壺をプレイヤーが部屋から出てもう一度入ると生成されるようにしている
+/// </summary>
 public class DynamicObjectController : MonoBehaviour
 {
     private enum DynamicObjectNumber
@@ -9,12 +13,12 @@ public class DynamicObjectController : MonoBehaviour
         Item
     }
     [SerializeField]
-    private List<GameObject> dynamicObjectList = new List<GameObject>();
+    private List<GameObject>        dynamicObjectList = new List<GameObject>();
     [SerializeField]
-    private List<Vector3> itemPositionList = new List<Vector3>();
+    private List<Vector3>           itemPositionList = new List<Vector3>();
 
     [SerializeField]
-    private GameObject urnsCopyObject = null;
+    private GameObject              urnsCopyObject = null;
     
     private void Start()
     {

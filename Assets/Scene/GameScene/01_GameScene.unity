@@ -674,17 +674,53 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 830453407917200623, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1192034186568525867, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1277237751467833618, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
       propertyPath: m_Convex
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1644666783892013516, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022453810535805480, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3036857485675946827, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
       propertyPath: m_Name
       value: Dangon01
       objectReference: {fileID: 0}
+    - target: {fileID: 3649877172792485091, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3853397450894413098, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4241784089062722828, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4294909061483791967, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
       propertyPath: m_LocalPosition.y
       value: 1.2000012
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097773578776124709, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6875145340201642574, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7862870685416746974, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
       propertyPath: m_LocalPosition.y
@@ -702,6 +738,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 1.1999993
       objectReference: {fileID: 0}
+    - target: {fileID: 8248258724888925056, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: 82e4a584381f7cd458c224e819d43593, type: 2}
     - target: {fileID: 8259862092683880412, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.61500144
@@ -709,6 +749,10 @@ PrefabInstance:
     - target: {fileID: 8299797512864103697, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
       propertyPath: m_LocalPosition.y
       value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8776084482189505383, guid: adae93b6bce35ea46a11989d0724fbda, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

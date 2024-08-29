@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossMotionController : MotionController
@@ -9,54 +7,74 @@ public class BossMotionController : MotionController
     {
        controller = _controller;
     }
-    public override void ChangeMotion(CharacterTag.StateTag tag)
+    /// <summary>
+    /// ボスのアニメーションを変更する関数
+    /// </summary>
+    /// <param name="tag"></param>
+    public override void ChangeMotion(CharacterTagList.StateTag tag)
     {
+        //状態が前と同じなら早期リターン
         if (tag == controller.CurrentState) { return; }
-        controller.PastState = controller.CurrentState;
-        controller.CurrentState = tag;
+        //アニメーション取得
         Animator anim = controller.GetAnimator();
-        if (anim.speed == 0)
+        //アニメーションの速度が0以下なら
+        if (anim.speed <= 0)
         {
+            //速度を1に
             anim.speed = 1;
         }
-        anim.SetInteger(statename, (int)tag);
+        //現在の状態を過去に
+        controller.PastState = controller.CurrentState;
+        //現在に新しい状態を
+        controller.CurrentState = tag;
+        //新しい状態をint型でアニメーションに設定
+        anim.SetInteger(stateName, (int)tag);
     }
 
-    public void ChangeGuardBool(bool f)
-    {
-        Animator anim = controller.GetAnimator();
-        int num = (int)controller.GuardState;
-        bool enabled = IntToBool(num);
-        anim.SetBool(guardName, enabled);
-    }
+    private const float maxStampAttackNormalizedTime = 0.7f;
 
+    private const float maxStunNormalizedTime = 0.8f;
+    /// <summary>
+    /// 個別のアニメーションで
+    /// 途中でアニメーションを止めたい時に処理する関数のBossバージョン
+    /// </summary>
     public override void StopMotionCheck()
     {
-        if (controller.CurrentState == CharacterTag.StateTag.Null) { return; }
+        //状態がなしなら早期リターン
+        if (controller.CurrentState == CharacterTagList.StateTag.Null) { return; }
+        //アニメーション取得
         Animator anim = controller.GetAnimator();
+        //現在のアニメーションの詳細取得
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
+        //状態によって処理分け
         switch (controller.CurrentState)
         {
-            case CharacterTag.StateTag.Attack:
-                if (animInfo.IsName("stampAttack") && animInfo.normalizedTime >= 0.7f)
+            case CharacterTagList.StateTag.Attack:
+                //攻撃中でアニメーション進行度がmaxStampAttackNormalizedTime以上なら
+                if (animInfo.IsName("stampAttack") && animInfo.normalizedTime >= maxStampAttackNormalizedTime)
                 {
+                    //タイマーが動いていたら
                     if (controller.GetTimer().GetTimerAttackCoolDown().IsEnabled())
                     {
                         anim.speed = 0;
                     }
+                    //止まっていたら
                     else
                     {
                         anim.speed = 1;
                     }
                 }
                 break;
-            case CharacterTag.StateTag.Damage:
-                if (animInfo.IsName("stun") && animInfo.normalizedTime >= 0.8f)
+            case CharacterTagList.StateTag.Damage:
+                //怯み状態でアニメーション進行度がmaxStunNormalizedTime以上なら
+                if (animInfo.IsName("stun") && animInfo.normalizedTime >= maxStunNormalizedTime)
                 {
+                    //タイマーが動いていたら
                     if (controller.GetTimer().GetTimerStun().IsEnabled())
                     {
                         anim.speed = 0;
                     }
+                    //止まっていたら
                     else
                     {
                         anim.speed = 1;
@@ -65,27 +83,39 @@ public class BossMotionController : MotionController
                 break;
         }
     }
-
+    /// <summary>
+    /// 指定があるアニメーションの終わりに処理したいものを記述する関数のBossバージョン
+    /// </summary>
     public override void EndMotionNameCheck()
     {
+        //アニメーション取得
         Animator anim = controller.GetAnimator();
+        //現在のアニメーションの詳細取得
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
+        //アニメーション進行度が終わっていたら
         if (animInfo.normalizedTime < 1.0f) { return; }
+        //指定してるボスモーション名を取得
         BossMotionName motionName = new BossMotionName();
-
+        //現在のアニメーションが指定してるモーション名と一致するものがあったら
         foreach (string motion in motionName.GetMotionName())
         {
             if (animInfo.IsName(motion))
             {
+                //モーション終了時の処理を行う
                 EndMotionCommand(motion);
                 return;
             }
         }
     }
-
+    /// <summary>
+    /// モーション終了時に行う処理の詳細
+    /// </summary>
+    /// <param name="motion"></param>
     public void EndMotionCommand(string motion)
     {
+        //アニメーション取得
         Animator anim = controller.GetAnimator();
+        //アニメーション詳細取得
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
         switch (motion)
         {
@@ -94,26 +124,21 @@ public class BossMotionController : MotionController
             case "walk":
                 break;
             case "stampAttack":
-                controller.CurrentState = CharacterTag.StateTag.Null;
+                controller.CurrentState = CharacterTagList.StateTag.Null;
                 break;
             case "guard":
                 CameraController cameraController = controller.Target.GetCameraController();
                 if (cameraController == null) { return; }
                 if (cameraController.IsFPSMode()) { return; }
-                controller.CurrentState = CharacterTag.StateTag.Null;
+                controller.CurrentState = CharacterTagList.StateTag.Null;
                 break;
             case "stun":
+                //怯み終わりに復帰フラグをON
                 controller.RevivalFlag = true;
                 break;
             case "returnUp":
-                controller.CurrentState = CharacterTag.StateTag.Null;
+                controller.CurrentState = CharacterTagList.StateTag.Null;
                 break;
         }
-    }
-
-
-    private bool IntToBool(int number)
-    {
-        return number != 0;
     }
 }

@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using static UnityEngine.GraphicsBuffer;
 
 public class SpiderInput : MonoBehaviour
 {
@@ -32,29 +28,29 @@ public class SpiderInput : MonoBehaviour
         }
         switch (controller.CurrentState)
         {
-            case CharacterTag.StateTag.Idle:
-            case CharacterTag.StateTag.Attack:
-                IdleInput();
+            case CharacterTagList.StateTag.Idle:
+            case CharacterTagList.StateTag.Attack:
+                MoveInput();
                 break;
-            case CharacterTag.StateTag.Run:
-                WalkInput();
+            case CharacterTagList.StateTag.Run:
+                StopInput();
                 break;
         }
     }
 
-    private void IdleInput()
+    private void MoveInput()
     {
         if (controller.GetTimer().GetTimerIdle().IsEnabled()) { return; }
-        controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Run);
+        controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Run);
         controller.GetNavMeshController().SetGoalPosition();
     }
 
-    private void WalkInput()
+    private void StopInput()
     {
         bool arrival = controller.GetNavMeshController().Arrival();
         if (arrival)
         {
-            controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Idle);
+            controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Idle);
             controller.GetNavMeshController().PositionReset();
             controller.CharacterRB.velocity = Vector3.zero;
             controller.GetTimer().GetTimerIdle().StartTimer(3f);
@@ -63,22 +59,14 @@ public class SpiderInput : MonoBehaviour
 
     private void FoundNavigateInput()
     {
-        AnimatorStateInfo info = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
-        if (info.IsName("attack")) { return; }
+        if (controller.GetTimer().GetTimerAttackCoolDown().IsEnabled()) { return; }
         if (controller.Target != null)
         {
-            if (controller.GetTimer().GetTimerAttackCoolDown().IsEnabled())
-            {
-                controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Idle);
-                controller.GetNavMeshController().PositionReset();
-                controller.CharacterRB.velocity = Vector3.zero;
-                return;
-            }
             Vector3 sub = transform.position - controller.Target.transform.position;
             float dis = sub.magnitude;
             if (dis > 2f)
             {
-                controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Run);
+                controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Run);
                 controller.GetNavMeshController().SetTargetPosition();
             }
             else
@@ -94,7 +82,7 @@ public class SpiderInput : MonoBehaviour
 
     private void AttackInput()
     {
-        controller.GetMotion().ChangeMotion(CharacterTag.StateTag.Attack);
+        controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Attack);
         controller.GetNavMeshController().PositionReset();
         controller.GetTimer().GetTimerAttackCoolDown().StartTimer(3f);
     }

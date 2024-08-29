@@ -1,14 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ‰ó‚·‚±‚Æ‚ª‚Å‚«‚é” ‚Ìˆ—‚ğs‚¤ƒNƒ‰ƒX
+/// </summary>
 public class BreakBox : MonoBehaviour
 {
-    private float breakSpeed = 1.0f;
-    private MeshRenderer meshRenderer = null;
-    private BoxCollider boxCollider = null;
-    private SoundController soundController = null;
-    private EffectController effectController = null;
-    private List<GameObject> spriteObjectList = new List<GameObject>();
+    private float               breakSpeed = 1.0f;
+    private MeshRenderer        meshRenderer = null;
+    private BoxCollider         boxCollider = null;
+    private SoundController     soundController = null;
+    private EffectController    effectController = null;
+    private List<GameObject>    spriteObjectList = new List<GameObject>();
 
     private void Awake()
     {
@@ -59,7 +62,7 @@ public class BreakBox : MonoBehaviour
         {
             spriteObjectList[i].SetActive(false);
         }
-        effectController.CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, transform.position, 2f, Quaternion.identity);
+        effectController.CreateVFX((int)EffectTagList.BreakObjectTag.Break, transform.position, 2f, Quaternion.identity);
         Destroy(gameObject, breakSpeed);
     }
 }

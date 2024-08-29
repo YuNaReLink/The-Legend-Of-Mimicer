@@ -91,9 +91,14 @@ public class KeyInputUIController : MonoBehaviour
 
     private void OutputText(string text,bool active)
     {
-        if (keyUIObjectArray[(int)KeyUINumber.F].activeSelf == active) { return; }
-        fKeyText.text = text;
-        keyUIObjectArray[(int)KeyUINumber.F].SetActive(active);
+        if(fKeyText.text != text)
+        {
+            fKeyText.text = text;
+        }
+        if (keyUIObjectArray[(int)KeyUINumber.F].activeSelf != active)
+        {
+            keyUIObjectArray[(int)KeyUINumber.F].SetActive(active); 
+        }
     }
 
     private void CrossBowActiveCheck()
@@ -210,6 +215,17 @@ public class KeyInputUIController : MonoBehaviour
         else
         {
             keyImageArray[(int)KeyUINumber.Shift].color = new Color32(255, 255, 255, 255);
+        }
+    }
+
+    public void ActiveKeyUI(bool active)
+    {
+        for (int i = 0; i < keyUIObjectArray.Count; i++)
+        {
+            if (keyUIObjectArray[i].activeSelf != active)
+            {
+                keyUIObjectArray[i].SetActive(active);
+            }
         }
     }
 }

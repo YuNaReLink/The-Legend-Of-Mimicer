@@ -1,18 +1,19 @@
-using CharacterTag;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.NetworkInformation;
+using CharacterTagList;
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーの右手に持つ道具の処理を管理するクラス
+/// </summary>
 public class RightHandInput
 {
+    //生成と同時にPlayerControllerの情報を保持するクラス
     private PlayerController controller;
-
+    //コンストラクタ
     public RightHandInput(PlayerController _controller)
     {
         controller = _controller;
     }
-
+    //PlayerInputに記述してる関数
     public void Execute()
     {
         //右手クラスに道具コマンドを設定する処理
@@ -21,7 +22,10 @@ public class RightHandInput
         if (controller.RightAction == null) { return; }
         controller.RightAction.Input();
     }
-
+    /// <summary>
+    /// 指定した状態じゃなければtrueを返すbool関数
+    /// </summary>
+    /// <returns></returns>
     private bool CheckStopState()
     {
         StateTag state = controller.CurrentState;
@@ -37,7 +41,10 @@ public class RightHandInput
         }
         return true;
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     private bool NoChangeModeState()
     {
         StateTag state = controller.CurrentState;
@@ -45,7 +52,7 @@ public class RightHandInput
         {
             case StateTag.Idle:
             case StateTag.ChangeMode:
-                if (controller.GetKeyInput().GuardHoldButton)
+                if (controller.GetKeyInput().GuardHoldButton||controller.MoveInput)
                 {
                     return false;
                 }
@@ -53,8 +60,26 @@ public class RightHandInput
         }
         return false;
     }
-
+    /// <summary>
+    /// クロスボウを持ってもいい状態か判断する
+    /// </summary>
+    private bool CheckCrossBowEnabledState()
+    {
+        StateTag state = controller.CurrentState;
+        switch (state)
+        {
+            case StateTag.Idle:
+            case StateTag.Run:
+            case StateTag.Rolling:
+            case StateTag.Gurid:
+                return true;
+        }
+        return false;
+    }
+    /// <returns></returns>
+    //剣のアイテムを持ってるか判定するbool関数
     private bool IsSwordCheck() => controller.GetToolController().CheckNullTool(ToolInventoryController.ToolObjectTag.Sword);
+    //クロスボウを持っているか判定するbool関数
     private bool IsCrossBowCheck() => controller.GetToolController().CheckNullTool(ToolInventoryController.ToolObjectTag.CrossBow);
 
     private void SetToolInput()
@@ -71,12 +96,13 @@ public class RightHandInput
         else if (controller.GetKeyInput().ToolButton)
         {
             if (IsCrossBowCheck()) { return; }
+            if(!CheckCrossBowEnabledState()) { return; }
             tooltag = ToolInventoryController.ToolObjectTag.CrossBow;
         }
         else if (controller.GetKeyInput().ChangeButton)
         {
             if (!NoChangeModeState()) { return; }
-            if (tooltag == ToolInventoryController.ToolObjectTag.Null && controller.BattleMode)
+            if (tooltag == ToolInventoryController.ToolObjectTag.Null)
             {
                 if (IsSwordCheck()) { return; }
                 tooltag = ToolInventoryController.ToolObjectTag.Sword;
@@ -106,14 +132,14 @@ public class RightHandInput
         }
 
         //変更されたツールのコマンドを生成する
-        BaseToolAction tool = controller.RightAction;
+        InterfaceBaseToolAction tool = controller.RightAction;
         switch (controller.GetToolController().CurrentToolTag)
         {
             case ToolInventoryController.ToolObjectTag.Null:
                 tool = null;
                 break;
             case ToolInventoryController.ToolObjectTag.Sword:
-                tool = new SwordAttackCommand(controller);
+                tool = new SwordAttackAction(controller);
                 break;
             case ToolInventoryController.ToolObjectTag.CrossBow:
                 GameObject crossBow = controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.CrossBow];
@@ -124,7 +150,7 @@ public class RightHandInput
         SetTool(tool);
     }
 
-    private void SetTool(BaseToolAction tool)
+    private void SetTool(InterfaceBaseToolAction tool)
     {
         if (controller.RightAction != null)
         {

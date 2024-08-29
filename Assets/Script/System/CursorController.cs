@@ -1,11 +1,11 @@
 using UnityEngine;
 
+/// <summary>
+/// カーソルの表示、非表示のなどの設定を行うシングルトンクラス
+/// </summary>
 public class CursorController
 {
-    private CursorController()
-    {
-
-    }
+    private CursorController(){}
 
     private static CursorController singleInstance = null;
 

@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// タイトルUIの構成二つを管理し処理するクラス
+/// 構成二つのクラスを処理する
+/// </summary>
 public class TitleUIController : MonoBehaviour
 {
     public enum TitleUINumber
@@ -9,12 +13,12 @@ public class TitleUIController : MonoBehaviour
         UIEvent02,
     }
 
-    private List<GameObject> titleSceneArray = new List<GameObject>();
+    private List<GameObject>                titleSceneArray = new List<GameObject>();
 
-    private List<BaseTitleUIConfiguration> titleUIConfigurations = new List<BaseTitleUIConfiguration>();
+    private List<BaseTitleUIConfiguration>  titleUIConfigurations = new List<BaseTitleUIConfiguration>();
 
-    private CanvasSoundController canvasSoundController = null;
-    public CanvasSoundController GetCanvasSoundController() { return canvasSoundController; }
+    private CanvasSoundController           canvasSoundController = null;
+    public CanvasSoundController            GetCanvasSoundController() { return canvasSoundController; }
     private void Awake()
     {
         int childCount = transform.childCount;
@@ -40,10 +44,6 @@ public class TitleUIController : MonoBehaviour
         {
             canvasSoundController.AwakeInitilaize();
         }
-    }
-
-    void Start()
-    {
     }
 
     private void Update()

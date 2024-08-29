@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// šâ‚ğ”j‰ó‚·‚éˆ—‚ğ‘‚¢‚Ä‚éƒNƒ‰ƒX
+/// </summary>
 public class BleakUrns : MonoBehaviour
 {
     /// <summary>
@@ -78,7 +81,7 @@ public class BleakUrns : MonoBehaviour
             meshCollider.enabled = false;
         }
         appearItem.Execute(other);
-        effectController.CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, transform.position, 1f, Quaternion.identity);
+        effectController.CreateVFX((int)EffectTagList.BreakObjectTag.Break, transform.position, 1f, Quaternion.identity);
         Destroy(gameObject,breakCount);
     }
 }

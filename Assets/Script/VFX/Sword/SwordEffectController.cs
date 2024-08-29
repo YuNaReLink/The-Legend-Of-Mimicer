@@ -1,17 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using CharacterTag;
+using CharacterTagList;
 
+/// <summary>
+/// 剣の斬撃エフェクトを管理するクラス
+/// </summary>
 public class SwordEffectController : MonoBehaviour
 {
     [SerializeField]
-    private ParticleSystem slashEffect;
+    private ParticleSystem          slashEffect;
 
     [SerializeField]
-    private CharacterController controller = null;
+    private CharacterController     controller = null;
 
-    public void SetController(CharacterController _controller) {  controller = _controller; }
+    public void                     SetController(CharacterController _controller) {  controller = _controller; }
 
 
     private StateTag[] StateArray = new StateTag[]

@@ -4,6 +4,6 @@ using UnityEngine;
 public class InventoryData : MonoBehaviour
 {
     [SerializeField]
-    private List<GameObject> toolItemList = new List<GameObject>();
-    public List<GameObject> ToolItemList { get { return toolItemList; } set { toolItemList = value; } }
+    private List<GameObject>    toolItemList = new List<GameObject>();
+    public List<GameObject>     ToolItemList { get { return toolItemList; } set { toolItemList = value; } }
 }

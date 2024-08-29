@@ -1,7 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// ゲーム中に使用するボタン入力をまとめたクラス
+/// Axis名はProject Setting内のInputManagerを参照
+/// </summary>
 public class InputManager
 {
     public static float CameraXInput() { return Input.GetAxis("CameraX"); }

@@ -2,44 +2,92 @@ using UnityEngine;
 
 public class EnemyController : CharacterController
 {
+    /// <summary>
+    /// エネミーのスクリプタブルオブジェクトのインスタンス
+    /// </summary>
     [SerializeField]
-    protected EnemyScriptableObject data = null;
-    public EnemyScriptableObject GetData() {  return data; }
-
-    protected NavMeshController navMeshController = null;
-    public NavMeshController GetNavMeshController() { return navMeshController; }
-
+    protected EnemyScriptableObject     data = null;
+    /// <summary>
+    /// のGet関数
+    /// </summary>
+    /// <returns></returns>
+    public EnemyScriptableObject        GetData() {  return data; }
+    /// <summary>
+    /// NavMeshAgentの処理をまとめたクラス
+    /// </summary>
+    protected NavMeshController         navMeshController = null;
+    /// <summary>
+    /// のGet関数
+    /// </summary>
+    /// <returns></returns>
+    public NavMeshController            GetNavMeshController() { return navMeshController; }
+    /// <summary>
+    /// プレイヤーを発見してるか判定するフラグ
+    /// </summary>
     [SerializeField]
-    protected bool foundPlayer = false;
-    public bool FoundPlayer { get { return foundPlayer; }set { foundPlayer = value; } }
+    protected bool                      foundPlayer = false;
+    /// <summary>
+    /// のGetSet関数
+    /// </summary>
+    public bool                         FoundPlayer { get { return foundPlayer; }set { foundPlayer = value; } }
+    /// <summary>
+    /// 発見した時にPlayerControllerのクラスを保持するクラスのインスタンス宣言
+    /// </summary>
     [SerializeField]
-    protected PlayerController target = null;
-    public PlayerController Target { get { return target; } set { target = value; } }
+    protected PlayerController          target = null;
+    /// <summary>
+    /// のGetSet関数
+    /// </summary>
+    public PlayerController             Target { get { return target; } set { target = value; } }
 
     /// <summary>
     /// NavMeshAgentで使う変数
     /// </summary>
+    //NavMeshAgentのゴール座標を代入する変数
     [SerializeField]
-    protected Vector3 goalPosition = Vector3.zero;
-    public Vector3 GoalPosition { get { return goalPosition; } set { goalPosition = value; } }
+    protected Vector3                   goalPosition = Vector3.zero;
+    //の GetSet関数
+    public Vector3                      GoalPosition { get { return goalPosition; } set { goalPosition = value; } }
+    //徘徊時にランダムに座標を設定する時の半径変数
     [SerializeField]
-    protected float loiterRadius = 10f;
-    public float GetLoiterRadius() { return loiterRadius; }
+    protected float                     loiterRadius = 10f;
+    //のGet関数
+    public float                        GetLoiterRadius() { return loiterRadius; }
+    /// <summary>
+    /// ダメージの処理を管理するクラス
+    /// </summary>
+    protected EnemyDamageCommand        damage = null;
+    //のGet関数
+    public EnemyDamageCommand           GetDamage() { return damage; }
+    /// <summary>
+    /// 敵の継承先で使うタイマーをまとめたクラス
+    /// </summary>
+    protected EnemyTimer                timer = null;
+    //の Get関数
+    public EnemyTimer                   GetTimer() { return timer; }
 
-    protected EnemyDamageCommand damage = null;
-    public EnemyDamageCommand GetDamage() { return damage; }
+    protected override void Awake()
+    {
+        InitializeAssign();
+    }
 
-    protected EnemyTimer timer = null;
-    public EnemyTimer GetTimer() { return timer; }
+    protected override void InitializeAssign()
+    {
+        base.InitializeAssign();
+        damage = new EnemyDamageCommand(this);
 
+        timer = new EnemyTimer();
+        timer.InitializeAssignTimer();
+    }
     
     protected override void Start()
     {
         base.Start();
-        InitializeAssign();
-
-        currentState = CharacterTag.StateTag.Idle;
-
+        //最初は3秒待たせる
+        timer.GetTimerIdle().StartTimer(3f);
+        //状態は待機に設定
+        currentState = CharacterTagList.StateTag.Idle;
+        //スクリプタブルオブジェクトがあるなら
         if(data != null)
         {
             maxHp = data.MaxHP;
@@ -47,18 +95,6 @@ public class EnemyController : CharacterController
         }
     }
 
-    protected override void InitializeAssign()
-    {
-        base.InitializeAssign();
-
-        
-
-        damage = new EnemyDamageCommand(this);
-
-        timer = new EnemyTimer();
-        timer.InitializeAssignTimer();
-        timer.GetTimerIdle().StartTimer(3f);
-    }
 
     protected override void SetMotionController()
     {
@@ -75,6 +111,7 @@ public class EnemyController : CharacterController
     public override void Death()
     {
         base.Death();
+        motion.ChangeMotion(CharacterTagList.StateTag.Die);
         timer.GetTimerDie().StartTimer(GetDieTimerCount());
         timer.GetTimerDie().OnCompleted += () =>
         {
@@ -93,6 +130,6 @@ public class EnemyController : CharacterController
 
     private void CreateDieEffect(float scale)
     {
-        vfxController.CreateVFX((int)EffectTagList.CharacterEffectTag.Death, transform.position,scale, Quaternion.identity);
+        effectController.CreateVFX((int)EffectTagList.CharacterEffectTag.Death, transform.position,scale, Quaternion.identity);
     }
 }

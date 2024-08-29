@@ -1,10 +1,10 @@
-using UnityEngine;
 
-public class CrossBowTool : BaseToolAction
+
+public class CrossBowTool : InterfaceBaseToolAction
 {
-    private PlayerController controller = null;
+    private PlayerController    controller = null;
 
-    private CrossBowShoot shoot = null;
+    private CrossBowShoot       shoot = null;
 
     public CrossBowTool(PlayerController _controller,CrossBowShoot _shot)
     {
@@ -28,7 +28,7 @@ public class CrossBowTool : BaseToolAction
         {
             controller.GetToolController().GetQuiver().Count--;
             //–î”­ŽËŒø‰Ê‰¹
-            controller.GetSoundController().PlaySESound((int)PlayerSoundController.PlayerSoundTag.Shot);
+            controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Shot);
         }
     }
 

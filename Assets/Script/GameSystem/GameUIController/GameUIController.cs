@@ -3,26 +3,30 @@ using UnityEngine;
 public class GameUIController : MonoBehaviour
 {
     /// <summary>
-    /// プレイヤーHPUIを管理するクラス
+    /// プレイヤーに関係するUIを管理するクラス
     /// </summary>
-    private PlayerConnectionUI playerUIController = null;
-    public PlayerConnectionUI GetPlayerUIController() { return playerUIController; }
+    private PlayerConnectionUI          playerUIController = null;
+    public PlayerConnectionUI           GetPlayerUIController() { return playerUIController; }
 
     /// <summary>
     /// ゲームオーバーUIを管理するクラス
     /// </summary>
-    private GameOverUIController gameOverUIController = null;
+    private GameOverUIController        gameOverUIController = null;
 
     /// <summary>
     /// ゲームクリアUIを管理するクラス
     /// </summary>
-    private GameClearUIController gameClearUIController = null;
-    [SerializeField]
-    private CanvasSoundController canvasSoundController = null;
-    public CanvasSoundController GetCanvasSoundController() { return canvasSoundController; }
-    [SerializeField]
-    private SoundController keySoundController = null;
-    public SoundController GetKeySoundController() {return keySoundController; }
+    private GameClearUIController       gameClearUIController = null;
+    /// <summary>
+    /// UIの効果音を管理するクラス
+    /// </summary>
+    private CanvasSoundController       canvasSoundController = null;
+    public CanvasSoundController        GetCanvasSoundController() { return canvasSoundController; }
+    /// <summary>
+    /// キー入力の効果音を管理するクラス
+    /// </summary>
+    private SoundController             keySoundController = null;
+    public SoundController              GetKeySoundController() {return keySoundController; }
 
     private void Awake()
     {
@@ -31,25 +35,45 @@ public class GameUIController : MonoBehaviour
         {
             playerUIController.AwakeInitilaize(this);
         }
+        else
+        {
+            Debug.LogError("PlayerConnectionUIがアタッチされていません");
+        }
         gameOverUIController = GetComponentInChildren<GameOverUIController>();
         if(gameOverUIController != null)
         {
             gameOverUIController.AwakeInitilaize();
+        }
+        else
+        {
+            Debug.LogError("GameOverUIControllerがアタッチされていません");
         }
         gameClearUIController = GetComponentInChildren<GameClearUIController>();
         if (gameClearUIController != null)
         {
             gameClearUIController.AwakeInitilaize();
         }
+        else
+        {
+            Debug.LogError("GameClearUIControllerがアタッチされていません");
+        }
         canvasSoundController = GetComponent<CanvasSoundController>();
         if(canvasSoundController  != null)
         {
             canvasSoundController.AwakeInitilaize();
         }
+        else
+        {
+            Debug.LogError("CanvasSoundControllerがアタッチされていません");
+        }
         keySoundController = playerUIController.GetKeyInputUIController().SelfObject().GetComponentInChildren<SoundController>();
         if(keySoundController != null)
         {
             keySoundController.AwakeInitilaize();
+        }
+        else
+        {
+            Debug.LogError("SoundControllerがアタッチされていません");
         }
     }
 
@@ -70,14 +94,18 @@ public class GameUIController : MonoBehaviour
         switch (GameManager.GameState)
         {
             case GameManager.GameStateEnum.Game:
+                playerUIController.GamingEnabledUIUpdate();
+                break;
             case GameManager.GameStateEnum.Pose:
-                playerUIController.PlayerUIUpdate();
+                playerUIController.PoseingEnabledUIUpdate();
                 break;
             case GameManager.GameStateEnum.GameOver:
                 GameOverUIStartCheck();
+                playerUIController.EndGameUIUpdate();
                 break;
             case GameManager.GameStateEnum.GameClear:
                 GameClearUIStartCheck();
+                playerUIController.EndGameUIUpdate();
                 break;
         }
     }

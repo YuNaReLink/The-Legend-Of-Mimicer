@@ -1,9 +1,9 @@
-using CharacterTag;
+using CharacterTagList;
 using UnityEngine;
 
 public class MotionController
 {
-    protected string statename = "State";
+    protected string stateName = "State";
     protected string guardName = "Guard";
 
     /// <summary>

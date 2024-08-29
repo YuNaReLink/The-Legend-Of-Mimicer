@@ -8,6 +8,7 @@ public class NavMeshController
     private NavMeshAgent agent = null;
 
     private EnemyController controller = null;
+    public bool Arrival() { return agent.remainingDistance <= agent.stoppingDistance; }
 
     public NavMeshController(NavMeshAgent _agent,EnemyController _controller)
     {
@@ -45,5 +46,4 @@ public class NavMeshController
         agent.ResetPath();
     }
 
-    public bool Arrival() { return agent.remainingDistance <= 0.1f; }
 }

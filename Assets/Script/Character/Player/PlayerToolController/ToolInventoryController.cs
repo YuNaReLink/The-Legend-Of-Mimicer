@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ToolInventoryController : MonoBehaviour
 {
-    private PlayerController controller;
+    private PlayerController        controller;
 
     public void SetController(PlayerController _controller) { controller = _controller; }
     public enum ToolObjectTag
@@ -15,17 +15,17 @@ public class ToolInventoryController : MonoBehaviour
         DataEnd
     }
 
-    private ToolObjectTag currentToolTag = ToolObjectTag.Null;
-    private bool currentToolChange = false;
-    public ToolObjectTag CurrentToolTag => currentToolTag;
-    public bool IsCurrentToolChange => currentToolChange;
+    private ToolObjectTag           currentToolTag = ToolObjectTag.Null;
+    private bool                    currentToolChange = false;
+    public ToolObjectTag            CurrentToolTag => currentToolTag;
+    public bool                     IsCurrentToolChange => currentToolChange;
     public void ChangeToolTag(ToolObjectTag tooltag)
     {
         currentToolTag = tooltag;
         currentToolChange = true;
     }
 
-    private InventoryData inventoryData = null;
+    private InventoryData           inventoryData = null;
     public InventoryData GetInventoryData() {  return inventoryData; }
 
     /// <summary>
@@ -39,53 +39,49 @@ public class ToolInventoryController : MonoBehaviour
         for(int i = 0; i < inventoryData.ToolItemList.Count; i++)
         {
             if (inventoryData.ToolItemList[i] == null) {  continue; }
-            if (inventoryData.ToolItemList[i] == tool)
-            {
-                return false;
-            }
+            if (inventoryData.ToolItemList[i] == tool) { return false; }
         }
         return true;
     }
 
-    public bool CheckNullTool(ToolInventoryController.ToolObjectTag toolTag) =>
+    public bool CheckNullTool(ToolObjectTag toolTag) =>
         CheckNullToolObject(inventoryData.ToolItemList[(int)toolTag]);
 
     /// <summary>
     /// 道具の管理クラスのリスト
     /// </summary>
     [SerializeField]
-    private List<ToolController> toolControllers = new List<ToolController>();
-    public List<ToolController> ToolControllers { get { return toolControllers; } set { toolControllers = value; } }
+    private List<ToolController>    toolControllers = new List<ToolController>();
 
-    private Quiver quiver = null;
-    public Quiver GetQuiver() { return quiver; }
+    private Quiver                  quiver = null;
+    public Quiver                   GetQuiver() { return quiver; }
 
     //剣をしまっている時の位置・回転
     [SerializeField]
-    private Transform swordTransform;
+    private Transform               swordTransform;
 
     [SerializeField]
-    private Transform crossBowTransform;
+    private Transform               crossBowTransform;
 
     [SerializeField]
-    private Vector3 localCrossBowPos = new Vector3(1, -0.8f, 1);
+    private Vector3                 localCrossBowPos = new Vector3(1, -0.8f, 1);
 
 
     //盾を背負う位置・回転
     [SerializeField]
-    private Transform shieldTransform;
+    private Transform               shieldTransform;
 
     [SerializeField]
-    private Transform rightHandTransform;
+    private Transform               rightHandTransform;
 
     [SerializeField]
-    private Transform leftHandTransform;
+    private Transform               leftHandTransform;
 
 
     /// <summary>
     /// エフェクト関係の変数
     /// </summary>
-    private SwordEffectController swordEffect = null;
+    private SwordEffectController   swordEffect = null;
 
     public void Initilaize()
     {

@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class BaseTitleUIConfiguration : MonoBehaviour
 {
-    protected TitleUIController titleUIController = null;
-    public TitleUIController GetTitleUIController() { return titleUIController; }
-    public void SetTitleUIController(TitleUIController titleUI) { titleUIController = titleUI; }
+    protected TitleUIController         titleUIController = null;
+    public TitleUIController            GetTitleUIController() { return titleUIController; }
+    public void                         SetTitleUIController(TitleUIController titleUI) { titleUIController = titleUI; }
     [SerializeField]
-    protected bool fadeEnd = false;
-    public bool IsFadeEnd() { return fadeEnd; }
+    protected bool                      fadeEnd = false;
+    public bool                         IsFadeEnd() { return fadeEnd; }
 
     [SerializeField]
-    protected List<GameObject> uiObjectArray = new List<GameObject>();
-    public List<GameObject> GetUIObjectArray() { return uiObjectArray; }
+    protected List<GameObject>          uiObjectArray = new List<GameObject>();
+    public List<GameObject>             GetUIObjectArray() { return uiObjectArray; }
 
     public virtual void Initilaize()
     {
@@ -27,9 +27,5 @@ public class BaseTitleUIConfiguration : MonoBehaviour
             }
         }
     }
-
-    public virtual void ConfigurationUpdate()
-    {
-
-    }
+    public virtual void ConfigurationUpdate(){}
 }

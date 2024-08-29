@@ -3,25 +3,29 @@ using UnityEngine;
 
 public class GameOverUIController : MonoBehaviour
 {
-    private List<GameObject> gameOverUIObjectList = new List<GameObject>();
+    private List<GameObject>        gameOverUIObjectList = new List<GameObject>();
 
-    private FadeIn panelFadeIn = null;
+    private FadeIn                  panelFadeIn = null;
 
-    private FadeInText gameOverText = null;
+    private FadeInText              gameOverText = null;
 
-    private MoverButton gameOverButtons = null;
+    private MoverButton             gameOverButtons = null;
 
-    public GameObject SelfObject() { return gameObject; }
-    public bool IsActiveObject() { return gameObject.activeSelf; }
+    public GameObject               SelfObject() { return gameObject; }
+    public bool                     IsActiveObject() { return gameObject.activeSelf; }
 
-    public void SetActiveObject(bool enabled) {  gameObject.SetActive(enabled); }
+    public void                     SetActiveObject(bool enabled) {  gameObject.SetActive(enabled); }
 
     public void AwakeInitilaize()
     {
         gameOverUIObjectList.Clear();
 
         panelFadeIn = GetComponentInChildren<FadeIn>();
-        gameOverUIObjectList.Add(panelFadeIn.SelfObject());
+        if(panelFadeIn != null)
+        {
+            panelFadeIn.AwakeInitilaize();
+            gameOverUIObjectList.Add(panelFadeIn.SelfObject());
+        }
 
         gameOverText = GetComponentInChildren<FadeInText>();
         if(gameOverText != null)
@@ -31,11 +35,17 @@ public class GameOverUIController : MonoBehaviour
         }
 
         gameOverButtons = GetComponentInChildren<MoverButton>();
-        gameOverUIObjectList.Add(gameOverButtons.SelfObject());
+        if(gameOverButtons != null)
+        {
+            gameOverButtons.AwakeInitilaize();
+            gameOverUIObjectList.Add(gameOverButtons.SelfObject());
+        }
     }
 
     public void StartInitialize()
     {
+        panelFadeIn.StartInitilaize();
+        gameOverText.StartInitilaize();
         gameObject.SetActive(false);
     }
 

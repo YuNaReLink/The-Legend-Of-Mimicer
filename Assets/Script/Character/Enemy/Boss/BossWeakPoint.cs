@@ -21,12 +21,12 @@ public class BossWeakPoint : MonoBehaviour
         if(controller == null) { return; }
         switch (controller.CurrentState)
         {
-            case CharacterTag.StateTag.Attack:
-                controller.GetVFXController().CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position, 1f, Quaternion.identity);
+            case CharacterTagList.StateTag.Attack:
+                controller.GetEffectController().CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position, 1f, Quaternion.identity);
                 controller.StunFlag = true;
                 break;
-            case CharacterTag.StateTag.Damage:
-                controller.GetVFXController().CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position, 1f, Quaternion.identity);
+            case CharacterTagList.StateTag.Damage:
+                controller.GetEffectController().CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position, 1f, Quaternion.identity);
                 controller.GetBossDamageCommand().Attacker = other.gameObject;
                 controller.GetBossDamageCommand().DamageFlag = true;
                 break;
