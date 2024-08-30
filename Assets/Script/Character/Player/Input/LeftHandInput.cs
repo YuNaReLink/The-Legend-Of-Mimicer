@@ -27,7 +27,7 @@ public class LeftHandInput
             if (controller.GetKeyInput().GuardHoldButton)
             {
                 //‚‚ÌƒNƒ‰ƒX‚ğ¶¬‚·‚é
-                controller.LeftAction = new ShieldGuridAction(controller);
+                controller.LeftAction = new ShieldGuridCommand(controller);
             }
             else
             {

@@ -71,10 +71,10 @@ public class PlayerController : CharacterController
     /// <summary>
     /// プレイヤーの各右・左の道具の処理を生成するクラス
     /// </summary>
-    private InterfaceBaseToolAction                  rightAction = null;
-    public InterfaceBaseToolAction                   RightAction { get { return rightAction; }set { rightAction = value; } }
-    private InterfaceBaseToolAction                  leftAction = null;
-    public InterfaceBaseToolAction                   LeftAction { get {return leftAction; }set { leftAction = value; } }
+    private InterfaceBaseToolCommand                  rightAction = null;
+    public InterfaceBaseToolCommand                   RightAction { get { return rightAction; }set { rightAction = value; } }
+    private InterfaceBaseToolCommand                  leftAction = null;
+    public InterfaceBaseToolCommand                   LeftAction { get {return leftAction; }set { leftAction = value; } }
     /// <summary>
     /// プレイヤーが戦闘状態かそうじゃないか
     /// </summary>

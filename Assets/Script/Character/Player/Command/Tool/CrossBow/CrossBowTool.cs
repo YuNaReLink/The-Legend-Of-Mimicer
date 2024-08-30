@@ -1,6 +1,6 @@
 
 
-public class CrossBowTool : InterfaceBaseToolAction
+public class CrossBowTool : InterfaceBaseToolCommand
 {
     private PlayerController    controller = null;
 

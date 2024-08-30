@@ -132,14 +132,14 @@ public class RightHandInput
         }
 
         //変更されたツールのコマンドを生成する
-        InterfaceBaseToolAction tool = controller.RightAction;
+        InterfaceBaseToolCommand tool = controller.RightAction;
         switch (controller.GetToolController().CurrentToolTag)
         {
             case ToolInventoryController.ToolObjectTag.Null:
                 tool = null;
                 break;
             case ToolInventoryController.ToolObjectTag.Sword:
-                tool = new SwordAttackAction(controller);
+                tool = new SwordAttackCommand(controller);
                 break;
             case ToolInventoryController.ToolObjectTag.CrossBow:
                 GameObject crossBow = controller.GetToolController().GetInventoryData().ToolItemList[(int)ToolInventoryController.ToolObjectTag.CrossBow];
@@ -150,7 +150,7 @@ public class RightHandInput
         SetTool(tool);
     }
 
-    private void SetTool(InterfaceBaseToolAction tool)
+    private void SetTool(InterfaceBaseToolCommand tool)
     {
         if (controller.RightAction != null)
         {
