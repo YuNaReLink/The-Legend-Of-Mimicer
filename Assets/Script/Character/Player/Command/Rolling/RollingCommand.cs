@@ -1,5 +1,4 @@
 using UnityEngine;
-using CharacterTagList;
 
 public class RollingCommand : InterfaceBaseCommand, InterfaceBaseInput
 {
@@ -13,12 +12,12 @@ public class RollingCommand : InterfaceBaseCommand, InterfaceBaseInput
     {
         switch (controller.CurrentState)
         {
-            case StateTag.Rolling:
-            case StateTag.Attack:
-            case StateTag.JumpAttack:
-            case StateTag.ReadySpinAttack:
-            case StateTag.SpinAttack:
-            case StateTag.GetUp:
+            case CharacterTagList.StateTag.Rolling:
+            case CharacterTagList.StateTag.Attack:
+            case CharacterTagList.StateTag.JumpAttack:
+            case CharacterTagList.StateTag.ReadySpinAttack:
+            case CharacterTagList.StateTag.SpinAttack:
+            case CharacterTagList.StateTag.GetUp:
                 return;
         }
         if (!controller.Landing) { return; }
@@ -28,14 +27,14 @@ public class RollingCommand : InterfaceBaseCommand, InterfaceBaseInput
         {
             //完全に止まっていたらリターン
             if (controller.GetKeyInput().Vertical == 0 && controller.GetKeyInput().Horizontal == 0) { return; }
-            controller.GetKeyInput().CurrentDirection = DirectionTag.Up;
+            controller.GetKeyInput().CurrentDirection = CharacterTagList.DirectionTag.Up;
             //ローリングの移動を行うための初速度を代入
             controller.GetKeyInput().InitVelocity = controller.CharacterRB.velocity;
             controller.GetKeyInput().RollTimer = 0.0f;
 
             controller.GetTimer().GetTimerRolling().StartTimer(0.4f);
             controller.GetTimer().GetTimerNoAccele().StartTimer(0.4f);
-            controller.GetMotion().ChangeMotion(StateTag.Rolling);
+            controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Rolling);
             //Shiftキーを無効にする
             controller.GetKeyInput().ActionButton = false;
         }
@@ -44,7 +43,7 @@ public class RollingCommand : InterfaceBaseCommand, InterfaceBaseInput
             if (controller.BattleMode && (controller.GetKeyInput().Vertical > 0 || controller.GetKeyInput().Vertical == 0 && controller.GetKeyInput().Horizontal == 0)) { return; }
             if (controller.GetKeyInput().Vertical > 0 || controller.GetKeyInput().Vertical == 0 && controller.GetKeyInput().Horizontal == 0)
             {
-                controller.GetKeyInput().CurrentDirection = DirectionTag.Up;
+                controller.GetKeyInput().CurrentDirection = CharacterTagList.DirectionTag.Up;
             }
             DirectionRollingInput();
         }
@@ -55,23 +54,23 @@ public class RollingCommand : InterfaceBaseCommand, InterfaceBaseInput
         float noaccele = 0.4f;
         if (controller.GetKeyInput().Horizontal > 0)
         {
-            controller.GetKeyInput().CurrentDirection = DirectionTag.Right;
+            controller.GetKeyInput().CurrentDirection = CharacterTagList.DirectionTag.Right;
         }
         if (controller.GetKeyInput().Horizontal < 0)
         {
-            controller.GetKeyInput().CurrentDirection = DirectionTag.Left;
+            controller.GetKeyInput().CurrentDirection = CharacterTagList.DirectionTag.Left;
         }
         if (controller.GetKeyInput().Vertical < 0 && controller.GetKeyInput().Horizontal == 0)
         {
             rollingcount = 0.5f;
             noaccele = 0.5f;
-            controller.GetKeyInput().CurrentDirection = DirectionTag.Down;
+            controller.GetKeyInput().CurrentDirection = CharacterTagList.DirectionTag.Down;
         }
         controller.GetKeyInput().InitVelocity = controller.CharacterRB.velocity;
         controller.GetKeyInput().RollTimer = 0.0f;
         controller.GetTimer().GetTimerRolling().StartTimer(rollingcount);
         controller.GetTimer().GetTimerNoAccele().StartTimer(noaccele);
-        controller.GetMotion().ChangeMotion(StateTag.Rolling);
+        controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Rolling);
         //Shiftキーを無効にする
         controller.GetKeyInput().ActionButton = false;
     }
@@ -91,7 +90,7 @@ public class RollingCommand : InterfaceBaseCommand, InterfaceBaseInput
         {
             //ローリングが終わったら初速度を代入
             controller.CharacterRB.velocity = controller.GetKeyInput().InitVelocity;
-            controller.GetMotion().ChangeMotion(StateTag.Run);
+            controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Run);
         }
         //ローリング中崖ジャンプ処理が実行されたら
         else if (controller.GetObstacleCheck().CliffJumpFlag)
@@ -106,16 +105,16 @@ public class RollingCommand : InterfaceBaseCommand, InterfaceBaseInput
             Vector3 rollDirection = controller.GetKeyInput().InitVelocity.normalized;
             switch (controller.GetKeyInput().CurrentDirection)
             {
-                case DirectionTag.Up:
+                case CharacterTagList.DirectionTag.Up:
                     rollDirection = controller.transform.forward;
                     break;
-                case DirectionTag.Down:
+                case CharacterTagList.DirectionTag.Down:
                     rollDirection = -controller.transform.forward;
                     break;
-                case DirectionTag.Left:
+                case CharacterTagList.DirectionTag.Left:
                     rollDirection = -controller.transform.right;
                     break;
-                case DirectionTag.Right:
+                case CharacterTagList.DirectionTag.Right:
                     rollDirection = controller.transform.right;
                     break;
             }
@@ -125,7 +124,7 @@ public class RollingCommand : InterfaceBaseCommand, InterfaceBaseInput
             RollingAccele(rollDirection * currentRollSpeed);
         }
         //バク転時のジャンプ処理
-        if(controller.GetKeyInput().CurrentDirection == DirectionTag.Down)
+        if(controller.GetKeyInput().CurrentDirection == CharacterTagList.DirectionTag.Down)
         {
             AnimatorStateInfo animInfo = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
             if (!animInfo.IsName("backFlip")) { return; }
@@ -144,8 +143,8 @@ public class RollingCommand : InterfaceBaseCommand, InterfaceBaseInput
         PlayerInput keyInput = controller.GetKeyInput();
         switch (controller.GetKeyInput().CurrentDirection)
         {
-            case DirectionTag.Up:
-                if (controller.GetKeyInput().CurrentDirection == DirectionTag.Up &&
+            case CharacterTagList.DirectionTag.Up:
+                if (controller.GetKeyInput().CurrentDirection == CharacterTagList.DirectionTag.Up &&
                 controller.GetKeyInput().Vertical == 0)
                 {
                     accele = controller.GetData().RollingUPStaticAcceleration;
@@ -155,13 +154,13 @@ public class RollingCommand : InterfaceBaseCommand, InterfaceBaseInput
                     accele = controller.GetData().RollingUPDynamicAcceleration;
                 }
                 break;
-            case DirectionTag.Down:
+            case CharacterTagList.DirectionTag.Down:
                 accele = controller.GetData().RollingDOWNAcceleration;
                 break;
-            case DirectionTag.Left:
+            case CharacterTagList.DirectionTag.Left:
                 accele = controller.GetData().RollingLEFTAcceleration;
                 break;
-            case DirectionTag.Right:
+            case CharacterTagList.DirectionTag.Right:
                 accele = controller.GetData().RollingRIGHTAcceleration;
                 break;
         }
