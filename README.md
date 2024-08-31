@@ -1,3 +1,5 @@
+・Clone方法
+	Branchesのmasterを選択してCodeのURLをGitでCloneしてもらえば作品を見ることができます。
 ・制作概要
 	メンバー：1人
 	担当箇所：キャラクター制御、
