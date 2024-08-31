@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d6af168024bfe441be9a3efad5b6ea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 7184392552541862705, guid: eacf9ea5fc283164bab09e9826d20bd0, type: 3}
+  item: {fileID: 6399771348300310620, guid: 9a54898826485844d8cad83dfdd5f682, type: 3}
   toolTag: 2
 --- !u!114 &19914708101746277
 MonoBehaviour:
@@ -283,7 +283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 19dd25c6b597e2844bb2b1ab5034b408, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.000000021855694
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 19dd25c6b597e2844bb2b1ab5034b408, type: 3}
       propertyPath: m_LocalRotation.y
@@ -291,7 +291,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 19dd25c6b597e2844bb2b1ab5034b408, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 19dd25c6b597e2844bb2b1ab5034b408, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -396,6 +396,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1bf63c0899d49114e9e0a11b3dbb5187, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2cb987137b739894682ccea9106cd69b, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 1bf63c0899d49114e9e0a11b3dbb5187, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 53ce828af18d0eb46b8e8ede9ab92220, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 1bf63c0899d49114e9e0a11b3dbb5187, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 57c5c45402f367749a31d5f99048f829, type: 2}
     - target: {fileID: 919132149155446097, guid: 1bf63c0899d49114e9e0a11b3dbb5187, type: 3}
       propertyPath: m_Name
       value: Chest

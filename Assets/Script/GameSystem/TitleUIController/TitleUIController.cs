@@ -65,6 +65,7 @@ public class TitleUIController : MonoBehaviour
         {
             titleSceneArray[(int)TitleUINumber.UIEvent01].SetActive(false);
             titleSceneArray[(int)TitleUINumber.UIEvent02].SetActive(true);
+            canvasSoundController.PlaySESound((int)CanvasSoundController.CanvasSoundTag.Deside);
         }
     }
 }
