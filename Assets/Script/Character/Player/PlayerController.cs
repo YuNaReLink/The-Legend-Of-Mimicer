@@ -61,8 +61,8 @@ public class PlayerController : CharacterController
     /// プレイヤーの攻撃行動を処理するクラス
     /// </summary>
     [SerializeField]
-    private CharacterTagList.TripleAttack       tripleAttack = CharacterTagList.TripleAttack.Null;
-    public CharacterTagList.TripleAttack        TripleAttack { get { return tripleAttack; } set {  tripleAttack = value; } }
+    private CharacterTagList.TripleAttack   tripleAttack = CharacterTagList.TripleAttack.Null;
+    public CharacterTagList.TripleAttack    TripleAttack { get { return tripleAttack; } set {  tripleAttack = value; } }
     /// <summary>
     /// プレイヤーのダメージ処理を行うクラス
     /// </summary>
@@ -71,10 +71,10 @@ public class PlayerController : CharacterController
     /// <summary>
     /// プレイヤーの各右・左の道具の処理を生成するクラス
     /// </summary>
-    private InterfaceBaseToolCommand                  rightAction = null;
-    public InterfaceBaseToolCommand                   RightAction { get { return rightAction; }set { rightAction = value; } }
-    private InterfaceBaseToolCommand                  leftAction = null;
-    public InterfaceBaseToolCommand                   LeftAction { get {return leftAction; }set { leftAction = value; } }
+    private InterfaceBaseToolCommand        rightAction = null;
+    public InterfaceBaseToolCommand         RightAction { get { return rightAction; }set { rightAction = value; } }
+    private InterfaceBaseToolCommand        leftAction = null;
+    public InterfaceBaseToolCommand         LeftAction { get {return leftAction; }set { leftAction = value; } }
     /// <summary>
     /// プレイヤーが戦闘状態かそうじゃないか
     /// </summary>
@@ -85,8 +85,8 @@ public class PlayerController : CharacterController
     /// プレイヤーが動かせるオブジェクトに触れてるか判定する
     /// </summary>
     [SerializeField]
-    private CharacterTagList.PushTag            pushTag = CharacterTagList.PushTag.Null;
-    public CharacterTagList.PushTag             PushTag  => pushTag;
+    private CharacterTagList.PushTag        pushTag = CharacterTagList.PushTag.Null;
+    public CharacterTagList.PushTag         PushTag  => pushTag;
     /// <summary>
     /// パシフィックマテリアル
     /// </summary>
@@ -96,8 +96,8 @@ public class PlayerController : CharacterController
     /// ダメージ関係の変数
     /// </summary>
     [SerializeField]
-    private CharacterTagList.DamageTag          damageTag = CharacterTagList.DamageTag.Null;
-    public CharacterTagList.DamageTag           DamageTag {  get { return damageTag; } set { damageTag = value; } }
+    private CharacterTagList.DamageTag      damageTag = CharacterTagList.DamageTag.Null;
+    public CharacterTagList.DamageTag       DamageTag {  get { return damageTag; } set { damageTag = value; } }
     [Header("プレイヤーが盾を構えた時に使うモーションClip")]
     [SerializeField]
     private AnimationClip                   clip = null;
