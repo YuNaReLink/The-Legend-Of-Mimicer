@@ -260,9 +260,16 @@ public class PlayerInput : MonoBehaviour
 
     private void FallInput()
     {
-        bool stopstate = controller.CurrentState == StateTag.Jump || controller.CurrentState == StateTag.JumpAttack ||
-            controller.CurrentState == StateTag.Rolling || controller.CurrentState == StateTag.Null;
-        if (stopstate) { return; }
+        switch (controller.CurrentState)
+        {
+            case StateTag.Jump:
+            case StateTag.JumpAttack:
+            case StateTag.Rolling:
+            case StateTag.WallJump:
+            case StateTag.Grab:
+            case StateTag.Null:
+                return;
+        }
         if (controller.GetObstacleCheck().IsGrabFlag()) { return; }
         if(controller.GetObstacleCheck().IsClimbFlag()) { return; }
         if(controller.GetObstacleCheck().IsWallJumpFlag()) { return; }
