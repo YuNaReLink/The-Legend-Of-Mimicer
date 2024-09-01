@@ -28,7 +28,8 @@ public class KnockBackCommand : InterfaceBaseCommand, InterfaceBaseInput
         if (tool == null) { return; }
         WeaponStateData data = tool.GetStatusData();
         if (data == null) { return; }
-        Knockback(controller.transform.position, attacker.transform.position, data.KnockBackPower, controller.CharacterRB);
+        Knockback(controller.transform.position, attacker.transform.position,
+            data.KnockBackPower, controller.CharacterRB);
         knockBackFlag = false;
     }
 
