@@ -18,6 +18,7 @@ public class PlayerConnectionUI : MonoBehaviour
         ArrowCount,
         KeyInput,
         Target,
+        Sight,
         Menu
     }
     /// <summary>

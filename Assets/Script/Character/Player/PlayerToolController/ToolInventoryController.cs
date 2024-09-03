@@ -151,12 +151,13 @@ public class ToolInventoryController : MonoBehaviour
     //ìπãÔÇÃà íuÇì¸ÇÍë÷Ç¶ÇÈèàóù
     private void SetToolPosition(ToolObjectTag tool,Transform transform)
     {
-        if (inventoryData.ToolItemList[(int)tool].transform.parent == transform) { return; }
-        inventoryData.ToolItemList[(int)tool].transform.SetParent(null);
-        inventoryData.ToolItemList[(int)tool].transform.SetParent(transform);
-        inventoryData.ToolItemList[(int)tool].transform.position = transform.position;
-        inventoryData.ToolItemList[(int)tool].transform.rotation = transform.rotation;
-        inventoryData.ToolItemList[(int)tool].transform.localScale = new Vector3(1f, 1f, 1f);
+        int t = (int)tool;
+        if (inventoryData.ToolItemList[t].transform.parent == transform) { return; }
+        inventoryData.ToolItemList[t].transform.SetParent(null);
+        inventoryData.ToolItemList[t].transform.SetParent(transform);
+        inventoryData.ToolItemList[t].transform.position = transform.position;
+        inventoryData.ToolItemList[t].transform.rotation = transform.rotation;
+        inventoryData.ToolItemList[t].transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
     private void ChangeSwordTransform()
@@ -174,11 +175,12 @@ public class ToolInventoryController : MonoBehaviour
 
     private void ChangeCrossBowTransform()
     {
-        if (inventoryData.ToolItemList[(int)ToolObjectTag.CrossBow] == null) { return; }
+        int c = (int)ToolObjectTag.CrossBow;
+        if (inventoryData.ToolItemList[c] == null) { return; }
         if (currentToolTag == ToolObjectTag.CrossBow)
         {
             SetToolPosition(ToolObjectTag.CrossBow, controller.GetCameraController().transform);
-            inventoryData.ToolItemList[(int)ToolObjectTag.CrossBow].transform.localPosition = localCrossBowPos;
+            inventoryData.ToolItemList[c].transform.localPosition = localCrossBowPos;
         }
         else
         {

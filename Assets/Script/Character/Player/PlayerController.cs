@@ -262,7 +262,7 @@ public class PlayerController : CharacterController
                 return;
         }
         if(currentState == CharacterTagList.StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 && keyInput.Vertical == 0) { return; }
-        if(fallDistanceCheck.FallDamage || cameraController.IsFPSMode()) { return; }
+        if(fallDistanceCheck.FallDamage) { return; }
 
         input = true;
     }

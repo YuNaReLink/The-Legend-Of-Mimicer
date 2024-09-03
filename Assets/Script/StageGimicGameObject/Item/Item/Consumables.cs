@@ -1,3 +1,4 @@
+using UnityEditor.SceneManagement;
 using UnityEngine;
 /// <summary>
 /// アイテムの基底クラス
@@ -14,6 +15,15 @@ public class Consumables : MonoBehaviour
         DataEnd
     }
     public virtual ConsumablesTag       GetConsumablesTag() { return ConsumablesTag.Null; }
+
+    protected Rigidbody rb = null;
+    protected BoxCollider boxCollider = null;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        boxCollider = GetComponentInChildren<BoxCollider>();
+    }
 
     protected virtual void GetCommand(PlayerController _player,int count)
     {
@@ -34,6 +44,14 @@ public class Consumables : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider other)
     {
+        if (rb != null)
+        {
+            Destroy(rb);
+        }
+        if(boxCollider != null)
+        {
+            Destroy(boxCollider);
+        }
         Destroy(gameObject,1f);
     }
 }

@@ -31,6 +31,18 @@ public class KeyInputUIController : MonoBehaviour
     public GameObject SelfObject() { return gameObject; }
     public bool IsActiveObject() { return gameObject.activeSelf; }
     public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
+
+    private bool controllerInput = false;
+
+
+    private enum ControllerTag
+    {
+        Key,
+        Controller
+    }
+    [SerializeField]
+    private List<SpriteObjectData> spriteObjectList = new List<SpriteObjectData>();
+
     public void Initialize()
     {
         gameUIController = GetComponentInParent<GameUIController>();
@@ -78,6 +90,9 @@ public class KeyInputUIController : MonoBehaviour
         {
             inputCoolDownsTimers[i].Update();
         }
+        //入力してるのがキーボードかコントローラーか判定
+        CheckInput();
+
         CrossBowActiveCheck();
         FKeyActiveCheck();
 
@@ -87,6 +102,55 @@ public class KeyInputUIController : MonoBehaviour
         FKeyUI();
         TabKeyUI();
         ShiftKeyUI();
+    }
+
+    private void CheckInput()
+    {
+        if (Input.anyKey)
+        {
+            controllerInput = false;
+        }
+
+        // コントローラーボタンのチェック
+        for (int i = 0; i < 14; i++)
+        {
+            if (Input.GetKey("joystick button"+" "+i))
+            {
+                controllerInput = true;
+                break;
+            }
+        }
+
+        // コントローラーの軸のチェック
+        if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)&&
+           !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+        {
+            if ((Mathf.Abs(Input.GetAxis("Horizontal")) >= 1.0f) ||
+                (Mathf.Abs(Input.GetAxis("Vertical")) >= 1.0f))
+            {
+                controllerInput = true;
+            }
+        }
+        //コントローラーならUIを変更
+        if (controllerInput)
+        {
+            SetUI(spriteObjectList[(int)ControllerTag.Controller]);
+        }
+        //逆も同じ
+        else
+        {
+            SetUI(spriteObjectList[(int)ControllerTag.Key]);
+        }
+    }
+
+    private void SetUI(SpriteObjectData data)
+    {
+        for(int i = 0; i < data.SpriteList.Count; i++)
+        {
+            if(data.SpriteList[i] == null) { continue; }
+            if (keyImageArray[i].sprite == data.SpriteList[i]) { continue; }
+            keyImageArray[i].sprite = data.SpriteList[i];
+        }
     }
 
     private void OutputText(string text,bool active)
