@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4599423389770678374}
   - component: {fileID: 845745995567362498}
   - component: {fileID: 1743178625528583273}
+  - component: {fileID: 3704389514756731605}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -106,7 +107,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  player: {fileID: 0}
   distance_base: 4.5
   maxDistanceBase: 4.5
   mouseXSpeed: 10
@@ -124,3 +124,16 @@ MonoBehaviour:
   neckHeight: 2
   testHor: 0
   fpsMode: 0
+--- !u!114 &3704389514756731605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8879047264742076938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4a2dae4815916f42b22bf8629b07b90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crossBow: {fileID: 0}

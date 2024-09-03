@@ -14,6 +14,10 @@ public class CrossBowShoot : MonoBehaviour
 
     private CrossBowAnimation   animation = null;
 
+    private PlayerController playerController = null;
+
+
+
     public bool ArrowFire()
     {
         if(animation != null)
@@ -24,10 +28,11 @@ public class CrossBowShoot : MonoBehaviour
         if (fire) { return false; }
         if(arrow == null) { return false; }
         if(arrowTransform == null) { return false; }
-        GameObject Bullet = Instantiate(arrow, arrowTransform.position, Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, 0));
-        Rigidbody bulletRb = Bullet.GetComponent<Rigidbody>();
-        bulletRb.AddForce(arrowTransform.forward * bulletSpeed);
-        Destroy(Bullet, 10.0f);
+        GameObject bullet = Instantiate(arrow, arrowTransform.position, Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, 0));
+        bullet.transform.LookAt(CameraAimRaycast.Instance.GetSightPosition());
+        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
+        bulletRb.AddForce(bullet.transform.forward * bulletSpeed);
+        Destroy(bullet, 10.0f);
         fire = true;
         return true;
     }

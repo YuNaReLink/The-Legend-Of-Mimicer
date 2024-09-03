@@ -10,45 +10,155 @@ public class SwordController : ToolController
     public override ToolTag GetToolTag() { return ToolTag.Sword; }
     private SwordEffectController effect = null;
 
-    private void Start()
+    private StateTag[] StateArray = new StateTag[]
+    {
+        StateTag.Attack,
+        StateTag.JumpAttack,
+        StateTag.SpinAttack,
+    };
+
+    /// <summary>
+    /// コライダーの中心、サイズを区別するためのState
+    /// </summary>
+    private enum ColliderType
+    {
+        Normal,
+        SpinAttack
+    }
+    private BoxCollider boxCollider = null;
+    /// <summary>
+    /// 状態によって剣のコライダーの中心とサイズを変更する値を保持した配列
+    /// </summary>
+    private Vector3[] colliderCenter = new Vector3[]
+    {
+        new Vector3(0,1.1f,0),
+        new Vector3(0,1.9f,0)
+    };
+    private Vector3[] colliderScale = new Vector3[]
+    {
+        new Vector3(0.6f,1.8f,0.2f),
+        new Vector3(1,3.5f,1)
+    };
+    private void Awake()
     {
         collider = GetComponent<Collider>();
+        if (collider != null)
+        {
+            boxCollider = collider.GetComponent<BoxCollider>();
+        }
+        else
+        {
+            Debug.Log("Colliderがアタッチされていない");
+        }
         effect = GetComponent<SwordEffectController>();
-        effect.SetController(controller);
-        effect.StopEffect();
+    }
+    private void Start()
+    {
+        effect.StopTrail();
     }
 
     void Update()
     {
-        effect.UpdateEffect();
-        SetTrigger();
+        ActiveCheck();
+        SetColliderSize();
     }
 
-    private bool CheckAttackState()
-    {
-        StateTag state = controller.CurrentState;
-        switch (state)
-        {
-            case StateTag.Attack:
-            case StateTag.JumpAttack:
-            case StateTag.SpinAttack:
-                return true;
-        }
-        return false;
-    }
-
-    private void SetTrigger()
+    private void ActiveCheck()
     {
         if (controller == null) { return; }
         if (collider == null) { return; }
-        if (CheckAttackState())
+        StateTag state = controller.CurrentState;
+        if (MotionTimeCheck(state))
         {
+            effect.PlayTrail();
             collider.enabled = true;
         }
         else
         {
+            effect.StopTrail();
             collider.enabled = false;
         }
+    }
+    private bool MotionTimeCheck(StateTag tag)
+    {
+        AnimatorStateInfo animInfo = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
+        PlayerController player = controller.GetComponent<PlayerController>();
+        switch (tag)
+        {
+            case StateTag.Attack:
+                if (TripleAttackCheck(animInfo))
+                {
+                    return true;
+                }
+                break;
+            case StateTag.JumpAttack:
+                if (animInfo.normalizedTime >= 0.3f && animInfo.normalizedTime < 0.5f)
+                {
+                    return true;
+                }
+                break;
+            case StateTag.SpinAttack:
+                if (animInfo.normalizedTime < 0.3f)
+                {
+                    return true;
+                }
+                break;
+            default:
+                return false;
+        }
+
+        return false;
+    }
+
+    private bool TripleAttackCheck(AnimatorStateInfo animInfo)
+    {
+        PlayerController player = controller.GetComponent<PlayerController>();
+        switch (player.TripleAttack)
+        {
+            case TripleAttack.First:
+                if (animInfo.normalizedTime >= 0.3f && animInfo.normalizedTime < 0.7f)
+                {
+                    return true;
+                }
+                break;
+            case TripleAttack.Second:
+                if (animInfo.normalizedTime >= 0.1f && animInfo.normalizedTime < 0.4f)
+                {
+                    return true;
+                }
+                break;
+            case TripleAttack.Three:
+                if (animInfo.normalizedTime >= 0.5f && animInfo.normalizedTime < 0.7f)
+                {
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
+
+    private void SetColliderSize()
+    {
+        if (controller == null) { return; }
+        if (collider == null) { return; }
+        if(boxCollider == null) { return; }
+        if(controller.CurrentState == controller.PastState) { return; }
+        StateTag state = controller.CurrentState;
+        Vector3 center = boxCollider.center;
+        Vector3 size = boxCollider.size;
+        switch (state)
+        {
+            case StateTag.SpinAttack:
+                center = colliderCenter[(int)ColliderType.SpinAttack];
+                size  = colliderScale[(int)ColliderType.SpinAttack];
+                break;
+            default:
+                center = colliderCenter[(int)ColliderType.Normal];
+                size  = colliderScale[(int)ColliderType.Normal];
+                break;
+        }
+        boxCollider.center = center;
+        boxCollider.size = size;
     }
 
 }

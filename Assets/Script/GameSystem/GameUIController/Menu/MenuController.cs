@@ -237,6 +237,11 @@ public class MenuController : MonoBehaviour
         }
     }
 
+    public void SetHorizontalIndex(int index)
+    {
+        currentHorizontalIndex = index;
+    }
+
     public void StatesButtonClick()
     {
         menuToggleController.ToggleList[(int)MenuField.Inventory].isOn = true;

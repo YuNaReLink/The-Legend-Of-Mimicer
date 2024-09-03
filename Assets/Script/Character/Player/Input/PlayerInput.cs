@@ -175,6 +175,8 @@ public class PlayerInput : MonoBehaviour
             {
                 //‘Ò‹@“ü—Í
                 IdleInput();
+                //ˆÚ“®“ü—Í
+                RunInput();
             }
             //û”[E”[““ü—Í
             ModeChangeInput();
