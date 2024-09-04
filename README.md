@@ -24,7 +24,9 @@ Branchesのmasterを選択してCodeのURLをGitでCloneしてもらえば作品
 	プレイヤーモデル作成
  
 開発期間：2024/6/27~2024/08/30 
-  	378時間 
+
+  	378時間
+   
 開発環境：Unity、C#、GitHub(Fork)
 
 ジャンル
