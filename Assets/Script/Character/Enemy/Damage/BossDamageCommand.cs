@@ -3,7 +3,7 @@
 /// EnemyDamageCommandを継承したBossのダメージ処理を行う
 /// クラス
 /// </summary>
-public class BossDamageCommand : EnemyDamageCommand, InterfaceBaseInput
+public class BossDamageCommand : EnemyDamageCommand, InterfaceState
 {
     private BossController bossController = null;
     public BossDamageCommand(BossController _bossController) : base(_bossController)
@@ -12,7 +12,7 @@ public class BossDamageCommand : EnemyDamageCommand, InterfaceBaseInput
         bossController = _bossController;
     }
 
-    public void Input()
+    public void DoUpdate()
     {
         StunInput();
     }

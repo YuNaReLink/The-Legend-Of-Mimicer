@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerDamageCommand : InterfaceBaseCommand, InterfaceBaseInput
+public class PlayerDamageCommand : InterfaceBaseCommand
 {
     private PlayerController        controller = null;
     public PlayerDamageCommand(PlayerController _controller)
@@ -10,25 +10,6 @@ public class PlayerDamageCommand : InterfaceBaseCommand, InterfaceBaseInput
 
     private GameObject              attacker = null;
     public GameObject               Attacker { get { return attacker; }set { attacker = value; } }
-    /// <summary>
-    /// ダメージ時に発生する状態とモーションを適用する
-    /// </summary>
-    public void Input()
-    {
-        if(controller.DamageTag == CharacterTagList.DamageTag.Null) { return; }
-        switch (controller.DamageTag)
-        {
-            case CharacterTagList.DamageTag.Fall:
-                controller.GetMotion().ForcedChangeMotion(CharacterTagList.StateTag.Damage);
-                controller.GetFallDistanceCheck().FallDamage = false;
-                break;
-            case CharacterTagList.DamageTag.NormalAttack:
-                controller.GetMotion().ForcedChangeMotion(CharacterTagList.StateTag.Damage);
-                break;
-            case CharacterTagList.DamageTag.GreatAttack:
-                break;
-        }
-    }
 
     /// <summary>
     /// 体力を減らす&プレイヤーオブジェクトを動かす処理をする

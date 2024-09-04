@@ -21,6 +21,8 @@ public class PlayerController : CharacterController
     /// </summary>
     private PlayerInput                     keyInput = null;
     public PlayerInput                      GetKeyInput() { return keyInput; }
+
+    private PlayerState                     state = null;
     /// <summary>
     /// プレイヤーの壁、崖との判定処理をまとめたクラス
     /// </summary>
@@ -142,21 +144,40 @@ public class PlayerController : CharacterController
         obstacleCheck?.SetController(this);
 
         keyInput = GetComponent<PlayerInput>();
-        keyInput.SetController(this);
+        if(keyInput == null)
+        {
+            Debug.LogError("PlayerInputがアタッチされていません");
+        }
+        keyInput?.SetController(this);
         keyInput?.Initialize();
 
+        state = GetComponent<PlayerState>();
+        if(state == null)
+        {
+            Debug.LogError("PlayerStateがアタッチされていません");
+        }
+        state?.AwakeInitilaize();
 
         fallDistanceCheck = new FallDistanceCheck(this);
         fallDistanceCheck?.Initialize();
 
         toolInventory = GetComponentInChildren<ToolInventoryController>();
+        if(toolInventory == null)
+        {
+            Debug.LogError("ToolInventoryControllerがアタッチされていません");
+        }
         toolInventory?.SetController(this);
         toolInventory?.Initilaize();
 
         decorationController = GetComponent<PlayerDecorationController>();
+        if(decorationController == null)
+        {
+            Debug.LogError("PlayerDecorationControllerがアタッチされていません");
+        }
         decorationController?.SetController(this);
 
         rotation = new PlayerRotation(this,transform.rotation);
+
         timer = new PlayerTimers();
         timer?.InitializeAssignTimer();
 
@@ -173,30 +194,22 @@ public class PlayerController : CharacterController
     //入力処理を行う
     protected override void Update()
     {
+        base.Update();
         keyInput.SystemInput();
         if (Time.timeScale <= 0) { return; }
-        //着地時の判定
-        LandingCheck();
-        if (obstacleCheck.IsSavePosition()&&landing)
-        {
-            landingPosition = transform.localPosition;
-        }
-        base.Update();
-
-        if (stopController) { return; }
         //タイマーの更新
         timer.TimerUpdate();
-        
+        //着地時の判定
+        LandingCheck();
+        if (stopController) { return; }
         //障害物との当たり判定
         obstacleCheck.WallCheckInput();
         //入力の更新
-        keyInput.UpdatePlayerInput();
-        keyInput.UpdateGimicInput();
-
-
+        keyInput.UpdateInput();
+        //キーの入力にあった状態に変化
+        state.StateUpdate();
         //武器や盾の位置を状態によって変える
         toolInventory.UpdateTool();
-
         //特定のモーションを特定の条件で止めたり再生したりするメソッド
         motion.StopMotionCheck();
         //特定のモーション終了時に処理を行うメソッド
@@ -206,22 +219,20 @@ public class PlayerController : CharacterController
     private void LandingCheck()
     {
         landing = groundCheck.CheckGroundStatus();
-
         //パシフィックマテリアル変更
         SetPhysicMaterial();
-
+        if (obstacleCheck.IsSavePosition() && landing)
+        {
+            landingPosition = transform.localPosition;
+        }
         if (!landing) { return; }
-
         obstacleCheck.CliffJumpFlag = false;
         obstacleCheck.GrabCancel = false;
-
-        if (!timer.GetTimerRolling().IsEnabled()&&
-            !timer.GetTimerNoAccele().IsEnabled()&&
+        if (!timer.GetTimerNoAccele().IsEnabled()&&
             !timer.GetTimerJumpAttackAccele().IsEnabled())
         {
             jumping = false;
         }
-
         jumpPower = 0;
     }
 
@@ -241,15 +252,14 @@ public class PlayerController : CharacterController
     private void FixedUpdate()
     {
         if (stopController) { return; }
-        UpdateMoveInput();
+        MoveInputCheck();
         UpdateCommand();
     }
 
-    protected override void UpdateMoveInput()
+    protected override void MoveInputCheck()
     {
         switch (currentState)
         {
-            case CharacterTagList.StateTag.GetUp:
             case CharacterTagList.StateTag.Idle:
             case CharacterTagList.StateTag.Grab:
             case CharacterTagList.StateTag.ClimbWall:
@@ -259,11 +269,11 @@ public class PlayerController : CharacterController
             case CharacterTagList.StateTag.Gurid:
             case CharacterTagList.StateTag.Damage:
             case CharacterTagList.StateTag.Die:
+            case CharacterTagList.StateTag.GetUp:
                 return;
         }
         if(currentState == CharacterTagList.StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 && keyInput.Vertical == 0) { return; }
         if(fallDistanceCheck.FallDamage) { return; }
-
         input = true;
     }
 
@@ -278,38 +288,16 @@ public class PlayerController : CharacterController
         Vector3 cameraForward = GetCameraDirection(Camera.main.transform.forward);
         //カメラに対して右を取得
         Vector3 cameraRight = GetCameraDirection(Camera.main.transform.right);
-        if (obstacleCheck != null)
-        {
-            obstacleCheck.Execute();
-        }
-        if(fallDistanceCheck != null)
-        {
-            fallDistanceCheck.Execute();
-        }
-        if(rightAction != null)
-        {
-            rightAction.Execute();
-        }
-        if(leftAction != null)
-        {
-            leftAction.Execute();
-        }
+        obstacleCheck?.Execute();
+        rightAction?.Execute();
+        leftAction?.Execute();
         //InterfaceBaseCommand,InterfaceBaseInputを実装してるクラス↓
-        if (rolling != null)
-        {
-            rolling.Execute();
-        }
-        if(damage != null)
-        {
-            damage.Execute();
-        }
-        if(knockBackCommand != null)
-        {
-            knockBackCommand.Execute();
-        }
-
+        fallDistanceCheck?.Execute();
+        rolling?.Execute();
+        damage?.Execute();
+        knockBackCommand?.Execute();
         //移動処理
-        if (!timer.GetTimerRolling().IsEnabled())
+        if (!timer.GetTimerNoAccele().IsEnabled())
         {
             Accele(cameraForward, cameraRight, data.MaxSpeed, data.Acceleration);
         }
@@ -329,6 +317,7 @@ public class PlayerController : CharacterController
     {
         switch (currentState)
         {
+            case CharacterTagList.StateTag.Jump:
             case CharacterTagList.StateTag.JumpAttack:
             case CharacterTagList.StateTag.SpinAttack:
             case CharacterTagList.StateTag.ReadySpinAttack:
@@ -371,17 +360,18 @@ public class PlayerController : CharacterController
 
     private float SetAccele(float _accele)
     {
-        if(currentState == CharacterTagList.StateTag.ReadySpinAttack)
+        if(currentState == CharacterTagList.StateTag.ReadySpinAttack||
+            cameraController.IsFPSMode())
         {
             _accele *= 0.2f;
         }
-
         return _accele;
     }
 
     private float SetMaxSpeed(float _maxSpeed)
     {
-        if (currentState == CharacterTagList.StateTag.ReadySpinAttack)
+        if (currentState == CharacterTagList.StateTag.ReadySpinAttack||
+            cameraController.IsFPSMode())
         {
             _maxSpeed *= 0.2f;
         }

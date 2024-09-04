@@ -4,17 +4,17 @@ using UnityEngine;
 /// <summary>
 /// プレイヤーの右手に持つ道具の処理を管理するクラス
 /// </summary>
-public class RightHandInput
+public class RightHandState : InterfaceState
 {
     //生成と同時にPlayerControllerの情報を保持するクラス
     private PlayerController controller;
     //コンストラクタ
-    public RightHandInput(PlayerController _controller)
+    public RightHandState(PlayerController _controller)
     {
         controller = _controller;
     }
     //PlayerInputに記述してる関数
-    public void Execute()
+    public void DoUpdate()
     {
         //右手クラスに道具コマンドを設定する処理
         SetToolInput();

@@ -193,7 +193,7 @@ public class CharacterController : MonoBehaviour
     /// <summary>
     /// “ü—Í‚µ‚Ä‚é‚©‚ğ”»’f‚³‚¹‚é‚½‚ß‚ÌŠÖ”
     /// </summary>
-    protected virtual void UpdateMoveInput()
+    protected virtual void MoveInputCheck()
     {
         input = true;
     }

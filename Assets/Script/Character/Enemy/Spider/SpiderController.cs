@@ -53,7 +53,7 @@ public class SpiderController : EnemyController
         motion.EndMotionNameCheck();
     }
 
-    protected override void UpdateMoveInput()
+    protected override void MoveInputCheck()
     {
         switch (currentState)
         {

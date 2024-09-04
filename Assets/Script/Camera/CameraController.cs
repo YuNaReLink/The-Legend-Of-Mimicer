@@ -17,21 +17,20 @@ public class CameraController : MonoBehaviour
     private float               maxDistanceBase = 10.0f;
     [Header("カメラのX移動スピード")]
     [SerializeField]
-    private float               mouseXSpeed = 3.0f;
+    private float               mouseXSpeed = 5.0f;
     [Header("カメラのY移動スピード")]
     [SerializeField]
-    private float               mouseYSpeed = 1.5f;
+    private float               mouseYSpeed = 5.0f;
+    [Header("カメラの回転がリセットされる時のスピード")]
+    [SerializeField]
+    private float               resetCameraSpeed = 5.0f;
 
     /// <summary>
     /// カメラの回転量を保持するもの
     /// </summary>
-    [SerializeField]
     private float               rotation_hor;
-    [SerializeField]
-    private float               rotation_ver;
 
-    [SerializeField]
-    private float               resetCameraSpeed = 5.0f;
+    private float               rotation_ver;
 
     private Vector3             targettrack;
     [Header("=================")]
@@ -92,6 +91,9 @@ public class CameraController : MonoBehaviour
             player = target.GetComponent<PlayerController>();
         }
 
+        MouseSensitivityManager.Instance.SetMouseXSpeed(mouseXSpeed);
+        MouseSensitivityManager.Instance.SetMouseYSpeed(mouseYSpeed);
+
         rotation_hor = 0f;
         rotation_ver = 0f;
         targettrack = Vector3.zero;
@@ -107,6 +109,9 @@ public class CameraController : MonoBehaviour
         {
             case GameManager.GameStateEnum.Game:
                 GameStateCameraControle();
+                break;
+            case GameManager.GameStateEnum.Pose:
+                PoseUpdate();
                 break;
             case GameManager.GameStateEnum.GameOver:
                 neckHeight -= 0.02f;
@@ -147,6 +152,18 @@ public class CameraController : MonoBehaviour
         if (Mathf.Abs(rotation_hor) >= 360)
         {
             rotation_hor = 0;
+        }
+    }
+
+    private void PoseUpdate()
+    {
+        if(MouseSensitivityManager.Instance.GetMouseXSpeed != mouseXSpeed)
+        {
+            mouseXSpeed = MouseSensitivityManager.Instance.GetMouseXSpeed;
+        }
+        if(MouseSensitivityManager.Instance.GetMouseYSpeed != mouseYSpeed)
+        {
+            mouseYSpeed = MouseSensitivityManager.Instance.GetMouseYSpeed;
         }
     }
 

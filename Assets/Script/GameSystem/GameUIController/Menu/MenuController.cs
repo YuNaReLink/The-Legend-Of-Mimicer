@@ -21,6 +21,8 @@ public class MenuController : MonoBehaviour
 
     private ItemManager itemManager = null;
     public ItemManager GetItemManager() {  return itemManager; }
+
+    private MouseSpeedSetting mouseSpeedSetting = null;
     [SerializeField]
     private MenuToggleController menuToggleController = null;
 
@@ -118,15 +120,24 @@ public class MenuController : MonoBehaviour
             }
         }
 
+        if (menuInsideList[(int)MenuField.Option] != null)
+        {
+            mouseSpeedSetting = menuInsideList[(int)MenuField.Option].GetComponentInChildren<MouseSpeedSetting>();
+            if(mouseSpeedSetting == null)
+            {
+                Debug.LogError("MouseSpeedSettingがアタッチされていません");
+            }
+            mouseSpeedSetting?.AwakeInitilaize();
+        }
+
         gameUIController = GetComponentInParent<GameUIController>();
     }
 
     public void StartInitialize()
     {
-        if (itemManager != null)
-        {
-            itemManager.StartInitialize();
-        }
+        itemManager?.StartInitialize();
+
+        mouseSpeedSetting?.StartInitilaize();
 
         if (menuInsideList[(int)MenuField.Option].activeSelf)
         {

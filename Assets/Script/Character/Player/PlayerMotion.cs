@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using CharacterTagList;
 
@@ -11,13 +9,12 @@ public class PlayerMotion : MotionController
         controller = _controller;
     }
     //Parametersの名前を取得
-
-    private string boolname = "BattleMode";
-    private string dirname = "Direction";
-    private string jumpcountname = "JumpCount";
-    private string threeattackname = "ThreeAttack";
-    private string damagename = "Damage";
-    private string pushingname = "Pushing";
+    private readonly string boolname        = "BattleMode";
+    private readonly string dirname         = "Direction";
+    private readonly string jumpcountname   = "JumpCount";
+    private readonly string threeattackname = "ThreeAttack";
+    private readonly string damagename      = "Damage";
+    private readonly string pushingname     = "Pushing";
 
     public override void ChangeMotion(StateTag _state)
     {
@@ -25,17 +22,14 @@ public class PlayerMotion : MotionController
         Animator anim = controller.GetAnimator();
         //入力クラスの代入
         PlayerInput input = controller.GetKeyInput();
-
         if (ChangeMotionStopCheck(_state,anim, input)) { return; }
-
         //状態の数値を代入
-        int statenumber = (int)_state;
-        int dirnumber = (int)input.CurrentDirection;
-        int jumpCount = controller.GetObstacleCheck().GetLowJumpCount();
-        int threeAttackCount = (int)controller.TripleAttack; 
-        int damageCount = (int)controller.DamageTag;
-        int pushingcount = (int)controller.PushTag;
-
+        int statenumber =       (int)_state;
+        int dirnumber =         (int)input.CurrentDirection;
+        int jumpCount =         controller.GetObstacleCheck().GetLowJumpCount();
+        int threeAttackCount =  (int)controller.TripleAttack; 
+        int damageCount =       (int)controller.DamageTag;
+        int pushingcount =      (int)controller.PushTag;
         //過去と現在の状態を記録
         controller.PastState = controller.CurrentState;
         controller.CurrentState = _state;
@@ -71,8 +65,7 @@ public class PlayerMotion : MotionController
         bool jumpStop = controller.CurrentState == StateTag.Jump&&!controller.Landing&&
             _state != StateTag.Grab&& _state != StateTag.ClimbWall && _state != StateTag.JumpAttack;
 
-        bool climbStop = controller.CurrentState == StateTag.ClimbWall && !controller.CharacterRB.useGravity && 
-            controller.PastState != StateTag.WallJump;
+        bool climbStop = controller.CurrentState == StateTag.ClimbWall && !controller.CharacterRB.useGravity;
 
         bool wallJumpStop = controller.CurrentState == StateTag.WallJump && _state != StateTag.Grab&&
             !controller.GetObstacleCheck().IsClimbFlag()&&controller.GetObstacleCheck().WallHitFlagCheck();
@@ -90,6 +83,10 @@ public class PlayerMotion : MotionController
         return false;
     }
 
+    /// <summary>
+    /// モーションを状態に限らず強制的に変更する関数
+    /// </summary>
+    /// <param name="_state"></param>
     public override void ForcedChangeMotion(StateTag _state)
     {
         //アニメーターを代入

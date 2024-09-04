@@ -35,7 +35,7 @@ public class EnemyDamageCommand : InterfaceBaseCommand
     {
         //HP‚ª0ˆÈ~‚È‚ç
         if (controller.HP > 0) { return; }
-        HitStopManager.instance.StartHitStop(0.1f);
+        HitStopManager.instance.StartHitStop(0.5f);
         controller.Death();
     }
 

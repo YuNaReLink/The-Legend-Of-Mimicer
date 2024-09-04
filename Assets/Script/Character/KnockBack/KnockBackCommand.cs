@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
-public class KnockBackCommand : InterfaceBaseCommand, InterfaceBaseInput
+public class KnockBackCommand : InterfaceBaseCommand
 {
     private CharacterController controller = null;
     public KnockBackCommand(CharacterController _controller)
@@ -15,10 +12,6 @@ public class KnockBackCommand : InterfaceBaseCommand, InterfaceBaseInput
 
     private GameObject attacker = null;
     public GameObject Attacker { get { return attacker; } set { attacker = value; } }
-    public void Input()
-    {
-
-    }
 
     public void Execute()
     {

@@ -67,11 +67,11 @@ public class BossController : EnemyController
     {
         if (death) { return; }
         //ó‘Ô‚É‚æ‚Á‚Ä“®‚­‚©“®‚©‚È‚¢‚©‚ğİ’è
-        UpdateMoveInput();
+        MoveInputCheck();
         UpdateCommand();
     }
 
-    protected override void UpdateMoveInput()
+    protected override void MoveInputCheck()
     {
         switch (currentState)
         {

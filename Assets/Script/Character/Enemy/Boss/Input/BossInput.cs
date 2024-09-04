@@ -43,7 +43,7 @@ public class BossInput
         if (controller.DeathFlag) { return; }
         //どんな状況にも限らず処理させたい入力
         //ボスが倒れる処理
-        controller.GetBossDamageCommand().Input();
+        controller.GetBossDamageCommand().DoUpdate();
         //ボスが起き上がる処理
         RevivalInput();
         //ボスが特定の条件下でガードする処理
