@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FallDistanceCheck
+public class FallDistanceCheck : InterfaceBaseCommand
 {
     //参照用プレイヤーコントローラー
     private PlayerController    controller = null;

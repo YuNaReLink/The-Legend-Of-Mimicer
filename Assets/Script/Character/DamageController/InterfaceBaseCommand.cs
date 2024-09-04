@@ -1,7 +1,7 @@
 
-public interface InterfaceBaseInput
+public interface InterfaceState
 {
-    void Input();
+    void DoUpdate();
 }
 public interface InterfaceBaseCommand
 {

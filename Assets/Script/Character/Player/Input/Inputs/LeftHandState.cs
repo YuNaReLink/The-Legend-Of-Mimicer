@@ -2,16 +2,16 @@
 /// <summary>
 /// ¶è‚É‚Â“¹‹ï(‚)‚Ìˆ—‚ğs‚¤ƒNƒ‰ƒX
 /// </summary>
-public class LeftHandInput
+public class LeftHandState : InterfaceState
 {
     private PlayerController controller;
 
-    public LeftHandInput(PlayerController _controller)
+    public LeftHandState(PlayerController _controller)
     {
         controller = _controller;
     }
 
-    public void Execute()
+    public void DoUpdate()
     {
         ShieldInput();
     }
