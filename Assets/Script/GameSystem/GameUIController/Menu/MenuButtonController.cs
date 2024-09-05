@@ -26,7 +26,6 @@ public class MenuButtonController : MonoBehaviour
     public void AwakeInitilaize()
     {
         graphicRaycaster = GetComponentInParent<GraphicRaycaster>();
-        //eventSystem = GameObject.FindWithTag("EventSystem").GetComponent<EventSystem>();
     }
 
     public void ButtonUpdate()

@@ -91,7 +91,14 @@ public class KeyInputUIController : MonoBehaviour
             inputCoolDownsTimers[i].Update();
         }
         //入力してるのがキーボードかコントローラーか判定
-        CheckInput();
+        if (InputManager.GetDeviceInput() == InputManager.DeviceInput.Controller)
+        {
+            SetUI(spriteObjectList[(int)ControllerTag.Controller]);
+        }
+        else
+        {
+            SetUI(spriteObjectList[(int)ControllerTag.Key]);
+        }
 
         CrossBowActiveCheck();
         FKeyActiveCheck();
@@ -102,45 +109,6 @@ public class KeyInputUIController : MonoBehaviour
         FKeyUI();
         TabKeyUI();
         ShiftKeyUI();
-    }
-
-    private void CheckInput()
-    {
-        if (Input.anyKey)
-        {
-            controllerInput = false;
-        }
-
-        // コントローラーボタンのチェック
-        for (int i = 0; i < 14; i++)
-        {
-            if (Input.GetKey("joystick button"+" "+i))
-            {
-                controllerInput = true;
-                break;
-            }
-        }
-
-        // コントローラーの軸のチェック
-        if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)&&
-           !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
-        {
-            if ((Mathf.Abs(Input.GetAxis("Horizontal")) >= 1.0f) ||
-                (Mathf.Abs(Input.GetAxis("Vertical")) >= 1.0f))
-            {
-                controllerInput = true;
-            }
-        }
-        //コントローラーならUIを変更
-        if (controllerInput)
-        {
-            SetUI(spriteObjectList[(int)ControllerTag.Controller]);
-        }
-        //逆も同じ
-        else
-        {
-            SetUI(spriteObjectList[(int)ControllerTag.Key]);
-        }
     }
 
     private void SetUI(SpriteObjectData data)

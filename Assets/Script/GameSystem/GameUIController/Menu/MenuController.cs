@@ -35,41 +35,41 @@ public class MenuController : MonoBehaviour
 
     private GameUIController gameUIController = null;
 
+    private MenuOperationUIController menuOperationUIController = null;
+
     public void AwakeInitialize()
     {
         //子オブジェクトを取得処理
         int childCount = transform.childCount;
         GameObject g = null;
-        //子があるなら
-        if(childCount > 0)
+        //MenuControllerの子オブジェクトを取得
+        for(int i = 0; i < childCount; i++)
         {
-            //MenuControllerの子オブジェクトを取得
-            for(int i = 0; i < childCount; i++)
+            g = transform.GetChild(i).gameObject;
+            menuControllerChildList.Add(g);
+            //取得した子オブジェクトにさらに子オブジェクトがあるなら
+            int count = menuControllerChildList[i].transform.childCount;
+            if(count > 0)
             {
-                g = transform.GetChild(i).gameObject;
-                menuControllerChildList.Add(g);
-                //取得した子オブジェクトにさらに子オブジェクトがあるなら
-                int count = menuControllerChildList[i].transform.childCount;
-                if(count > 0)
+                List<GameObject> list = new List<GameObject>();
+                //子オブジェクトのカウントによって取得するListを変更
+                switch (i)
                 {
-                    List<GameObject> list = new List<GameObject>();
-                    //子オブジェクトのカウントによって取得するListを変更
-                    switch (i)
-                    {
-                        case 0:
-                            list = menuButtonList;
-                            break;
-                        case 1:
-                            list = menuInsideList;
-                            break;
-                    }
-                    //子オブジェクトの子オブジェクトを取得
-                    GameObject cg = null;
-                    for(int j = 0; j < count; j++)
-                    {
-                        cg = menuControllerChildList[i].transform.GetChild(j).gameObject;
-                        list.Add(cg);
-                    }
+                    case 0:
+                        list = menuButtonList;
+                        break;
+                    case 1:
+                        list = menuInsideList;
+                        break;
+                    default:
+                        continue;
+                }
+                //子オブジェクトの子オブジェクトを取得
+                GameObject cg = null;
+                for(int j = 0; j < count; j++)
+                {
+                    cg = menuControllerChildList[i].transform.GetChild(j).gameObject;
+                    list.Add(cg);
                 }
             }
         }
@@ -111,26 +111,32 @@ public class MenuController : MonoBehaviour
             menuButtonController.AwakeInitilaize();
         }
 
-        if (menuInsideList[(int)MenuField.Inventory] != null)
+        itemManager = menuInsideList[(int)MenuField.Inventory].GetComponent<ItemManager>();
+        if(itemManager == null)
         {
-            itemManager = menuInsideList[(int)MenuField.Inventory].GetComponent<ItemManager>();
-            if(itemManager != null)
-            {
-                itemManager.AwakeInitialize();
-            }
+            Debug.LogError("ItemManagerがアタッチされていません");
         }
+        itemManager?.AwakeInitialize();
 
-        if (menuInsideList[(int)MenuField.Option] != null)
+        mouseSpeedSetting = GetComponentInChildren<MouseSpeedSetting>();
+        if(mouseSpeedSetting == null)
         {
-            mouseSpeedSetting = menuInsideList[(int)MenuField.Option].GetComponentInChildren<MouseSpeedSetting>();
-            if(mouseSpeedSetting == null)
-            {
-                Debug.LogError("MouseSpeedSettingがアタッチされていません");
-            }
-            mouseSpeedSetting?.AwakeInitilaize();
+            Debug.LogError("MouseSpeedSettingがアタッチされていません");
         }
+        mouseSpeedSetting?.AwakeInitilaize();
+
+        menuOperationUIController = GetComponentInChildren<MenuOperationUIController>();
+        if (menuOperationUIController == null)
+        {
+            Debug.LogError("MenuOperationUIControllerがアタッチされていません");
+        }
+        menuOperationUIController?.AwakeInitilaize();
 
         gameUIController = GetComponentInParent<GameUIController>();
+        if(gameUIController == null)
+        {
+            Debug.LogError("GameUIControllerがアタッチされていません");
+        }
     }
 
     public void StartInitialize()
@@ -155,13 +161,13 @@ public class MenuController : MonoBehaviour
     public void MenuUpdate()
     {
         if(GameManager.GameState != GameManager.GameStateEnum.Pose) { return; }
-        if (itemManager != null)
-        {
-            itemManager.ItemManagerUpdate();
-            itemManager.GetItemUpdate();
-        }
 
-        if(currentHorizontalIndex <= 0)
+        itemManager?.ItemManagerUpdate();
+        itemManager?.GetItemUpdate();
+
+        menuOperationUIController?.DoUpdate();
+
+        if (currentHorizontalIndex <= 0)
         {
             menuToggleController.ToggleYUpdate();
             if (menuToggleController.ToggleIndexCheck())
@@ -250,6 +256,7 @@ public class MenuController : MonoBehaviour
 
     public void SetHorizontalIndex(int index)
     {
+        if(InputManager.GetDeviceInput() != InputManager.DeviceInput.Key) { return; }
         currentHorizontalIndex = index;
     }
 

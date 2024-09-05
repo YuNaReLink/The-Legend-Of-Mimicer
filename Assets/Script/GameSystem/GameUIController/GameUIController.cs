@@ -88,6 +88,7 @@ public class GameUIController : MonoBehaviour
 
     void Update()
     {
+        InputManager.CheckInput();
         //ƒQ[ƒ€‚Ìó‘Ô‚É‰e‹¿‚³‚ê‚È‚¢UI‚Ìˆ—
         playerUIController.AllGameSceneUpdatePlayerUI();
         //ˆÈ‰º‚ÍƒQ[ƒ€‚Ìó‘Ô‚É‚æ‚Á‚ÄŒÄ‚Ño‚³‚ê‚éUIˆ—

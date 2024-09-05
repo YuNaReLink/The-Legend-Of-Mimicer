@@ -37,6 +37,15 @@ public class GetItem : MonoBehaviour
     {
         ToolInventoryController tool = triggerCheck.GetController().GetToolController();
         tool.GetToolSetting(toolTag, item);
+        SetItemData();
         Destroy(gameObject);
+    }
+
+    protected void SetItemData()
+    {
+        if (item == null) { return; }
+        ToolController tool = item.GetComponent<ToolController>();
+        GetItemMessage.Instance.SetItemData(tool.GetItemData());
+        item = null;
     }
 }

@@ -20,7 +20,7 @@ public class MouseSensitivityManager
     }
     public readonly float MaxMouseSpeed = 10.0f;
 
-    private float mouseXSpeed = 1.0f;
+    private float mouseXSpeed = 5.0f;
 
     public float GetMouseXSpeed => mouseXSpeed;
 
@@ -29,7 +29,7 @@ public class MouseSensitivityManager
         mouseXSpeed = speed;
     }
 
-    private float mouseYSpeed = 1.0f;
+    private float mouseYSpeed = 5.0f;
 
     public float GetMouseYSpeed => mouseYSpeed;
 

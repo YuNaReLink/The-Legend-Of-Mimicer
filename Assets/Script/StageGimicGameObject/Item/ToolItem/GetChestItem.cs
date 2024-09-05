@@ -9,5 +9,6 @@ public class GetChestItem : GetItem
     {
         ToolInventoryController tool = triggerCheck.GetController().GetToolController();
         tool.GetToolSetting(toolTag, item);
+        SetItemData();
     }
 }

@@ -37,6 +37,7 @@ public class MenuActiveController : MonoBehaviour
 
     public void MenuActiveUpdate()
     {
+        if(GetItemMessage.Instance.ItemData != null) { return; }
         if (GameManager.GameState == GameManager.GameStateEnum.Pose)
         {
             if (!menuParent.activeSelf)
