@@ -35,7 +35,9 @@ public class MouseSpeedSetting : MonoBehaviour
     public void StartInitilaize()
     {
         inputFieldList[(int)InputFieldNumber.MouseX].onEndEdit.AddListener(SetMouseXSpeed);
+        inputFieldList[(int)InputFieldNumber.MouseX].text = MouseSensitivityManager.Instance.GetMouseXSpeed.ToString();
         inputFieldList[(int)InputFieldNumber.MouseY].onEndEdit.AddListener(SetMouseYSpeed);
+        inputFieldList[(int)InputFieldNumber.MouseY].text = MouseSensitivityManager.Instance.GetMouseYSpeed.ToString();
     }
 
     private void SetMouseXSpeed(string _text)

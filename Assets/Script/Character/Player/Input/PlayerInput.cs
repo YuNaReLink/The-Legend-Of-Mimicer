@@ -104,6 +104,7 @@ public class PlayerInput : MonoBehaviour
     }
     public void SystemInput()
     {
+        if (GetItemMessage.Instance.ItemData != null) { return; }
         if (InputManager.MenuButton())
         {
             switch (GameManager.GameState)

@@ -99,4 +99,43 @@ public class InputManager
     public static bool GetItemButton() {  return Input.GetButtonDown("Get"); }
     public static bool ChangeButton() {  return Input.GetButtonDown("Change"); }
     public static bool ToolButton() { return Input.GetButtonDown("Tool"); }
+
+    public enum DeviceInput
+    {
+        Key,
+        Controller
+    }
+
+    private static DeviceInput deviceInput = DeviceInput.Key;
+    public static DeviceInput GetDeviceInput() { return deviceInput; }
+
+    public static void CheckInput()
+    {
+        if (Input.anyKey)
+        {
+            deviceInput = DeviceInput.Key;
+        }
+
+        // コントローラーボタンのチェック
+        for (int i = 0; i < 14; i++)
+        {
+            if (Input.GetKey("joystick button" + " " + i))
+            {
+                deviceInput = DeviceInput.Controller;
+                break;
+            }
+        }
+
+        // コントローラーの軸のチェック
+        if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) &&
+           !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+        {
+            if ((Mathf.Abs(Input.GetAxis("Horizontal")) >= 1.0f) ||
+                (Mathf.Abs(Input.GetAxis("Vertical")) >= 1.0f))
+            {
+                deviceInput = DeviceInput.Controller;
+            }
+        }
+    }
+
 }
