@@ -1,41 +1,39 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour
 {
     [SerializeField]
-    private List<GameObject> menuControllerChildList = new List<GameObject>();
+    private List<GameObject>            menuControllerChildList = new List<GameObject>();
     private enum MenuField
     {
         Inventory,
         Option
     }
     [SerializeField]
-    private List<GameObject> menuButtonList = new List<GameObject>();
+    private List<GameObject>            menuButtonList = new List<GameObject>();
 
     [SerializeField]
-    private List<GameObject> menuInsideList = new List<GameObject>();
+    private List<GameObject>            menuInsideList = new List<GameObject>();
 
-    private ItemManager itemManager = null;
-    public ItemManager GetItemManager() {  return itemManager; }
+    private ItemManager                 itemManager = null;
+    public ItemManager                  GetItemManager() {  return itemManager; }
 
-    private MouseSpeedSetting mouseSpeedSetting = null;
+    private MouseSpeedSetting           mouseSpeedSetting = null;
     [SerializeField]
-    private MenuToggleController menuToggleController = null;
+    private MenuToggleController        menuToggleController = null;
 
-    private Toggle mouseDesideToggle = null;
+    private Toggle                      mouseDesideToggle = null;
 
     [SerializeField]
-    private MenuButtonController menuButtonController = null;
+    private MenuButtonController        menuButtonController = null;
 
-    private int currentHorizontalIndex = 0;
+    private int                         currentHorizontalIndex = 0;
 
-    private GameUIController gameUIController = null;
+    private GameUIController            gameUIController = null;
 
-    private MenuOperationUIController menuOperationUIController = null;
+    private MenuOperationUIController   menuOperationUIController = null;
 
     public void AwakeInitialize()
     {

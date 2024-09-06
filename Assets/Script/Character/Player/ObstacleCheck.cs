@@ -524,4 +524,28 @@ public class ObstacleCheck : MonoBehaviour
     {
         return x * x * x;
     }
+
+    public bool HitWallHitCheck()
+    {
+        for(int i = 1; i < hitWallFlagArray.Length; i++)
+        {
+            if (hitWallFlagArray[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool CameraForwardWallCheck()
+    {
+        for (int i = 1;i < cameraForwardWallFlagArray.Length;i++)
+        {
+            if (cameraForwardWallFlagArray[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

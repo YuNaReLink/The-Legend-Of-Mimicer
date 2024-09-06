@@ -18,5 +18,6 @@ public class SpiderDamageCommand : EnemyDamageCommand
         if (tool == null) { return; }
         base.Execute();
         spiderController.GetSpiderSoundController().PlaySESound((int)SpiderSoundController.SpiderSoundTag.Damage);
+        spiderController.GetRendererEffect().SetChangeFlag();
     }
 }

@@ -37,6 +37,7 @@ public class BossDamageCommand : EnemyDamageCommand, InterfaceState
         if (tool == null) { return; }
         base.Execute();
         bossController.GetBossSoundController().PlaySESound((int)BossSoundController.BossSoundTag.Damage);
+        bossController.GetRendererEffect().SetChangeFlag();
     }
 
     private void StunCommand()

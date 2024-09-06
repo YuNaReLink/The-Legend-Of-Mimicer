@@ -361,7 +361,8 @@ public class PlayerController : CharacterController
     private float SetAccele(float _accele)
     {
         if(currentState == CharacterTagList.StateTag.ReadySpinAttack||
-            cameraController.IsFPSMode())
+           currentState == CharacterTagList.StateTag.Push||
+           cameraController.IsFPSMode())
         {
             _accele *= 0.2f;
         }
@@ -371,6 +372,7 @@ public class PlayerController : CharacterController
     private float SetMaxSpeed(float _maxSpeed)
     {
         if (currentState == CharacterTagList.StateTag.ReadySpinAttack||
+            currentState == CharacterTagList.StateTag.Push ||
             cameraController.IsFPSMode())
         {
             _maxSpeed *= 0.2f;
@@ -411,9 +413,6 @@ public class PlayerController : CharacterController
         if (death) { return; }
         switch (other.tag)
         {
-            case "Furniture":
-                SetPushState(CharacterTagList.PushTag.Start);
-                break;
             case "Damage":
                 DamageOrGuardCheck(other);
                 break;
@@ -450,7 +449,8 @@ public class PlayerController : CharacterController
         {
             case "Furniture":
                 CharacterTagList.PushTag tag = pushTag;
-                if (keyInput.Vertical != 0 || keyInput.Horizontal != 0)
+                if ((keyInput.Vertical != 0 || keyInput.Horizontal != 0)&&
+                    obstacleCheck.CameraForwardWallCheck())
                 {
                     switch (pushTag)
                     {

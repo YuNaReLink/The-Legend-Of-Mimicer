@@ -3,20 +3,20 @@ using UnityEngine.UI;
 
 public class GetItemMessage : MonoBehaviour
 {
-    private static GetItemMessage instance;
-    public static GetItemMessage Instance => instance;
+    private static GetItemMessage       instance;
+    public static GetItemMessage        Instance => instance;
 
     [SerializeField]
-    private GameObject itemWindow = null;
+    private GameObject                  itemWindow = null;
     [SerializeField]
-    private Image itemIcon = null;
+    private Image                       itemIcon = null;
     [SerializeField]
-    private Text nameText = null;
+    private Text                        nameText = null;
     [SerializeField]
-    private Text explanationText = null;
+    private Text                        explanationText = null;
     
-    private ItemData itemData = null;
-    public ItemData ItemData => itemData;
+    private ItemData                    itemData = null;
+    public ItemData                     ItemData => itemData;
     public void SetItemData(ItemData _itemData)
     {
         itemData = _itemData;

@@ -175,7 +175,7 @@ public class CameraController : MonoBehaviour
     void ChangeFpsMode(bool mode)
     {
         fpsMode = mode;
-        foreach (var renderer in player.GetRendererData().GetRendererList())
+        foreach (var renderer in player.GetRendererData().RendererList)
         {
             renderer.enabled = !mode;
         }
