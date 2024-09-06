@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 /// <summary>
 /// アイテムを取得するクラス
 /// </summary>

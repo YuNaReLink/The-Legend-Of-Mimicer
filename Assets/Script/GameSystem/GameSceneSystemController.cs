@@ -1,19 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameSceneSystemController : MonoBehaviour
 {
-    private static GameSceneSystemController instance;
-    public static GameSceneSystemController Instance => instance;
+    private static GameSceneSystemController    instance;
+    public static GameSceneSystemController     Instance => instance;
 
-    private PlayerController playerController = null;
-    public PlayerController PlayerController { get { return playerController; }set { playerController = value; } }
+    private PlayerController                    playerController = null;
+    public PlayerController                     PlayerController { get { return playerController; }set { playerController = value; } }
 
-    private GameObject cameraFocusObject = null;
-    public GameObject GetCameraFocusObject() { return cameraFocusObject; }
+    private GameObject                          cameraFocusObject = null;
+    public GameObject                           GetCameraFocusObject() { return cameraFocusObject; }
 
-    private static bool gameClearFlag = false;
+    private bool                                gameClearFlag = false;
 
     public void GameClearUpdate(GameObject o)
     {
@@ -35,20 +33,20 @@ public class GameSceneSystemController : MonoBehaviour
     /// <summary>
     /// 上記の内容を保存するstatic型のインスタンス宣言
     /// </summary>
-    private TriggerTag keyTriggerTag = TriggerTag.Null;
+    private TriggerTag                          keyTriggerTag = TriggerTag.Null;
 
-    public TriggerTag KeyTriggerTag {  get { return keyTriggerTag; }set { keyTriggerTag = value; } }
+    public TriggerTag                           KeyTriggerTag {  get { return keyTriggerTag; }set { keyTriggerTag = value; } }
 
-    private DeltaTimeCountDown gameOverStartTimer = null;
+    private DeltaTimeCountDown                  gameOverStartTimer = null;
 
-    private bool battleStart = false;
-    public bool BattleStart { get { return battleStart; } set { battleStart = value; } }
+    private bool                                battleStart = false;
+    public bool                                 BattleStart { get { return battleStart; } set { battleStart = value; } }
 
-    private bool bossBattleStart = false;
-    public bool BossBattleStart { get { return bossBattleStart; }set { bossBattleStart = value; } }
+    private bool                                bossBattleStart = false;
+    public bool                                 BossBattleStart { get { return bossBattleStart; }set { bossBattleStart = value; } }
 
-    private GameSoundController gameSoundController = null;
-    public GameSoundController GetGameSoundController() { return gameSoundController; }
+    private GameSoundController                 gameSoundController = null;
+    public GameSoundController                  GetGameSoundController() { return gameSoundController; }
     private void Awake()
     {
         GameObject player = GameObject.FindWithTag("Player");

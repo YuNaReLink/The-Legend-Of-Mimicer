@@ -117,6 +117,11 @@ public class CharacterController : MonoBehaviour
     protected RendererData                  rendererData = null;
     public RendererData                     GetRendererData() { return rendererData; }
     /// <summary>
+    /// オブジェクトのカラーを変更するクラス
+    /// </summary>
+    protected RendererEffect                rendererEffect = null;
+    public RendererEffect                   GetRendererEffect() { return rendererEffect; }
+    /// <summary>
     /// ノックバックの処理を行うクラス
     /// </summary>
     protected KnockBackCommand              knockBackCommand = null;
@@ -175,6 +180,8 @@ public class CharacterController : MonoBehaviour
             Debug.LogError("Rrndererがアタッチされていません");
         }
 
+        rendererEffect = new RendererEffect(this);
+
         knockBackCommand = new KnockBackCommand(this);
     }
 
@@ -189,6 +196,7 @@ public class CharacterController : MonoBehaviour
         if (Time.timeScale <= 0) { return; }
         //入力を解除
         input = false;
+        rendererEffect.ColorChange();
     }
     /// <summary>
     /// 入力してるかを判断させるための関数
