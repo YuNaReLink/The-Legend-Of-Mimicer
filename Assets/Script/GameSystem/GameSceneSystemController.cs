@@ -126,12 +126,12 @@ public class GameSceneSystemController : MonoBehaviour
 
     private void GameResultCheck()
     {
-        if (!playerController.DeathFlag&& !gameClearFlag) { return; }
+        if (!playerController.CharacterStatus.DeathFlag&& !gameClearFlag) { return; }
         if(gameClearFlag)
         {
             GameManager.GameState = GameManager.GameStateEnum.GameClear;
         }
-        else if (playerController.DeathFlag)
+        else if (playerController.CharacterStatus.DeathFlag)
         {
             GameManager.GameState = GameManager.GameStateEnum.GameOver;
         }

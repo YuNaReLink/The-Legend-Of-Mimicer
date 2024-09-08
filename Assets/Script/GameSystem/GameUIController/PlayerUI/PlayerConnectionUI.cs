@@ -105,7 +105,7 @@ public class PlayerConnectionUI : MonoBehaviour
     }
     public void AllGameSceneUpdatePlayerUI()
     {
-        playerLifeUI.LifeUpdate(playerController.HP);
+        playerLifeUI.LifeUpdate(playerController.CharacterStatus.HP);
     }
     //GameUIController‚ÌUpdate‚É‹Lq‚·‚éŠÖ”
     public void GamingEnabledUIUpdate()

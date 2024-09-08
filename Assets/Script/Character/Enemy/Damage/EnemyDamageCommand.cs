@@ -23,9 +23,10 @@ public class EnemyDamageCommand : InterfaceBaseCommand
         if(tool == null) { return; }
         //tool“à‚É‚ ‚éƒf[ƒ^‚©‚çHP‚ðŒ¸‚ç‚·
         WeaponStateData data = tool.GetStatusData();
-        controller.HP -= data.BaseDamagePower;
+        controller.CharacterStatus.HP -= data.BaseDamagePower;
         controller.GetKnockBackCommand().KnockBackFlag = true;
         controller.GetKnockBackCommand().Attacker = attacker;
+        controller.GetTimer().GetTimerAttackCoolDown().StartTimer(2f);
         damageFlag = false;
         attacker = null;
         DeathCommand();
@@ -34,7 +35,9 @@ public class EnemyDamageCommand : InterfaceBaseCommand
     protected virtual void DeathCommand()
     {
         //HP‚ª0ˆÈ~‚È‚ç
-        if (controller.HP > 0) { return; }
+        if (controller.CharacterStatus.HP > 0) { return; }
+        controller.GetKnockBackCommand().KnockBackFlag = false;
+        controller.GetKnockBackCommand().Attacker = null;
         HitStopManager.instance.StartHitStop(0.5f);
         controller.Death();
     }

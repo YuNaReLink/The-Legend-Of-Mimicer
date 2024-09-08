@@ -1,12 +1,10 @@
 using CharacterTagList;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ShieldController : ToolController
 {
     public override ToolTag GetToolTag() { return ToolTag.Shield; }
-    // Start is called before the first frame update
+    
     void Start()
     {
         collider = GetComponent<Collider>();
@@ -19,7 +17,7 @@ public class ShieldController : ToolController
 
     private bool CheckGuridState()
     {
-        switch (controller.GuardState)
+        switch (controller.CharacterStatus.GuardState)
         {
             case GuardState.Normal:
             case GuardState.Crouch:

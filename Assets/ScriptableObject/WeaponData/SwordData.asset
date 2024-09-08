@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SwordData
   m_EditorClassIdentifier: 
   baseDamagePower: 1
-  knockBackPower: 5
+  knockBackPower: 25

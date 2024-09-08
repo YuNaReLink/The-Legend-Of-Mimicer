@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ShildData
   m_EditorClassIdentifier: 
   baseDamagePower: 0
-  knockBackPower: 5
+  knockBackPower: 25

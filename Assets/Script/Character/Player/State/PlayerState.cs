@@ -58,7 +58,7 @@ public class PlayerState : MonoBehaviour
 
     public void StateUpdate()
     {
-        if (controller.DeathFlag) { return; }
+        if (controller.CharacterStatus.DeathFlag) { return; }
         if (controller.GetTimer().GetTimerNoAccele().IsEnabled()) { return; }
         for(int i = 0; i < interfaceState.Length; i++)
         {

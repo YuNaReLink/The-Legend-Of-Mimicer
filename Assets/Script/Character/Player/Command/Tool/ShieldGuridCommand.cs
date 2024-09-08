@@ -15,7 +15,7 @@ public class ShieldGuridCommand : InterfaceBaseToolCommand
 
     private bool CheckStopState()
     {
-        CharacterTagList.StateTag state = controller.CurrentState;
+        CharacterTagList.StateTag state = controller.CharacterStatus.CurrentState;
         switch (state)
         {
             case CharacterTagList.StateTag.Rolling:
@@ -36,12 +36,12 @@ public class ShieldGuridCommand : InterfaceBaseToolCommand
         //条件にある状態だったら早期リターン
         if (CheckStopState()) { return; }
         //着地してなかったら早期リターン
-        if (!controller.Landing) { return; }
+        if (!controller.CharacterStatus.Landing) { return; }
         //ガードボタンを押してる時
         if (controller.GetKeyInput().GuardHoldButton)
         {
             //押した瞬間だけ効果音を再生
-            if (controller.GetKeyInput().GuardPushButton && controller.GuardState == CharacterTagList.GuardState.Null)
+            if (controller.GetKeyInput().GuardPushButton && controller.CharacterStatus.GuardState == CharacterTagList.GuardState.Null)
             {
                 controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.ShildPosture);
             }
@@ -49,24 +49,24 @@ public class ShieldGuridCommand : InterfaceBaseToolCommand
             //ガード状態のタグを変更
             if (controller.GetKeyInput().IsCameraLockEnabled())
             {
-                controller.GuardState = CharacterTagList.GuardState.Normal;
+                controller.CharacterStatus.GuardState = CharacterTagList.GuardState.Normal;
             }
             else
             {
-                controller.GuardState = CharacterTagList.GuardState.Crouch;
+                controller.CharacterStatus.GuardState = CharacterTagList.GuardState.Crouch;
             }
         }
         else
         {
             //ガード状態のタグを変更
-            controller.GuardState = CharacterTagList.GuardState.Null;
+            controller.CharacterStatus.GuardState = CharacterTagList.GuardState.Null;
         }
         GuardStateInput();
     }
 
     private void GuardStateInput()
     {
-        if(controller.GuardState != CharacterTagList.GuardState.Crouch){return;}
+        if(controller.CharacterStatus.GuardState != CharacterTagList.GuardState.Crouch){return;}
         controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Gurid);
     }
 
@@ -79,7 +79,7 @@ public class ShieldGuridCommand : InterfaceBaseToolCommand
     private void ArmMotionCommand()
     {
         //状態によって左腕のモーションを変更する(現在は盾を持つモーションだけ)
-        if (controller.GuardState == CharacterTagList.GuardState.Normal)
+        if (controller.CharacterStatus.GuardState == CharacterTagList.GuardState.Normal)
         {
             controller.GetMotion().Change(controller.GetClip());
         }

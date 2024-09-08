@@ -78,12 +78,6 @@ public class PlayerController : CharacterController
     private InterfaceBaseToolCommand        leftAction = null;
     public InterfaceBaseToolCommand         LeftAction { get {return leftAction; }set { leftAction = value; } }
     /// <summary>
-    /// プレイヤーが戦闘状態かそうじゃないか
-    /// </summary>
-    [SerializeField]
-    private bool                            battleMode = false;
-    public bool                             BattleMode { get { return battleMode; }set { battleMode = value; } }
-    /// <summary>
     /// プレイヤーが動かせるオブジェクトに触れてるか判定する
     /// </summary>
     [SerializeField]
@@ -125,8 +119,8 @@ public class PlayerController : CharacterController
         soundController.AwakeInitilaize();
         if (data != null)
         {
-            maxHp = data.MaxHP;
-            hp = maxHp;
+            characterStatus.SetMaxHP(data.MaxHP);
+            characterStatus.HP = characterStatus.GetMaxHP();
         }
     }
 
@@ -201,7 +195,7 @@ public class PlayerController : CharacterController
         timer.TimerUpdate();
         //着地時の判定
         LandingCheck();
-        if (stopController) { return; }
+        if(characterStatus.StopController) { return; }
         //障害物との当たり判定
         obstacleCheck.WallCheckInput();
         //入力の更新
@@ -218,27 +212,27 @@ public class PlayerController : CharacterController
 
     private void LandingCheck()
     {
-        landing = groundCheck.CheckGroundStatus();
+        characterStatus.Landing = groundCheck.CheckGroundStatus();
         //パシフィックマテリアル変更
         SetPhysicMaterial();
-        if (obstacleCheck.IsSavePosition() && landing)
+        if (obstacleCheck.IsSavePosition() && characterStatus.Landing)
         {
-            landingPosition = transform.localPosition;
+            characterStatus.SetLandingPosition(transform.localPosition);
         }
-        if (!landing) { return; }
+        if (!characterStatus.Landing) { return; }
         obstacleCheck.CliffJumpFlag = false;
         obstacleCheck.GrabCancel = false;
         if (!timer.GetTimerNoAccele().IsEnabled()&&
             !timer.GetTimerJumpAttackAccele().IsEnabled())
         {
-            jumping = false;
+            characterStatus.Jumping = false;
         }
-        jumpPower = 0;
+        characterStatus.SetJumpPower(0);
     }
 
     private void SetPhysicMaterial()
     {
-        if (currentState != CharacterTagList.StateTag.Grab &&  !landing)
+        if (characterStatus.CurrentState != CharacterTagList.StateTag.Grab&&!characterStatus.Landing)
         {
             characterCollider.material = physicMaterials[(int)CharacterTagList.PhysicState.Jump];
         }
@@ -251,14 +245,14 @@ public class PlayerController : CharacterController
     //行動処理を行う
     private void FixedUpdate()
     {
-        if (stopController) { return; }
-        MoveInputCheck();
+        if (characterStatus.StopController) { return; }
+        MoveStateCheck();
         UpdateCommand();
     }
 
-    protected override void MoveInputCheck()
+    protected override void MoveStateCheck()
     {
-        switch (currentState)
+        switch (characterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Idle:
             case CharacterTagList.StateTag.Grab:
@@ -272,9 +266,9 @@ public class PlayerController : CharacterController
             case CharacterTagList.StateTag.GetUp:
                 return;
         }
-        if(currentState == CharacterTagList.StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 && keyInput.Vertical == 0) { return; }
+        if(characterStatus.CurrentState == CharacterTagList.StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 && keyInput.Vertical == 0) { return; }
         if(fallDistanceCheck.FallDamage) { return; }
-        input = true;
+        characterStatus.MoveInput = true;
     }
 
     public Vector3 GetCameraDirection(Vector3 dir)
@@ -302,7 +296,7 @@ public class PlayerController : CharacterController
             Accele(cameraForward, cameraRight, data.MaxSpeed, data.Acceleration);
         }
         //入力がなかった場合停止処理
-        if (!input)
+        if (!characterStatus.MoveInput)
         {
             StopMove();
         }
@@ -315,7 +309,7 @@ public class PlayerController : CharacterController
 
     private bool RotateStopFlag()
     {
-        switch (currentState)
+        switch (characterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Jump:
             case CharacterTagList.StateTag.JumpAttack:
@@ -336,10 +330,10 @@ public class PlayerController : CharacterController
 
     private void Accele(Vector3 forward, Vector3 right, float _maxspeed, float _accele)
     {
-        Vector3 vel = velocity;
+        Vector3 vel = characterStatus.Velocity;
         float h = keyInput.Horizontal;
         float v = keyInput.Vertical;
-        if (currentState == CharacterTagList.StateTag.Jump||currentState == CharacterTagList.StateTag.Rolling)
+        if (characterStatus.CurrentState == CharacterTagList.StateTag.Jump||characterStatus.CurrentState == CharacterTagList.StateTag.Rolling)
         {
             vel += transform.forward * _accele;
         }
@@ -355,13 +349,13 @@ public class PlayerController : CharacterController
         {
             vel = vel.normalized * SetMaxSpeed(_maxspeed);
         }
-        velocity = vel;
+        characterStatus.Velocity = vel;
     }
 
     private float SetAccele(float _accele)
     {
-        if(currentState == CharacterTagList.StateTag.ReadySpinAttack||
-           currentState == CharacterTagList.StateTag.Push||
+        if(characterStatus.CurrentState == CharacterTagList.StateTag.ReadySpinAttack||
+           characterStatus.CurrentState == CharacterTagList.StateTag.Push||
            cameraController.IsFPSMode())
         {
             _accele *= 0.2f;
@@ -371,8 +365,8 @@ public class PlayerController : CharacterController
 
     private float SetMaxSpeed(float _maxSpeed)
     {
-        if (currentState == CharacterTagList.StateTag.ReadySpinAttack||
-            currentState == CharacterTagList.StateTag.Push ||
+        if (characterStatus.CurrentState == CharacterTagList.StateTag.ReadySpinAttack||
+            characterStatus.CurrentState == CharacterTagList.StateTag.Push ||
             cameraController.IsFPSMode())
         {
             _maxSpeed *= 0.2f;
@@ -393,7 +387,6 @@ public class PlayerController : CharacterController
     }
     public void GetArrow(int count)
     {
-        toolInventory.GetQuiver().AddArrow(count);
         soundController.PlaySESound((int)SoundTagList.PlayerSoundTag.GetItem);
     }
 
@@ -410,7 +403,7 @@ public class PlayerController : CharacterController
 
     private void HandleCollision(Collider other)
     {
-        if (death) { return; }
+        if (characterStatus.DeathFlag) { return; }
         switch (other.tag)
         {
             case "Damage":
@@ -426,7 +419,7 @@ public class PlayerController : CharacterController
 
     private void DamageOrGuardCheck(Collider other)
     {
-        switch (guardState)
+        switch (characterStatus.GuardState)
         {
             case CharacterTagList.GuardState.Null:
                 //ダメージ発生時の処理
@@ -444,7 +437,7 @@ public class PlayerController : CharacterController
 
     private void OnCollisionStay(Collision collision)
     {
-        if (death) { return; }
+        if (characterStatus.DeathFlag) { return; }
         switch (collision.collider.tag)
         {
             case "Furniture":
@@ -473,7 +466,7 @@ public class PlayerController : CharacterController
 
     private void OnCollisionExit(Collision collision)
     {
-        if (death) { return; }
+        if (characterStatus.DeathFlag) { return; }
         switch (collision.collider.tag)
         {
             case "Furniture":

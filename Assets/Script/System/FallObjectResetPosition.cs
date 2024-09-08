@@ -18,8 +18,8 @@ public class FallObjectResetPosition : MonoBehaviour
         PlayerController controller = other.GetComponent<PlayerController>();
         controller.GetKeyInput().GetUpInput();
         controller.CharacterRB.velocity = controller.StopMoveVelocity();
-        controller.Velocity = controller.StopMoveVelocity();
-        other.transform.position = controller.GetLandingPosition();
+        controller.CharacterStatus.Velocity = controller.StopMoveVelocity();
+        other.transform.position = controller.CharacterStatus.GetLandingPosition();
         controller.GetKeyInput().GetUpInput();
     }
 }

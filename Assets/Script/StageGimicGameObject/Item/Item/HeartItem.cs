@@ -12,6 +12,7 @@ public class HeartItem : Consumables
     
     protected override void OnTriggerEnter(Collider other)
     {
+        if (getFlag) { return; }
         if (other.tag != "Player") { return; }
         player = other.GetComponent<PlayerController>();
         if(player == null) { return; }

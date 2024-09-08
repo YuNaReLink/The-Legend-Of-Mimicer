@@ -62,10 +62,10 @@ public class RollingCommand : InterfaceBaseCommand
             AnimatorStateInfo animInfo = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
             if (!animInfo.IsName("backFlip")) { return; }
             if(animInfo.normalizedTime <= 0.0f) { return; }
-            if (controller.Landing&&!controller.Jumping)
+            if (controller.CharacterStatus.Landing&&!controller.CharacterStatus.Jumping)
             {
                 RollingJump(1000f);
-                controller.Jumping = true;
+                controller.CharacterStatus.Jumping = true;
             }
         }
     }
@@ -102,7 +102,7 @@ public class RollingCommand : InterfaceBaseCommand
 
     private void RollingAccele(Vector3 force)
     {
-        controller.Velocity += force;
+        controller.CharacterStatus.Velocity += force;
     }
 
     private void RollingJump(float force)

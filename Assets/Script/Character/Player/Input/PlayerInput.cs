@@ -121,7 +121,7 @@ public class PlayerInput : MonoBehaviour
 
     private void ForcedRelease()
     {
-        switch (controller.CurrentState)
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Attack:
             case CharacterTagList.StateTag.JumpAttack:
@@ -156,7 +156,7 @@ public class PlayerInput : MonoBehaviour
             cameraLockEnabled = !cameraLockEnabled;
         }
         if (!controller.GetTimer().GetTimerRolling().IsEnabled()&&
-            controller.CurrentState != CharacterTagList.StateTag.Null)
+            controller.CharacterStatus.CurrentState != CharacterTagList.StateTag.Null)
         {
             actionButton = InputManager.ActionButton();
         }
@@ -169,7 +169,7 @@ public class PlayerInput : MonoBehaviour
     private void SetHorizontalAndVertical()
     {
         //“ü—Í©‘Ì‚ğÁ‚·ê‡
-        switch (controller.CurrentState)
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Damage:
             case CharacterTagList.StateTag.Gurid:
