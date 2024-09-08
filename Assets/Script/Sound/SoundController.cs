@@ -26,6 +26,13 @@ namespace SoundTagList
         GetHeart,
         GetItem
     }
+
+    public enum MushroomSoundTag
+    {
+        Move,
+        Attack,
+        Damage
+    }
     public enum GetToolSoundTag
     {
         Get

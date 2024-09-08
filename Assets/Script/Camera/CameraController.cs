@@ -10,21 +10,9 @@ public class CameraController : MonoBehaviour
 
     private PlayerController    player;
 
-    [Header("カメラとターゲットの初期距離")]
     [SerializeField]
-    private float               distance_base = 10.0f;
-    [SerializeField]
-    private float               maxDistanceBase = 10.0f;
-    [Header("カメラのX移動スピード")]
-    [SerializeField]
-    private float               mouseXSpeed = 5.0f;
-    [Header("カメラのY移動スピード")]
-    [SerializeField]
-    private float               mouseYSpeed = 5.0f;
-    [Header("カメラの回転がリセットされる時のスピード")]
-    [SerializeField]
-    private float               resetCameraSpeed = 5.0f;
-
+    private CameraStatus        cameraStatus;
+    public CameraStatus         CameraStatus => cameraStatus;
     /// <summary>
     /// カメラの回転量を保持するもの
     /// </summary>
@@ -43,21 +31,9 @@ public class CameraController : MonoBehaviour
 
     [SerializeField]
     private Vector3             initCameraRotation = new Vector3(0, 0.2f, -5);
-    // カメラとプレイヤーの距離
-    [SerializeField]
-    private float               baseDistance = 2;
-    // カメラの高さ
-    [SerializeField]
-    private float               height = 1.0f;
-    // カメラの動きの滑らかさ
-    [SerializeField]
-    private float               damping = 10.0f;
 
     [SerializeField]
     private float               neckHeight = 0;
-
-    [SerializeField]
-    private float               testHor = 0;
 
     //注目するためのフラグ
     private static bool         focusFlag = false;
@@ -71,7 +47,7 @@ public class CameraController : MonoBehaviour
 
     [SerializeField]
     private bool                fpsMode = false;
-    public bool IsFPSMode() {  return fpsMode; }
+    public bool                 IsFPSMode() {  return fpsMode; }
 
     private void Awake()
     {
@@ -91,14 +67,11 @@ public class CameraController : MonoBehaviour
             player = target.GetComponent<PlayerController>();
         }
 
-        MouseSensitivityManager.Instance.SetMouseXSpeed(mouseXSpeed);
-        MouseSensitivityManager.Instance.SetMouseYSpeed(mouseYSpeed);
+        cameraStatus.StartInitialize();
 
         rotation_hor = 0f;
         rotation_ver = 0f;
         targettrack = Vector3.zero;
-
-        distance_base = maxDistanceBase;
     }
 
     private void Update()
@@ -108,79 +81,19 @@ public class CameraController : MonoBehaviour
         switch (GameManager.GameState)
         {
             case GameManager.GameStateEnum.Game:
-                GameStateCameraControle();
+                GameStateCameraControl();
                 break;
             case GameManager.GameStateEnum.Pose:
-                PoseUpdate();
+                cameraStatus.PoseCameraControl();
                 break;
             case GameManager.GameStateEnum.GameOver:
-                neckHeight -= 0.02f;
-                if(neckHeight < 0.5f)
-                {
-                    neckHeight = 0.5f;
-                }
-                distance_base -= 0.02f;
-                if (distance_base < 3.0f)
-                {
-                    distance_base = 3.0f;
-                }
+                GameOverCameraControl();
                 break;
             case GameManager.GameStateEnum.GameClear:
-                distance_base = 10.0f;
+                GameClearCameraControl();
                 break;
         }
     }
-
-    private void GameStateCameraControle()
-    {
-        if(player == null) { return; }
-        SetCameraMode();
-        if (fpsMode)
-        {
-            Vector3 fpsPos = player.transform.position;
-            fpsPos.y = player.transform.position.y + neckHeight;
-            transform.position = fpsPos;
-            // 現在の回転角度を取得
-            Vector3 currentRotation = transform.eulerAngles;
-
-            // z軸の回転を0に設定
-            currentRotation.z = 0;
-
-            // 回転角度を設定
-            transform.eulerAngles = currentRotation;
-        }
-        if (Mathf.Abs(rotation_hor) >= 360)
-        {
-            rotation_hor = 0;
-        }
-    }
-
-    private void PoseUpdate()
-    {
-        if(MouseSensitivityManager.Instance.GetMouseXSpeed != mouseXSpeed)
-        {
-            mouseXSpeed = MouseSensitivityManager.Instance.GetMouseXSpeed;
-        }
-        if(MouseSensitivityManager.Instance.GetMouseYSpeed != mouseYSpeed)
-        {
-            mouseYSpeed = MouseSensitivityManager.Instance.GetMouseYSpeed;
-        }
-    }
-
-    private void SetCameraMode()
-    {
-        ChangeFpsMode(player.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.CrossBow);
-    }
-
-    void ChangeFpsMode(bool mode)
-    {
-        fpsMode = mode;
-        foreach (var renderer in player.GetRendererData().RendererList)
-        {
-            renderer.enabled = !mode;
-        }
-    }
-
     private void CheckTarget()
     {
         switch (GameManager.GameState)
@@ -204,6 +117,64 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    private void GameStateCameraControl()
+    {
+        if(player == null) { return; }
+        SetCameraMode();
+        if (fpsMode)
+        {
+            Vector3 fpsPos = player.transform.position;
+            fpsPos.y = player.transform.position.y + neckHeight;
+            transform.position = fpsPos;
+            // 現在の回転角度を取得
+            Vector3 currentRotation = transform.eulerAngles;
+
+            // z軸の回転を0に設定
+            currentRotation.z = 0;
+
+            // 回転角度を設定
+            transform.eulerAngles = currentRotation;
+        }
+        if (Mathf.Abs(rotation_hor) >= 360)
+        {
+            rotation_hor = 0;
+        }
+    }
+    private void SetCameraMode()
+    {
+        ChangeFpsMode(player.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.CrossBow);
+    }
+    void ChangeFpsMode(bool mode)
+    {
+        fpsMode = mode;
+        foreach (var renderer in player.GetRendererData().RendererList)
+        {
+            renderer.enabled = !mode;
+        }
+    }
+    /// <summary>
+    /// ゲームオーバー時のカメラとの距離と高さを調整する
+    /// </summary>
+    private void GameOverCameraControl()
+    {
+        neckHeight -= 0.02f;
+        if (neckHeight < 0.5f)
+        {
+            neckHeight = 0.5f;
+        }
+        cameraStatus.SetBaseDistance(cameraStatus.BaseDistance - 0.02f);
+        if (cameraStatus.BaseDistance < 3.0f)
+        {
+            cameraStatus.SetBaseDistance(3.0f);
+        }
+    }
+    /// <summary>
+    /// ゲームクリア時のカメラと対象の距離を設定する関数
+    /// </summary>
+    private void GameClearCameraControl()
+    {
+        cameraStatus.SetBaseDistance(10.0f);
+    }
     void FixedUpdate()
     {
         switch (GameManager.GameState)
@@ -228,7 +199,16 @@ public class CameraController : MonoBehaviour
                 break;
         }
     }
+    /// <summary>
+    /// FPSのカメラの処理を行う関数
+    /// </summary>
+    private void FPSCamera()
+    {
+        rotation_hor += InputManager.CameraXInput() * cameraStatus.MouseXSpeed;
+        rotation_ver -= InputManager.CameraYInput() * cameraStatus.MouseYSpeed;
 
+        MoveCameraPositionAndRotatetion();
+    }
     /// <summary>
     /// 以下はプレイヤーを中心にカメラを制御する処理
     /// </summary>
@@ -254,13 +234,13 @@ public class CameraController : MonoBehaviour
         }
         else if (!focusFlag && player.GetKeyInput().IsCameraLockEnabled() || NoTPSCameraState())
         {
-            ResetCameraAngles(resetCameraSpeed);
+            ResetCameraAngles(cameraStatus.ResetCameraSpeed);
         }
         else
         {
             //カメラが回転するスピードを設定
-            rotation_hor += InputManager.CameraXInput() * mouseXSpeed;
-            rotation_ver -= InputManager.CameraYInput() * mouseYSpeed;
+            rotation_hor += InputManager.CameraXInput() * cameraStatus.MouseXSpeed;
+            rotation_ver -= InputManager.CameraYInput() * cameraStatus.MouseYSpeed;
         }
 
         MoveCameraPositionAndRotatetion();
@@ -271,7 +251,7 @@ public class CameraController : MonoBehaviour
     /// <returns></returns>
     private bool NoTPSCameraState()
     {
-        switch (player.CurrentState)
+        switch (player.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Grab:
             case CharacterTagList.StateTag.ClimbWall:
@@ -296,20 +276,17 @@ public class CameraController : MonoBehaviour
         rotation_hor = Mathf.Lerp(rotation_hor, playerRotationY, Time.deltaTime * speed);
         rotation_ver = Mathf.Lerp(rotation_ver, playerRotationX, Time.deltaTime * speed);
     }
-
+    /// <summary>
+    /// カメラのX回転数値とプレイヤーのX回転数値の差が0.1以下かを調べる関数
+    /// </summary>
+    /// <returns></returns>
     public bool IsCameraVerticalRotation()
     {
         return rotation_ver  - player.transform.rotation.eulerAngles.x < 0.1f;
     }
-
-    private void FPSCamera()
-    {
-        rotation_hor += InputManager.CameraXInput() * mouseXSpeed;
-        rotation_ver -= InputManager.CameraYInput() * mouseYSpeed;
-
-        MoveCameraPositionAndRotatetion();
-    }
-
+    /// <summary>
+    /// ゲームオーバー時のカメラの動きと回転を行う関数
+    /// </summary>
     private void GameOverCamera()
     {
         rotation_hor += 2f;
@@ -322,7 +299,21 @@ public class CameraController : MonoBehaviour
 
         MoveCameraPositionAndRotatetion();
     }
+    /// <summary>
+    /// クリアした時にtargetに入ってるオブジェクトを中心にカメラを制御する処理
+    /// </summary>
+    private void TargetCameraUpdate()
+    {
+        if (target == null) {return;}
 
+        rotation_hor = target.transform.rotation.eulerAngles.y;
+        rotation_ver = 60;
+
+        MoveCameraPositionAndRotatetion();
+    }
+    /// <summary>
+    /// カメラの動きと回転を行う関数
+    /// </summary>
     private void MoveCameraPositionAndRotatetion()
     {
         //restrict vertical angle to -90 ~ +90
@@ -336,7 +327,7 @@ public class CameraController : MonoBehaviour
         //カメラの埋まりを防ぐためにレイヤーを指定する
         RaycastHit hit;
         int layermask = 1 << 3; //1のビットを3レイヤー分(Floor_obstacleがある場所)だけ左シフト
-        float distance = distance_base; //copy default(mouseScroll zoom)
+        float distance = cameraStatus.BaseDistance; //copy default(mouseScroll zoom)
         //スフィアレイキャストで埋まり防止
         if (Physics.SphereCast(targettrack + Vector3.up * 1.7f, 0.5f,
         rotation, out hit, distance, layermask))
@@ -359,18 +350,5 @@ public class CameraController : MonoBehaviour
             targettrack, target.transform.position, Time.deltaTime * 10);
 
         transform.position += targettrack;
-    }
-
-    /// <summary>
-    /// 以下はクリアした時にtargetに入ってるオブジェクトを中心にカメラを制御する処理
-    /// </summary>
-    private void TargetCameraUpdate()
-    {
-        if (target == null) {return;}
-
-        rotation_hor = target.transform.rotation.eulerAngles.y;
-        rotation_ver = 60;
-
-        MoveCameraPositionAndRotatetion();
     }
 }

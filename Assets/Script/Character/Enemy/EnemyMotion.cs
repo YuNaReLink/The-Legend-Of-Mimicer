@@ -11,9 +11,9 @@ public class EnemyMotion : MotionController
 
     public overrideÅ@void ChangeMotion(CharacterTagList.StateTag tag)
     {
-        if (tag == controller.CurrentState) { return; }
-        controller.PastState = controller.CurrentState;
-        controller.CurrentState = tag;
+        if (tag == controller.CharacterStatus.CurrentState) { return; }
+        controller.CharacterStatus.PastState = controller.CharacterStatus.CurrentState;
+        controller.CharacterStatus.CurrentState = tag;
         Animator anim = controller.GetAnimator();
         anim.SetInteger(stateName, (int)tag);
     }

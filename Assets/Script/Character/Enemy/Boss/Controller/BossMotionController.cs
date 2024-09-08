@@ -14,7 +14,7 @@ public class BossMotionController : MotionController
     public override void ChangeMotion(CharacterTagList.StateTag tag)
     {
         //状態が前と同じなら早期リターン
-        if (tag == controller.CurrentState) { return; }
+        if (tag == controller.CharacterStatus.CurrentState) { return; }
         //アニメーション取得
         Animator anim = controller.GetAnimator();
         //アニメーションの速度が0以下なら
@@ -24,9 +24,9 @@ public class BossMotionController : MotionController
             anim.speed = 1;
         }
         //現在の状態を過去に
-        controller.PastState = controller.CurrentState;
+        controller.CharacterStatus.PastState = controller.CharacterStatus.CurrentState;
         //現在に新しい状態を
-        controller.CurrentState = tag;
+        controller.CharacterStatus.CurrentState = tag;
         //新しい状態をint型でアニメーションに設定
         anim.SetInteger(stateName, (int)tag);
     }
@@ -41,13 +41,13 @@ public class BossMotionController : MotionController
     public override void StopMotionCheck()
     {
         //状態がなしなら早期リターン
-        if (controller.CurrentState == CharacterTagList.StateTag.Null) { return; }
+        if (controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.Null) { return; }
         //アニメーション取得
         Animator anim = controller.GetAnimator();
         //現在のアニメーションの詳細取得
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
         //状態によって処理分け
-        switch (controller.CurrentState)
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Attack:
                 //攻撃中でアニメーション進行度がmaxStampAttackNormalizedTime以上なら
@@ -124,20 +124,20 @@ public class BossMotionController : MotionController
             case "walk":
                 break;
             case "stampAttack":
-                controller.CurrentState = CharacterTagList.StateTag.Null;
+                controller.CharacterStatus.CurrentState = CharacterTagList.StateTag.Null;
                 break;
             case "guard":
                 CameraController cameraController = controller.Target.GetCameraController();
                 if (cameraController == null) { return; }
                 if (cameraController.IsFPSMode()) { return; }
-                controller.CurrentState = CharacterTagList.StateTag.Null;
+                controller.CharacterStatus.CurrentState = CharacterTagList.StateTag.Null;
                 break;
             case "stun":
                 //怯み終わりに復帰フラグをON
                 controller.RevivalFlag = true;
                 break;
             case "returnUp":
-                controller.CurrentState = CharacterTagList.StateTag.Null;
+                controller.CharacterStatus.CurrentState = CharacterTagList.StateTag.Null;
                 break;
         }
     }

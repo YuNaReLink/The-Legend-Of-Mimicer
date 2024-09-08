@@ -191,7 +191,7 @@ public class ToolInventoryController : MonoBehaviour
     private void ChangeShieldTransform()
     {
         if (inventoryData.ToolItemList[(int)ToolObjectTag.Shild] == null) { return; }
-        if (controller.BattleMode|| controller.GuardState != CharacterTagList.GuardState.Null)
+        if (controller.BattleMode|| controller.CharacterStatus.GuardState != CharacterTagList.GuardState.Null)
         {
             SetToolPosition(ToolObjectTag.Shild, leftHandTransform);
         }

@@ -9,7 +9,6 @@ public class PlayerMotion : MotionController
         controller = _controller;
     }
     //Parametersの名前を取得
-    private readonly string boolname        = "BattleMode";
     private readonly string dirname         = "Direction";
     private readonly string jumpcountname   = "JumpCount";
     private readonly string threeattackname = "ThreeAttack";
@@ -31,8 +30,8 @@ public class PlayerMotion : MotionController
         int damageCount =       (int)controller.DamageTag;
         int pushingcount =      (int)controller.PushTag;
         //過去と現在の状態を記録
-        controller.PastState = controller.CurrentState;
-        controller.CurrentState = _state;
+        controller.CharacterStatus.PastState = controller.CharacterStatus.CurrentState;
+        controller.CharacterStatus.CurrentState = _state;
         input.PastDirection = input.CurrentDirection;
 
         //アニメーション遷移の設定
@@ -52,22 +51,22 @@ public class PlayerMotion : MotionController
         ObstacleCheck obstacleCheck = controller.GetObstacleCheck();
         bool wallActionCheck = !obstacleCheck.IsClimbFlag();
         //同じ状態＆"BattleMode"と戦闘モードの条件が同じならリターン
-        if (controller.CurrentState == _state && dirCheck
-            && animBoolCheck&&controller.CurrentState != StateTag.Attack&&
-            controller.CurrentState != StateTag.Push)
+        if (controller.CharacterStatus.CurrentState == _state && dirCheck
+            && animBoolCheck&&controller.CharacterStatus.CurrentState != StateTag.Attack&&
+            controller.CharacterStatus.CurrentState != StateTag.Push)
         {
             return true; 
         }
-        bool damage = controller.CurrentState ==
+        bool damage = controller.CharacterStatus.CurrentState ==
             StateTag.Damage&&
             anim.GetCurrentAnimatorStateInfo(0).IsName("DamageLanding")&&
             !MotionEndCheck();
-        bool jumpStop = controller.CurrentState == StateTag.Jump&&!controller.Landing&&
+        bool jumpStop = controller.CharacterStatus.CurrentState == StateTag.Jump&&!controller.CharacterStatus.Landing&&
             _state != StateTag.Grab&& _state != StateTag.ClimbWall && _state != StateTag.JumpAttack;
 
-        bool climbStop = controller.CurrentState == StateTag.ClimbWall && !controller.CharacterRB.useGravity;
+        bool climbStop = controller.CharacterStatus.CurrentState == StateTag.ClimbWall && !controller.CharacterRB.useGravity;
 
-        bool wallJumpStop = controller.CurrentState == StateTag.WallJump && _state != StateTag.Grab&&
+        bool wallJumpStop = controller.CharacterStatus.CurrentState == StateTag.WallJump && _state != StateTag.Grab&&
             !controller.GetObstacleCheck().IsClimbFlag()&&controller.GetObstacleCheck().WallHitFlagCheck();
         if (jumpStop||climbStop||wallJumpStop)
         {
@@ -94,7 +93,7 @@ public class PlayerMotion : MotionController
         //入力クラスの代入
         PlayerInput input = controller.GetKeyInput();
 
-        if (controller.CurrentState == _state) { return; }
+        if (controller.CharacterStatus.CurrentState == _state) { return; }
 
         //状態の数値を代入
         int statenumber = (int)_state;
@@ -105,8 +104,8 @@ public class PlayerMotion : MotionController
         int pushingcount = (int)controller.PushTag;
 
         //過去と現在の状態を記録
-        controller.PastState = controller.CurrentState;
-        controller.CurrentState = _state;
+        controller.CharacterStatus.PastState = controller.CharacterStatus.CurrentState;
+        controller.CharacterStatus.CurrentState = _state;
         input.PastDirection = input.CurrentDirection;
 
         //アニメーション遷移の設定
@@ -182,7 +181,7 @@ public class PlayerMotion : MotionController
             case "jumpAttack":
                 if(anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.5f)
                 {
-                    if (!controller.Landing)
+                    if (!controller.CharacterStatus.Landing)
                     {
                         anim.enabled = false;
                     }
@@ -217,34 +216,34 @@ public class PlayerMotion : MotionController
         switch (motion)
         {
             case "getUp":
-                controller.CurrentState = StateTag.Null;
+                controller.CharacterStatus.CurrentState = StateTag.Null;
                 break;
             case "attack1":
             case "attack2":
             case "attack3":
-                if(controller.CurrentState == StateTag.ReadySpinAttack) { return; }
+                if(controller.CharacterStatus.CurrentState == StateTag.ReadySpinAttack) { return; }
                 controller.GetKeyInput().ThreeAttackCount = 0;
-                controller.CurrentState = StateTag.Null;
+                controller.CharacterStatus.CurrentState = StateTag.Null;
                 controller.TripleAttack = TripleAttack.Null;
                 break;
             case "jumpAttack":
                 controller.GetKeyInput().ThreeAttackCount = 0;
-                controller.CurrentState = StateTag.Null;
+                controller.CharacterStatus.CurrentState = StateTag.Null;
                 break;
             case "spinAttack":
                 controller.GetKeyInput().ThreeAttackCount = 0;
-                controller.CurrentState = StateTag.Null;
+                controller.CharacterStatus.CurrentState = StateTag.Null;
                 controller.TripleAttack = TripleAttack.Null;
                 break;
             case "storing":
             case "posture":
-                controller.CurrentState = StateTag.Null;
+                controller.CharacterStatus.CurrentState = StateTag.Null;
                 break;
             case "DamageLanding":
             case "damageImpact":
                 controller.GetKeyInput().ThreeAttackCount = 0;
                 controller.TripleAttack = TripleAttack.Null;
-                controller.CurrentState = StateTag.Null;
+                controller.CharacterStatus.CurrentState = StateTag.Null;
                 break;
         }
     }

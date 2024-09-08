@@ -19,6 +19,8 @@ public class Consumables : MonoBehaviour
     protected Rigidbody rb = null;
     protected BoxCollider boxCollider = null;
 
+    protected bool getFlag = false;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -52,6 +54,7 @@ public class Consumables : MonoBehaviour
         {
             Destroy(boxCollider);
         }
+        getFlag = true;
         Destroy(gameObject,1f);
     }
 }

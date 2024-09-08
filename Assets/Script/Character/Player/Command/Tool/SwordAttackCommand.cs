@@ -37,7 +37,7 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
     private void ThreeAttackInput()
     {
         //指定した状態じゃなければ
-        switch (controller.CurrentState)
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Rolling:
             case CharacterTagList.StateTag.ReadySpinAttack:
@@ -47,7 +47,7 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
                 return;
         }
         //着地判定
-        if (!controller.Landing) { return; }
+        if (!controller.CharacterStatus.Landing) { return; }
         //キー入力
         if (!controller.GetKeyInput().AttackButton) { return; }
         //左クリックを押した最初は長押しフラグをfalseに
@@ -102,7 +102,7 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
     }
     private bool CheckStopState()
     {
-        CharacterTagList.StateTag state = controller.CurrentState;
+        CharacterTagList.StateTag state = controller.CharacterStatus.CurrentState;
         switch (state)
         {
             case CharacterTagList.StateTag.Rolling:
@@ -134,7 +134,7 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
             controller.GetKeyInput().ActionButton = false;
         }
         //空中にいる時のジャンプ斬り入力
-        else if (controller.GetKeyInput().AttackButton && !controller.Landing)
+        else if (controller.GetKeyInput().AttackButton && !controller.CharacterStatus.Landing)
         {
             controller.GetTimer().GetTimerJumpAttackAccele().StartTimer(jumpAttackAcceleCount);
             controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.JumpAttack);
@@ -148,7 +148,7 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
     private void SpinAttackInput()
     {
         //未着地判定
-        if (!controller.Landing) { return; }
+        if (!controller.CharacterStatus.Landing) { return; }
         //三段攻撃が二段目以上なら
         if(controller.GetKeyInput().ThreeAttackCount >= (int)CharacterTagList.TripleAttack.Second) { return; }
         //回転攻撃準備動作開始フラグ
@@ -174,7 +174,7 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
     public void Execute()
     {
         //以下の状態だと早期リターン
-        switch (controller.CurrentState)
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Attack:
             case CharacterTagList.StateTag.JumpAttack:
@@ -194,8 +194,8 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
 
     private void ThreeAttackCommand()
     {
-        if (!controller.Landing) { return; }
-        switch (controller.CurrentState)
+        if (!controller.CharacterStatus.Landing) { return; }
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Rolling:
             case CharacterTagList.StateTag.Damage:
@@ -228,10 +228,10 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
     private void JumpAttackCommand()
     {
         if (!controller.GetTimer().GetTimerJumpAttackAccele().IsEnabled()) { return; }
-        if (controller.Landing && !controller.Jumping)
+        if (controller.CharacterStatus.Landing && !controller.CharacterStatus.Jumping)
         {
             controller.JumpForce(jumpPowerOfJumpAttack);
-            controller.Jumping = true;
+            controller.CharacterStatus.Jumping = true;
         }
         controller.ForwardAccele(forwardPowerOfJumpAttack);
     }
@@ -241,7 +241,7 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
 
     private void SpinAttackCommand()
     {
-        if(controller.CurrentState != CharacterTagList.StateTag.SpinAttack) {  return; }
+        if(controller.CharacterStatus.CurrentState != CharacterTagList.StateTag.SpinAttack) {  return; }
         AnimatorStateInfo info = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
         if(info.normalizedTime > motionNormalizedTimeOfSpinAttack) { return; }
         controller.ForwardAccele(forwardPowerOfSpinAttack);

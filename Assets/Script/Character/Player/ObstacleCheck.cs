@@ -162,8 +162,8 @@ public class ObstacleCheck : MonoBehaviour
 
     private void InitializeFlag()
     {
-        bool state = controller.CurrentState != CharacterTagList.StateTag.ClimbWall && controller.CurrentState != CharacterTagList.StateTag.Grab &&
-            controller.CurrentState != CharacterTagList.StateTag.WallJump;
+        bool state = controller.CharacterStatus.CurrentState != CharacterTagList.StateTag.ClimbWall && controller.CharacterStatus.CurrentState != CharacterTagList.StateTag.Grab &&
+            controller.CharacterStatus.CurrentState != CharacterTagList.StateTag.WallJump;
         bool initwallhitflag = !hitWallFlagArray[(int)RayTag.Bottom] && !hitWallFlagArray[(int)RayTag.Middle] &&
             !hitWallFlagArray[(int)RayTag.Up] && !hitWallFlagArray[(int)RayTag.Upper];
         if (!initwallhitflag || !state) { return; }
@@ -179,7 +179,7 @@ public class ObstacleCheck : MonoBehaviour
     {
         lowStep = true;
         MoveDirectionCheck();
-        switch (controller.CurrentState)
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Attack:
             case CharacterTagList.StateTag.SpinAttack:
@@ -201,7 +201,7 @@ public class ObstacleCheck : MonoBehaviour
 
         DeltaTimeCountDown timerStopWallAction = controller.GetTimer().GetTimerWallActionStop();
 
-        if (controller.Landing)
+        if (controller.CharacterStatus.Landing)
         {
             if (controller.GetTimer().GetTimerWallActionStop().IsEnabled()) { return; }
             //段差のチェック
@@ -368,13 +368,13 @@ public class ObstacleCheck : MonoBehaviour
         //掴まっているか
         if (grabFlag) { return; }
         //登っているか
-        bool enabledstate = controller.CurrentState == CharacterTagList.StateTag.ClimbWall || controller.CurrentState == CharacterTagList.StateTag.Grab ||
-            controller.CurrentState == CharacterTagList.StateTag.WallJump;
+        bool enabledstate = controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.ClimbWall || controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.Grab ||
+            controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.WallJump;
         if (enabledstate) { return; }
         if (stepJumpFlag) { return; }
         if (climbFlag) { return; }
-        if (controller.Jumping) { return; }
-        if (!lowStep && controller.Landing)
+        if (controller.CharacterStatus.Jumping) { return; }
+        if (!lowStep && controller.CharacterStatus.Landing)
         {
             lowJumpCount++;
             if (lowJumpCount > 2)
@@ -384,23 +384,23 @@ public class ObstacleCheck : MonoBehaviour
             controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Jump);
             controller.JumpForce(lowStepJumpPower);
             cliffJump = true;
-            controller.Jumping = true;
+            controller.CharacterStatus.Jumping = true;
             controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Jump);
         }
     }
 
     private void StepJumpCommand()
     {
-        if (!controller.Landing) { return; }
-        if (controller.Jumping) { return; }
-        if (stepJumpFlag && controller.MoveInput)
+        if (!controller.CharacterStatus.Landing) { return; }
+        if (controller.CharacterStatus.Jumping) { return; }
+        if (stepJumpFlag && controller.CharacterStatus.MoveInput)
         {
             lowJumpCount = 0;
             controller.CharacterRB.velocity = Vector3.zero;
             controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Jump);
             controller.JumpForce(wallJumpPower);
             stepJumpFlag = false;
-            controller.Jumping = true;
+            controller.CharacterStatus.Jumping = true;
             controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Jump);
         }
     }
@@ -408,7 +408,7 @@ public class ObstacleCheck : MonoBehaviour
     private void WallJumpCommand()
     {
 
-        if (wallJumpFlag && controller.MoveInput)
+        if (wallJumpFlag && controller.CharacterStatus.MoveInput)
         {
             controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.WallJump);
             controller.JumpForce(wallJumpPower);
@@ -421,7 +421,7 @@ public class ObstacleCheck : MonoBehaviour
 
     private void GrabCommand()
     {
-        if(controller.CurrentState == CharacterTagList.StateTag.Jump)
+        if(controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.Jump)
         {
             cliffJump = false;
         }
@@ -437,7 +437,7 @@ public class ObstacleCheck : MonoBehaviour
             controller.CharacterRB.velocity = Vector3.zero;
             controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Grab);
         }
-        controller.Velocity = controller.StopMoveVelocity();
+        controller.CharacterStatus.Velocity = controller.StopMoveVelocity();
         controller.CharacterRB.velocity = controller.StopMoveVelocity();
         if (MoveKeyInput()&& controller.GetCameraController().IsCameraVerticalRotation())
         {
@@ -488,7 +488,7 @@ public class ObstacleCheck : MonoBehaviour
         {
             controller.CharacterRB.useGravity = false;
             controller.CharacterRB.velocity = Vector3.zero;
-            controller.Velocity = controller.StopMoveVelocity();
+            controller.CharacterStatus.Velocity = controller.StopMoveVelocity();
             SetClimbPostion();
             controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.ClimbWall);
             controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Climb);

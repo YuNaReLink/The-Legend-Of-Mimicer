@@ -27,17 +27,17 @@ public class PlayerDamageCommand : InterfaceBaseCommand
         switch (controller.DamageTag)
         {
             case CharacterTagList.DamageTag.Fall:
-                controller.HP--;
+                controller.CharacterStatus.HP--;
                 controller.DamageTag = CharacterTagList.DamageTag.Null;
                 break;
             case CharacterTagList.DamageTag.NormalAttack:
             case CharacterTagList.DamageTag.GreatAttack:
                 if (attacker == null) { return; }
-                ToolController tool = attacker.GetComponent<ToolController>();
+                BaseAttackController tool = attacker.GetComponent<BaseAttackController>();
                 if (tool == null) { return; }
                 WeaponStateData data = tool.GetStatusData();
                 if(data == null) { return; }
-                controller.HP-= data.BaseDamagePower;
+                controller.CharacterStatus.HP-= data.BaseDamagePower;
                 controller.GetKnockBackCommand().KnockBackFlag = true;
                 controller.GetKnockBackCommand().Attacker = attacker;
                 controller.GetEffectController().CreateVFX((int)EffectTagList.CharacterEffectTag.Damage,attacker.transform.position,1f,Quaternion.identity);
@@ -45,7 +45,7 @@ public class PlayerDamageCommand : InterfaceBaseCommand
                 controller.DamageTag = CharacterTagList.DamageTag.Null;
                 break;
         }
-        if(controller.HP > 0) { return; }
+        if(controller.CharacterStatus.HP > 0) { return; }
         controller.Death();
     }
 }

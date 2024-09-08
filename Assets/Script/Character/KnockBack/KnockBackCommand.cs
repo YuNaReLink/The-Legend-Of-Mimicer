@@ -17,7 +17,7 @@ public class KnockBackCommand : InterfaceBaseCommand
     {
         if (!knockBackFlag) { return; }
         if (attacker == null) { return; }
-        ToolController tool = attacker.GetComponent<ToolController>();
+        BaseAttackController tool = attacker.GetComponent<BaseAttackController>();
         if (tool == null) { return; }
         WeaponStateData data = tool.GetStatusData();
         if (data == null) { return; }

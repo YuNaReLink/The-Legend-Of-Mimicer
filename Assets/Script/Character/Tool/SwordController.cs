@@ -67,7 +67,7 @@ public class SwordController : ToolController
     {
         if (controller == null) { return; }
         if (collider == null) { return; }
-        StateTag state = controller.CurrentState;
+        StateTag state = controller.CharacterStatus.CurrentState;
         if (MotionTimeCheck(state))
         {
             effect.PlayTrail();
@@ -142,8 +142,8 @@ public class SwordController : ToolController
         if (controller == null) { return; }
         if (collider == null) { return; }
         if(boxCollider == null) { return; }
-        if(controller.CurrentState == controller.PastState) { return; }
-        StateTag state = controller.CurrentState;
+        if(controller.CharacterStatus.CurrentState == controller.CharacterStatus.PastState) { return; }
+        StateTag state = controller.CharacterStatus.CurrentState;
         Vector3 center = boxCollider.center;
         Vector3 size = boxCollider.size;
         switch (state)

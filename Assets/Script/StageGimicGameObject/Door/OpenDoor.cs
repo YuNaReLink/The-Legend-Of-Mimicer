@@ -122,7 +122,7 @@ public class OpenDoor : MonoBehaviour
                 doorCollider.isTrigger = true;
                 open = true;
                 hitExecute.enabled = false;
-                triggerCheck.GetController().StopController = true;
+                triggerCheck.GetController().CharacterStatus.StopController = true;
                 triggerCheck.GetController().StopMove();
                 triggerCheck.GetController().GetMotion().ChangeMotion(CharacterTagList.StateTag.Idle);
                 start = false;
@@ -189,7 +189,7 @@ public class OpenDoor : MonoBehaviour
                 doorCollider.isTrigger = false;
                 transform.localPosition = new Vector3(0, baseDoorPos.y, 0);
                 close = false;
-                triggerCheck.GetController().StopController = false;
+                triggerCheck.GetController().CharacterStatus.StopController = false;
                 hitExecute.enabled = true;
                 triggerCheck.SetTriggerTag(true);
             }

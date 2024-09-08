@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2546724533036946403}
   - component: {fileID: 7236969684651956600}
-  - component: {fileID: 4222382247615916431}
+  - component: {fileID: 92901833317465329}
   m_Layer: 6
   m_Name: Damage
   m_TagString: Damage
@@ -54,7 +54,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4222382247615916431
+--- !u!114 &92901833317465329
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,13 +63,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 341687647648593420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0883dc48c3cabd4eb53b39310042f6f, type: 3}
+  m_Script: {fileID: 11500000, guid: 4cd6eca9e257a1f4785df4fcdbf4af42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
   collider: {fileID: 0}
   statusData: {fileID: 11400000, guid: 3e0eb79e6af1f00468ac4cc5b9727431, type: 2}
-  itemData: {fileID: 0}
 --- !u!1 &347817752896502674
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,6 +242,7 @@ MonoBehaviour:
   jumping: 0
   jumpPower: 0
   stopController: 0
+  battleMode: 0
   data: {fileID: 11400000, guid: b60f5fa329eb4ac439552db1da9771f0, type: 2}
   foundPlayer: 0
   target: {fileID: 0}
@@ -315,7 +315,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 5
   MinDistance: 1
-  MaxDistance: 25
+  MaxDistance: 10
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 1
@@ -453,7 +453,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8478197561812697990}
   - component: {fileID: 785176993455602297}
-  - component: {fileID: 8465948911896730484}
+  - component: {fileID: 1931936177730697407}
   m_Layer: 0
   m_Name: SearchArea
   m_TagString: SearchArea
@@ -495,9 +495,9 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 5
+  m_Radius: 8
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8465948911896730484
+--- !u!114 &1931936177730697407
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -506,13 +506,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8999377491266179085}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5b9ab56924d101458aac4e1c9ec1ebf, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a1482ce12e980942ad2d9981bc3e98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 4081459926770389903}
-  searchCollider: {fileID: 785176993455602297}
-  searchAngle: 180
-  distance: 10
+  controller: {fileID: 0}
+  angle: 130
 --- !u!1001 &5025871385281424107
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -853,3 +851,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rendererList: []
+  originalColorList: []

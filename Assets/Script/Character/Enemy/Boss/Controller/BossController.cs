@@ -65,15 +65,15 @@ public class BossController : EnemyController
 
     private void FixedUpdate()
     {
-        if (death) { return; }
+        if (characterStatus.DeathFlag) { return; }
         //ó‘Ô‚É‚æ‚Á‚Ä“®‚­‚©“®‚©‚È‚¢‚©‚ðÝ’è
-        MoveInputCheck();
+        MoveStateCheck();
         UpdateCommand();
     }
 
-    protected override void MoveInputCheck()
+    protected override void MoveStateCheck()
     {
-        switch (currentState)
+        switch (characterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Idle:
             case CharacterTagList.StateTag.Attack:
@@ -83,7 +83,7 @@ public class BossController : EnemyController
             case CharacterTagList.StateTag.GetUp:
                 return;
         }
-        input = true;
+        characterStatus.MoveInput = true;
     }
 
     private void UpdateCommand()
@@ -94,7 +94,7 @@ public class BossController : EnemyController
         {
             bossDamageCommand.Execute();
         }
-        if (input)
+        if (characterStatus.MoveInput)
         {
             Accele();
         }
@@ -111,26 +111,26 @@ public class BossController : EnemyController
     private bool TargetStateCheck()
     {
         if(target == null) { return true; }
-        if(target.CurrentState != CharacterTagList.StateTag.Die) { return false; }
+        if(target.CharacterStatus.CurrentState != CharacterTagList.StateTag.Die) { return false; }
         target = null;
         return true;
     }
 
     private void Accele()
     {
-        Vector3 vel = velocity;
+        Vector3 vel = characterStatus.Velocity;
         vel = transform.forward * data.Acceleration;
         float currentSpeed  = vel.magnitude;
         if(currentSpeed >= data.MaxSpeed)
         {
             vel = vel.normalized * data.MaxSpeed;
         }
-        velocity = vel;
+        characterStatus.Velocity = vel;
     }
 
     private void TransformRotate()
     {
-        switch (currentState)
+        switch (characterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Attack:
             case CharacterTagList.StateTag.Gurid:

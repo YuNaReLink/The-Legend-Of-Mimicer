@@ -85,7 +85,7 @@ public class PlayerLifeUI : MonoBehaviour
             //引数と数値が同じならリターン
             if(heartNum == hp) { return; }
             //参照数値を範囲内に設定
-            heartNum = Mathf.Clamp(hp, 0, uiController.GetPlayerController().GetMaxHP());
+            heartNum = Mathf.Clamp(hp, 0, uiController.GetPlayerController().CharacterStatus.GetMaxHP());
             //HP表示を変更
             ChangeLife();
         }

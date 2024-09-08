@@ -86,12 +86,12 @@ public class EnemyController : CharacterController
         //最初は3秒待たせる
         timer.GetTimerIdle().StartTimer(3f);
         //状態は待機に設定
-        currentState = CharacterTagList.StateTag.Idle;
+        characterStatus.CurrentState = CharacterTagList.StateTag.Idle;
         //スクリプタブルオブジェクトがあるなら
         if(data != null)
         {
-            maxHp = data.MaxHP;
-            hp = maxHp;
+            characterStatus.SetMaxHP(data.MaxHP);
+            characterStatus.HP = characterStatus.GetMaxHP();
         }
     }
 
@@ -107,6 +107,7 @@ public class EnemyController : CharacterController
         base.Update();
         timer.TimerUpdate();
     }
+
 
     public override void Death()
     {

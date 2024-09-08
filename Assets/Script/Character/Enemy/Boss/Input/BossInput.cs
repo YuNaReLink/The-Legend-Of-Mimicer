@@ -40,7 +40,7 @@ public class BossInput
             IdleInput();
             return; 
         }
-        if (controller.DeathFlag) { return; }
+        if (controller.CharacterStatus.DeathFlag) { return; }
         //どんな状況にも限らず処理させたい入力
         //ボスが倒れる処理
         controller.GetBossDamageCommand().DoUpdate();
@@ -49,7 +49,7 @@ public class BossInput
         //ボスが特定の条件下でガードする処理
         GuardInput();
         if (controller.GetTimer().GetTimerStun().IsEnabled()) { return; }
-        switch (controller.CurrentState)
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Damage:
             case CharacterTagList.StateTag.GetUp:
@@ -73,7 +73,6 @@ public class BossInput
     private void NearsToPlayerInput()
     {
         WalkInput();
-        Debug.Log("離れすぎたため接近中");
     }
 
     private void BattleInput()
@@ -85,13 +84,11 @@ public class BossInput
         {
             //攻撃入力
             AttackInput();
-            Debug.Log("攻撃中");
         }
         else
         {
             //そうじゃなければ別行動入力
             WalkInput();
-            Debug.Log("プレイヤーに接近中");
         }
 
     }
@@ -106,7 +103,7 @@ public class BossInput
     /// </summary>
     private void IdleInput()
     {
-        switch (controller.CurrentState)
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Attack:
             case CharacterTagList.StateTag.Gurid:
@@ -117,7 +114,7 @@ public class BossInput
 
     private void WalkInput()
     {
-        switch (controller.CurrentState)
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Attack:
             case CharacterTagList.StateTag.Gurid:
@@ -128,7 +125,7 @@ public class BossInput
 
     private void AttackInput()
     {
-        switch (controller.CurrentState)
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Gurid:
             case CharacterTagList.StateTag.Attack:
@@ -140,7 +137,7 @@ public class BossInput
 
     public void GuardInput()
     {
-        switch (controller.CurrentState)
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Attack:
             case CharacterTagList.StateTag.Damage:

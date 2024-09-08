@@ -19,7 +19,7 @@ public class BossWeakPoint : MonoBehaviour
         ToolController toolController = other.GetComponent<ToolController>();
         if(toolController == null) { return; }
         if(controller == null) { return; }
-        switch (controller.CurrentState)
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Attack:
                 controller.GetEffectController().CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position, 1f, Quaternion.identity);

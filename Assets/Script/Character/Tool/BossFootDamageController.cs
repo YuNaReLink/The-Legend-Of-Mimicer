@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BossFootDamageController : ToolController
+public class BossFootDamageController : BaseAttackController
 {
     public override ToolTag GetToolTag() { return ToolTag.Other; }
     private void Awake()
@@ -28,7 +28,7 @@ public class BossFootDamageController : ToolController
 
     private bool CheckAttackState()
     {
-        switch (controller.CurrentState)
+        switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Attack:
                 return true;
