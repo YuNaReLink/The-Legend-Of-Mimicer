@@ -2,13 +2,17 @@ using UnityEngine;
 
 public class TargetSearchArea : MonoBehaviour
 {
+    private EnemyController     controller = null;
     [SerializeField]
-    private EnemyController controller = null;
-    public float angle = 130f;
+    public float                angle = 130f;
 
     private void Awake()
     {
         controller = GetComponentInParent<EnemyController>();
+        if(controller == null)
+        {
+            Debug.LogError("EnemyControllerがアタッチされていません");
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -29,7 +33,6 @@ public class TargetSearchArea : MonoBehaviour
                     {
                         controller.Target = other.GetComponent<PlayerController>();
                     }
-                    Debug.Log("range of view");
                 }
                 else
                 {

@@ -8,16 +8,16 @@ public class MenuToggleController : MonoBehaviour
 {
     // フォーカスを移動させたいToggleのリスト
     [SerializeField]
-    private List<Toggle> toggleList; 
-    public List<Toggle> ToggleList { get { return toggleList; } set { toggleList = value; } }
-    private int currentToggleIndex = 0;
-    private int pastToggleIndex = 0;
-    private bool selectFlag = false;
+    private List<Toggle>        toggleList; 
+    public List<Toggle>         ToggleList { get { return toggleList; } set { toggleList = value; } }
+    private int                 currentToggleIndex = 0;
+    private int                 pastToggleIndex = 0;
+    private bool                selectFlag = false;
     [SerializeField]
-    private GraphicRaycaster graphicRaycaster; // UIのGraphicRaycaster
+    private GraphicRaycaster    graphicRaycaster; // UIのGraphicRaycaster
     [SerializeField]
-    private EventSystem eventSystem; // EventSystem
-    private Toggle mouseOverToggle = null;
+    private EventSystem         eventSystem; // EventSystem
+    private Toggle              mouseOverToggle = null;
 
     public void AwakeInitilaize()
     {

@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class MushroomController : EnemyController
 {
-    private MushroomState mushroomState = null;
-    public MushroomState GetMushroomState() { return mushroomState; }
+    private MushroomState            mushroomState = null;
+    public MushroomState            GetMushroomState() { return mushroomState; }
 
-    private SoundController soundController = null;
-    public SoundController GetSoundController() { return soundController; }
+    private SoundController         soundController = null;
+    public SoundController          GetSoundController() { return soundController; }
 
-    private MushroomDamageCommand mushroomDamage = null;
-    protected override void SetMotionController()
+    private MushroomDamageCommand   mushroomDamage = null;
+    protected override void         SetMotionController()
     {
         motion = new MushroomMotionController(this);
     }
@@ -17,6 +17,7 @@ public class MushroomController : EnemyController
     {
         base.InitializeAssign();
         mushroomState = GetComponent<MushroomState>();
+        mushroomState?.SetController(this);
         if(mushroomState == null)
         {
             Debug.LogError("MushroomStateがアタッチされていません");
@@ -28,7 +29,6 @@ public class MushroomController : EnemyController
         }
         soundController?.AwakeInitilaize();
 
-        mushroomState?.SetController(this);
         mushroomDamage = new MushroomDamageCommand(this);
     }
     protected override void Update()
@@ -120,7 +120,7 @@ public class MushroomController : EnemyController
             if (timer.GetTimerDamageCoolDown().IsEnabled()) { return; }
             timer.GetTimerDamageCoolDown().StartTimer(0.25f);
             mushroomDamage.Attacker = other.gameObject;
-            mushroomDamage.DamageFlag = true;
+            mushroomDamage.SetDamageFlag(true);
             effectController.CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position, 1f, Quaternion.identity);
         }
     }

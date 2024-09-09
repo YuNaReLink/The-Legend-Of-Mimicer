@@ -3,15 +3,12 @@ using UnityEngine;
 public class MoverButton : MonoBehaviour
 {
     [SerializeField]
-    private RectTransform rectTransform = null;
+    private RectTransform       rectTransform = null;
 
     [SerializeField]
-    private float moveTime = 10f;
+    private float               moveTime = 10f;
 
-
-    public GameObject SelfObject() { return gameObject; }
-    public bool IsActiveObject() { return gameObject.activeSelf; }
-    public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
+    public GameObject           SelfObject() { return gameObject; }
 
     public void AwakeInitilaize()
     {

@@ -22,3 +22,8 @@ MonoBehaviour:
   rollingDownAcceleration: 0.25
   rollingLeftAcceleration: 0.4
   rollingRightAcceleration: 0.4
+  rollingJumpPower: 1000
+  wallJumpPower: 1500
+  lowStepJumpPower: 1250
+  strongAttackPowerRatio1: 1.5
+  strongAttackPowerRatio2: 2

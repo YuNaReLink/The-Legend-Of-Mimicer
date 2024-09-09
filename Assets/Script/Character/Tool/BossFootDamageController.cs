@@ -3,19 +3,6 @@ using UnityEngine;
 public class BossFootDamageController : BaseAttackController
 {
     public override ToolTag GetToolTag() { return ToolTag.Other; }
-    private void Awake()
-    {
-        controller = GetComponentInParent<CharacterController>();
-        if (controller == null)
-        {
-            Debug.LogError("controllerがアタッチされていません");
-        }
-        collider = GetComponent<Collider>();
-        if (collider == null)
-        {
-            Debug.LogError("colliderがアタッチされていません");
-        }
-    }
     private void Start()
     {
         collider.enabled = false;

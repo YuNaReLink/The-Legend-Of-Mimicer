@@ -33,6 +33,7 @@ public class SpiderState : MonoBehaviour
                 MoveInput();
                 break;
             case CharacterTagList.StateTag.Run:
+            case CharacterTagList.StateTag.Null:
                 StopInput();
                 break;
         }

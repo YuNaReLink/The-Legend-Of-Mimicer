@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
 
 public class BossSoundController : SoundController
 {
@@ -12,8 +10,8 @@ public class BossSoundController : SoundController
         WeakPointsDamage,
     }
 
-    private DeltaTimeCountDown moveSECoolDown = null;
-    public DeltaTimeCountDown GetMoveSECoolDown() { return moveSECoolDown; }
+    private DeltaTimeCountDown  moveSECoolDown = null;
+    public DeltaTimeCountDown   GetMoveSECoolDown() { return moveSECoolDown; }
     public override void AwakeInitilaize()
     {
         base.AwakeInitilaize();

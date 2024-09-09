@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class KeyInputUIController : MonoBehaviour
 {
-    private GameUIController gameUIController = null;
-    private PlayerController controller = null;
+    private GameUIController            gameUIController = null;
+    private PlayerController            controller = null;
     public enum KeyUINumber
     {
         E,
@@ -17,23 +17,18 @@ public class KeyInputUIController : MonoBehaviour
     }
 
     [SerializeField]
-    private List<GameObject> keyUIObjectArray = new List<GameObject>();
+    private List<GameObject>            keyUIObjectArray = new List<GameObject>();
 
     [SerializeField]
-    private List<Image> keyImageArray = new List<Image>();
+    private List<Image>                 keyImageArray = new List<Image>();
 
-    private List<DeltaTimeCountDown> inputCoolDownsTimers = new List<DeltaTimeCountDown>();
+    private List<DeltaTimeCountDown>    inputCoolDownsTimers = new List<DeltaTimeCountDown>();
 
-    private GameObject crossbowUI = null;
+    private GameObject                  crossbowUI = null;
 
-    private Text fKeyText = null;
+    private Text                        fKeyText = null;
 
-    public GameObject SelfObject() { return gameObject; }
-    public bool IsActiveObject() { return gameObject.activeSelf; }
-    public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
-
-    private bool controllerInput = false;
-
+    public GameObject                   SelfObject() { return gameObject; }
 
     private enum ControllerTag
     {
@@ -41,7 +36,7 @@ public class KeyInputUIController : MonoBehaviour
         Controller
     }
     [SerializeField]
-    private List<SpriteObjectData> spriteObjectList = new List<SpriteObjectData>();
+    private List<SpriteObjectData>      spriteObjectList = new List<SpriteObjectData>();
 
     public void Initialize()
     {

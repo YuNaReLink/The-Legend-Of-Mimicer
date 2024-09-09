@@ -8,20 +8,30 @@ public class PlayerScriptableObject : CharacterScriptableObject
     /// <summary>
     /// ローカル変数
     /// </summary>
-    [SerializeField]
+    [Header("減速力"), SerializeField]
     private float deceleration;
-    [SerializeField]
+    [Header("停止最低速度"), SerializeField]
     private float minSpeed;
-    [SerializeField]
+    [Header("移動中の前転加速力"), SerializeField]
     private float rollingUpDynamicAcceleration;
-    [SerializeField]
+    [Header("停止中の前転加速力"), SerializeField]
     private float rollingUpStaticAcceleration;
-    [SerializeField]
+    [Header("バク転加速力"), SerializeField]
     private float rollingDownAcceleration;
-    [SerializeField]
+    [Header("左側転加速力"), SerializeField]
     private float rollingLeftAcceleration;
-    [SerializeField]
+    [Header("右側転加速力"), SerializeField]
     private float rollingRightAcceleration;
+    [Header("バク転ジャンプ力"), SerializeField]
+    private float rollingJumpPower;
+    [Header("壁ジャンプ力"), SerializeField]
+    private float wallJumpPower;
+    [Header("段差ジャンプ力"), SerializeField]
+    private float lowStepJumpPower;
+    [Header("強攻撃1の倍率"), SerializeField]
+    private float strongAttackPowerRatio1;
+    [Header("強攻撃2の倍率"), SerializeField]
+    private float strongAttackPowerRatio2;
 
     /// <summary>
     /// 参照変数
@@ -34,4 +44,10 @@ public class PlayerScriptableObject : CharacterScriptableObject
     public float RollingDOWNAcceleration { get { return rollingDownAcceleration; } }
     public float RollingLEFTAcceleration { get { return rollingLeftAcceleration; } }
     public float RollingRIGHTAcceleration { get { return rollingRightAcceleration; } }
+    public float RollingJumpPower {  get { return rollingJumpPower; } }
+    public float WallJumpPower {  get { return wallJumpPower; } }
+    public float LowStepJumpPower {  get { return lowStepJumpPower; } }
+
+    public float StrongAttackPowerRatio1 {  get { return strongAttackPowerRatio1; } }
+    public float StrongAttackPowerRatio2 {  get { return strongAttackPowerRatio2; } }
 }

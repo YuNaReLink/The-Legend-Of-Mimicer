@@ -107,22 +107,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  distance_base: 4.5
-  maxDistanceBase: 4.5
-  mouseXSpeed: 10
-  mouseYSpeed: 10
-  rotation_hor: 0
-  rotation_ver: 0
-  resetCameraSpeed: 5
+  cameraStatus:
+    baseDistance: 5
+    maxDistance: 5
+    mouseXSpeed: 5
+    mouseYSpeed: 5
+    resetCameraSpeed: 5
   desiredDistanceBehindPlayer: 3
   focusCameraPosX: 1.5
   focusCameraPosY: 2
   initCameraRotation: {x: 0, y: 0.2, z: -5}
-  baseDistance: 2
-  height: 1
-  damping: 10
   neckHeight: 2
-  testHor: 0
   fpsMode: 0
 --- !u!114 &3704389514756731605
 MonoBehaviour:
@@ -136,4 +131,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a2dae4815916f42b22bf8629b07b90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crossBow: {fileID: 0}
+  aimRaycastOrigin: 10

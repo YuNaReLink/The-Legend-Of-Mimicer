@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BossController : EnemyController
 {
-    private BossInput               bossStateInput = null;
+    private BossState               bossState = null;
 
     private BossDamageCommand       bossDamageCommand = null;
     public BossDamageCommand        GetBossDamageCommand() { return bossDamageCommand; }
@@ -12,26 +12,24 @@ public class BossController : EnemyController
 
     [SerializeField]
     private bool                    stunFlag = false;
-    public bool                     StunFlag { get { return stunFlag; } set { stunFlag = value; } }
+    public bool                     StunFlag => stunFlag;
+    public void                     SetStunFlag(bool flag) {  stunFlag = flag; }
     [SerializeField]
     private bool                    revivalFlag = false;
-    public bool                     RevivalFlag { get { return revivalFlag; } set { revivalFlag = value; } }
+    public bool                     RevivalFlag => revivalFlag;
+    public void                     SetRevivalFlag(bool flag) {  revivalFlag = flag; }
 
-    private const float baseDieTimerCount = 5f;
+    private const float BaseDieTimerCount = 5f;
 
-    private const float baseDieEffectScale = 10f;
-    protected override void Start()
-    {
-        base.Start();
-    }
+    private const float BaseDieEffectScale = 10f;
 
     protected override void InitializeAssign()
     {
         base.InitializeAssign();
-        bossStateInput = new BossInput(this);
-        if(bossStateInput != null)
+        bossState = new BossState(this);
+        if(bossState != null)
         {
-            bossStateInput.Initilaize();
+            bossState.Initilaize();
         }
         bossDamageCommand = new BossDamageCommand(this);
 
@@ -56,7 +54,7 @@ public class BossController : EnemyController
         if (Time.timeScale <= 0) { return; }
         base.Update();
         //ボスの状態を設定
-        bossStateInput.StateInput();
+        bossState.StateInput();
         //特定のモーションを特定の条件で止めたり再生したりするメソッド
         motion.StopMotionCheck();
         //特定のモーション終了時に処理を行うメソッド
@@ -154,7 +152,7 @@ public class BossController : EnemyController
         base.Death();
     }
 
-    protected override float GetDieTimerCount(){ return baseDieTimerCount;}
+    protected override float GetDieTimerCount(){ return BaseDieTimerCount;}
 
-    protected override float GetDieEffectScale() { return baseDieEffectScale; }
+    protected override float GetDieEffectScale() { return BaseDieEffectScale; }
 }

@@ -18,7 +18,7 @@ public class DamageState : InterfaceState
         {
             case CharacterTagList.DamageTag.Fall:
                 controller.GetMotion().ForcedChangeMotion(CharacterTagList.StateTag.Damage);
-                controller.GetFallDistanceCheck().FallDamage = false;
+                controller.GetFallDistanceCheck().SetFallDamage(false);
                 break;
             case CharacterTagList.DamageTag.NormalAttack:
                 controller.GetMotion().ForcedChangeMotion(CharacterTagList.StateTag.Damage);

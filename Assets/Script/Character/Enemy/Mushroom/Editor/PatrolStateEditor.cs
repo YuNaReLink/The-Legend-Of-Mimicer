@@ -4,9 +4,9 @@ using UnityEngine;
 [CustomEditor(typeof(PatrolState))]
 public class PatrolStateEditor : Editor
 {
-    const string PatrolPointsPropertyName = "patrolPoints";
-    SerializedProperty positionArray;
-    GUIStyle labelStype;
+    private const string        PatrolPointsPropertyName = "patrolPoints";
+    private SerializedProperty  positionArray;
+    private GUIStyle            labelStype;
 
     private void OnEnable()
     {

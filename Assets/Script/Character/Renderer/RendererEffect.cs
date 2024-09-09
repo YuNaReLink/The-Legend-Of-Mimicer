@@ -1,22 +1,21 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RendererEffect : MonoBehaviour
 {
-    private CharacterController characterController = null;
+    private CharacterController     characterController = null;
     public RendererEffect(CharacterController _controller)
     {
         characterController = _controller;
     }
 
-    private Color damageColor = Color.red;
+    private Color                   damageColor = Color.red;
 
     // êFÇ™ïœÇÌÇÈÇÃÇ…Ç©Ç©ÇÈéûä‘
-    private float transitionDuration = 1.0f;
+    private float                   transitionDuration = 1.0f;
 
-    private float transitionTimer = 0f;
+    private float                   transitionTimer = 0f;
 
-    private bool changeFlag = false;
+    private bool                    changeFlag = false;
 
     public void ColorChange()
     {

@@ -11,12 +11,10 @@ namespace EffectTagList
         Damage,
         Death
     }
-
     public enum BreakObjectTag
     {
         Break
     }
-
     public enum SwordHitTag
     {
         Hit

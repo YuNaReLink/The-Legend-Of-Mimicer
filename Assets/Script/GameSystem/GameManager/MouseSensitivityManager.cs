@@ -1,13 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
+/// <summary>
+/// マウス感度の数値を設定するシングルトンクラス
+/// </summary>
 public class MouseSensitivityManager
 {
-    private static MouseSensitivityManager instance;
+    private static MouseSensitivityManager  instance;
     private MouseSensitivityManager() { }
 
-    public static MouseSensitivityManager Instance
+    public static MouseSensitivityManager   Instance
     {
         get
         {
@@ -18,20 +18,20 @@ public class MouseSensitivityManager
             return instance;
         }
     }
-    public readonly float MaxMouseSpeed = 10.0f;
+    public readonly float                   MaxMouseSpeed = 10.0f;
 
-    private float mouseXSpeed = 5.0f;
+    private float                           mouseXSpeed = 5.0f;
 
-    public float GetMouseXSpeed => mouseXSpeed;
+    public float                            GetMouseXSpeed => mouseXSpeed;
 
     public void SetMouseXSpeed(float speed)
     {
         mouseXSpeed = speed;
     }
 
-    private float mouseYSpeed = 5.0f;
+    private float                           mouseYSpeed = 5.0f;
 
-    public float GetMouseYSpeed => mouseYSpeed;
+    public float                            GetMouseYSpeed => mouseYSpeed;
 
     public void SetMouseYSpeed(float speed)
     {

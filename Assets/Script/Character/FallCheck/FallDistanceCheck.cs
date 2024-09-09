@@ -16,24 +16,22 @@ public class FallDistanceCheck : InterfaceBaseCommand
     //どのぐらいの高さからダメージを与えるか
     private const float         takeDamageDistance = 10f;
     /// <summary>
-    /// 落ちてるかどうかのフラグ
-    /// </summary>
-    private bool                fall = false;
-    /// <summary>
     /// 落下ダメージを与えるかどうかのフラグ
     /// </summary>
     private bool                fallDamage = false;
-    public bool                 FallDamage {  get { return fallDamage; } set { fallDamage = value; } }
+    public bool                 FallDamage  => fallDamage;
+    public void                 SetFallDamage(bool flag) {  fallDamage = flag; }
 
     //初期化
     public void Initialize()
     {
         fallenDistance = 0f;
         fallenPosition = controller.transform.position.y;
-        fall = false;
         fallDamage = false;
     }
-
+    /// <summary>
+    /// 落下の計算を行う関数
+    /// </summary>
     public void Execute()
     {
         if (!controller.CharacterStatus.Landing)
@@ -47,7 +45,9 @@ public class FallDistanceCheck : InterfaceBaseCommand
             fallenDistance = 0;
         }
     }
-
+    /// <summary>
+    /// 落下から着地した時に呼び出す関数
+    /// </summary>
     public void CollisionEnter()
     {
         //　落下距離を計算
@@ -59,7 +59,9 @@ public class FallDistanceCheck : InterfaceBaseCommand
             fallDamage = true;
         }
     }
-
+    /// <summary>
+    /// 着地フラグがfalseになった時に呼び出す関数
+    /// </summary>
     public void CollisionExit()
     {
         //　最初の落下地点を設定

@@ -1,5 +1,4 @@
 using UnityEngine;
-using CharacterTagList;
 
 /// <summary>
 /// 剣の斬撃エフェクトを管理するクラス

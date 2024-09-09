@@ -8,18 +8,22 @@ public class RollingCommand : InterfaceBaseCommand
         controller = _controller;
     }
 
+    private const float MinRollProgress = 0.05f;
+
+    private const float EndRollProgress = 1.0f;
+
     public void Execute()
     {
         PlayerTimers timer = controller.GetTimer();
         if (!timer.GetTimerNoAccele().IsEnabled()){ return; }
         controller.GetKeyInput().RollTimer += Time.deltaTime;
         float rollProgress = controller.GetKeyInput().RollTimer / timer.GetTimerNoAccele().GetInitCount();
-        if(rollProgress <= 0.05f)
+        if(rollProgress <= MinRollProgress)
         {
             controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Rolling);
         }
         //ローリングが終わったらローリング開始時の初速度をプレイヤーに返す
-        else if(rollProgress > 1.0f)
+        else if(rollProgress > EndRollProgress)
         {
             //ローリングが終わったら初速度を代入
             controller.CharacterRB.velocity = controller.GetKeyInput().InitVelocity;
@@ -64,7 +68,7 @@ public class RollingCommand : InterfaceBaseCommand
             if(animInfo.normalizedTime <= 0.0f) { return; }
             if (controller.CharacterStatus.Landing&&!controller.CharacterStatus.Jumping)
             {
-                RollingJump(1000f);
+                RollingJump(controller.GetData().RollingJumpPower);
                 controller.CharacterStatus.Jumping = true;
             }
         }

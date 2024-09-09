@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class MushroomState : MonoBehaviour
 {
-    private MushroomController controller = null;
+    private MushroomController      controller = null;
 
-    private const float minAttackDistance = 2.0f;
+    private const float             MinAttackDistance = 2.0f;
 
-    private PatrolState patrolState = null;
+    private const float             AttackCoolDownCount = 3f;
+
+    private PatrolState             patrolState = null;
     public void SetController(MushroomController _controller)
     {
         controller = _controller;
@@ -72,20 +74,13 @@ public class MushroomState : MonoBehaviour
         controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Run);
     }
 
-    private void StopInput()
-    {
-        controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Idle);
-        controller.CharacterRB.velocity = Vector3.zero;
-        controller.GetTimer().GetTimerIdle().StartTimer(3f);
-    }
-
     private void AttackMode()
     {
         if (controller.GetTimer().GetTimerAttackCoolDown().IsEnabled()) { return; }
         if (controller.Target != null)
         {
             float dis = MathDistanceAndPlayer();
-            if (dis > minAttackDistance)
+            if (dis > MinAttackDistance)
             {
                 controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Run);
             }
@@ -103,6 +98,6 @@ public class MushroomState : MonoBehaviour
     private void AttackInput()
     {
         controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Attack);
-        controller.GetTimer().GetTimerAttackCoolDown().StartTimer(3f);
+        controller.GetTimer().GetTimerAttackCoolDown().StartTimer(AttackCoolDownCount);
     }
 }

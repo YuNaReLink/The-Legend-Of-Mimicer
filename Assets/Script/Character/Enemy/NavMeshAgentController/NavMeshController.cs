@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class NavMeshController
 {
-    private NavMeshAgent agent = null;
+    private NavMeshAgent        agent = null;
 
-    private EnemyController controller = null;
-    public bool Arrival() { return agent.remainingDistance <= agent.stoppingDistance; }
+    private EnemyController     controller = null;
+    public bool                 Arrival() { return agent.remainingDistance <= agent.stoppingDistance; }
 
     public NavMeshController(NavMeshAgent _agent,EnemyController _controller)
     {

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,20 +23,20 @@ public class PlayerLifeUI : MonoBehaviour
     /// ハートの画像配列
     /// </summary>
     [SerializeField]
-    private Sprite[] heartSprites = new Sprite[5];
+    private Sprite[]            heartSprites = new Sprite[5];
 
-    private static float heartNum = 0;
-    public static float GetHeartNum() {  return heartNum; }
+    private static float        heartNum = 0;
+    public static float         GetHeartNum() {  return heartNum; }
 
     [SerializeField]
-    private GameObject heartObject = null;
+    private GameObject          heartObject = null;
     [SerializeField]
-    private List<GameObject> heartArray = new List<GameObject>();
-    private List<Image> heartImages = new List<Image>();
+    private List<GameObject>    heartArray = new List<GameObject>();
+    private List<Image>         heartImages = new List<Image>();
     [SerializeField]
-    private Transform parentTransform = null;
+    private Transform           parentTransform = null;
 
-    private PlayerConnectionUI uiController = null;
+    private PlayerConnectionUI  uiController = null;
 
     public void Initilaize(PlayerConnectionUI playerConnectionUI)
     {

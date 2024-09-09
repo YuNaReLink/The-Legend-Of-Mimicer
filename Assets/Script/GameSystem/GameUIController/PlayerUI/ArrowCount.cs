@@ -3,11 +3,11 @@ using UnityEngine.UI;
 
 public class ArrowCount : MonoBehaviour
 {
-    private PlayerController playerController;
+    private PlayerController        playerController;
 
-    private Text arrowText = null;
+    private Text                    arrowText = null;
 
-    private int uiArrowCount = 20;
+    private int                     uiArrowCount = 20;
 
     public void AwakeInitilaize(PlayerController _playerController)
     {

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -8,11 +6,11 @@ public class CharacterScriptableObject : ScriptableObject
     /// <summary>
     /// ƒ[ƒJƒ‹•Ï”
     /// </summary>
-    [SerializeField]
+    [Header("Å‘åHP"), SerializeField]
     protected float maxHP;
-    [SerializeField]
+    [Header("ˆÚ“®‰Á‘¬—Í"), SerializeField]
     protected float acceleration;
-    [SerializeField]
+    [Header("ˆÚ“®Å‘å‘¬“x"), SerializeField]
     protected float maxSpeed;
 
     public float MaxHP { get { return maxHP; } }

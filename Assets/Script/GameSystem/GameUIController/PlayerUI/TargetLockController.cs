@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TargetLockController : MonoBehaviour
 {
-    private PlayerConnectionUI playerConnectionUI = null;
+    private PlayerConnectionUI      playerConnectionUI = null;
 
     [SerializeField]
-    private GameObject lockOnUI = null;
+    private GameObject              lockOnUI = null;
 
 
     public void Initialize(PlayerConnectionUI _playerConnectionUI)

@@ -5,8 +5,8 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
     [SerializeField]
-    protected CharacterStatus characterStatus;
-    public CharacterStatus CharacterStatus => characterStatus;
+    protected CharacterStatus               characterStatus;
+    public CharacterStatus                  CharacterStatus => characterStatus;
     /// <summary>
     /// アニメーターインスタンス
     /// </summary>
@@ -32,7 +32,8 @@ public class CharacterController : MonoBehaviour
     /// <summary>
     /// 着地判定
     /// </summary>
-    protected GroundCheck                   groundCheck = null;
+    [SerializeField]
+    protected GroundCheck                   groundCheck;
     
     /// <summary>
     /// エフェクトを管理するクラス
@@ -92,13 +93,7 @@ public class CharacterController : MonoBehaviour
             Debug.LogError("Rigidbodyがアタッチされていません");
         }
 
-        groundCheck = GetComponent<GroundCheck>();
-        if (groundCheck == null)
-        {
-            transform.AddComponent<GroundCheck>();
-            groundCheck = GetComponent<GroundCheck>();
-            Debug.Log("GroundCheckがアタッチされていなかったのでアタッチしました");
-        }
+        groundCheck.SetTransform(transform);
 
         effectController = GetComponent<EffectController>();
         if(effectController == null)

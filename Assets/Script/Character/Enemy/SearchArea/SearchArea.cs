@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 public class SearchArea : MonoBehaviour
@@ -21,7 +20,15 @@ public class SearchArea : MonoBehaviour
     private void Awake()
     {
         controller = GetComponentInParent<EnemyController>();
+        if(controller == null)
+        {
+            Debug.LogError("EnemyControllerがアタッチされていません");
+        }
         searchArea = GetComponent<SphereCollider>();
+        if(searchArea == null)
+        {
+            Debug.LogError("SphereColliderがアタッチされていません");
+        }
     }
     private void OnTriggerStay(Collider other)
     {
@@ -32,16 +39,16 @@ public class SearchArea : MonoBehaviour
         PlayerController playerController = other.GetComponent<PlayerController>();
         if(playerController == null) { return; }
         //Rayを飛ばす方向を計算
-        Vector3 temp =                      other.transform.position - transform.position;
-        direction =                         temp.normalized;
+        Vector3 temp = other.transform.position - transform.position;
+        direction = temp.normalized;
         //Rayを飛ばす
-        ray =                               new Ray(transform.position, direction);
+        ray = new Ray(transform.position, direction);
         // Rayをシーン上に描画
         Debug.DrawRay(ray.origin, ray.direction * distance, Color.red);  
         //主人公の方向
-        var playerDirection =               other.transform.position - transform.position;
+        var playerDirection = other.transform.position - transform.position;
         //敵の前方からの主人公の方向
-        var angle =                         Vector3.Angle(transform.forward, playerDirection);
+        var angle = Vector3.Angle(transform.forward, playerDirection);
         //サーチする角度内だったら発見
         if (angle <= searchAngle)
         {
@@ -51,13 +58,8 @@ public class SearchArea : MonoBehaviour
                 if (hit.collider.CompareTag("Player"))
                 {
                     controller.Target = playerController;
-                    Debug.Log("プレイヤーを見つけてる");
                 }
             }
-        }
-        else
-        {
-            Debug.Log("プレイヤーを見つけていない");
         }
     }
 

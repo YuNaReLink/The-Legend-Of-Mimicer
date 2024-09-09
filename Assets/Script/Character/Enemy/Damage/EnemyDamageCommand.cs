@@ -1,4 +1,5 @@
 using UnityEngine;
+using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
 public class EnemyDamageCommand : InterfaceBaseCommand
 {
@@ -11,8 +12,8 @@ public class EnemyDamageCommand : InterfaceBaseCommand
     public GameObject           Attacker { get { return attacker; } set { attacker = value; } }
 
     protected bool              damageFlag = false;
-    public bool                 DamageFlag {  get { return damageFlag; } set { damageFlag = value; } }
-
+    public bool                 DamageFlag {  get { return damageFlag; }}
+    public void                 SetDamageFlag(bool flag) {  damageFlag = flag; }
     public virtual void Execute()
     {
         //ダメージフラグがfalseなら早期リターン
@@ -21,11 +22,9 @@ public class EnemyDamageCommand : InterfaceBaseCommand
         ToolController tool = attacker.GetComponent<ToolController>();
         //toolがnullなら
         if(tool == null) { return; }
-        //tool内にあるデータからHPを減らす
-        WeaponStateData data = tool.GetStatusData();
-        controller.CharacterStatus.HP -= data.BaseDamagePower;
-        controller.GetKnockBackCommand().KnockBackFlag = true;
-        controller.GetKnockBackCommand().Attacker = attacker;
+        controller.CharacterStatus.HP -= tool.AttackPower;
+        controller.GetKnockBackCommand().SetKnockBackFlag(true);
+        controller.GetKnockBackCommand().SetAttacker(attacker);
         controller.GetTimer().GetTimerAttackCoolDown().StartTimer(2f);
         damageFlag = false;
         attacker = null;
@@ -36,9 +35,9 @@ public class EnemyDamageCommand : InterfaceBaseCommand
     {
         //HPが0以降なら
         if (controller.CharacterStatus.HP > 0) { return; }
-        controller.GetKnockBackCommand().KnockBackFlag = false;
-        controller.GetKnockBackCommand().Attacker = null;
-        HitStopManager.instance.StartHitStop(0.5f);
+        controller.GetKnockBackCommand().SetKnockBackFlag(false);
+        controller.GetKnockBackCommand().SetAttacker(null);
+        HitStopManager.instance.StartHitStop(HitStopManager.instance.HitStopCount);
         controller.Death();
     }
 

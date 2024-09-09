@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Movement
 {
-    private CharacterController controller = null;
+    private CharacterController     controller = null;
 
-    private Transform thisTransform = null;
+    private Transform               thisTransform = null;
 
     public Movement(GameObject gameObject)
     {
@@ -16,7 +16,7 @@ public class Movement
         thisTransform = gameObject.transform;
     }
 
-    private const float MoveSpeedApproximately = 0.1f;
+    private const float             MoveSpeedApproximately = 0.1f;
 
     public void MoveTo(Vector3 targetPoint, float targetMoveSpeed, float moveSpeedChangeRate, float rotationSpeed, float time)
     {

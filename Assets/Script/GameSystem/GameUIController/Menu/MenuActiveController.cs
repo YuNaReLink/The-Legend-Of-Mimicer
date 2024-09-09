@@ -3,9 +3,9 @@ using UnityEngine;
 public class MenuActiveController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject menuParent = null;
+    private GameObject      menuParent = null;
 
-    private MenuController menuController = null;
+    private MenuController  menuController = null;
 
 
     public void AwakeInitialize()

@@ -1,24 +1,27 @@
 using UnityEngine;
 
+/// <summary>
+/// 巡回時の処理を行うクラス
+/// </summary>
 public class PatrolState : MonoBehaviour
 {
-    private Transform thisTransform;
+    private Transform       thisTransform;
 
-    int currentPoint = 0;
-    public int CurrentPoint => currentPoint;
-
-    [SerializeField]
-    Vector3[] patrolPoints;
+    private int             currentPoint = 0;
+    public int              CurrentPoint => currentPoint;
 
     [SerializeField]
-    float moveSpeed = 8;
-    [SerializeField]
-    float rotationSpeed = 8;
-    [SerializeField]
-    float moveSpeedChangeRate = 8;
+    private Vector3[]       patrolPoints;
 
-    private Movement movement = null;
-    public Movement GetMovement() { return movement; }
+    [SerializeField]
+    private float           moveSpeed = 8f;
+    [SerializeField]
+    private float           rotationSpeed = 8f;
+    [SerializeField]
+    private float           moveSpeedChangeRate = 8f;
+
+    private Movement        movement = null;
+    public Movement         GetMovement() { return movement; }
 
     public void AwakeInitilaize()
     {
@@ -30,7 +33,10 @@ public class PatrolState : MonoBehaviour
     {
         currentPoint = GetMinDistancePointIndex();
     }
-
+    /// <summary>
+    /// 巡回の移動処理と巡回ポイントの設定を行う
+    /// </summary>
+    /// <param name="time"></param>
     public void PatrolFixedUpdate(float time)
     {
         movement.MoveTo(patrolPoints[currentPoint], moveSpeed, moveSpeedChangeRate, rotationSpeed, time);
@@ -44,7 +50,9 @@ public class PatrolState : MonoBehaviour
             NextPoint();
         }
     }
-
+    /// <summary>
+    /// 次の巡回ポイントを設定する関数
+    /// </summary>
     void NextPoint()
     {
         currentPoint++;
@@ -53,7 +61,10 @@ public class PatrolState : MonoBehaviour
             currentPoint = 0;
         }
     }
-
+    /// <summary>
+    /// 巡回するオブジェクトから一番近い巡回ポイントを巡回開始地点に設定する関数
+    /// </summary>
+    /// <returns></returns>
     private int GetMinDistancePointIndex()
     {
         int re = currentPoint;

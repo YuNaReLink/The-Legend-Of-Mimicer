@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class KnockBackCommand : InterfaceBaseCommand
 {
-    private CharacterController controller = null;
+    private CharacterController         controller = null;
     public KnockBackCommand(CharacterController _controller)
     {
         controller = _controller;
     }
-    private bool knockBackFlag = false;
-    public bool KnockBackFlag { get {  return knockBackFlag; } set { knockBackFlag = value; } }
+    private bool                        knockBackFlag = false;
+    public void                         SetKnockBackFlag(bool flag) {  knockBackFlag = flag; }
 
-    private GameObject attacker = null;
-    public GameObject Attacker { get { return attacker; } set { attacker = value; } }
+    private GameObject                  attacker = null;
+    public void                         SetAttacker(GameObject g) {  attacker = g; }
 
     public void Execute()
     {
