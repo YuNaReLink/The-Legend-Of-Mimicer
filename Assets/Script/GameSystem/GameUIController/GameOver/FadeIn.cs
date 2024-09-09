@@ -4,16 +4,16 @@ using UnityEngine.UI;
 public class FadeIn : MonoBehaviour
 {
     [SerializeField]
-    private Image panel = null;
+    private Image       panel = null;
 
     [SerializeField]
-    private float fadeTime = 2f;
-    private bool fadeEnd = false;
-    public bool IsFadeEnd() { return fadeEnd; }
-    public GameObject SelfObject() { return gameObject; }
-    public bool IsActiveObject() { return gameObject.activeSelf; }
+    private float       fadeTime = 2f;
+    private bool        fadeEnd = false;
+    public bool         IsFadeEnd() { return fadeEnd; }
+    public GameObject   SelfObject() { return gameObject; }
+    public bool         IsActiveObject() { return gameObject.activeSelf; }
 
-    public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
+    public void         SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
 
     public void AwakeInitilaize()
     {

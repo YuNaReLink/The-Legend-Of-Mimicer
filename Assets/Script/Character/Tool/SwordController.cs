@@ -1,4 +1,3 @@
-using CharacterTagList;
 using UnityEngine;
 
 /// <summary>
@@ -7,14 +6,25 @@ using UnityEngine;
 /// </summary>
 public class SwordController : ToolController
 {
+    public override float AttackPower => base.AttackPower * ratioPower;
+
+    private float ratioPower = 1f;
+
+    public override void SetController(CharacterController _controller)
+    {
+        base.SetController(_controller);
+        player = controller.GetComponent<PlayerController>();
+    }
+    private PlayerController player = null;
+
     public override ToolTag GetToolTag() { return ToolTag.Sword; }
     private SwordEffectController effect = null;
 
-    private StateTag[] StateArray = new StateTag[]
+    private CharacterTagList.StateTag[] StateArray = new CharacterTagList.StateTag[]
     {
-        StateTag.Attack,
-        StateTag.JumpAttack,
-        StateTag.SpinAttack,
+        CharacterTagList.StateTag.Attack,
+        CharacterTagList.StateTag.JumpAttack,
+        CharacterTagList.StateTag.SpinAttack,
     };
 
     /// <summary>
@@ -39,9 +49,9 @@ public class SwordController : ToolController
         new Vector3(0.6f,1.8f,0.2f),
         new Vector3(1,3.5f,1)
     };
-    private void Awake()
+    protected override void Awake()
     {
-        collider = GetComponent<Collider>();
+        base.Awake();
         if (collider != null)
         {
             boxCollider = collider.GetComponent<BoxCollider>();
@@ -60,6 +70,7 @@ public class SwordController : ToolController
     void Update()
     {
         ActiveCheck();
+        SetAttackPower();
         SetColliderSize();
     }
 
@@ -67,7 +78,7 @@ public class SwordController : ToolController
     {
         if (controller == null) { return; }
         if (collider == null) { return; }
-        StateTag state = controller.CharacterStatus.CurrentState;
+        CharacterTagList.StateTag state = controller.CharacterStatus.CurrentState;
         if (MotionTimeCheck(state))
         {
             effect.PlayTrail();
@@ -79,25 +90,25 @@ public class SwordController : ToolController
             collider.enabled = false;
         }
     }
-    private bool MotionTimeCheck(StateTag tag)
+    private bool MotionTimeCheck(CharacterTagList.StateTag tag)
     {
         AnimatorStateInfo animInfo = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
         PlayerController player = controller.GetComponent<PlayerController>();
         switch (tag)
         {
-            case StateTag.Attack:
+            case CharacterTagList.StateTag.Attack:
                 if (TripleAttackCheck(animInfo))
                 {
                     return true;
                 }
                 break;
-            case StateTag.JumpAttack:
+            case CharacterTagList.StateTag.JumpAttack:
                 if (animInfo.normalizedTime >= 0.3f && animInfo.normalizedTime < 0.5f)
                 {
                     return true;
                 }
                 break;
-            case StateTag.SpinAttack:
+            case CharacterTagList.StateTag.SpinAttack:
                 if (animInfo.normalizedTime < 0.3f)
                 {
                     return true;
@@ -115,19 +126,19 @@ public class SwordController : ToolController
         PlayerController player = controller.GetComponent<PlayerController>();
         switch (player.TripleAttack)
         {
-            case TripleAttack.First:
+            case CharacterTagList.TripleAttack.First:
                 if (animInfo.normalizedTime >= 0.3f && animInfo.normalizedTime < 0.7f)
                 {
                     return true;
                 }
                 break;
-            case TripleAttack.Second:
+            case CharacterTagList.TripleAttack.Second:
                 if (animInfo.normalizedTime >= 0.1f && animInfo.normalizedTime < 0.4f)
                 {
                     return true;
                 }
                 break;
-            case TripleAttack.Three:
+            case CharacterTagList.TripleAttack.Three:
                 if (animInfo.normalizedTime >= 0.5f && animInfo.normalizedTime < 0.7f)
                 {
                     return true;
@@ -137,18 +148,34 @@ public class SwordController : ToolController
         return false;
     }
 
+    private void SetAttackPower()
+    {
+        switch (controller.CharacterStatus.CurrentState)
+        {
+            case CharacterTagList.StateTag.Attack:
+                ratioPower = statusData.BaseDamagePower;
+                break;
+            case CharacterTagList.StateTag.JumpAttack:
+                ratioPower = player.GetData().StrongAttackPowerRatio1;
+                break;
+            case CharacterTagList.StateTag.SpinAttack:
+                ratioPower = player.GetData().StrongAttackPowerRatio2;
+                break;
+        }
+    }
+
     private void SetColliderSize()
     {
         if (controller == null) { return; }
         if (collider == null) { return; }
         if(boxCollider == null) { return; }
         if(controller.CharacterStatus.CurrentState == controller.CharacterStatus.PastState) { return; }
-        StateTag state = controller.CharacterStatus.CurrentState;
+        CharacterTagList.StateTag state = controller.CharacterStatus.CurrentState;
         Vector3 center = boxCollider.center;
         Vector3 size = boxCollider.size;
         switch (state)
         {
-            case StateTag.SpinAttack:
+            case CharacterTagList.StateTag.SpinAttack:
                 center = colliderCenter[(int)ColliderType.SpinAttack];
                 size  = colliderScale[(int)ColliderType.SpinAttack];
                 break;

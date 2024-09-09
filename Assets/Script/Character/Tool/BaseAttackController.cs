@@ -2,27 +2,38 @@ using UnityEngine;
 
 public class BaseAttackController : MonoBehaviour
 {
-    public virtual ToolTag GetToolTag() { return ToolTag.Null; }
+    [SerializeField]
+    protected float                 attackPower = 0;
+    public virtual float            AttackPower => attackPower;
+
+    public virtual ToolTag          GetToolTag() { return ToolTag.Null; }
 
     [SerializeField]
-    protected CharacterController controller = null;
+    protected CharacterController   controller = null;
 
-    public void SetController(CharacterController _controller)
+    public virtual void SetController(CharacterController _controller)
     {
         controller = _controller;
     }
 
     [SerializeField]
-    protected Collider collider = null;
+    protected Collider              collider = null;
 
     [SerializeField]
-    private WeaponStateData statusData = null;
-    public WeaponStateData GetStatusData() { return statusData; }
-    private void Awake()
+    protected WeaponStateData       statusData = null;
+    public WeaponStateData          GetStatusData() { return statusData; }
+    protected virtual void Awake()
     {
         controller = GetComponentInParent<CharacterController>();
 
         collider = GetComponent<Collider>();
-
+        if (collider == null)
+        {
+            Debug.LogError("colliderがアタッチされていません");
+        }
+        if (statusData != null)
+        {
+            attackPower = statusData.BaseDamagePower;
+        }
     }
 }

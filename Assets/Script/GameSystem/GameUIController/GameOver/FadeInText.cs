@@ -3,18 +3,16 @@ using UnityEngine.UI;
 
 public class FadeInText : MonoBehaviour
 {
-    private Text gameOverText = null;
+    private Text        gameOverText = null;
 
-    private Color textColor;
+    private Color       textColor;
 
     [SerializeField]
-    private float fadeTime = 2f;
+    private float       fadeTime = 2f;
 
-    private bool textFadeEnd = false;
-    public bool IsTextFadeEnd() { return textFadeEnd; }
-    public GameObject SelfObject() { return gameObject; }
-    public bool IsActiveObject() { return gameObject.activeSelf; }
-    public void SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
+    private bool        textFadeEnd = false;
+    public bool         IsTextFadeEnd() { return textFadeEnd; }
+    public GameObject   SelfObject() { return gameObject; }
     public void AwakeInitilaize()
     {
         gameOverText = GetComponent<Text>();

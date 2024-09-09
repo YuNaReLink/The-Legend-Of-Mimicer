@@ -8,10 +8,14 @@ using System.Collections;
 public class HitStopManager : MonoBehaviour
 {
     // どこからでも呼び出せるようにする
-    public static HitStopManager instance;
+    public static HitStopManager    instance;
 
-    private bool hitStop = false;
-    public bool IsHitStop() { return hitStop; }
+    private bool                    hitStop = false;
+    public bool                     IsHitStop() { return hitStop; }
+
+    private const float             hitStopCount = 0.5f;
+
+    public float                    HitStopCount => hitStopCount;
 
     private void Start()
     {
@@ -35,7 +39,7 @@ public class HitStopManager : MonoBehaviour
     {
         hitStop = true;
         // ヒットストップの開始
-        Time.timeScale = 0f;
+        Time.timeScale = 0.1f;
 
         // 指定した時間だけ停止
         yield return new WaitForSecondsRealtime(duration);

@@ -11,8 +11,6 @@ public class GameClearUIController : MonoBehaviour
 
     private MoverButton             gameClearButtons = null;
 
-    public GameObject               SelfObject() { return gameObject; }
-
     public bool                     IsActiveObject() { return gameObject.activeSelf; }
 
     public void                     SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }

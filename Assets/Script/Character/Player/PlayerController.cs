@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
 
 public class PlayerController : CharacterController
@@ -189,23 +190,34 @@ public class PlayerController : CharacterController
     protected override void Update()
     {
         base.Update();
+
         keyInput.SystemInput();
+
         if (Time.timeScale <= 0) { return; }
+
         //タイマーの更新
         timer.TimerUpdate();
+
         //着地時の判定
         LandingCheck();
+
         if(characterStatus.StopController) { return; }
+
         //障害物との当たり判定
         obstacleCheck.WallCheckInput();
+
         //入力の更新
         keyInput.UpdateInput();
+
         //キーの入力にあった状態に変化
         state.StateUpdate();
+
         //武器や盾の位置を状態によって変える
         toolInventory.UpdateTool();
+
         //特定のモーションを特定の条件で止めたり再生したりするメソッド
         motion.StopMotionCheck();
+
         //特定のモーション終了時に処理を行うメソッド
         motion.EndMotionNameCheck();
     }
@@ -221,7 +233,7 @@ public class PlayerController : CharacterController
         }
         if (!characterStatus.Landing) { return; }
         obstacleCheck.CliffJumpFlag = false;
-        obstacleCheck.GrabCancel = false;
+        obstacleCheck.SetGrabCancel(false);
         if (!timer.GetTimerNoAccele().IsEnabled()&&
             !timer.GetTimerJumpAttackAccele().IsEnabled())
         {
@@ -428,8 +440,8 @@ public class PlayerController : CharacterController
                 break;
             case CharacterTagList.GuardState.Normal:
             case CharacterTagList.GuardState.Crouch:
-                knockBackCommand.KnockBackFlag = true;
-                knockBackCommand.Attacker = other.gameObject;
+                knockBackCommand.SetKnockBackFlag(true);
+                knockBackCommand.SetAttacker(other.gameObject);
                 soundController.PlaySESound((int)SoundTagList.PlayerSoundTag.Guard);
                 break;
         }

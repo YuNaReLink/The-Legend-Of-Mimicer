@@ -1,4 +1,3 @@
-using CharacterTagList;
 using UnityEngine;
 
 public class ShieldController : ToolController
@@ -19,8 +18,8 @@ public class ShieldController : ToolController
     {
         switch (controller.CharacterStatus.GuardState)
         {
-            case GuardState.Normal:
-            case GuardState.Crouch:
+            case CharacterTagList.GuardState.Normal:
+            case CharacterTagList.GuardState.Crouch:
                 return true;
         }
         return false;

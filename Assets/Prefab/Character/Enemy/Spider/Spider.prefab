@@ -66,6 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd6eca9e257a1f4785df4fcdbf4af42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackPower: 0
   controller: {fileID: 0}
   collider: {fileID: 0}
   statusData: {fileID: 11400000, guid: 3e0eb79e6af1f00468ac4cc5b9727431, type: 2}
@@ -84,7 +85,6 @@ GameObject:
   - component: {fileID: 4748190420336695491}
   - component: {fileID: 3167589874690786603}
   - component: {fileID: 4081459926770389903}
-  - component: {fileID: 7202614473235178191}
   - component: {fileID: 1712639282010056007}
   - component: {fileID: 638804887594730782}
   - component: {fileID: 8149440704343291490}
@@ -230,42 +230,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f3073627e65bc94fbf2fb0987e1a35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: -1
-  pastState: -1
-  maxHp: 0
-  hp: 0
-  death: 0
-  velocity: {x: 0, y: 0, z: 0}
-  guardState: -1
-  input: 0
-  landing: 0
-  jumping: 0
-  jumpPower: 0
-  stopController: 0
+  characterStatus:
+    currentState: -1
+    pastState: -1
+    maxHp: 0
+    hp: 0
+    death: 0
+    velocity: {x: 0, y: 0, z: 0}
+    guardState: -1
+    input: 0
+    landing: 0
+    jumping: 0
+    jumpPower: 0
+    stopController: 0
+  groundCheck:
+    groundCheckRadius: 0.4
+    groundCheckOffsetY: 0.45
+    groundCheckDistance: 0.2
+    groundLayers:
+      serializedVersion: 2
+      m_Bits: 8
   battleMode: 0
   data: {fileID: 11400000, guid: b60f5fa329eb4ac439552db1da9771f0, type: 2}
   foundPlayer: 0
   target: {fileID: 0}
   goalPosition: {x: 0, y: 0, z: 0}
   loiterRadius: 10
---- !u!114 &7202614473235178191
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 347817752896502674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c31a24fc3a8cc54e89c06678c910b17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundCheckRadius: 0.4
-  groundCheckOffsetY: 0.45
-  groundCheckDistance: 0.2
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &1712639282010056007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,7 +305,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 5
   MinDistance: 1
-  MaxDistance: 10
+  MaxDistance: 25
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 1
@@ -509,7 +499,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1482ce12e980942ad2d9981bc3e98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
   angle: 130
 --- !u!1001 &5025871385281424107
 PrefabInstance:

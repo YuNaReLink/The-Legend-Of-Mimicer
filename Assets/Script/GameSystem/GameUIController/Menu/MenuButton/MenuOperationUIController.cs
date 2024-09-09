@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuOperationUIController : MonoBehaviour
 {
-    private List<Image> imageList = new List<Image>();
+    private List<Image>             imageList = new List<Image>();
 
     private enum MenuOperation
     {
@@ -14,7 +13,7 @@ public class MenuOperationUIController : MonoBehaviour
     }
 
     [SerializeField]
-    private List<SpriteObjectData> spriteObjectDataList = new List<SpriteObjectData>();
+    private List<SpriteObjectData>  spriteObjectDataList = new List<SpriteObjectData>();
 
 
     public void AwakeInitilaize()

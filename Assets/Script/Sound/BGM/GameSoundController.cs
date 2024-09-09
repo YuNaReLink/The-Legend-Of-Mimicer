@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameSoundController : SoundController
@@ -25,14 +23,14 @@ public class GameSoundController : SoundController
         }
     }
 
-    private bool changeBGM = false;
+    private bool        changeBGM = false;
 
-    private AudioClip saveBGMClip = null;
+    private AudioClip   saveBGMClip = null;
 
     private const float volumSpeed = 0.01f;
 
     private const float BGMVolumData = 1.0f;
-    public float GetBGMVolumData() { return BGMVolumData; }
+    public float        GetBGMVolumData() { return BGMVolumData; }
 
     public override void AwakeInitilaize()
     {

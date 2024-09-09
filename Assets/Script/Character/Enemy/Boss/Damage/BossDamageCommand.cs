@@ -16,7 +16,7 @@ public class BossDamageCommand : EnemyDamageCommand, InterfaceState
     {
         StunInput();
     }
-    private const float stunTimerCount = 5f;
+    private const float stunTimerCount = 7f;
     private void StunInput()
     {
         //怯みフラグがfalseなら早期リターン
@@ -47,6 +47,6 @@ public class BossDamageCommand : EnemyDamageCommand, InterfaceState
         //怯みモーションを開始
         bossController.GetBossSoundController().PlaySESound((int)BossSoundController.BossSoundTag.WeakPointsDamage);
         //怯みフラグを有効にする
-        bossController.StunFlag = false;
+        bossController.SetStunFlag(false);
     }
 }

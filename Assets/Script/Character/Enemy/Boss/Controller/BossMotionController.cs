@@ -1,5 +1,19 @@
 using UnityEngine;
 
+public class BossMotionName
+{
+    private string[] motionName = new string[]
+    {
+        "Idle",
+        "walk",
+        "stampAttack",
+        "guard",
+        "stun",
+        "returnUp"
+    };
+    public string[] GetMotionName() { return motionName; }
+}
+
 public class BossMotionController : MotionController
 {
     private BossController controller = null;
@@ -134,7 +148,7 @@ public class BossMotionController : MotionController
                 break;
             case "stun":
                 //怯み終わりに復帰フラグをON
-                controller.RevivalFlag = true;
+                controller.SetRevivalFlag(true);
                 break;
             case "returnUp":
                 controller.CharacterStatus.CurrentState = CharacterTagList.StateTag.Null;

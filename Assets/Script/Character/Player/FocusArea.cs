@@ -80,22 +80,18 @@ public class FocusArea : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Target")
+        if (other.tag != "Target") { return; }
+        RemoveEnemyList(other);
+        if (GameSceneSystemController.Instance.BattleStart)
         {
-            RemoveEnemyList(other);
-            if (GameSceneSystemController.Instance.BattleStart)
-            {
-                GameSceneSystemController.Instance.BattleStart = false;
-            }
+            GameSceneSystemController.Instance.BattleStart = false;
         }
     }
     private void RemoveEnemyList(Collider other)
     {
         if (CameraController.LockObject == null) { return; }
-        if (CameraController.LockObject == other.gameObject)
-        {
-            CameraController.FocusFlag = false;
-            CameraController.LockObject = null;
-        }
+        if (CameraController.LockObject != other.gameObject) { return; }
+        CameraController.FocusFlag = false;
+        CameraController.LockObject = null;
     }
 }

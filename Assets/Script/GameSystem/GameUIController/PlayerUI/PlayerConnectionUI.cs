@@ -4,11 +4,11 @@ using UnityEngine;
 public class PlayerConnectionUI : MonoBehaviour
 {
     //ゲーム全体のUIのクラス
-    private GameUIController gameUIController = null;
-    public GameUIController GetGameUIController() { return gameUIController; }
+    private GameUIController        gameUIController = null;
+    public GameUIController         GetGameUIController() { return gameUIController; }
 
-    private PlayerController playerController = null;
-    public PlayerController GetPlayerController() { return playerController; }
+    private PlayerController        playerController = null;
+    public PlayerController         GetPlayerController() { return playerController; }
     /// <summary>
     /// PlayerConnectionUIの子のオブジェクトを判断するためのenum 
     /// </summary>
@@ -24,29 +24,29 @@ public class PlayerConnectionUI : MonoBehaviour
     /// <summary>
     /// 子オブジェクトのUIをまとめて取得するためのList
     /// </summary>
-    private List<GameObject> playerUIList = new List<GameObject>();
+    private List<GameObject>        playerUIList = new List<GameObject>();
     /// <summary>
     /// プレイヤーの体力のUIを管理するクラス
     /// </summary>
-    private PlayerLifeUI playerLifeUI = null;
-    public PlayerLifeUI GetPlayerLifeUI() { return playerLifeUI; }
+    private PlayerLifeUI            playerLifeUI = null;
+    public PlayerLifeUI             GetPlayerLifeUI() { return playerLifeUI; }
     /// <summary>
     /// プレイヤーが持つクロスボウの矢の数のUIを管理するクラス
     /// </summary>
-    private ArrowCount arrowCount = null;
+    private ArrowCount              arrowCount = null;
     /// <summary>
     /// プレイヤーが入力するキーのUIを管理するクラス
     /// </summary>
-    private KeyInputUIController keyInputUIController = null;
-    public KeyInputUIController GetKeyInputUIController() { return keyInputUIController; }
+    private KeyInputUIController    keyInputUIController = null;
+    public KeyInputUIController     GetKeyInputUIController() { return keyInputUIController; }
     /// <summary>
     /// 注目したときにターゲットに表示させるUIの管理をするクラス
     /// </summary>
-    private TargetLockController targetLockController = null;
+    private TargetLockController    targetLockController = null;
     /// <summary>
     /// Tabキーを押したときに表示するメニューの管理をするクラス
     /// </summary>
-    private MenuActiveController menuActiveController = null;
+    private MenuActiveController    menuActiveController = null;
 
     //GameUIControllerのAwakeに記述する関数
     public void AwakeInitilaize(GameUIController _gameUIController)

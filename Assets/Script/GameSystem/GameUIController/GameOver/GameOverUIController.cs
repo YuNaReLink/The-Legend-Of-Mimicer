@@ -11,7 +11,6 @@ public class GameOverUIController : MonoBehaviour
 
     private MoverButton             gameOverButtons = null;
 
-    public GameObject               SelfObject() { return gameObject; }
     public bool                     IsActiveObject() { return gameObject.activeSelf; }
 
     public void                     SetActiveObject(bool enabled) {  gameObject.SetActive(enabled); }

@@ -97,10 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c94368bb00eff64bb9a0d7581afdaaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackPower: 0
   controller: {fileID: 0}
   collider: {fileID: 0}
   statusData: {fileID: 11400000, guid: e5d6fd4c312865149a86459fffe40369, type: 2}
-  itemData: {fileID: 0}
 --- !u!1 &229100017155929816
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,7 +741,6 @@ GameObject:
   - component: {fileID: 4915082991154533488}
   - component: {fileID: 9104749675323322348}
   - component: {fileID: 7251201412158598548}
-  - component: {fileID: 484838467596148043}
   - component: {fileID: 3763489184444664160}
   - component: {fileID: 432463569696995162}
   - component: {fileID: 7816887799373010782}
@@ -830,18 +829,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6308249ef7d17c14cb03cc9d73259f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: -1
-  pastState: -1
-  maxHp: 0
-  hp: 0
-  death: 0
-  velocity: {x: 0, y: 0, z: 0}
-  guardState: -1
-  input: 0
-  landing: 0
-  jumping: 0
-  jumpPower: 0
-  stopController: 0
+  characterStatus:
+    currentState: -1
+    pastState: -1
+    maxHp: 0
+    hp: 0
+    death: 0
+    velocity: {x: 0, y: 0, z: 0}
+    guardState: -1
+    input: 0
+    landing: 0
+    jumping: 0
+    jumpPower: 0
+    stopController: 0
+  groundCheck:
+    groundCheckRadius: 0.4
+    groundCheckOffsetY: 0.45
+    groundCheckDistance: 0.2
+    groundLayers:
+      serializedVersion: 2
+      m_Bits: 8
+  battleMode: 0
   data: {fileID: 11400000, guid: fdf98da741d8251408e5504be2a262e5, type: 2}
   foundPlayer: 0
   target: {fileID: 0}
@@ -849,24 +857,6 @@ MonoBehaviour:
   loiterRadius: 10
   stunFlag: 0
   revivalFlag: 0
---- !u!114 &484838467596148043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1845945369076765872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c31a24fc3a8cc54e89c06678c910b17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundCheckRadius: 0.4
-  groundCheckOffsetY: 0.45
-  groundCheckDistance: 0.2
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &3763489184444664160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -916,7 +906,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 100
+  MaxDistance: 50
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0
@@ -951,7 +941,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.75
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1960,6 +1950,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rendererList: []
+  originalColorList: []
 --- !u!1 &5110368833193833512
 GameObject:
   m_ObjectHideFlags: 0
@@ -2326,10 +2317,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c94368bb00eff64bb9a0d7581afdaaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackPower: 0
   controller: {fileID: 0}
   collider: {fileID: 0}
   statusData: {fileID: 11400000, guid: e5d6fd4c312865149a86459fffe40369, type: 2}
-  itemData: {fileID: 0}
 --- !u!1 &6395767054829027779
 GameObject:
   m_ObjectHideFlags: 0

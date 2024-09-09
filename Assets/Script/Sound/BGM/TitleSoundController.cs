@@ -1,5 +1,4 @@
 using UnityEngine;
-using static GameSoundController;
 
 public class TitleSoundController : SoundController
 {
@@ -20,14 +19,14 @@ public class TitleSoundController : SoundController
         }
     }
 
-    private bool changeBGM = false;
+    private bool        changeBGM = false;
 
-    private AudioClip saveBGMClip = null;
+    private AudioClip   saveBGMClip = null;
 
     private const float volumSpeed = 0.01f;
 
     private const float BGMVolumData = 1.0f;
-    public float GetBGMVolumData() { return BGMVolumData; }
+    public float        GetBGMVolumData() { return BGMVolumData; }
 
     public override void AwakeInitilaize()
     {
@@ -62,22 +61,22 @@ public class TitleSoundController : SoundController
             case GameManager.GameStateEnum.Pose:
                 if (GameSceneSystemController.Instance.BossBattleStart)
                 {
-                    PlayBGM((int)GameBGMSoundTag.BossBattle);
+                    PlayBGM((int)GameSoundController.GameBGMSoundTag.BossBattle);
                 }
                 else if (GameSceneSystemController.Instance.BattleStart)
                 {
-                    PlayBGM((int)GameBGMSoundTag.Battle);
+                    PlayBGM((int)GameSoundController.GameBGMSoundTag.Battle);
                 }
                 else
                 {
-                    PlayBGM((int)GameBGMSoundTag.Stage);
+                    PlayBGM((int)GameSoundController.GameBGMSoundTag.Stage);
                 }
                 break;
             case GameManager.GameStateEnum.GameOver:
-                PlayBGM((int)GameBGMSoundTag.GameOver);
+                PlayBGM((int)GameSoundController.GameBGMSoundTag.GameOver);
                 break;
             case GameManager.GameStateEnum.GameClear:
-                PlayBGM((int)GameBGMSoundTag.GameClear);
+                PlayBGM((int)GameSoundController.GameBGMSoundTag.GameClear);
                 break;
         }
     }

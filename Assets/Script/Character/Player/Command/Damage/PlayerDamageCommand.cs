@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーのダメージ処理を行うクラス
+/// </summary>
 public class PlayerDamageCommand : InterfaceBaseCommand
 {
     private PlayerController        controller = null;
@@ -35,11 +38,12 @@ public class PlayerDamageCommand : InterfaceBaseCommand
                 if (attacker == null) { return; }
                 BaseAttackController tool = attacker.GetComponent<BaseAttackController>();
                 if (tool == null) { return; }
-                WeaponStateData data = tool.GetStatusData();
-                if(data == null) { return; }
-                controller.CharacterStatus.HP-= data.BaseDamagePower;
-                controller.GetKnockBackCommand().KnockBackFlag = true;
-                controller.GetKnockBackCommand().Attacker = attacker;
+                controller.CharacterStatus.HP-= tool.AttackPower;
+                if (EnabledknockBackCheck())
+                {
+                    controller.GetKnockBackCommand().SetKnockBackFlag(true);
+                    controller.GetKnockBackCommand().SetAttacker(attacker);
+                }
                 controller.GetEffectController().CreateVFX((int)EffectTagList.CharacterEffectTag.Damage,attacker.transform.position,1f,Quaternion.identity);
                 attacker = null;
                 controller.DamageTag = CharacterTagList.DamageTag.Null;
@@ -47,5 +51,17 @@ public class PlayerDamageCommand : InterfaceBaseCommand
         }
         if(controller.CharacterStatus.HP > 0) { return; }
         controller.Death();
+    }
+
+    private bool EnabledknockBackCheck()
+    {
+        switch (controller.CharacterStatus.CurrentState)
+        {
+            case CharacterTagList.StateTag.Grab:
+            case CharacterTagList.StateTag.WallJump:
+            case CharacterTagList.StateTag.ClimbWall:
+                return false;
+        }
+        return true;
     }
 }

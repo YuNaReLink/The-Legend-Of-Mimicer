@@ -4,15 +4,15 @@ using UnityEngine;
 public class RendererData : MonoBehaviour
 {
     [SerializeField]
-    private List<Renderer> rendererList = new List<Renderer>();
+    private List<Renderer>          rendererList = new List<Renderer>();
 
-    public List<Renderer> RendererList {  get { return rendererList; } set { rendererList = value; } }
+    public List<Renderer>           RendererList {  get { return rendererList; } set { rendererList = value; } }
     /// <summary>
     /// オブジェクトの元のマテリアルを保持するList
     /// </summary>
     [SerializeField]
-    private List<Color> originalColorList = new List<Color>();
-    public IReadOnlyList <Color> GetOriginalColorList() { return originalColorList; }
+    private List<Color>             originalColorList = new List<Color>();
+    public IReadOnlyList <Color>    GetOriginalColorList() { return originalColorList; }
 
     public void AwakeInitilaize()
     {

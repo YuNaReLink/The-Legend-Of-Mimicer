@@ -1,4 +1,3 @@
-using CharacterTagList;
 using UnityEngine;
 
 public class MotionController
@@ -12,9 +11,9 @@ public class MotionController
     /// é¿ëïÇÕåpè≥êÊÇ≈çsÇ§
     /// </summary>
     /// <param name="_state"></param>
-    public virtual void ChangeMotion(StateTag _state) { }
+    public virtual void ChangeMotion(CharacterTagList.StateTag _state) { }
 
-    public virtual void ForcedChangeMotion(StateTag _state) { }
+    public virtual void ForcedChangeMotion(CharacterTagList.StateTag _state) { }
     public virtual bool MotionEndCheck() { return false; }
 
     public virtual bool IsEndRollingMotionNameCheck() { return false; }

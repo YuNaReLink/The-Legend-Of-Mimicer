@@ -213,7 +213,6 @@ GameObject:
   - component: {fileID: 6136527748721531752}
   - component: {fileID: 2930122255710493470}
   - component: {fileID: 9047474963903160528}
-  - component: {fileID: 6285384600429051626}
   - component: {fileID: 5085607257831151868}
   - component: {fileID: 1151272462068201039}
   - component: {fileID: 7840695295424365132}
@@ -327,18 +326,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bf83799291441a4b8aea488c2c5dc6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: -1
-  pastState: -1
-  maxHp: 0
-  hp: 0
-  death: 0
-  velocity: {x: 0, y: 0, z: 0}
-  guardState: -1
-  input: 0
-  landing: 0
-  jumping: 0
-  jumpPower: 0
-  stopController: 0
+  characterStatus:
+    currentState: -1
+    pastState: -1
+    maxHp: 0
+    hp: 0
+    death: 0
+    velocity: {x: 0, y: 0, z: 0}
+    guardState: -1
+    input: 0
+    landing: 0
+    jumping: 0
+    jumpPower: 0
+    stopController: 0
+  groundCheck:
+    groundCheckRadius: 0.4
+    groundCheckOffsetY: 0.45
+    groundCheckDistance: 0.2
+    groundLayers:
+      serializedVersion: 2
+      m_Bits: 8
+  battleMode: 0
   data: {fileID: 11400000, guid: 2a35ea8483179074b998d0a286b0cccb, type: 2}
   cameraController: {fileID: 0}
   rollCurve:
@@ -366,7 +374,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   tripleAttack: -1
-  battleMode: 0
   pushTag: -1
   physicMaterials:
   - {fileID: 13400000, guid: 88ce9b980ecb25a4e85448abd1f0195a, type: 2}
@@ -412,24 +419,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 089ee00c1ed433441882eaa725dda417, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6285384600429051626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4348658367534398464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c31a24fc3a8cc54e89c06678c910b17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundCheckRadius: 0.4
-  groundCheckOffsetY: 0.45
-  groundCheckDistance: 0.2
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!114 &5085607257831151868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -572,7 +561,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.75
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -951,3 +940,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rendererList: []
+  originalColorList: []

@@ -6,13 +6,13 @@ using UnityEngine;
 public class DeltaTimeCountDown : InterfaceCountDown
 {
 
-    public event Action OnCompleted;
+    public event Action     OnCompleted;
 
-    private float count = 0;
+    private float           count = 0;
 
-    private float initCount = 0;
+    private float           initCount = 0;
 
-    public float GetInitCount() { return initCount; }
+    public float            GetInitCount() { return initCount; }
 
     public void End()
     {
@@ -21,9 +21,9 @@ public class DeltaTimeCountDown : InterfaceCountDown
         OnCompleted = null;
     }
     //カウントが有効かどうか
-    public bool IsEnabled() { return count > 0; }
+    public bool             IsEnabled() { return count > 0; }
 
-    public bool MaxCount(float _count) { return count >= _count; }
+    public bool             MaxCount(float _count) { return count >= _count; }
 
     public void StartTimer(float _count)
     {

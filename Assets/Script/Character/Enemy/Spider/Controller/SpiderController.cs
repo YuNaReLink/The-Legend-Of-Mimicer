@@ -6,8 +6,8 @@ public class SpiderController : EnemyController
     /// <summary>
     /// クモの状態の入力を管理するクラス
     /// </summary>
-    private SpiderState             spiderInput = null;
-    public SpiderState              GetSpiderInput() { return spiderInput; }
+    private SpiderState             spiderState = null;
+    public SpiderState              GetSpiderInput() { return spiderState; }
     /// <summary>
     /// クモの効果音を管理するクラス
     /// </summary>
@@ -26,10 +26,10 @@ public class SpiderController : EnemyController
     {
         base.InitializeAssign();
         navMeshController = new NavMeshController(GetComponent<NavMeshAgent>(), this);
-        spiderInput = GetComponent<SpiderState>();
-        if(spiderInput != null)
+        spiderState = GetComponent<SpiderState>();
+        if(spiderState != null)
         {
-            spiderInput.SetController(this);
+            spiderState.SetController(this);
         }
         spiderSoundController = GetComponent<SpiderSoundController>();
         if(spiderSoundController != null)
@@ -44,7 +44,7 @@ public class SpiderController : EnemyController
         if (Time.timeScale <= 0) { return; }
         spiderSoundController.TimerUpdate();
         base.Update();
-        spiderInput.Execute();
+        spiderState.Execute();
         motion.EndMotionNameCheck();
     }
 
@@ -52,6 +52,7 @@ public class SpiderController : EnemyController
     {
         switch (characterStatus.CurrentState)
         {
+            case CharacterTagList.StateTag.Null:
             case CharacterTagList.StateTag.Idle:
             case CharacterTagList.StateTag.Attack:
             case CharacterTagList.StateTag.Damage:
@@ -73,14 +74,9 @@ public class SpiderController : EnemyController
         {
             StopMove();
         }
-        if(spiderDamage != null)
-        {
-            spiderDamage.Execute();
-        }
-        if(knockBackCommand != null)
-        {
-            knockBackCommand.Execute();
-        }
+        spiderDamage?.Execute();
+
+        knockBackCommand?.Execute();
     }
 
     private void MoveCommand()
@@ -101,7 +97,7 @@ public class SpiderController : EnemyController
             if (timer.GetTimerDamageCoolDown().IsEnabled()) { return; }
             timer.GetTimerDamageCoolDown().StartTimer(0.25f);
             spiderDamage.Attacker = other.gameObject;
-            spiderDamage.DamageFlag = true;
+            spiderDamage.SetDamageFlag(true);
             effectController.CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position,1f, Quaternion.identity);
         }
     }

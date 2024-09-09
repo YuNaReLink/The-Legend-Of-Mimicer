@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class BossInput
+public class BossState
 {
     private BossController controller = null;
-    public BossInput(BossController _controller)
+    public BossState(BossController _controller)
     {
         controller = _controller;
     }
@@ -11,11 +11,11 @@ public class BossInput
     /// <summary>
     ///プレイヤーがボスと最大距離離れた時の基準
     /// </summary>
-    private const float maxMoveDistance = 12.0f;
+    private const float MaxMoveDistance = 12.0f;
     /// <summary>
     /// プレイヤーがボスに最低限近づいた時に攻撃する基準
     /// </summary>
-    private const float minAttackDistance = 4.0f;
+    private const float MinAttackDistance = 4.0f;
 
     public void Initilaize()
     {
@@ -58,7 +58,7 @@ public class BossInput
         //プレイヤーとの距離を計る
         float dis = MathDistanceAndPlayer();
         //距離が離れすぎてたら
-        if(dis > maxMoveDistance)
+        if(dis > MaxMoveDistance)
         {
             //プレイヤーに近づく
             NearsToPlayerInput();
@@ -80,7 +80,7 @@ public class BossInput
         //距離を計る
         float dis = MathDistanceAndPlayer();
         //攻撃を行う最低距離よりも距離が近ければ
-        if (dis < minAttackDistance)
+        if (dis < MinAttackDistance)
         {
             //攻撃入力
             AttackInput();
@@ -154,7 +154,7 @@ public class BossInput
     {
         if (!controller.RevivalFlag) {  return; }
         controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.GetUp);
-        controller.RevivalFlag = false;
+        controller.SetRevivalFlag(false);
     }
 
 }

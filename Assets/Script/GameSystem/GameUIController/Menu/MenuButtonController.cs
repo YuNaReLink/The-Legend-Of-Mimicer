@@ -6,22 +6,22 @@ using UnityEngine.UI;
 public class MenuButtonController : MonoBehaviour
 {
     [SerializeField]
-    private List<Button> buttonList = new List<Button>();
+    private List<Button>        buttonList = new List<Button>();
 
-    private int currentButtonIndex = 0;
+    private int                 currentButtonIndex = 0;
 
-    private int pastButtonIndex = 0;
+    private int                 pastButtonIndex = 0;
 
-    public List<Button> ButtonList { get { return buttonList; } set { buttonList = value; } }
+    public List<Button>         ButtonList { get { return buttonList; } set { buttonList = value; } }
 
-    private bool desideFlag = false;
+    private bool                desideFlag = false;
 
     [SerializeField]
-    private GraphicRaycaster graphicRaycaster; // UI‚ÌGraphicRaycaster
+    private GraphicRaycaster    graphicRaycaster; // UI‚ÌGraphicRaycaster
     [SerializeField]
-    private EventSystem eventSystem; // EventSystem
+    private EventSystem         eventSystem; // EventSystem
 
-    private Button mouseOverButton = null;
+    private Button              mouseOverButton = null;
 
     public void AwakeInitilaize()
     {

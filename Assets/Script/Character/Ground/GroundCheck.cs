@@ -1,16 +1,20 @@
 using UnityEngine;
 
-public class GroundCheck : MonoBehaviour
+[System.Serializable]
+public class GroundCheck
 {
+    private Transform       transform;
+    public void             SetTransform(Transform _transform) { transform = _transform; }
+
     [SerializeField]
     private float           groundCheckRadius = 0.4f;
-
     [SerializeField]
     private float           groundCheckOffsetY = 0.45f;
     [SerializeField]
     private float           groundCheckDistance = 0.2f;
     [SerializeField]
     private LayerMask       groundLayers = 0;
+
 
     private RaycastHit      hit;
 
