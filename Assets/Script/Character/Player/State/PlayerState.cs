@@ -33,16 +33,16 @@ public class PlayerState : MonoBehaviour
     public void AwakeInitilaize()
     {
         controller = GetComponent<PlayerController>();
-        idleState = new IdleState(controller);
-        moveState = new MoveState(controller);
-        rollingState = new RollingState(controller);
-        fallState = new FallState(controller);
-        pushState = new PushState(controller);
-        modeChangeState = new ModeChangeState(controller);
-        damageState = new DamageState(controller);
-        rightHandState = new RightHandState(controller);
-        leftHandState = new LeftHandState(controller);
-        interfaceState = new InterfaceState[]
+        idleState =         new IdleState(controller);
+        moveState =         new MoveState(controller);
+        rollingState =      new RollingState(controller);
+        fallState =         new FallState(controller);
+        pushState =         new PushState(controller);
+        modeChangeState =   new ModeChangeState(controller);
+        damageState =       new DamageState(controller);
+        rightHandState =    new RightHandState(controller);
+        leftHandState =     new LeftHandState(controller);
+        interfaceState =    new InterfaceState[]
         {
             pushState,
             rollingState,
