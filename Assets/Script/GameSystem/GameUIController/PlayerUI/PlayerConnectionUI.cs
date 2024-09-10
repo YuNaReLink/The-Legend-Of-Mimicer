@@ -16,9 +16,9 @@ public class PlayerConnectionUI : MonoBehaviour
     {
         Life,
         ArrowCount,
+        Sight,
         KeyInput,
         Target,
-        Sight,
         Menu
     }
     /// <summary>
@@ -117,6 +117,10 @@ public class PlayerConnectionUI : MonoBehaviour
             {
                 playerUIList[(int)PlayerUINumber.ArrowCount].SetActive(true);
             }
+            if (!playerUIList[(int)PlayerUINumber.Sight].activeSelf)
+            {
+                playerUIList[(int)PlayerUINumber.Sight].SetActive(true);
+            }
             arrowCount.ArrowCountUpdate();
         }
         else
@@ -124,6 +128,10 @@ public class PlayerConnectionUI : MonoBehaviour
             if (playerUIList[(int)PlayerUINumber.ArrowCount].activeSelf)
             {
                 playerUIList[(int)PlayerUINumber.ArrowCount].SetActive(false);
+            }
+            if (playerUIList[(int)PlayerUINumber.Sight].activeSelf)
+            {
+                playerUIList[(int)PlayerUINumber.Sight].SetActive(false);
             }
         }
         keyInputUIController.ActiveKeyUI(true);

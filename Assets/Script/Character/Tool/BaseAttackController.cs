@@ -27,10 +27,7 @@ public class BaseAttackController : MonoBehaviour
         controller = GetComponentInParent<CharacterController>();
 
         collider = GetComponent<Collider>();
-        if (collider == null)
-        {
-            Debug.LogError("colliderがアタッチされていません");
-        }
+
         if (statusData != null)
         {
             attackPower = statusData.BaseDamagePower;
