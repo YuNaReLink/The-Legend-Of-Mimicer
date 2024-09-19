@@ -67,11 +67,15 @@ public class OpenDoor : MonoBehaviour
     private TriggerCheck        triggerCheck = null;
     private void Awake()
     {
-        if (movePosition != null)
-        {
-            hitExecute = movePosition.GetComponent<HitPlayerExecute>();
-        }
+        AwakeInitilaize();
     }
+
+    private void AwakeInitilaize()
+    {
+        if (movePosition == null) { return; }
+        hitExecute = movePosition.GetComponent<HitPlayerExecute>();
+    }
+
     private void Start()
     {
 
@@ -87,48 +91,36 @@ public class OpenDoor : MonoBehaviour
     {
         //0番目:キー入力で作動
         KeyInput();
-
         //1番目:ドア開閉の初期化
         InitilaizeOpenDoor();
-
         //2番目:ドアを上にあげる
         Open();
-
+        //プレイヤーを指定の位置まで動かす
         MovePlayer();
-
         //6番目:ドアを閉め、終わったら位置を修正、その他の設定を行う
         Close();
     }
 
     private void KeyInput()
     {
-        if (!open && !movePlayer && !close)
-        {
-            if (InputManager.GetItemButton() && triggerCheck.IsHitPlayer())
-            {
-                start = true;
-                triggerCheck.SetTriggerTag(false);
-            }
-        }
+        if (open || movePlayer || close) { return; }
+        if (!InputManager.GetItemButton() || !triggerCheck.IsHitPlayer()) { return; }
+        start = true;
+        triggerCheck.SetTriggerTag(false);
     }
 
     private void InitilaizeOpenDoor()
     {
         bool startOpenTheDoor = !open && !movePlayer && !close;
-        if (startOpenTheDoor)
-        {
-            if (start)
-            {
-                doorCollider.isTrigger = true;
-                open = true;
-                hitExecute.enabled = false;
-                triggerCheck.GetController().CharacterStatus.StopController = true;
-                triggerCheck.GetController().StopMove();
-                triggerCheck.GetController().GetMotion().ChangeMotion(CharacterTagList.StateTag.Idle);
-                start = false;
-                return;
-            }
-        }
+        if (!startOpenTheDoor) { return; }
+        if (!start) { return; }
+        doorCollider.isTrigger = true;
+        open = true;
+        hitExecute.enabled = false;
+        triggerCheck.GetController().CharacterStatus.StopController = true;
+        triggerCheck.GetController().StopMove();
+        triggerCheck.GetController().GetMotion().ChangeMotion(CharacterTagList.StateTag.Idle);
+        start = false;
     }
 
     private void Open()
@@ -142,25 +134,21 @@ public class OpenDoor : MonoBehaviour
         transform.localPosition = Vector3.MoveTowards(transform.localPosition, moveDoorPos, openSpeed * Time.deltaTime);
         //3番目:ドアが指定した位置まで上がったらその位置を代入
         Vector3 doorpos = transform.localPosition;
-        if (doorpos.y >= moveDoorPos.y)
-        {
-            transform.localPosition = new Vector3(0, moveDoorPos.y, 0);
-            open = false;
-            movePlayer = true;
-        }
+        if (doorpos.y < moveDoorPos.y) { return; }
+        transform.localPosition = new Vector3(0, moveDoorPos.y, 0);
+        open = false;
+        movePlayer = true;
     }
 
     private void MovePlayer()
     {
         if (!movePlayer)
         {
-            if (hitExecute.PlayerHit)
-            {
-                Vector3 changePos = movePosition.transform.localPosition;
-                changePos.z *= -1;
-                movePosition.transform.localPosition = changePos;
-                hitExecute.PlayerHit = false;
-            }
+            if (!hitExecute.PlayerHit) { return; }
+            Vector3 changePos = movePosition.transform.localPosition;
+            changePos.z *= -1;
+            movePosition.transform.localPosition = changePos;
+            hitExecute.PlayerHit = false;
         }
         else
         {
@@ -171,28 +159,25 @@ public class OpenDoor : MonoBehaviour
             triggerCheck.GetPlayer().transform.position = Vector3.MoveTowards(triggerCheck.GetPlayer().transform.position, movePosition.transform.position, playerSpeed * Time.deltaTime);
             triggerCheck.GetController().GetMotion().ChangeMotion(CharacterTagList.StateTag.Run);
             //5番目:ドアを閉めるフラグを設定
-            if (triggerCheck.GetPlayer().transform.position == movePosition.transform.position)
-            {
-                movePlayer = false;
-                close = true;
-            }
+            if (triggerCheck.GetPlayer().transform.position != movePosition.transform.position) { return; }
+            movePlayer = false;
+            close = true;
         }
     }
 
     private void Close()
     {
-        if (close)
-        {
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, baseDoorPos, openSpeed * Time.deltaTime);
-            if (transform.localPosition.y <= baseDoorPos.y)
-            {
-                doorCollider.isTrigger = false;
-                transform.localPosition = new Vector3(0, baseDoorPos.y, 0);
-                close = false;
-                triggerCheck.GetController().CharacterStatus.StopController = false;
-                hitExecute.enabled = true;
-                triggerCheck.SetTriggerTag(true);
-            }
-        }
+        if (!close) { return; }
+        //扉を指定位置まで動かす
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, baseDoorPos, openSpeed * Time.deltaTime);
+        //指定位置まで移動したら
+        if (transform.localPosition.y > baseDoorPos.y) { return; }
+        //移動を停止
+        doorCollider.isTrigger = false;
+        transform.localPosition = new Vector3(0, baseDoorPos.y, 0);
+        close = false;
+        triggerCheck.GetController().CharacterStatus.StopController = false;
+        hitExecute.enabled = true;
+        triggerCheck.SetTriggerTag(true);
     }
 }

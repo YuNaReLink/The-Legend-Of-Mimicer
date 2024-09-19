@@ -46,7 +46,12 @@ public class Gate : MonoBehaviour
     private void Awake()
     {
         soundController = GetComponent<SoundController>();
-        if(soundController != null)
+        
+        if(soundController == null)
+        {
+            Debug.LogError("SoundControllerがアタッチされていません");
+        }
+        else
         {
             soundController.AwakeInitilaize();
         }
@@ -67,11 +72,12 @@ public class Gate : MonoBehaviour
 
     private void Update()
     {
+        //ゲートを開くためのスイッチが全てONになってるか確認
         CheckSwitch();
-
+        //ゲートを開ける処理
         Open();
     }
-
+    //ゲートを開くためのスイッチが全てONになってるか確認
     private void CheckSwitch()
     {
         if (openGate) { return; }
@@ -84,13 +90,11 @@ public class Gate : MonoBehaviour
             }
         }
 
-        if (truecount >= switchGimics.Count)
-        {
-            openGate = true;
-            soundController.PlaySESound((int)SoundTagList.OpenDoorSoundTag.Open);
-        }
+        if (truecount < switchGimics.Count) { return; }
+        openGate = true;
+        soundController.PlaySESound((int)SoundTagList.OpenDoorSoundTag.Open);
     }
-
+    //ゲートを開ける処理
     private void Open()
     {
         if (!openGate) { return; }

@@ -1,7 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// ステージ上のプレイヤーの情報が必要なギミックオブジェクトにアタッチし
+/// プレイヤーがそのギミックオブジェクトに触れているか判別、情報を取得するクラス
+/// </summary>
 public class HitPlayerExecute : MonoBehaviour
 {
     [SerializeField]

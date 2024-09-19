@@ -48,7 +48,7 @@ public class PlayerMotion : MotionController
     {
         bool animBoolCheck = anim.GetBool(boolname) == controller.BattleMode;
         bool dirCheck = input.CurrentDirection == input.PastDirection;
-        ObstacleCheck obstacleCheck = controller.GetObstacleCheck();
+        ObstacleAction obstacleCheck = controller.GetObstacleCheck();
         bool wallActionCheck = !obstacleCheck.IsClimbFlag();
         //同じ状態＆"BattleMode"と戦闘モードの条件が同じならリターン
         if (controller.CharacterStatus.CurrentState == _state && dirCheck

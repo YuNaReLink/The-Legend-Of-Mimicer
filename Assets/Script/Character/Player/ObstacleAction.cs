@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// プレイヤーが壁や崖のアクションの判定を行うクラス
 /// </summary>
-public class ObstacleCheck : MonoBehaviour
+public class ObstacleAction : MonoBehaviour
 {
     //段差ジャンプのRayの開始位置
     [SerializeField]
@@ -13,15 +13,14 @@ public class ObstacleCheck : MonoBehaviour
     private float               stepUpCheckOffset = 0.4f;
     //段差ジャンプのRayの距離の数値
     [SerializeField]
-    private float               stepCheckDistance = 0.7f;
+    private float               stepCheckDistance = 1.0f;
     //崖からジャンプするかを判定するフラグ
     [SerializeField]
     private bool                lowStep = false;
-
     //崖ジャンプのモーションのカウント
     [SerializeField]
     private byte                lowJumpCount = 0;
-
+    //崖ジャンプのモーションの最大カウント
     private const byte          MaxLowJumpCount = 2;
     public byte                 GetLowJumpCount() { return lowJumpCount; }
     /// <summary>
@@ -72,7 +71,7 @@ public class ObstacleCheck : MonoBehaviour
     private float               climbForward = 1.5f;
     //上記の上方向へのスピード変数
     [SerializeField]
-    private float               climbUp = 2.35f;
+    private float               climbUp = 2.0f;
     //段差ジャンプフラグ
     [SerializeField]
     private bool                stepJumpFlag = false;
@@ -105,7 +104,6 @@ public class ObstacleCheck : MonoBehaviour
     [SerializeField]
     private bool                cliffJump = false;
     public bool                 CliffJumpFlag { get { return cliffJump; } set { cliffJump = value; } }
-
     /// <summary>
     /// カメラの向きを考慮した壁との当たり判定フラグ
     /// </summary>
@@ -115,33 +113,50 @@ public class ObstacleCheck : MonoBehaviour
     [SerializeField]
     private PlayerController    controller = null;
     public void                 SetController(PlayerController _controller) { controller = _controller; }
-
-    private const float StopWallActionCount = 0.1f;
+    //崖、壁とのアクションを行えないようにするカウントダウンのカウント数値
+    private const float         StopWallActionCount = 0.1f;
     /// <summary>
-    /// 壁との当たり判定を行う関数
+    /// 壁、崖のアクションを行うか判定するbool関数
     /// </summary>
-    public void WallCheckInput()
+    /// <returns></returns>
+    private bool IsObstacleAction()
     {
-        if (controller.GetCameraController().IsFPSMode()) { return; }
-        MoveDirectionCheck();
         switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Attack:
             case CharacterTagList.StateTag.SpinAttack:
             case CharacterTagList.StateTag.ReadySpinAttack:
             case CharacterTagList.StateTag.JumpAttack:
-                return;
+                lowStep = true;
+                return true;
             case CharacterTagList.StateTag.Rolling:
-                if(controller.GetKeyInput().CurrentDirection != CharacterTagList.DirectionTag.Up)
+                if (controller.GetKeyInput().CurrentDirection != CharacterTagList.DirectionTag.Up)
                 {
-                    return;
+                    return true;
                 }
                 break;
         }
+        return false;
+    }
+    /// <summary>
+    /// 壁との当たり判定を行う関数
+    /// </summary>
+    public void WallCheckInput()
+    {
+        //FPSカメラモードがONなら
+        if (controller.GetCameraController().IsFPSMode()) { return; }
+        //入力してる方向にRayを飛ばす処理
+        MoveDirectionCheck();
+        //プレイヤーの状態によって壁、崖との当たり判定を行わないようにするフラグ
+        if (IsObstacleAction()) { return; }
         //壁があるかチェック、なかったら早期リターン
+        //Rayをプレイヤーキャラクターのローカル座標から見て前に飛ばし何かに当たっているか判定する処理
         bool wallhit = WallCheck();
-        GrabCheck();
+        //障害物との当たり判定などで掴まるフラグをfalseにする処理
+        NoGrabCheck();
+        //上記の障害物との当たり判定で何にも当たっていなかったらリターン
         if (!wallhit) { return; }
+        //
         InitializeObstacleFlag();
         if (grabFlag || climbFlag || grabCancel)
         {
@@ -245,6 +260,10 @@ public class ObstacleCheck : MonoBehaviour
             Debug.DrawRay(wallCheckRay[i].origin, wallCheckRay[i].direction * wallCheckDistanceArray[i], Color.green);
         }
     }
+    /// <summary>
+    /// Rayを飛ばして障害物との当たり判定を行う関数
+    /// </summary>
+    /// <returns></returns>
     private bool WallCheck()
     {
         Ray[] wallCheckRay = new Ray[4];
@@ -274,6 +293,9 @@ public class ObstacleCheck : MonoBehaviour
         }
         return true;
     }
+    /// <summary>
+    /// 当たった障害物の中で以下のタグなら判定を無視する
+    /// </summary>
     private string[] hitObjectTagList = new string[]
     {
         "Enemy",
@@ -282,6 +304,13 @@ public class ObstacleCheck : MonoBehaviour
         "SearchArea",
         "Decoration"
     };
+    /// <summary>
+    /// 当たった障害物のタグを上のタグリストから探して判定する関数
+    /// </summary>
+    /// <param name="tag">
+    /// 当たった障害物のタグを代入する引数
+    /// </param>
+    /// <returns></returns>
     private bool HitObjectCheck(string tag)
     {
         foreach(string t in hitObjectTagList)
@@ -293,22 +322,32 @@ public class ObstacleCheck : MonoBehaviour
         }
         return false;
     }
-    private void GrabCheck()
+    /// <summary>
+    /// 掴まりを条件によって解除するフラグ
+    /// </summary>
+    private void NoGrabCheck()
     {
         if (!grabFlag) { return; }
         if (!hitWallFlagArray[(int)RayTag.Bottom] || !hitWallFlagArray[(int)RayTag.Middle] ||
-            hitWallFlagArray[(int)RayTag.Up] || hitWallFlagArray[(int)RayTag.Upper])
+             hitWallFlagArray[(int)RayTag.Up]     ||  hitWallFlagArray[(int)RayTag.Upper])
         {
             grabFlag = false;
             controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Fall);
         }
     }
+    /// <summary>
+    /// 条件によって障害物とのアクションを起こすフラグをfalseにする関数
+    /// </summary>
     private void InitializeObstacleFlag()
     {
-        bool state = controller.CharacterStatus.CurrentState != CharacterTagList.StateTag.ClimbWall && controller.CharacterStatus.CurrentState != CharacterTagList.StateTag.Grab &&
-            controller.CharacterStatus.CurrentState != CharacterTagList.StateTag.WallJump;
-        bool allNoWallHitFlag = !hitWallFlagArray[(int)RayTag.Bottom] && !hitWallFlagArray[(int)RayTag.Middle] &&
-            !hitWallFlagArray[(int)RayTag.Up] && !hitWallFlagArray[(int)RayTag.Upper];
+        bool state = controller.CharacterStatus.CurrentState != CharacterTagList.StateTag.ClimbWall && 
+                     controller.CharacterStatus.CurrentState != CharacterTagList.StateTag.Grab &&
+                     controller.CharacterStatus.CurrentState != CharacterTagList.StateTag.WallJump;
+        
+        bool allNoWallHitFlag = !hitWallFlagArray[(int)RayTag.Bottom] && 
+                                !hitWallFlagArray[(int)RayTag.Middle] &&
+                                !hitWallFlagArray[(int)RayTag.Up] && !hitWallFlagArray[(int)RayTag.Upper];
+        //上記の二つの条件に当てはまっていたら障害物とのフラグを全てfalseにする
         if (!allNoWallHitFlag || !state) { return; }
         stepJumpFlag = false;
         noGarbToClimbFlag = false;
@@ -317,6 +356,9 @@ public class ObstacleCheck : MonoBehaviour
         climbFlag = false;
         controller.CharacterRB.useGravity = true;
     }
+    /// <summary>
+    /// プレイヤーが崖から落ちそうになってるかを判定する関数
+    /// </summary>
     private void FootFallJumpCheck()
     {
         //プレイヤーの前に段差があるかを確認
@@ -332,6 +374,9 @@ public class ObstacleCheck : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// 着地してる間だけステージから落ちても位置をリセットできる座標を取得する関数
+    /// </summary>
     private void SaveResetLandingPosition()
     {
         savePosition = false;
@@ -340,22 +385,9 @@ public class ObstacleCheck : MonoBehaviour
         savePosition = Physics.Raycast(saveCheckRay, stepCheckDistance);
         Debug.DrawRay(saveCheckRay.origin, saveCheckRay.direction * stepCheckDistance, Color.white);
     }
-    public bool WallHitFlagCheck()
-    {
-        int hitcount = 0;
-        for (int i = 1; i < hitWallFlagArray.Length; i++)
-        {
-            if (hitWallFlagArray[i])
-            {
-                hitcount++;
-            }
-        }
-        if (hitcount > 0)
-        {
-            return true;
-        }
-        return false;
-    }
+    /// <summary>
+    /// 障害物に当たったことを判定するbool型を初期化する関数
+    /// </summary>
     private void InitilaizeWallHitFlag()
     {
         for (int i = 0; i < hitWallFlagArray.Length; i++)
@@ -363,9 +395,14 @@ public class ObstacleCheck : MonoBehaviour
             hitWallFlagArray[i] = false;
         }
     }
+    /// <summary>
+    /// フラグによってアクションを実行する関数
+    /// </summary>
     public void Execute()
     {
+        if (IsObstacleAction()) { return; }
         if (controller.GetCameraController().IsFPSMode()) { return; }
+        //崖からジャンプする処理
         LowStepCommand();
         //段差を飛び越える時の処理
         StepJumpCommand();
@@ -376,6 +413,9 @@ public class ObstacleCheck : MonoBehaviour
         //壁を登る動作
         Climb();
     }
+    /// <summary>
+    /// 崖ジャンプの処理を行う関数
+    /// </summary>
     private void LowStepCommand()
     {
         //掴まっているか
@@ -545,6 +585,12 @@ public class ObstacleCheck : MonoBehaviour
             controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Idle);
         }
     }
+    //  イージング関数
+    private float Ease(float x)
+    {
+        return x * x * x;
+    }
+
     /// <summary>
     /// 移動する方向に飛ばしてるRayで1つでも当たってる物があったらtrueを返す関数
     /// </summary>
@@ -560,9 +606,25 @@ public class ObstacleCheck : MonoBehaviour
         }
         return false;
     }
-    //  イージング関数
-    private float Ease(float x)
+    /// <summary>
+    /// 複数ある壁との接触判定からtrueのカウントを取得して
+    /// 0かそれより大きいかを判別する関数
+    /// </summary>
+    /// <returns></returns>
+    public bool WallHitFlagCheck()
     {
-        return x * x * x;
+        int hitcount = 0;
+        for (int i = 1; i < hitWallFlagArray.Length; i++)
+        {
+            if (hitWallFlagArray[i])
+            {
+                hitcount++;
+            }
+        }
+        if (hitcount > 0)
+        {
+            return true;
+        }
+        return false;
     }
 }

@@ -9,13 +9,7 @@ public class FocusArea : MonoBehaviour
 {
     [SerializeField]
     private PlayerController    controller = null;
-    [SerializeField]
-    private SphereCollider      areaCollider = null;
 
-    private Ray ray;
-    private RaycastHit          hit;
-    //Rayを飛ばす方向
-    private Vector3             direction = Vector3.zero;
     //Rayを飛ばす距離
     [SerializeField]
     private float               distance = 10f;
@@ -23,14 +17,6 @@ public class FocusArea : MonoBehaviour
     [SerializeField]
     private float               searchAngle = 130f;
 
-    void Start()
-    {
-        areaCollider = GetComponent<SphereCollider>();
-        if (areaCollider == null)
-        {
-            Debug.Log("areaColliderがアタッチされませんでした");
-        }
-    }
     private void Update()
     {
         if(CameraController.LockObject == null) { return; }
@@ -52,9 +38,9 @@ public class FocusArea : MonoBehaviour
         if (other.tag != "Target") { return; }
         //Rayを飛ばす方向を計算
         Vector3 temp = other.transform.position - transform.position;
-        direction = temp.normalized;
+        var direction = temp.normalized;
         //Rayを飛ばす
-        ray = new Ray(transform.position, direction);
+        Ray ray = new Ray(transform.position, direction);
         Debug.DrawRay(ray.origin, ray.direction * distance, Color.green);  // Rayをシーン上に描画
         //主人公の方向
         var playerDirection = other.transform.position - transform.position;

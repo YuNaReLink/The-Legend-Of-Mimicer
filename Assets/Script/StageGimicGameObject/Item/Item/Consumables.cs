@@ -28,7 +28,7 @@ public class Consumables : MonoBehaviour
 
     protected virtual void GetCommand(PlayerController _player,int count)
     {
-        _player.GetArrow(count);
+        _player.GetArrowSound(count);
     }
 
     protected virtual float GetItemPositionY()

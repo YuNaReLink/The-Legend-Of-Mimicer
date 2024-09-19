@@ -37,7 +37,7 @@ public class EnemyDamageCommand : InterfaceBaseCommand
         if (controller.CharacterStatus.HP > 0) { return; }
         controller.GetKnockBackCommand().SetKnockBackFlag(false);
         controller.GetKnockBackCommand().SetAttacker(null);
-        HitStopManager.instance.StartHitStop(HitStopManager.instance.HitStopCount);
+        HitThrowManager.instance.StartHitStop(HitThrowManager.instance.HitStopCount);
         controller.Death();
     }
 

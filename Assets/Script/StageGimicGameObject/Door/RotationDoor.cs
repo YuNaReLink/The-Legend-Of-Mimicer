@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 横に開く形式の扉の処理を行うクラス
+/// </summary>
 public class RotationDoor : MonoBehaviour
 {
     /// <summary>
@@ -41,13 +44,23 @@ public class RotationDoor : MonoBehaviour
         door = transform.GetChild(0).gameObject;
         triggerCheck = GetComponent<TriggerCheck>();
         soundController = GetComponent<SoundController>();
-        if(soundController != null)
+        closeTimer = new DeltaTimeCountDown();
+        
+        if (soundController == null)
+        {
+            Debug.LogError("SoundControllerがアタッチされていません");
+        }
+        else
         {
             soundController.AwakeInitilaize();
         }
-        closeTimer = new DeltaTimeCountDown();
     }
-    void Start()
+    private void Start()
+    {
+        StartInitilaize();
+    }
+
+    private void StartInitilaize()
     {
         if (door != null)
         {
@@ -56,19 +69,13 @@ public class RotationDoor : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
         closeTimer.Update();
         if (closeTimer.IsEnabled()) { return; }
         OpenInput();
-        if (open)
-        {
-            Open();
-        }
-        else
-        {
-            Close();
-        }
+        
+        MoveRotation();
     }
 
     private void OpenInput()
@@ -80,6 +87,18 @@ public class RotationDoor : MonoBehaviour
             open = true;
             soundController.PlaySESound((int)SoundTagList.OpenDoorSoundTag.Open);
             triggerCheck.SetTriggerTag(false);
+        }
+    }
+
+    private void MoveRotation()
+    {
+        if (open)
+        {
+            Open();
+        }
+        else
+        {
+            Close();
         }
     }
 

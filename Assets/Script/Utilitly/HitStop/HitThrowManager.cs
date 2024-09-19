@@ -2,16 +2,16 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// ヒットストップを行うシングルトンクラス
+/// ヒットスローを行うシングルトンクラス
 /// シーンのヒエラルキーのオブジェクトにアタッチして使用
 /// </summary>
-public class HitStopManager : MonoBehaviour
+public class HitThrowManager : MonoBehaviour
 {
     // どこからでも呼び出せるようにする
-    public static HitStopManager    instance;
+    public static HitThrowManager    instance;
 
     private bool                    hitStop = false;
-    public bool                     IsHitStop() { return hitStop; }
+    public bool                     IsHitThrow() { return hitStop; }
 
     private const float             hitStopCount = 0.5f;
 
@@ -31,20 +31,19 @@ public class HitStopManager : MonoBehaviour
     // ヒットストップを開始する関数
     public void StartHitStop(float duration)
     {
-        instance.StartCoroutine(instance.HitStopCoroutine(duration));
+        instance.StartCoroutine(instance.HitThrowCoroutine(duration));
     }
 
     // コルーチンの内容
-    private IEnumerator HitStopCoroutine(float duration)
+    private IEnumerator HitThrowCoroutine(float duration)
     {
         hitStop = true;
-        // ヒットストップの開始
+        // ヒットスローの開始
         Time.timeScale = 0.1f;
-
         // 指定した時間だけ停止
         yield return new WaitForSecondsRealtime(duration);
         hitStop = false;
-        // ヒットストップの終了
+        // ヒットスローの終了
         Time.timeScale = 1f;
     }
 }

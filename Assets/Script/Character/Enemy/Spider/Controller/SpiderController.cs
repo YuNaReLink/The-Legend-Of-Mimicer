@@ -25,18 +25,28 @@ public class SpiderController : EnemyController
     protected override void InitializeAssign()
     {
         base.InitializeAssign();
-        navMeshController = new NavMeshController(GetComponent<NavMeshAgent>(), this);
         spiderState = GetComponent<SpiderState>();
-        if(spiderState != null)
+        spiderSoundController = GetComponent<SpiderSoundController>();
+        navMeshController = new NavMeshController(GetComponent<NavMeshAgent>(), this);
+        spiderDamage = new SpiderDamageCommand(this);
+        
+        if(spiderState == null)
+        {
+            Debug.LogError("SpiderStateがアタッチされていません");
+        }
+        else
         {
             spiderState.SetController(this);
         }
-        spiderSoundController = GetComponent<SpiderSoundController>();
-        if(spiderSoundController != null)
+
+        if(spiderSoundController == null)
+        {
+            Debug.LogError("SpiderSoundControllerがアタッチされていません");
+        }
+        else
         {
             spiderSoundController.AwakeInitilaize();
         }
-        spiderDamage = new SpiderDamageCommand(this);
     }
 
     protected override void Update()

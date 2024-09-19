@@ -29,8 +29,6 @@ public class RotateObject : MonoBehaviour
     {
         return reverse ? -1 : 1;
     }
-
-    
     private void Update()
     {
         if (rotateX)
