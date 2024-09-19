@@ -56,24 +56,23 @@ public class ToolInventoryController : MonoBehaviour
     private Quiver                  quiver = null;
     public Quiver                   GetQuiver() { return quiver; }
 
-    //剣をしまっている時の位置・回転
+    /// <summary>
+    /// 剣、クロスボウを閉まっている時と装備してる時のTransform
+    /// </summary>
     [SerializeField]
     private Transform               swordTransform;
-
     [SerializeField]
     private Transform               crossBowTransform;
-
     [SerializeField]
     private Vector3                 localCrossBowPos = new Vector3(1, -0.8f, 1);
-
-
-    //盾を背負う位置・回転
-    [SerializeField]
-    private Transform               shieldTransform;
-
     [SerializeField]
     private Transform               rightHandTransform;
 
+    /// <summary>
+    /// 盾を閉まっている時と装備してる時のTransform
+    /// </summary>
+    [SerializeField]
+    private Transform               shieldTransform;
     [SerializeField]
     private Transform               leftHandTransform;
 
@@ -115,14 +114,17 @@ public class ToolInventoryController : MonoBehaviour
     /// <summary>
     /// 途中、道具をゲットした時の処理
     /// </summary>
-    /// <param name="tag"></param>
-    /// <param name="tool"></param>
+    /// <param name="tag">
+    /// 取得する道具のタグ
+    /// </param>
+    /// <param name="tool">
+    /// 取得する道具のオブジェクト
+    /// </param>
     public void GetToolSetting(ToolObjectTag tag,GameObject tool)
     {
         if (inventoryData.ToolItemList[(int)tag] != null) { return; }
         GameObject toolObject = Instantiate(tool);
         //道具Listに登録
-        //tools.Add(toolObject);
         inventoryData.ToolItemList[(int)tag] = toolObject;
         //道具のコントローラーを登録
         toolControllers[(int)tag] = toolObject.GetComponent<ToolController>();
@@ -147,8 +149,15 @@ public class ToolInventoryController : MonoBehaviour
         toolObject.transform.rotation = parent.rotation;
         toolObject.transform.localScale = parent.localScale;
     }
-
-    //道具の位置を入れ替える処理
+    /// <summary>
+    /// 道具の位置を入れ替える処理
+    /// </summary>
+    /// <param name="tool">
+    /// 位置を入れ替える道具のタグ
+    /// </param>
+    /// <param name="transform">
+    /// 位置を入れ替える先のTransform
+    /// </param>
     private void SetToolPosition(ToolObjectTag tool,Transform transform)
     {
         int t = (int)tool;
@@ -159,7 +168,7 @@ public class ToolInventoryController : MonoBehaviour
         inventoryData.ToolItemList[t].transform.rotation = transform.rotation;
         inventoryData.ToolItemList[t].transform.localScale = new Vector3(1f, 1f, 1f);
     }
-
+    //剣の位置を入れ替える処理
     private void ChangeSwordTransform()
     {
         if(inventoryData.ToolItemList[(int)ToolObjectTag.Sword] == null) { return; }
@@ -172,7 +181,7 @@ public class ToolInventoryController : MonoBehaviour
             SetToolPosition(ToolObjectTag.Sword, swordTransform);
         }
     }
-
+    //クロスボウの位置を入れ替える処理
     private void ChangeCrossBowTransform()
     {
         int c = (int)ToolObjectTag.CrossBow;
@@ -187,7 +196,7 @@ public class ToolInventoryController : MonoBehaviour
             SetToolPosition(ToolObjectTag.CrossBow, crossBowTransform);
         }
     }
-
+    //盾の位置を入れ替える処理
     private void ChangeShieldTransform()
     {
         if (inventoryData.ToolItemList[(int)ToolObjectTag.Shild] == null) { return; }

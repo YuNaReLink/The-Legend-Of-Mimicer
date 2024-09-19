@@ -1,7 +1,12 @@
 using UnityEngine;
 
-public class PlayerState : MonoBehaviour
+public class PlayerState
 {
+    public PlayerState(PlayerController _controller)
+    {
+        controller = _controller;
+    }
+
     private PlayerController controller = null;
 
     private IdleState idleState = null;
@@ -32,7 +37,6 @@ public class PlayerState : MonoBehaviour
 
     public void AwakeInitilaize()
     {
-        controller = GetComponent<PlayerController>();
         idleState =         new IdleState(controller);
         moveState =         new MoveState(controller);
         rollingState =      new RollingState(controller);

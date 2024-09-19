@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//カメラオブジェクトから前方向にRayを飛ばす処理を行うシングルトンのクラス
 public class CameraAimRaycast : MonoBehaviour
 {
     private static CameraAimRaycast     instance;
@@ -7,8 +8,8 @@ public class CameraAimRaycast : MonoBehaviour
 
     private  Vector3                    sightPosition = Vector3.zero;
     public  Vector3                     GetSightPosition() { return sightPosition; }
-
-    [SerializeField]
+    
+    [Header("線を飛ばす距離"),SerializeField]
     private float                       aimRaycastOrigin = 10f;
 
     private void Awake()

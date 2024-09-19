@@ -34,7 +34,6 @@ public class PlayerDamageCommand : InterfaceBaseCommand
                 controller.DamageTag = CharacterTagList.DamageTag.Null;
                 break;
             case CharacterTagList.DamageTag.NormalAttack:
-            case CharacterTagList.DamageTag.GreatAttack:
                 if (attacker == null) { return; }
                 BaseAttackController tool = attacker.GetComponent<BaseAttackController>();
                 if (tool == null) { return; }

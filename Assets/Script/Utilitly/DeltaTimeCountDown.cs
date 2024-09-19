@@ -23,15 +23,13 @@ public class DeltaTimeCountDown : InterfaceCountDown
     //カウントが有効かどうか
     public bool             IsEnabled() { return count > 0; }
 
-    public bool             MaxCount(float _count) { return count >= _count; }
-
     public void StartTimer(float _count)
     {
         count = _count;
         initCount = count;
     }
 
-    // Update is called once per frame
+
     public void Update()
     {
         count -= Time.deltaTime;

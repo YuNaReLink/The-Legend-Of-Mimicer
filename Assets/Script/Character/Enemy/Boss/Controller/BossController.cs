@@ -26,21 +26,20 @@ public class BossController : EnemyController
     protected override void InitializeAssign()
     {
         base.InitializeAssign();
-        bossState = new BossState(this);
-        if(bossState != null)
-        {
-            bossState.Initilaize();
-        }
-        bossDamageCommand = new BossDamageCommand(this);
-
         bossSoundController = GetComponent<BossSoundController>();
-        if(bossSoundController != null)
+        bossState = new BossState(this);
+        bossDamageCommand = new BossDamageCommand(this);
+        
+
+        bossState.Initilaize();
+
+        if(bossSoundController == null)
         {
-            bossSoundController.AwakeInitilaize();
+            Debug.LogError("BossSoundControllerがアタッチされていません");
         }
         else
         {
-            Debug.LogError("BossSoundControllerがアタッチされていません");
+            bossSoundController.AwakeInitilaize();
         }
     }
 

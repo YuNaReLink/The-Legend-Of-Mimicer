@@ -1,4 +1,4 @@
-
+using UnityEngine;
 
 public class GameManager
 {
@@ -19,4 +19,8 @@ public class GameManager
     /// </summary>
     private static bool             menuEnabled = false;
     public static bool              MenuEnabled { get { return menuEnabled; } set { menuEnabled = value; } }
+
+    private static int              frameRate = 120;
+    public static int               FrameRate => frameRate;
+    public static void              SetFrameRate(int _frameRate) { Application.targetFrameRate  = _frameRate; }
 }

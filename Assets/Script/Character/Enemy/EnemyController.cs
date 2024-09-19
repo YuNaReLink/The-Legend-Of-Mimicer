@@ -75,8 +75,8 @@ public class EnemyController : CharacterController
     {
         base.InitializeAssign();
         damage = new EnemyDamageCommand(this);
-
         timer = new EnemyTimer();
+
         timer.InitializeAssignTimer();
     }
     
@@ -103,7 +103,6 @@ public class EnemyController : CharacterController
 
     protected override void Update()
     {
-        if (Time.timeScale <= 0) { return; }
         base.Update();
         timer.TimerUpdate();
     }

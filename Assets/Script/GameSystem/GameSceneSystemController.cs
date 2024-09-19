@@ -78,13 +78,14 @@ public class GameSceneSystemController : MonoBehaviour
         gameClearFlag = false;
         bossBattleStart = false;
         GameManager.GameState = GameManager.GameStateEnum.Game;
+        GameManager.SetFrameRate(GameManager.FrameRate);
 
         gameSoundController.PlayBGM((int)GameSoundController.GameBGMSoundTag.Stage);
     }
 
     private void Update()
     {
-        if (HitStopManager.instance.IsHitStop()) { return; }
+        if (HitThrowManager.instance.IsHitThrow()) { return; }
         gameOverStartTimer.Update();
         gameSoundController.GameSoundUpdate();
         if(CameraController.LockObject == null)

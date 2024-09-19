@@ -1,5 +1,3 @@
-using CharacterTagList;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterController : MonoBehaviour
@@ -20,7 +18,6 @@ public class CharacterController : MonoBehaviour
     public MotionController                 GetMotion() {  return motion; }
 
     protected virtual void                  SetMotionController(){ motion = new MotionController();}
-
     ///<summary>
     ///Collider
     ///</summary>
@@ -28,13 +25,11 @@ public class CharacterController : MonoBehaviour
     public Collider                         GetCharacterCollider() { return characterCollider; }
     protected Rigidbody                     characterRB;
     public Rigidbody                        CharacterRB { get { return characterRB; } set { characterRB = value; } }
-
     /// <summary>
     /// 着地判定
     /// </summary>
     [SerializeField]
     protected GroundCheck                   groundCheck;
-    
     /// <summary>
     /// エフェクトを管理するクラス
     /// </summary>
@@ -55,14 +50,12 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     protected KnockBackCommand              knockBackCommand = null;
     public KnockBackCommand                 GetKnockBackCommand() { return knockBackCommand; }
-
     /// <summary>
     /// キャラクターが戦闘状態かそうじゃないか
     /// </summary>
     [SerializeField]
-    private bool battleMode = false;
-    public bool BattleMode { get { return battleMode; } set { battleMode = value; } }
-
+    private bool                            battleMode = false;
+    public bool                             BattleMode { get { return battleMode; } set { battleMode = value; } }
     /// <summary>
     /// オブジェクトの表示、非表示を設定する関数3選
     /// </summary>
@@ -73,7 +66,14 @@ public class CharacterController : MonoBehaviour
     protected virtual void Awake(){}
     protected virtual void InitializeAssign()
     {
-        animator = GetComponent<Animator>();
+        animator =          GetComponent<Animator>();
+        characterCollider = GetComponent<Collider>();
+        characterRB =       GetComponent<Rigidbody>();
+        effectController =  GetComponent<EffectController>();
+        rendererData =      GetComponentInChildren<RendererData>();
+        rendererEffect =    new RendererEffect(this);
+        knockBackCommand =  new KnockBackCommand(this);
+
         if(animator == null)
         {
             Debug.LogError("Animatorがアタッチされていません");
@@ -81,13 +81,11 @@ public class CharacterController : MonoBehaviour
 
         SetMotionController();
 
-        characterCollider = GetComponent<Collider>();
         if(characterCollider == null)
         {
             Debug.Log("Colliderがアタッチされていません");
         }
 
-        characterRB = GetComponent<Rigidbody>();
         if(characterRB == null)
         {
             Debug.LogError("Rigidbodyがアタッチされていません");
@@ -95,13 +93,11 @@ public class CharacterController : MonoBehaviour
 
         groundCheck.SetTransform(transform);
 
-        effectController = GetComponent<EffectController>();
         if(effectController == null)
         {
             Debug.LogError("EffectController");
         }
 
-        rendererData = GetComponentInChildren<RendererData>();
         if (rendererData != null)
         {
             rendererData.AwakeInitilaize();
@@ -110,10 +106,6 @@ public class CharacterController : MonoBehaviour
         {
             Debug.LogError("Rendererがアタッチされていません");
         }
-
-        rendererEffect = new RendererEffect(this);
-
-        knockBackCommand = new KnockBackCommand(this);
     }
 
     protected virtual void  Start()
@@ -125,7 +117,6 @@ public class CharacterController : MonoBehaviour
     }
     protected virtual void Update()
     {
-        if (Time.timeScale <= 0) { return; }
         //入力を解除
         characterStatus.MoveInput = false;
         rendererEffect.ColorChange();

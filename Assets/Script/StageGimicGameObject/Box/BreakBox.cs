@@ -16,21 +16,22 @@ public class BreakBox : MonoBehaviour
     private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
+        boxCollider = GetComponent<BoxCollider>();
+        soundController = GetComponent<SoundController>();
+        effectController = GetComponent<EffectController>();
+
         if(meshRenderer == null)
         {
             Debug.LogWarning("meshRendererがアタッチされていません");
         }
-        boxCollider = GetComponent<BoxCollider>();
         if(boxCollider == null)
         {
             Debug.LogWarning("boxRendererがアタッチされていません");
         }
-        soundController = GetComponent<SoundController>();
         if(soundController == null)
         {
             Debug.LogWarning("soundControllerがアタッチされていません");
         }
-        effectController = GetComponent<EffectController>();
         if (effectController == null)
         {
             Debug.Log("effectControllerがアタッチされていません");

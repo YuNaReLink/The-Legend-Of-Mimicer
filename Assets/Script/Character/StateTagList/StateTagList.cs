@@ -4,6 +4,7 @@
 /// </summary>
 namespace CharacterTagList
 {
+    //キャラクター共通で使うタグ
     public enum StateTag
     {
         Null = -1,
@@ -28,7 +29,7 @@ namespace CharacterTagList
         GetUp,
         DataEnd
     }
-
+    //プレイヤーで使う移動方向を判定するタグ
     public enum DirectionTag
     {
         Null = -1,
@@ -38,7 +39,7 @@ namespace CharacterTagList
         Right,
         DataEnd
     }
-
+    //プレイヤーの三段攻撃を判定するタグ
     public enum TripleAttack
     {
         Null = -1,
@@ -47,7 +48,7 @@ namespace CharacterTagList
         Three,
         DataEnd
     }
-
+    //プレイヤーのガード状態を判定するタグ
     public enum GuardState
     {
         Null = -1,
@@ -55,16 +56,15 @@ namespace CharacterTagList
         Normal,
         DataEnd
     }
-
+    //キャラクターのダメージを判別するタグ
     public enum DamageTag
     {
         Null = -1,
         Fall,
         NormalAttack,
-        GreatAttack,
         DataEnd
     }
-
+    //プレイヤーがオブジェクトを押す状態を判別させるタグ
     public enum PushTag
     {
         Null = -1,
@@ -72,7 +72,7 @@ namespace CharacterTagList
         Pushing,
         DataEnd
     }
-
+    //キャラクターが着地してるかしてないかでPhysicMaterialを変更するために判別するタグ
     public enum PhysicState
     {
         Null = -1,

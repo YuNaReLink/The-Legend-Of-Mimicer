@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-
+/// <summary>
+/// プレイヤーの全ての処理を行っているクラス
+/// </summary>
 public class PlayerController : CharacterController
 {
     /// <summary>
     /// ScriptableObjectデータ
+    /// プレイヤーで使う変数の値を保持してる
     /// </summary>
     [SerializeField]
     private PlayerScriptableObject          data;
@@ -21,18 +24,22 @@ public class PlayerController : CharacterController
     /// </summary>
     private PlayerInput                     keyInput = null;
     public PlayerInput                      GetKeyInput() { return keyInput; }
-
+    /// <summary>
+    /// プレイヤー状態を管理するクラス
+    /// </summary>
     private PlayerState                     state = null;
+    /// <summary>
+    /// プレイヤーの行動を実行するクラス
+    /// </summary>
+    private PlayerCommands                  commands = null;
+    public PlayerCommands                   GetCommands() { return commands; }
     /// <summary>
     /// プレイヤーの壁、崖との判定処理をまとめたクラス
     /// </summary>
-    private ObstacleCheck                   obstacleCheck = null;
-    public ObstacleCheck                    GetObstacleCheck() { return obstacleCheck; }
-    /// <summary>
-    /// プレイヤーの落下処理をまとめたクラス
-    /// </summary>
-    private FallDistanceCheck               fallDistanceCheck = null;
-    public FallDistanceCheck                GetFallDistanceCheck() {  return fallDistanceCheck; }
+    private ObstacleAction                   obstacleAction = null;
+    public ObstacleAction                    GetObstacleCheck() { return obstacleAction; }
+    
+    
     /// <summary>
     /// プレイヤーの道具の処理をまとめたクラス
     /// </summary>
@@ -51,25 +58,14 @@ public class PlayerController : CharacterController
     /// </summary>
     private PlayerTimers                    timer = null;
     public PlayerTimers                     GetTimer() {  return timer; }
-    /// <summary>
-    /// プレイヤーの回避行動を処理するクラス
-    /// </summary>
-    private RollingCommand                  rolling = null;
-    public RollingCommand                   GetRolling() { return rolling; }
-    [SerializeField]
-    private AnimationCurve                  rollCurve = null;
-    public AnimationCurve                   GetRollCurve() { return rollCurve; }
+    
     /// <summary>
     /// プレイヤーの攻撃行動を処理するクラス
     /// </summary>
     [SerializeField]
     private CharacterTagList.TripleAttack   tripleAttack = CharacterTagList.TripleAttack.Null;
     public CharacterTagList.TripleAttack    TripleAttack { get { return tripleAttack; } set {  tripleAttack = value; } }
-    /// <summary>
-    /// プレイヤーのダメージ処理を行うクラス
-    /// </summary>
-    private PlayerDamageCommand             damage = null;
-    public PlayerDamageCommand              GetDamage() { return damage; }
+    
     /// <summary>
     /// プレイヤーの各右・左の道具の処理を生成するクラス
     /// </summary>
@@ -127,96 +123,93 @@ public class PlayerController : CharacterController
     protected override void InitializeAssign()
     {
         base.InitializeAssign();
-
         GameObject cameraObject = GameObject.FindWithTag("MainCamera");
         if(cameraObject != null)
         {
             cameraController = cameraObject.GetComponent<CameraController>();
         }
+        obstacleAction =        GetComponent<ObstacleAction>();
+        keyInput =              GetComponent<PlayerInput>();
+        toolInventory =         GetComponentInChildren<ToolInventoryController>();
+        decorationController =  GetComponent<PlayerDecorationController>();
+        soundController =       GetComponent<SoundController>();
+        state =                 new PlayerState(this);
+        commands =              new PlayerCommands(this);
+        rotation =              new PlayerRotation(this,transform.rotation);
+        timer =                 new PlayerTimers();
+        animatorOverride =      new AnimatorOverrideController(animator.runtimeAnimatorController);
 
-        obstacleCheck = GetComponent<ObstacleCheck>();
-        obstacleCheck?.SetController(this);
+        if(obstacleAction == null)
+        {
+            Debug.LogError("ObstacleCheckがアタッチされていません");
+        }
+        else
+        {
+            obstacleAction.SetController(this);
+        }
 
-        keyInput = GetComponent<PlayerInput>();
         if(keyInput == null)
         {
             Debug.LogError("PlayerInputがアタッチされていません");
         }
-        keyInput?.SetController(this);
-        keyInput?.Initialize();
-
-        state = GetComponent<PlayerState>();
-        if(state == null)
+        else
         {
-            Debug.LogError("PlayerStateがアタッチされていません");
+            keyInput.SetController(this);
+            keyInput.Initialize();
         }
-        state?.AwakeInitilaize();
 
-        fallDistanceCheck = new FallDistanceCheck(this);
-        fallDistanceCheck?.Initialize();
+        state.AwakeInitilaize();
 
-        toolInventory = GetComponentInChildren<ToolInventoryController>();
+        commands.AwakeInitilaize();
+
         if(toolInventory == null)
         {
             Debug.LogError("ToolInventoryControllerがアタッチされていません");
         }
-        toolInventory?.SetController(this);
-        toolInventory?.Initilaize();
+        else
+        {
+            toolInventory.SetController(this);
+            toolInventory.Initilaize();
+        }
 
-        decorationController = GetComponent<PlayerDecorationController>();
         if(decorationController == null)
         {
             Debug.LogError("PlayerDecorationControllerがアタッチされていません");
         }
-        decorationController?.SetController(this);
+        else
+        {
+            decorationController.SetController(this);
+        }
 
-        rotation = new PlayerRotation(this,transform.rotation);
+        timer.InitializeAssignTimer();
 
-        timer = new PlayerTimers();
-        timer?.InitializeAssignTimer();
-
-        rolling = new RollingCommand(this);
-
-        damage = new PlayerDamageCommand(this);
-
-        animatorOverride = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = animatorOverride;
-
-        soundController = GetComponent<SoundController>();
     }
 
     //入力処理を行う
     protected override void Update()
     {
-        base.Update();
-
         keyInput.SystemInput();
-
         if (Time.timeScale <= 0) { return; }
-
+        base.Update();
         //タイマーの更新
         timer.TimerUpdate();
-
         //着地時の判定
         LandingCheck();
-
-        if(characterStatus.StopController) { return; }
-
+        //プレイヤーの体を表示、非表示にする処理
+        BodyRendererUpdate();
+        //外部からプレイヤーを止める処理が呼び出されたらリターン
+        if (characterStatus.StopController) { return; }
         //障害物との当たり判定
-        obstacleCheck.WallCheckInput();
-
+        obstacleAction.WallCheckInput();
         //入力の更新
         keyInput.UpdateInput();
-
         //キーの入力にあった状態に変化
         state.StateUpdate();
-
         //武器や盾の位置を状態によって変える
         toolInventory.UpdateTool();
-
         //特定のモーションを特定の条件で止めたり再生したりするメソッド
         motion.StopMotionCheck();
-
         //特定のモーション終了時に処理を行うメソッド
         motion.EndMotionNameCheck();
     }
@@ -226,13 +219,13 @@ public class PlayerController : CharacterController
         characterStatus.Landing = groundCheck.CheckGroundStatus();
         //パシフィックマテリアル変更
         SetPhysicMaterial();
-        if (obstacleCheck.IsSavePosition() && characterStatus.Landing)
+        if (obstacleAction.IsSavePosition() && characterStatus.Landing)
         {
             characterStatus.SetLandingPosition(transform.localPosition);
         }
         if (!characterStatus.Landing) { return; }
-        obstacleCheck.CliffJumpFlag = false;
-        obstacleCheck.SetGrabCancel(false);
+        obstacleAction.CliffJumpFlag = false;
+        obstacleAction.SetGrabCancel(false);
         if (!timer.GetTimerNoAccele().IsEnabled()&&
             !timer.GetTimerJumpAttackAccele().IsEnabled())
         {
@@ -240,7 +233,9 @@ public class PlayerController : CharacterController
         }
         characterStatus.SetJumpPower(0);
     }
-
+    /// <summary>
+    /// PhysicMaterialを着地の有無で変更する関数
+    /// </summary>
     private void SetPhysicMaterial()
     {
         if (characterStatus.CurrentState != CharacterTagList.StateTag.Grab&&!characterStatus.Landing)
@@ -252,6 +247,17 @@ public class PlayerController : CharacterController
             characterCollider.material = physicMaterials[(int)CharacterTagList.PhysicState.Land];
         }
     }
+    /// <summary>
+    /// プレイヤーオブジェクトのMeshRendererの表示を変更する関数
+    /// </summary>
+    private void BodyRendererUpdate()
+    {
+        foreach (var renderer in rendererData.RendererList)
+        {
+            if (renderer.enabled == !cameraController.IsFPSMode()) { continue; }
+            renderer.enabled = !cameraController.IsFPSMode();
+        }
+    }
 
     //行動処理を行う
     private void FixedUpdate()
@@ -261,6 +267,9 @@ public class PlayerController : CharacterController
         UpdateCommand();
     }
 
+    /// <summary>
+    /// プレイヤーが動くか動かないかを状態で決める関数
+    /// </summary>
     protected override void MoveStateCheck()
     {
         switch (characterStatus.CurrentState)
@@ -278,10 +287,16 @@ public class PlayerController : CharacterController
                 return;
         }
         if(characterStatus.CurrentState == CharacterTagList.StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 && keyInput.Vertical == 0) { return; }
-        if(fallDistanceCheck.FallDamage) { return; }
+        if(commands.GetFallDistanceCheck().FallDamage) { return; }
         characterStatus.MoveInput = true;
     }
-
+    /// <summary>
+    /// カメラの方向から上下左右を取得する関数
+    /// </summary>
+    /// <param name="dir">
+    /// カメラの前、横のVector3
+    /// </param>
+    /// <returns></returns>
     public Vector3 GetCameraDirection(Vector3 dir)
     {
         return Vector3.Scale(dir, new Vector3(1, 0, 1)).normalized;
@@ -289,22 +304,20 @@ public class PlayerController : CharacterController
 
     private void UpdateCommand()
     {
-        //カメラに対して前を取得
-        Vector3 cameraForward = GetCameraDirection(Camera.main.transform.forward);
-        //カメラに対して右を取得
-        Vector3 cameraRight = GetCameraDirection(Camera.main.transform.right);
-        obstacleCheck?.Execute();
+        //MonoBehaviourを継承してるクラスの処理
+        obstacleAction?.Execute();
+        //同じinterface(InterfaceBaseToolCommand)から宣言してるクラスの処理
         rightAction?.Execute();
         leftAction?.Execute();
-        //InterfaceBaseCommand,InterfaceBaseInputを実装してるクラス↓
-        fallDistanceCheck?.Execute();
-        rolling?.Execute();
-        damage?.Execute();
+        //いくつかあるInterfaceBaseCommandを実装したクラスをまとめて処理してるクラスの処理
+        commands.DoUpdate();
+        //継承元のCharacterで宣言してるクラスの処理
         knockBackCommand?.Execute();
         //移動処理
         if (!timer.GetTimerNoAccele().IsEnabled())
         {
-            Accele(cameraForward, cameraRight, data.MaxSpeed, data.Acceleration);
+            Accele(GetCameraDirection(Camera.main.transform.forward), GetCameraDirection(Camera.main.transform.right),
+                   data.MaxSpeed, data.Acceleration);
         }
         //入力がなかった場合停止処理
         if (!characterStatus.MoveInput)
@@ -317,7 +330,10 @@ public class PlayerController : CharacterController
         //プレイヤー自身の回転処理
         transform.rotation = rotation.SelfRotation(this);
     }
-
+    /// <summary>
+    /// プレイヤーが回転するかを状態で決める関数
+    /// </summary>
+    /// <returns></returns>
     private bool RotateStopFlag()
     {
         switch (characterStatus.CurrentState)
@@ -346,43 +362,34 @@ public class PlayerController : CharacterController
         float v = keyInput.Vertical;
         if (characterStatus.CurrentState == CharacterTagList.StateTag.Jump||characterStatus.CurrentState == CharacterTagList.StateTag.Rolling)
         {
+
             vel += transform.forward * _accele;
         }
         else
         {
-            vel += (h * right + v * forward) * SetAccele(_accele);
+            vel += (h * right + v * forward) * SetSpeed(_accele);
         }
         // 現在の速度の大きさを計算
         float currentSpeed = vel.magnitude;
         // もし現在の速度が最大速度未満ならば、加速度を適用する
         // 現在の速度が最大速度以上の場合は速度を最大速度に制限する
-        if (currentSpeed >= SetMaxSpeed(_maxspeed))
+        if (currentSpeed >= SetSpeed(_maxspeed))
         {
-            vel = vel.normalized * SetMaxSpeed(_maxspeed);
+            vel = vel.normalized * SetSpeed(_maxspeed);
         }
         characterStatus.Velocity = vel;
     }
 
-    private float SetAccele(float _accele)
+    private const float LittleSpeed = 0.2f;
+    private float SetSpeed(float _speed)
     {
         if(characterStatus.CurrentState == CharacterTagList.StateTag.ReadySpinAttack||
            characterStatus.CurrentState == CharacterTagList.StateTag.Push||
            cameraController.IsFPSMode())
         {
-            _accele *= 0.2f;
+            _speed *= LittleSpeed;
         }
-        return _accele;
-    }
-
-    private float SetMaxSpeed(float _maxSpeed)
-    {
-        if (characterStatus.CurrentState == CharacterTagList.StateTag.ReadySpinAttack||
-            characterStatus.CurrentState == CharacterTagList.StateTag.Push ||
-            cameraController.IsFPSMode())
-        {
-            _maxSpeed *= 0.2f;
-        }
-        return _maxSpeed;
+        return _speed;
     }
 
     public override void Death()
@@ -396,13 +403,14 @@ public class PlayerController : CharacterController
         base.RecoveryHelth(count);
         soundController.PlaySESound((int)SoundTagList.PlayerSoundTag.GetHeart);
     }
-    public void GetArrow(int count)
+    /// <summary>
+    /// 矢を取得した時に処理するSE処理
+    /// </summary>
+    /// <param name="count"></param>
+    public void GetArrowSound(int count)
     {
         soundController.PlaySESound((int)SoundTagList.PlayerSoundTag.GetItem);
     }
-
-    private void SetPushState(CharacterTagList.PushTag _pushTag){pushTag = _pushTag;}
-
     private void OnCollisionEnter(Collision collision)
     {
         HandleCollision(collision.collider);
@@ -421,8 +429,8 @@ public class PlayerController : CharacterController
                 DamageOrGuardCheck(other);
                 break;
             default:
-                fallDistanceCheck.CollisionEnter();
-                if (!fallDistanceCheck.FallDamage) { return; }
+                commands.GetFallDistanceCheck().CollisionEnter();
+                if (!commands.GetFallDistanceCheck().FallDamage) { return; }
                 damageTag = CharacterTagList.DamageTag.Fall;
                 break;
         }
@@ -435,7 +443,7 @@ public class PlayerController : CharacterController
             case CharacterTagList.GuardState.Null:
                 //ダメージ発生時の処理
                 damageTag = CharacterTagList.DamageTag.NormalAttack;
-                damage.Attacker = other.gameObject;
+                commands.Damage.Attacker = other.gameObject;
                 break;
             case CharacterTagList.GuardState.Normal:
             case CharacterTagList.GuardState.Crouch:
@@ -446,6 +454,7 @@ public class PlayerController : CharacterController
         }
     }
 
+    private void SetPushState(CharacterTagList.PushTag _pushTag){pushTag = _pushTag;}
     private void OnCollisionStay(Collision collision)
     {
         if (characterStatus.DeathFlag) { return; }
@@ -454,16 +463,15 @@ public class PlayerController : CharacterController
             case "Furniture":
                 CharacterTagList.PushTag tag = pushTag;
                 if ((keyInput.Vertical != 0 || keyInput.Horizontal != 0)&&
-                    obstacleCheck.CameraForwardWallCheck())
+                    obstacleAction.CameraForwardWallCheck())
                 {
-                    switch (pushTag)
+                    if(pushTag == CharacterTagList.PushTag.Start)
                     {
-                        case CharacterTagList.PushTag.Start:
-                            tag = CharacterTagList.PushTag.Pushing;
-                            break;
-                        case CharacterTagList.PushTag.Null:
-                            tag = CharacterTagList.PushTag.Start;
-                            break;
+                        tag = CharacterTagList.PushTag.Pushing;
+                    }
+                    else if(pushTag == CharacterTagList.PushTag.Null)
+                    {
+                        tag = CharacterTagList.PushTag.Start;
                     }
                 }
                 else
@@ -484,7 +492,7 @@ public class PlayerController : CharacterController
                 SetPushState(CharacterTagList.PushTag.Null);
                 break;
             default:
-                fallDistanceCheck.CollisionExit();
+                commands.GetFallDistanceCheck().CollisionExit();
                 break;
         }
     }

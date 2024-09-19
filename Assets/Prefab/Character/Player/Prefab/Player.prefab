@@ -212,7 +212,6 @@ GameObject:
   - component: {fileID: 2226966414073182723}
   - component: {fileID: 6136527748721531752}
   - component: {fileID: 2930122255710493470}
-  - component: {fileID: 9047474963903160528}
   - component: {fileID: 5085607257831151868}
   - component: {fileID: 1151272462068201039}
   - component: {fileID: 7840695295424365132}
@@ -349,30 +348,6 @@ MonoBehaviour:
   battleMode: 0
   data: {fileID: 11400000, guid: 2a35ea8483179074b998d0a286b0cccb, type: 2}
   cameraController: {fileID: 0}
-  rollCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   tripleAttack: -1
   pushTag: -1
   physicMaterials:
@@ -407,18 +382,6 @@ MonoBehaviour:
   guardHoldButton: 0
   guardPushButton: 0
   getButton: 0
---- !u!114 &9047474963903160528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4348658367534398464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 089ee00c1ed433441882eaa725dda417, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5085607257831151868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,14 +391,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4348658367534398464}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d26f043f5da3d7e4c8d4c93bb77d1b40, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a3a5682f82227e488455a74ac2b13a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   stepCheckOffset: 0.5
   stepUpCheckOffset: 0.4
   stepCheckDistance: 1
   lowStep: 0
-  lowStepJumpPower: 1250
   lowJumpCount: 0
   wallCheckoffsetArray:
   - 4
@@ -448,7 +410,6 @@ MonoBehaviour:
   - 0.7
   - 0.7
   hitWallFlagArray: 00000000
-  wallJumpPower: 1500
   climbForward: 1.5
   climbUp: 2
   stepJumpFlag: 0

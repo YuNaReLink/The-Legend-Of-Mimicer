@@ -6,11 +6,14 @@ public class RollingCommand : InterfaceBaseCommand
     public RollingCommand(PlayerController _controller)
     {
         controller = _controller;
+        rollCurve = AnimationCurve.Constant(0,1.0f,1.0f);
     }
 
     private const float MinRollProgress = 0.05f;
 
     private const float EndRollProgress = 1.0f;
+
+    private AnimationCurve rollCurve = null;
 
     public void Execute()
     {
@@ -55,9 +58,7 @@ public class RollingCommand : InterfaceBaseCommand
                     rollDirection = controller.transform.right;
                     break;
             }
-
-
-            float currentRollSpeed = controller.GetRollCurve().Evaluate(rollProgress) * SetRollingAcceleration();
+            float currentRollSpeed = rollCurve.Evaluate(rollProgress) * SetRollingAcceleration();
             RollingAccele(rollDirection * currentRollSpeed);
         }
         //バク転時のジャンプ処理

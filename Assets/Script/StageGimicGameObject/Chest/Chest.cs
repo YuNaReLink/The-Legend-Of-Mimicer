@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 宝箱の動き、アイテム取得の処理を実行するクラス
+/// </summary>
 public class Chest : MonoBehaviour
 {
     /// <summary>
@@ -53,23 +56,24 @@ public class Chest : MonoBehaviour
     private void Awake()
     {
         triggerCheck = GetComponentInChildren<TriggerCheck>();
+        getItem = GetComponent<GetChestItem>();
+        soundController = GetComponent<SoundController>();
         if(triggerCheck == null)
         {
             Debug.LogWarning("TriggerCheckがアタッチされていません");
         }
-        getItem = GetComponent<GetChestItem>();
         if(getItem == null)
         {
             Debug.LogWarning("GetChestItemがアタッチされていません");
         }
-        soundController = GetComponent<SoundController>();
-        if(soundController != null)
+        
+        if(soundController == null)
         {
-            soundController.AwakeInitilaize();
+            Debug.LogError("ChestSoundControllerがアタッチされていません");
         }
         else
         {
-            Debug.LogError("ChestSoundControllerがアタッチされていません");
+            soundController.AwakeInitilaize();
         }
     }
     private void Start()
@@ -115,14 +119,12 @@ public class Chest : MonoBehaviour
         lidObject.transform.localRotation = Quaternion.Euler(addRotate);
         float currentRotate = lidObject.transform.localRotation.eulerAngles.x;
         currentRotate -= 360f;
-        if(currentRotate <= openRotateX + 10f)
-        {
-            Vector3 rotate = Vector3.zero;
-            rotate.x = openRotateX;
-            lidObject.transform.localRotation = Quaternion.Euler(rotate);
-            stop = true;
-            //蓋が空き切った時にアイテムクラスでプレイヤーに指定されたアイテムを取得させる
-            getItem.Get();
-        }
+        if(currentRotate > openRotateX + 10f) { return; }
+        Vector3 rotate = Vector3.zero;
+        rotate.x = openRotateX;
+        lidObject.transform.localRotation = Quaternion.Euler(rotate);
+        stop = true;
+        //蓋が空き切った時にアイテムクラスでプレイヤーに指定されたアイテムを取得させる
+        getItem.Get();
     }
 }

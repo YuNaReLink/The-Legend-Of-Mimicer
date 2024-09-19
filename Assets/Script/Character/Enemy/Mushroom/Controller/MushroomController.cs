@@ -17,19 +17,28 @@ public class MushroomController : EnemyController
     {
         base.InitializeAssign();
         mushroomState = GetComponent<MushroomState>();
-        mushroomState?.SetController(this);
+        soundController = GetComponent<SoundController>();
+        mushroomDamage = new MushroomDamageCommand(this);
+
+
         if(mushroomState == null)
         {
             Debug.LogError("MushroomStateがアタッチされていません");
         }
-        soundController = GetComponent<SoundController>();
+        else
+        {
+            mushroomState.SetController(this);
+        }
+
         if(soundController == null)
         {
             Debug.LogError("SoundControllerがアタッチされていません");
         }
-        soundController?.AwakeInitilaize();
+        else
+        {
+            soundController.AwakeInitilaize();
+        }
 
-        mushroomDamage = new MushroomDamageCommand(this);
     }
     protected override void Update()
     {

@@ -19,7 +19,6 @@ public class PlayerDecorationController : MonoBehaviour
 
     [SerializeField]
     private List<GameObject>        decorationObjects = new List<GameObject>();
-    public List<GameObject>         GetDecorationObjects() {  return decorationObjects; }
 
     void Update()
     {

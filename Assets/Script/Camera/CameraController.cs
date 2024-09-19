@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    //メインカメラを取得
     private Camera              myCamera = null;
-
     [Header("カメラが追従するターゲット")]
     [SerializeField]
     private GameObject          target;
-
+    //プレイヤーのインスタンス宣言
     private PlayerController    player;
-
+    //カメラコントローラーで使う変数
     [SerializeField]
     private CameraStatus        cameraStatus;
     public CameraStatus         CameraStatus => cameraStatus;
@@ -19,21 +19,18 @@ public class CameraController : MonoBehaviour
     private float               rotation_hor;
 
     private float               rotation_ver;
-
+    //カメラがどれくらい動いたかを取得するVector3変数
     private Vector3             targettrack;
-    [Header("=================")]
-    [SerializeField]
-    private float               desiredDistanceBehindPlayer = 3.0f;
-    [SerializeField]
-    private float               focusCameraPosX = 1.5f;
-    [SerializeField]
-    private float               focusCameraPosY = 2.0f;
+
+
+    [Header("カメラがターゲットに注目した時のカメラの位置を固定する値"),SerializeField]
+    private Vector3             focusCameraPosition = new Vector3(1.5f, 2.0f, 3.0f);
+
+    [Header("カメラを回転させる時にスピードを正規化する変数"),SerializeField]
+    private Vector3             cameraRotationNormalizeSpeed = new Vector3(0, 0.2f, -5);
 
     [SerializeField]
-    private Vector3             initCameraRotation = new Vector3(0, 0.2f, -5);
-
-    [SerializeField]
-    private float               neckHeight = 0;
+    private float               neckHeight = 2.0f;
 
     //注目するためのフラグ
     private static bool         focusFlag = false;
@@ -51,18 +48,17 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = 120;
+        myCamera = GetComponent<Camera>();
+        target = GameObject.FindWithTag("Player");
     }
 
     private void Start()
     {
-        myCamera = GetComponent<Camera>();
         if(myCamera == null)
         {
             Debug.LogError("カメラがアタッチされませんでした。");
         }
-        target = GameObject.FindWithTag("Player");
-        if (target != null && player == null)
+        if (target != null)
         {
             player = target.GetComponent<PlayerController>();
         }
@@ -77,11 +73,11 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         //カメラが追従してる対象をチェック
-        CheckTarget();
+        CheckCameraTarget();
         switch (GameManager.GameState)
         {
             case GameManager.GameStateEnum.Game:
-                GameStateCameraControl();
+                GameStautsCameraControl();
                 break;
             case GameManager.GameStateEnum.Pose:
                 cameraStatus.PoseCameraControl();
@@ -94,7 +90,11 @@ public class CameraController : MonoBehaviour
                 break;
         }
     }
-    private void CheckTarget()
+    
+    /// <summary>
+    /// ゲームの状態によってカメラが追従するターゲットを確認し必要ならターゲットを代入する
+    /// </summary>
+    private void CheckCameraTarget()
     {
         switch (GameManager.GameState)
         {
@@ -106,8 +106,6 @@ public class CameraController : MonoBehaviour
                     player = target.GetComponent<PlayerController>();
                 }
                 break;
-            case GameManager.GameStateEnum.GameOver:
-                break;
             case GameManager.GameStateEnum.GameClear:
                 if(target == GameSceneSystemController.Instance.GetCameraFocusObject()) { return; }
                 GameObject o = GameSceneSystemController.Instance.GetCameraFocusObject();
@@ -116,11 +114,13 @@ public class CameraController : MonoBehaviour
                 break;
         }
     }
-
-    private void GameStateCameraControl()
+    /// <summary>
+    /// ゲーム状態時のカメラ処理
+    /// </summary>
+    private void GameStautsCameraControl()
     {
         if(player == null) { return; }
-        SetCameraMode();
+        ChangeFpsMode(player.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.CrossBow);
         if (fpsMode)
         {
             Vector3 fpsPos = player.transform.position;
@@ -140,40 +140,43 @@ public class CameraController : MonoBehaviour
             rotation_hor = 0;
         }
     }
-    private void SetCameraMode()
-    {
-        ChangeFpsMode(player.GetToolController().CurrentToolTag == ToolInventoryController.ToolObjectTag.CrossBow);
-    }
+    /// <summary>
+    /// FPSカメラモード時に
+    /// </summary>
+    /// <param name="mode"></param>
     void ChangeFpsMode(bool mode)
     {
+        if(fpsMode == mode) { return; }
         fpsMode = mode;
-        foreach (var renderer in player.GetRendererData().RendererList)
-        {
-            renderer.enabled = !mode;
-        }
     }
+
     /// <summary>
     /// ゲームオーバー時のカメラとの距離と高さを調整する
     /// </summary>
+    private const float removeNeckHeightNum = 0.02f;
+    private const float minNeckHeight = 0.5f;
+    private const float removeGameOverCameraDistance = 0.02f;
+    private const float minGameOverCameraDistance = 3.0f;
     private void GameOverCameraControl()
     {
-        neckHeight -= 0.02f;
-        if (neckHeight < 0.5f)
+        neckHeight -= removeNeckHeightNum;
+        if (neckHeight < minNeckHeight)
         {
-            neckHeight = 0.5f;
+            neckHeight = minNeckHeight;
         }
-        cameraStatus.SetBaseDistance(cameraStatus.BaseDistance - 0.02f);
-        if (cameraStatus.BaseDistance < 3.0f)
+        cameraStatus.SetBaseDistance(cameraStatus.BaseDistance - removeGameOverCameraDistance);
+        if (cameraStatus.BaseDistance < minGameOverCameraDistance)
         {
-            cameraStatus.SetBaseDistance(3.0f);
+            cameraStatus.SetBaseDistance(minGameOverCameraDistance);
         }
     }
     /// <summary>
     /// ゲームクリア時のカメラと対象の距離を設定する関数
     /// </summary>
+    private const float gameClearDistance = 10.0f;
     private void GameClearCameraControl()
     {
-        cameraStatus.SetBaseDistance(10.0f);
+        cameraStatus.SetBaseDistance(gameClearDistance);
     }
     void FixedUpdate()
     {
@@ -224,7 +227,7 @@ public class CameraController : MonoBehaviour
             Vector3 directionToEnemy = lockObject.transform.position - transform.position;
             // プレイヤーのローカル座標系でのカメラのオフセット
             Quaternion lookRotation = Quaternion.LookRotation(directionToEnemy);
-            Vector3 offset = new Vector3(focusCameraPosX, focusCameraPosY, -desiredDistanceBehindPlayer);
+            Vector3 offset = new Vector3(focusCameraPosition.x, focusCameraPosition.y, -focusCameraPosition.z);
             // プレイヤーの回転に合わせてローカル座標系のオフセットを変換
             Vector3 rotatedOffset = player.transform.rotation * offset;
             transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * 5.0f);
@@ -287,13 +290,15 @@ public class CameraController : MonoBehaviour
     /// <summary>
     /// ゲームオーバー時のカメラの動きと回転を行う関数
     /// </summary>
+    private const float addGameOverCameraRotationHor = 2.0f;
+    private const float rotationEulerAnglesYOffset = 145.0f;
     private void GameOverCamera()
     {
-        rotation_hor += 2f;
-        float dis = player.transform.rotation.eulerAngles.y + 145 - rotation_hor;
+        rotation_hor += addGameOverCameraRotationHor;
+        float dis = player.transform.rotation.eulerAngles.y + rotationEulerAnglesYOffset - rotation_hor;
         if(dis <= 0.1f)
         {
-            rotation_hor = player.transform.rotation.eulerAngles.y + 145;
+            rotation_hor = player.transform.rotation.eulerAngles.y + rotationEulerAnglesYOffset;
         }
         rotation_ver = 0;
 
@@ -302,12 +307,13 @@ public class CameraController : MonoBehaviour
     /// <summary>
     /// クリアした時にtargetに入ってるオブジェクトを中心にカメラを制御する処理
     /// </summary>
+    private const float targetRotationVer = 60.0f;
     private void TargetCameraUpdate()
     {
         if (target == null) {return;}
 
         rotation_hor = target.transform.rotation.eulerAngles.y;
-        rotation_ver = 60;
+        rotation_ver = targetRotationVer;
 
         MoveCameraPositionAndRotatetion();
     }
@@ -321,7 +327,7 @@ public class CameraController : MonoBehaviour
             rotation_ver = Mathf.Sign(rotation_ver) * 60;
 
         //base vector to rotate
-        var rotation = Vector3.Normalize(initCameraRotation); //base(normalized)
+        var rotation = Vector3.Normalize(cameraRotationNormalizeSpeed); //base(normalized)
         rotation = Quaternion.Euler(rotation_ver, rotation_hor, 0) * rotation; //rotate vector
 
         //カメラの埋まりを防ぐためにレイヤーを指定する

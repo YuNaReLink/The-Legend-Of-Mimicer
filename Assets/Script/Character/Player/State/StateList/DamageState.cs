@@ -1,5 +1,7 @@
 
-
+/// <summary>
+/// ダメージの状態を処理するクラス
+/// </summary>
 public class DamageState : InterfaceState
 {
     private PlayerController controller = null;
@@ -18,12 +20,10 @@ public class DamageState : InterfaceState
         {
             case CharacterTagList.DamageTag.Fall:
                 controller.GetMotion().ForcedChangeMotion(CharacterTagList.StateTag.Damage);
-                controller.GetFallDistanceCheck().SetFallDamage(false);
+                controller.GetCommands().GetFallDistanceCheck().SetFallDamage(false);
                 break;
             case CharacterTagList.DamageTag.NormalAttack:
                 controller.GetMotion().ForcedChangeMotion(CharacterTagList.StateTag.Damage);
-                break;
-            case CharacterTagList.DamageTag.GreatAttack:
                 break;
         }
     }
