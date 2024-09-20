@@ -19,13 +19,6 @@ public class GroundCheck
     private RaycastHit      hit;
 
     /// <summary>
-    /// DrawLineでGroundCheckを確認
-    /// </summary>
-    private void FixedUpdate()
-    {
-        Debug.DrawLine(transform.position, transform.position + groundCheckOffsetY * Vector3.up,Color.black);
-    }
-    /// <summary>
     /// GroundCheck処理
     /// SphereCastを使用してtrue、falseの処理を行う
     /// </summary>

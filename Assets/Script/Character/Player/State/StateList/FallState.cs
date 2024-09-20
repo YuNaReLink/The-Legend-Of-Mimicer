@@ -10,17 +10,14 @@ public class FallState : InterfaceState
 
     public void DoUpdate()
     {
+        bool noUpdateState =    controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.Jump ||
+                                controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.JumpAttack ||
+                                controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.Rolling ||
+                                controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.WallJump ||
+                                controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.Grab ||
+                                controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.Null;
+        if (noUpdateState) { return; }
         if(controller.GetCameraController().IsFPSMode()){ return; }
-        switch (controller.CharacterStatus.CurrentState)
-        {
-            case CharacterTagList.StateTag.Jump:
-            case CharacterTagList.StateTag.JumpAttack:
-            case CharacterTagList.StateTag.Rolling:
-            case CharacterTagList.StateTag.WallJump:
-            case CharacterTagList.StateTag.Grab:
-            case CharacterTagList.StateTag.Null:
-                return;
-        }
         if (controller.GetObstacleCheck().IsGrabFlag()) { return; }
         if (controller.GetObstacleCheck().IsClimbFlag()) { return; }
         if (controller.GetObstacleCheck().IsWallJumpFlag()) { return; }

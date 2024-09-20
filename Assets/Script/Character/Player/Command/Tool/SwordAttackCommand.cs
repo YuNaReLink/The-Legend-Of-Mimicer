@@ -9,10 +9,6 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
         controller = _controller;
     }
 
-    public ToolTag GetToolTag()
-    {
-        return ToolTag.Sword;
-    }
     //PlayerInput‚Å‹Lq‚µ‚Ä‚é“à—e
     public void Input()
     {

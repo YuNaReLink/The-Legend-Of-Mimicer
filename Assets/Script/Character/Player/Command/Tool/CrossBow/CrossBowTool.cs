@@ -12,10 +12,6 @@ public class CrossBowTool : InterfaceBaseToolCommand
         shoot = _shot;
     }
 
-    public ToolTag GetToolTag()
-    {
-        return ToolTag.CrossBow;
-    }
 
     public void Input()
     {

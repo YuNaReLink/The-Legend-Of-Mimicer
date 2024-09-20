@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// 全ての敵が継承してるコントローラー
+/// クモ、キノコ、ボスが継承してる
+/// </summary>
 public class EnemyController : CharacterController
 {
     /// <summary>
@@ -12,15 +16,6 @@ public class EnemyController : CharacterController
     /// </summary>
     /// <returns></returns>
     public EnemyScriptableObject        GetData() {  return data; }
-    /// <summary>
-    /// NavMeshAgentの処理をまとめたクラス
-    /// </summary>
-    protected NavMeshController         navMeshController = null;
-    /// <summary>
-    /// のGet関数
-    /// </summary>
-    /// <returns></returns>
-    public NavMeshController            GetNavMeshController() { return navMeshController; }
     /// <summary>
     /// プレイヤーを発見してるか判定するフラグ
     /// </summary>
@@ -39,20 +34,6 @@ public class EnemyController : CharacterController
     /// のGetSet関数
     /// </summary>
     public PlayerController             Target { get { return target; } set { target = value; } }
-
-    /// <summary>
-    /// NavMeshAgentで使う変数
-    /// </summary>
-    //NavMeshAgentのゴール座標を代入する変数
-    [SerializeField]
-    protected Vector3                   goalPosition = Vector3.zero;
-    //の GetSet関数
-    public Vector3                      GoalPosition { get { return goalPosition; } set { goalPosition = value; } }
-    //徘徊時にランダムに座標を設定する時の半径変数
-    [SerializeField]
-    protected float                     loiterRadius = 10f;
-    //のGet関数
-    public float                        GetLoiterRadius() { return loiterRadius; }
     /// <summary>
     /// ダメージの処理を管理するクラス
     /// </summary>

@@ -102,6 +102,10 @@ public class PlayerInput : MonoBehaviour
         InitializeInput();
         ForcedRelease();
     }
+
+    /// <summary>
+    /// プレイヤーではなくゲーム全体に関係する入力を行う関数
+    /// </summary>
     public void SystemInput()
     {
         if (GetItemMessage.Instance.ItemData != null) { return; }

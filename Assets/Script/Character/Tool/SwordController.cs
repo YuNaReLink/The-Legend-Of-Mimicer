@@ -6,19 +6,19 @@ using UnityEngine;
 /// </summary>
 public class SwordController : ToolController
 {
-    public override float AttackPower => base.AttackPower * ratioPower;
+    public override float           AttackPower => base.AttackPower * ratioPower;
 
-    private float ratioPower = 1f;
+    private float                   ratioPower = 1f;
 
     public override void SetController(CharacterController _controller)
     {
         base.SetController(_controller);
         player = controller.GetComponent<PlayerController>();
     }
-    private PlayerController player = null;
+    private PlayerController        player = null;
 
     public override ToolTag GetToolTag() { return ToolTag.Sword; }
-    private SwordEffectController effect = null;
+    private SwordEffectController   effect = null;
 
     private CharacterTagList.StateTag[] StateArray = new CharacterTagList.StateTag[]
     {
@@ -64,6 +64,7 @@ public class SwordController : ToolController
     }
     private void Start()
     {
+        //エフェクトの初期化
         effect.StopTrail();
     }
 
@@ -74,6 +75,9 @@ public class SwordController : ToolController
         SetColliderSize();
     }
 
+    /// <summary>
+    /// 剣のコライダーを有効にするか決める関数
+    /// </summary>
     private void ActiveCheck()
     {
         if (controller == null) { return; }
@@ -90,6 +94,17 @@ public class SwordController : ToolController
             collider.enabled = false;
         }
     }
+
+    private const float jumpattackStartCount = 0.3f;
+    private const float jumpattackEndCount = 0.5f;
+
+    private const float spinAttackStartCount = 0.3f;
+    /// <summary>
+    /// モーションの名前から現在のモーションを取得して
+    /// モーションの再生時間でコライダーを有効にするかを決める
+    /// </summary>
+    /// <param name="tag"></param>
+    /// <returns></returns>
     private bool MotionTimeCheck(CharacterTagList.StateTag tag)
     {
         AnimatorStateInfo animInfo = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
@@ -103,13 +118,14 @@ public class SwordController : ToolController
                 }
                 break;
             case CharacterTagList.StateTag.JumpAttack:
-                if (animInfo.normalizedTime >= 0.3f && animInfo.normalizedTime < 0.5f)
+                if (animInfo.normalizedTime >= jumpattackStartCount &&
+                    animInfo.normalizedTime < jumpattackEndCount)
                 {
                     return true;
                 }
                 break;
             case CharacterTagList.StateTag.SpinAttack:
-                if (animInfo.normalizedTime < 0.3f)
+                if (animInfo.normalizedTime < spinAttackStartCount)
                 {
                     return true;
                 }
@@ -121,25 +137,43 @@ public class SwordController : ToolController
         return false;
     }
 
+    private const float firstAttackStartTime = 0.3f;
+    private const float firstAttackEndTime = 0.7f;
+
+    private const float secondAttackStartTime = 0.1f;
+    private const float secondAttackEndTime = 0.4f;
+
+    private const float threeAttackStartTime = 0.5f;
+    private const float threeAttackEndTime = 0.7f;
+    /// <summary>
+    /// 三段攻撃時のコライダーを有効にする間隔を決める関数
+    /// </summary>
+    /// <param name="animInfo">
+    /// キャラクターのアニメーターを代入する引数
+    /// </param>
+    /// <returns></returns>
     private bool TripleAttackCheck(AnimatorStateInfo animInfo)
     {
         PlayerController player = controller.GetComponent<PlayerController>();
         switch (player.TripleAttack)
         {
             case CharacterTagList.TripleAttack.First:
-                if (animInfo.normalizedTime >= 0.3f && animInfo.normalizedTime < 0.7f)
+                if (animInfo.normalizedTime >= firstAttackStartTime &&
+                    animInfo.normalizedTime < firstAttackEndTime)
                 {
                     return true;
                 }
                 break;
             case CharacterTagList.TripleAttack.Second:
-                if (animInfo.normalizedTime >= 0.1f && animInfo.normalizedTime < 0.4f)
+                if (animInfo.normalizedTime >= secondAttackStartTime &&
+                    animInfo.normalizedTime < secondAttackEndTime)
                 {
                     return true;
                 }
                 break;
             case CharacterTagList.TripleAttack.Three:
-                if (animInfo.normalizedTime >= 0.5f && animInfo.normalizedTime < 0.7f)
+                if (animInfo.normalizedTime >= threeAttackStartTime &&
+                    animInfo.normalizedTime < threeAttackEndTime)
                 {
                     return true;
                 }
@@ -147,7 +181,9 @@ public class SwordController : ToolController
         }
         return false;
     }
-
+    /// <summary>
+    /// 複数ある攻撃状態からダメージ量を決める関数
+    /// </summary>
     private void SetAttackPower()
     {
         switch (controller.CharacterStatus.CurrentState)
@@ -163,7 +199,9 @@ public class SwordController : ToolController
                 break;
         }
     }
-
+    /// <summary>
+    /// 状態によって剣のコライダーのサイズを変更する関数
+    /// </summary>
     private void SetColliderSize()
     {
         if (controller == null) { return; }

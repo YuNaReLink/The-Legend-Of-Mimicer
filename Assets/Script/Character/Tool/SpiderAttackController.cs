@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// クモの攻撃用のコライダーの処理を行うクラス
+/// </summary>
 public class SpiderAttackController : BaseAttackController
 {
     public override ToolTag GetToolTag(){ return ToolTag.Other;}

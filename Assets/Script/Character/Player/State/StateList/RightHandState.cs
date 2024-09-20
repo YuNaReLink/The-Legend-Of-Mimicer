@@ -1,4 +1,3 @@
-using CharacterTagList;
 using UnityEngine;
 
 /// <summary>
@@ -28,17 +27,14 @@ public class RightHandState : InterfaceState
     /// <returns></returns>
     private bool CheckStopState()
     {
-        StateTag state = controller.CharacterStatus.CurrentState;
-        switch (state)
-        {
-            case StateTag.Null:
-            case StateTag.Idle:
-            case StateTag.Run:
-            case StateTag.Jump:
-            case StateTag.Fall:
-            case StateTag.ChangeMode:
-                return false;
-        }
+        CharacterTagList.StateTag state = controller.CharacterStatus.CurrentState;
+        bool stopState = state == CharacterTagList.StateTag.Null ||
+                         state == CharacterTagList.StateTag.Idle ||
+                         state == CharacterTagList.StateTag.Run ||
+                         state == CharacterTagList.StateTag.Jump ||
+                         state == CharacterTagList.StateTag.Fall ||
+                         state == CharacterTagList.StateTag.ChangeMode;
+        if(stopState) { return false; }
         return true;
     }
     /// <summary>
@@ -47,11 +43,11 @@ public class RightHandState : InterfaceState
     /// <returns></returns>
     private bool NoChangeModeState()
     {
-        StateTag state = controller.CharacterStatus.CurrentState;
+        CharacterTagList.StateTag state = controller.CharacterStatus.CurrentState;
         switch (state)
         {
-            case StateTag.Idle:
-            case StateTag.ChangeMode:
+            case CharacterTagList.StateTag.Idle:
+            case CharacterTagList.StateTag.ChangeMode:
                 if (controller.GetKeyInput().GuardHoldButton||controller.CharacterStatus.MoveInput)
                 {
                     return false;
@@ -65,18 +61,14 @@ public class RightHandState : InterfaceState
     /// </summary>
     private bool CheckCrossBowEnabledState()
     {
-        StateTag state = controller.CharacterStatus.CurrentState;
-        switch (state)
-        {
-            case StateTag.Idle:
-            case StateTag.Run:
-            case StateTag.Rolling:
-            case StateTag.Gurid:
-                return true;
-        }
+        CharacterTagList.StateTag state = controller.CharacterStatus.CurrentState;
+        bool enabledState = state == CharacterTagList.StateTag.Idle ||
+                            state == CharacterTagList.StateTag.Run ||
+                            state == CharacterTagList.StateTag.Rolling ||
+                            state == CharacterTagList.StateTag.Gurid;
+        if (enabledState) { return true; }
         return false;
     }
-    /// <returns></returns>
     //剣のアイテムを持ってるか判定するbool関数
     private bool IsSwordCheck() => controller.GetToolController().CheckNullTool(ToolInventoryController.ToolObjectTag.Sword);
     //クロスボウを持っているか判定するbool関数
@@ -127,7 +119,7 @@ public class RightHandState : InterfaceState
             if (controller.BattleMode)
             {
                 controller.BattleMode = false;
-                controller.GetMotion().ChangeMotion(StateTag.ChangeMode);
+                controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.ChangeMode);
             }
         }
 

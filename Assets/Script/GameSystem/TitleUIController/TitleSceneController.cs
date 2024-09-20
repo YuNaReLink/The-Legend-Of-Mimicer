@@ -19,8 +19,7 @@ public class TitleSceneController : MonoBehaviour
     {
         GameManager.GameState = GameManager.GameStateEnum.Title;
         Time.timeScale = 1f;
-        CursorController.GetInstance().SetCursorLookMode(CursorLockMode.None);
-        CursorController.GetInstance().SetCursorState(true);
+        CursorController.GetInstance().SettingCursor(CursorLockMode.None, true);
         soundController.PlayBGM((int)TitleSoundController.TitleBGMTag.Title);
     }
 

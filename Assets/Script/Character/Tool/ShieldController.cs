@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 盾のコライダーの有無の設定の管理を行うクラス
+/// </summary>
 public class ShieldController : ToolController
 {
     public override ToolTag GetToolTag() { return ToolTag.Shield; }

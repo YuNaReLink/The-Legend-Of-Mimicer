@@ -1,5 +1,9 @@
 using UnityEngine;
 
+
+/// <summary>
+/// ñÓÇî≠éÀÇ∑ÇÈèàóùÇä«óùÇ∑ÇÈÉNÉâÉX
+/// </summary>
 public class CrossBowShoot : MonoBehaviour
 {
     [SerializeField]
@@ -16,15 +20,20 @@ public class CrossBowShoot : MonoBehaviour
 
     private PlayerController    playerController = null;
 
+    private void Awake()
+    {
+        animation = GetComponent<CrossBowAnimation>();
+    }
 
+    private const float DestroyCount = 10.0f;
 
     public bool ArrowFire()
     {
-        if(animation != null)
-        {
-            AnimatorStateInfo animinfo = animation.GetAnimator().GetCurrentAnimatorStateInfo(0);
-            if (!animinfo.IsName("Hold")) { return false; }
-        }
+        if(animation == null) { return false; }
+
+        AnimatorStateInfo animinfo = animation.GetAnimator().GetCurrentAnimatorStateInfo(0);
+        if (!animinfo.IsName("Hold")) { return false; }
+
         if (fire) { return false; }
         if(arrow == null) { return false; }
         if(arrowTransform == null) { return false; }
@@ -32,7 +41,7 @@ public class CrossBowShoot : MonoBehaviour
         bullet.transform.LookAt(CameraAimRaycast.Instance.GetSightPosition());
         Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
         bulletRb.AddForce(bullet.transform.forward * bulletSpeed);
-        Destroy(bullet, 10.0f);
+        Destroy(bullet, DestroyCount);
         fire = true;
         return true;
     }

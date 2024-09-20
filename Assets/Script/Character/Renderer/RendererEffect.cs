@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// キャラクターの体のRendererを取得して色を変える処理を行うクラス
+/// </summary>
 public class RendererEffect : MonoBehaviour
 {
     private CharacterController     characterController = null;

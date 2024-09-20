@@ -9,7 +9,7 @@ public class ArrowItem : Consumables
     private int                     count = 5;
     public override ConsumablesTag GetConsumablesTag() { return ConsumablesTag.Arrow; }
 
-    protected override float GetItemPositionY()
+    protected override float GetItemViewPositionY()
     {
         return 4f;
     }

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// クロスボウのアニメーションの処理を行うクラス
+/// </summary>
 public class CrossBowAnimation : MonoBehaviour
 {
     [SerializeField]
