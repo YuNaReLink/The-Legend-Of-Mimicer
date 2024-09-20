@@ -35,21 +35,23 @@ public class BleakUrns : MonoBehaviour
     private void Awake()
     {
         appearItem = GetComponent<AppearRandomItem>();
+        meshRenderer = GetComponent<MeshRenderer>();
+        meshCollider = GetComponent<MeshCollider>();
+        soundController = GetComponent<SoundController>();
+        effectController = GetComponent<EffectController>();
+
         if(appearItem == null)
         {
             Debug.LogError("AppearRandomItemがアタッチされていません");
         }
-        meshRenderer = GetComponent<MeshRenderer>();
         if(meshRenderer == null)
         {
             Debug.LogError("MeshRendererがアタッチされていない");
         }
-        meshCollider = GetComponent<MeshCollider>();
         if(meshCollider == null)
         {
             Debug.LogError("MeshColliderがアタッチされていない");
         }
-        soundController = GetComponent<SoundController>();
         if(soundController != null)
         {
             soundController.AwakeInitilaize();
@@ -58,7 +60,6 @@ public class BleakUrns : MonoBehaviour
         {
             Debug.LogError("soundControllerがアタッチされていません");
         }
-        effectController = GetComponent<EffectController>();
         if(effectController == null)
         {
             Debug.LogError("effectControllerがアタッチされていません");

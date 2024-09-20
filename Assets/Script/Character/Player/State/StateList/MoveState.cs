@@ -29,6 +29,12 @@ public class MoveState : InterfaceState
                     return;
                 }
                 break;
+            case CharacterTagList.StateTag.Jump:
+                if (!controller.CharacterStatus.Landing)
+                {
+                    return;
+                }
+                break;
         }
         if (playerInput.Horizontal == 0&&
             playerInput.Vertical   == 0) { return; }

@@ -18,7 +18,6 @@ public enum ToolTag
 
 public interface InterfaceBaseToolCommand
 {
-    public ToolTag GetToolTag();
     public void Input();
 
     public void Execute();

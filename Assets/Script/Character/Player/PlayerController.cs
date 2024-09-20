@@ -272,20 +272,17 @@ public class PlayerController : CharacterController
     /// </summary>
     protected override void MoveStateCheck()
     {
-        switch (characterStatus.CurrentState)
-        {
-            case CharacterTagList.StateTag.Idle:
-            case CharacterTagList.StateTag.Grab:
-            case CharacterTagList.StateTag.ClimbWall:
-            case CharacterTagList.StateTag.Attack:
-            case CharacterTagList.StateTag.JumpAttack:
-            case CharacterTagList.StateTag.SpinAttack:
-            case CharacterTagList.StateTag.Gurid:
-            case CharacterTagList.StateTag.Damage:
-            case CharacterTagList.StateTag.Die:
-            case CharacterTagList.StateTag.GetUp:
-                return;
-        }
+        bool noMoveInput =  characterStatus.CurrentState == CharacterTagList.StateTag.Idle ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.Grab ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.ClimbWall ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.Attack ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.JumpAttack ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.SpinAttack ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.Gurid ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.Damage ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.Die ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.GetUp;
+        if (noMoveInput) { return; }
         if(characterStatus.CurrentState == CharacterTagList.StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 && keyInput.Vertical == 0) { return; }
         if(commands.GetFallDistanceCheck().FallDamage) { return; }
         characterStatus.MoveInput = true;
@@ -336,22 +333,19 @@ public class PlayerController : CharacterController
     /// <returns></returns>
     private bool RotateStopFlag()
     {
-        switch (characterStatus.CurrentState)
-        {
-            case CharacterTagList.StateTag.Jump:
-            case CharacterTagList.StateTag.JumpAttack:
-            case CharacterTagList.StateTag.SpinAttack:
-            case CharacterTagList.StateTag.ReadySpinAttack:
-            case CharacterTagList.StateTag.Rolling:
-            case CharacterTagList.StateTag.Push:
-            case CharacterTagList.StateTag.Damage:
-            case CharacterTagList.StateTag.WallJump:
-            case CharacterTagList.StateTag.Grab:
-            case CharacterTagList.StateTag.ClimbWall:
-            case CharacterTagList.StateTag.Die:
-            case CharacterTagList.StateTag.GetUp:
-                return true;
-        }
+        bool noRotate = characterStatus.CurrentState == CharacterTagList.StateTag.Jump ||
+                        characterStatus.CurrentState == CharacterTagList.StateTag.JumpAttack ||
+                        characterStatus.CurrentState == CharacterTagList.StateTag.SpinAttack ||
+                        characterStatus.CurrentState == CharacterTagList.StateTag.ReadySpinAttack ||
+                        characterStatus.CurrentState == CharacterTagList.StateTag.Rolling ||
+                        characterStatus.CurrentState == CharacterTagList.StateTag.Push ||
+                        characterStatus.CurrentState == CharacterTagList.StateTag.Damage ||
+                        characterStatus.CurrentState == CharacterTagList.StateTag.WallJump ||
+                        characterStatus.CurrentState == CharacterTagList.StateTag.Grab ||
+                        characterStatus.CurrentState == CharacterTagList.StateTag.ClimbWall ||
+                        characterStatus.CurrentState == CharacterTagList.StateTag.Die ||
+                        characterStatus.CurrentState == CharacterTagList.StateTag.GetUp;
+        if (noRotate) { return true; }
         return false;
     }
 

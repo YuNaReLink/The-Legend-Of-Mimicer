@@ -31,7 +31,7 @@ public class Consumables : MonoBehaviour
         _player.GetArrowSound(count);
     }
 
-    protected virtual float GetItemPositionY()
+    protected virtual float GetItemViewPositionY()
     {
         return 3f;
     }

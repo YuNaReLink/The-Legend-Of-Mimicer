@@ -57,18 +57,10 @@ public class PlayerMotion : MotionController
         {
             return true; 
         }
-        bool damage = controller.CharacterStatus.CurrentState ==
-            StateTag.Damage&&
-            anim.GetCurrentAnimatorStateInfo(0).IsName("DamageLanding")&&
-            !MotionEndCheck();
-        bool jumpStop = controller.CharacterStatus.CurrentState == StateTag.Jump&&!controller.CharacterStatus.Landing&&
-            _state != StateTag.Grab&& _state != StateTag.ClimbWall && _state != StateTag.JumpAttack;
-
-        bool climbStop = controller.CharacterStatus.CurrentState == StateTag.ClimbWall && !controller.CharacterRB.useGravity;
 
         bool wallJumpStop = controller.CharacterStatus.CurrentState == StateTag.WallJump && _state != StateTag.Grab&&
             !controller.GetObstacleCheck().IsClimbFlag()&&controller.GetObstacleCheck().WallHitFlagCheck();
-        if (jumpStop||climbStop||wallJumpStop)
+        if (wallJumpStop)
         {
             return true;
         }

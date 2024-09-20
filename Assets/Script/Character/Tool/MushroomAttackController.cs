@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// キノコモンスターの攻撃の処理を行うクラス
+/// </summary>
 public class MushroomAttackController : BaseAttackController
 {
     public override ToolTag GetToolTag(){return ToolTag.Other;}

@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーが持つ道具をまとめて保持するクラス
+/// </summary>
 public class InventoryData : MonoBehaviour
 {
     [SerializeField]

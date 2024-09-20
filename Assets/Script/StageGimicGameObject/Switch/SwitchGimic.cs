@@ -40,12 +40,13 @@ public class SwitchGimic : MonoBehaviour
     {
         colorChange = GetComponentInChildren<ColorChange>();
         soundController = GetComponent<SoundController>();
+        effectController = GetComponent<EffectController>();
+        hitCoolDownTimer = new DeltaTimeCountDown();
+        
         if(soundController != null)
         {
             soundController.AwakeInitilaize();
         }        
-        effectController = GetComponent<EffectController>();
-        hitCoolDownTimer = new DeltaTimeCountDown();
     }
 
     private void Update()

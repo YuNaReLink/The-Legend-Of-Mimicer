@@ -1,6 +1,9 @@
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// 敵の巡回処理時の巡回ポイントを見えるようにエディターを拡張したクラス
+/// </summary>
 [CustomEditor(typeof(PatrolState))]
 public class PatrolStateEditor : Editor
 {

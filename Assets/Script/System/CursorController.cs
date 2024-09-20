@@ -18,12 +18,15 @@ public class CursorController
         return singleInstance;
     }
 
-    public void SetCursorLookMode(CursorLockMode mode)
+    public void SettingCursor(CursorLockMode mode,bool enabled)
     {
-        Cursor.lockState = mode;
-    }
-    public void SetCursorState(bool enabled)
-    {
-        Cursor.visible = enabled;
+        if(Cursor.lockState != mode)
+        {
+            Cursor.lockState = mode;
+        }
+        if(Cursor.visible != enabled)
+        {
+            Cursor.visible = enabled;
+        }
     }
 }

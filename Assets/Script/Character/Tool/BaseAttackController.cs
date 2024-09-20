@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// プレイヤー、敵が持つ武器にアタッチするクラスが継承する
+/// クラス
+/// </summary>
 public class BaseAttackController : MonoBehaviour
 {
     [SerializeField]

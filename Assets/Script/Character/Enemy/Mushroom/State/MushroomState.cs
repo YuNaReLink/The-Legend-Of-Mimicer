@@ -54,7 +54,6 @@ public class MushroomState : MonoBehaviour
 
     public void StateFixedUpdate(float time)
     {
-        if (controller.CharacterStatus.DeathFlag) { return; }
         //„‰ñˆ—
         patrolState?.PatrolFixedUpdate(time);
     }

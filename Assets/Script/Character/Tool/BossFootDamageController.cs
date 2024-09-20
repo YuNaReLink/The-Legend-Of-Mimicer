@@ -1,5 +1,7 @@
-using UnityEngine;
 
+/// <summary>
+/// ボスの攻撃の処理(コライダー)を行うクラス
+/// </summary>
 public class BossFootDamageController : BaseAttackController
 {
     public override ToolTag GetToolTag() { return ToolTag.Other; }

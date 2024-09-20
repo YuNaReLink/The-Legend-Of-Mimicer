@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーが使う道具の位置変更、取得などの処理を管理するクラス
+/// </summary>
 public class ToolInventoryController : MonoBehaviour
 {
     private PlayerController        controller;
@@ -87,17 +90,6 @@ public class ToolInventoryController : MonoBehaviour
         inventoryData = GetComponent<InventoryData>();
         InitializeToolSetting();
     }
-
-
-    public void UpdateTool()
-    {
-        currentToolChange = false;
-        ChangeSwordTransform();
-        ChangeCrossBowTransform();
-        ChangeShieldTransform();
-    }
-
-
     /// <summary>
     /// ゲーム開始時、道具を持っていた時に行う処理
     /// </summary>
@@ -110,6 +102,17 @@ public class ToolInventoryController : MonoBehaviour
             toolControllers[i].SetController(controller);
         }
     }
+
+
+    public void UpdateTool()
+    {
+        currentToolChange = false;
+        ChangeSwordTransform();
+        ChangeCrossBowTransform();
+        ChangeShieldTransform();
+    }
+
+
 
     /// <summary>
     /// 途中、道具をゲットした時の処理

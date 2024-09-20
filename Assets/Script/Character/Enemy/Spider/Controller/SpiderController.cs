@@ -17,6 +17,15 @@ public class SpiderController : EnemyController
     /// クモのダメージ&死亡時の処理の管理を行うクラス
     /// </summary>
     protected SpiderDamageCommand   spiderDamage = null;
+    /// <summary>
+    /// NavMeshAgentの処理をまとめたクラス
+    /// </summary>
+    protected NavMeshController navMeshController = null;
+    /// <summary>
+    /// のGet関数
+    /// </summary>
+    /// <returns></returns>
+    public NavMeshController GetNavMeshController() { return navMeshController; }
 
     protected override void SetMotionController()
     {

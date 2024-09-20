@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// キャラクターオブジェクトにアタッチしてRendererをあるだけ取得、保持して使うクラス
+/// </summary>
 public class RendererData : MonoBehaviour
 {
     [SerializeField]

@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// ゲームシーン内で全体に関わる(タイマー、UIの表示を行うフラグ)
+/// などを管理するシングルトンのクラス
+/// </summary>
 public class GameSceneSystemController : MonoBehaviour
 {
     private static GameSceneSystemController    instance;
@@ -54,14 +58,8 @@ public class GameSceneSystemController : MonoBehaviour
         {
             playerController = player.GetComponent<PlayerController>();
         }
-
         gameOverStartTimer = new DeltaTimeCountDown();
-
         gameSoundController = GetComponent<GameSoundController>();
-        if(gameSoundController != null)
-        {
-            gameSoundController.AwakeInitilaize();
-        }
 
         if(instance != null)
         {
@@ -69,16 +67,23 @@ public class GameSceneSystemController : MonoBehaviour
             return;
         }
         instance = this;
+        
+        
+        if(gameSoundController != null)
+        {
+            gameSoundController.AwakeInitilaize();
+        }
     }
 
     private void Start()
     {
-        CursorController.GetInstance().SetCursorLookMode(CursorLockMode.Locked);
-        CursorController.GetInstance().SetCursorState(false);
-        gameClearFlag = false;
-        bossBattleStart = false;
         GameManager.GameState = GameManager.GameStateEnum.Game;
         GameManager.SetFrameRate(GameManager.FrameRate);
+
+        CursorController.GetInstance().SettingCursor(CursorLockMode.Locked, false);
+
+        gameClearFlag = false;
+        bossBattleStart = false;
 
         gameSoundController.PlayBGM((int)GameSoundController.GameBGMSoundTag.Stage);
     }
@@ -97,15 +102,17 @@ public class GameSceneSystemController : MonoBehaviour
         {
             case GameManager.GameStateEnum.Game:
             case GameManager.GameStateEnum.Pose:
+                //ゲーム中の処理
+                InGameUpdate();
                 break;
-            default:
-                return;
         }
+    }
 
+    private void InGameUpdate()
+    {
         if (GameManager.GameState == GameManager.GameStateEnum.Pose)
         {
-            CursorController.GetInstance().SetCursorLookMode(CursorLockMode.None);
-            CursorController.GetInstance().SetCursorState(true);
+            CursorController.GetInstance().SettingCursor(CursorLockMode.None, true);
             if (Time.timeScale > 0)
             {
                 Time.timeScale = 0;
@@ -113,30 +120,28 @@ public class GameSceneSystemController : MonoBehaviour
         }
         else
         {
-            CursorController.GetInstance().SetCursorLookMode(CursorLockMode.Locked);
-            CursorController.GetInstance().SetCursorState(false);
-            if(Time.timeScale <= 0)
+            CursorController.GetInstance().SettingCursor(CursorLockMode.Locked, false);
+            if (Time.timeScale <= 0)
             {
                 Time.timeScale = 1f;
             }
         }
 
-        GameResultCheck();
-
-    }
-
-    private void GameResultCheck()
-    {
-        if (!playerController.CharacterStatus.DeathFlag&& !gameClearFlag) { return; }
-        if(gameClearFlag)
+        if (playerController.CharacterStatus.DeathFlag || gameClearFlag)
         {
-            GameManager.GameState = GameManager.GameStateEnum.GameClear;
+            if (gameClearFlag)
+            {
+                GameManager.GameState = GameManager.GameStateEnum.GameClear;
+            }
+            else if (playerController.CharacterStatus.DeathFlag)
+            {
+                GameManager.GameState = GameManager.GameStateEnum.GameOver;
+            }
+            CursorController.GetInstance().SettingCursor(CursorLockMode.None, true);
+            if (Time.timeScale <= 0)
+            {
+                Time.timeScale = 1f;
+            }
         }
-        else if (playerController.CharacterStatus.DeathFlag)
-        {
-            GameManager.GameState = GameManager.GameStateEnum.GameOver;
-        }
-        CursorController.GetInstance().SetCursorLookMode(CursorLockMode.None);
-        CursorController.GetInstance().SetCursorState(true);
     }
 }

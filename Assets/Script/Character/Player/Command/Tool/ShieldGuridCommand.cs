@@ -8,10 +8,6 @@ public class ShieldGuridCommand : InterfaceBaseToolCommand
     {
         controller = _controller;
     }
-    public ToolTag GetToolTag()
-    {
-        return ToolTag.Shield;
-    }
 
     private bool CheckStopState()
     {
