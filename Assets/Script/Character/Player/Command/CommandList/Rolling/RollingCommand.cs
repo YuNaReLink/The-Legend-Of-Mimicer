@@ -1,19 +1,23 @@
 using UnityEngine;
 
+/// <summary>
+/// ローリングの実行を処理するクラス
+/// FixedUpdateで行う処理をする
+/// </summary>
 public class RollingCommand : InterfaceBaseCommand
 {
-    private PlayerController controller = null;
+    private PlayerController        controller = null;
     public RollingCommand(PlayerController _controller)
     {
         controller = _controller;
         rollCurve = AnimationCurve.Constant(0,1.0f,1.0f);
     }
 
-    private const float MinRollProgress = 0.05f;
+    private const float             MinRollProgress = 0.05f;
 
-    private const float EndRollProgress = 1.0f;
+    private const float             EndRollProgress = 1.0f;
 
-    private AnimationCurve rollCurve = null;
+    private AnimationCurve          rollCurve = null;
 
     public void Execute()
     {
@@ -31,12 +35,6 @@ public class RollingCommand : InterfaceBaseCommand
             //ローリングが終わったら初速度を代入
             controller.CharacterRB.velocity = controller.GetKeyInput().InitVelocity;
             controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Run);
-        }
-        //ローリング中崖ジャンプ処理が実行されたら
-        else if (controller.GetObstacleCheck().CliffJumpFlag)
-        {
-            controller.CharacterRB.velocity = controller.GetKeyInput().InitVelocity;
-            controller.GetTimer().GetTimerNoAccele().End();
         }
         //ローリングのXY方向の加速
         else

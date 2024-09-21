@@ -54,13 +54,10 @@ public class PlayerDamageCommand : InterfaceBaseCommand
 
     private bool EnabledknockBackCheck()
     {
-        switch (controller.CharacterStatus.CurrentState)
-        {
-            case CharacterTagList.StateTag.Grab:
-            case CharacterTagList.StateTag.WallJump:
-            case CharacterTagList.StateTag.ClimbWall:
-                return false;
-        }
+        bool enabled =  controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.Grab ||
+                        controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.WallJump ||
+                        controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.ClimbWall;
+        if (enabled) { return false; }
         return true;
     }
 }

@@ -15,6 +15,7 @@ public class MoveState : InterfaceState
         {
             case CharacterTagList.StateTag.GetUp:
             case CharacterTagList.StateTag.Grab:
+            case CharacterTagList.StateTag.WallJump:
             case CharacterTagList.StateTag.ClimbWall:
             case CharacterTagList.StateTag.Rolling:
             case CharacterTagList.StateTag.Attack:
@@ -29,13 +30,8 @@ public class MoveState : InterfaceState
                     return;
                 }
                 break;
-            case CharacterTagList.StateTag.Jump:
-                if (!controller.CharacterStatus.Landing)
-                {
-                    return;
-                }
-                break;
         }
+        if (!controller.CharacterStatus.Landing){return;}
         if (playerInput.Horizontal == 0&&
             playerInput.Vertical   == 0) { return; }
         if (!playerInput.IsCameraLockEnabled())

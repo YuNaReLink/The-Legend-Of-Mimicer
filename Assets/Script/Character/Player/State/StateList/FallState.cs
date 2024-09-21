@@ -1,5 +1,7 @@
 
-
+/// <summary>
+/// óéâ∫ÇÃèÛë‘ëJà⁄ÇçsÇ§ÉNÉâÉX
+/// </summary>
 public class FallState : InterfaceState
 {
     private PlayerController controller = null;
@@ -10,20 +12,23 @@ public class FallState : InterfaceState
 
     public void DoUpdate()
     {
-        bool noUpdateState =    controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.Jump ||
-                                controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.JumpAttack ||
-                                controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.Rolling ||
-                                controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.WallJump ||
-                                controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.Grab ||
-                                controller.CharacterStatus.CurrentState == CharacterTagList.StateTag.Null;
-        if (noUpdateState) { return; }
-        if(controller.GetCameraController().IsFPSMode()){ return; }
-        if (controller.GetObstacleCheck().IsGrabFlag()) { return; }
-        if (controller.GetObstacleCheck().IsClimbFlag()) { return; }
-        if (controller.GetObstacleCheck().IsWallJumpFlag()) { return; }
-        if (!controller.CharacterStatus.Landing)
+        switch (controller.CharacterStatus.CurrentState)
         {
-            controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Fall);
+            case CharacterTagList.StateTag.Jump:
+            case CharacterTagList.StateTag.JumpAttack:
+            case CharacterTagList.StateTag.Rolling:
+            case CharacterTagList.StateTag.WallJump:
+            case CharacterTagList.StateTag.Null:
+                return;
+            case CharacterTagList.StateTag.Grab:
+                if (controller.GetObstacleCheck().GrabCancel)
+                {
+                    break;
+                }
+                return;
         }
+        if (controller.GetCameraController().IsFPSMode()){ return; }
+        if (controller.CharacterStatus.Landing) { return; }
+        controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Fall);
     }
 }

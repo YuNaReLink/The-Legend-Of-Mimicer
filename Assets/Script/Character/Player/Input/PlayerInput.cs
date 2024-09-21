@@ -16,6 +16,7 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private float                                   vertical = 0;
     public float                                    Vertical => vertical;
+    public void SetVertical(float v) { vertical = v; }
     /// <summary>
     /// ƒvƒŒƒCƒ„[‚ª’–Ú‚µ‚Ä‚é‚Ì•ûŒü‚ğ”»’f‚·‚é•Ï”
     /// </summary>
@@ -190,9 +191,14 @@ public class PlayerInput : MonoBehaviour
                     return;
                 }
                 break;
+            default:
+                //“ü—Í‚»‚Ì‚Ü‚Ü‚Å~‚ß‚éê‡
+                if (!controller.CharacterStatus.Landing)
+                {
+                    return;
+                }
+                break;
         }
-        //“ü—Í‚»‚Ì‚Ü‚Ü‚Å~‚ß‚éê‡
-        if (controller.GetObstacleCheck().CliffJumpFlag){return;}
         horizontal = InputManager.HorizontalInput();
         vertical = InputManager.VerticalInput();
     }
