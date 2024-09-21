@@ -1,5 +1,7 @@
-using UnityEngine;
 
+/// <summary>
+/// プレイヤーの実行クラスをまとめて処理するクラス
+/// </summary>
 public class PlayerCommands
 {
     public PlayerCommands(PlayerController _controller)

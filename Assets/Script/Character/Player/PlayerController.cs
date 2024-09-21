@@ -119,7 +119,9 @@ public class PlayerController : CharacterController
             characterStatus.HP = characterStatus.GetMaxHP();
         }
     }
-
+    /// <summary>
+    /// Awakeで行うプレイヤーの初期化
+    /// </summary>
     protected override void InitializeAssign()
     {
         base.InitializeAssign();
@@ -185,7 +187,6 @@ public class PlayerController : CharacterController
 
         animator.runtimeAnimatorController = animatorOverride;
     }
-
     //入力処理を行う
     protected override void Update()
     {
@@ -213,7 +214,9 @@ public class PlayerController : CharacterController
         //特定のモーション終了時に処理を行うメソッド
         motion.EndMotionNameCheck();
     }
-
+    /// <summary>
+    /// 着地、空中で行う処理を行う
+    /// </summary>
     private void LandingCheck()
     {
         characterStatus.Landing = groundCheck.CheckGroundStatus();
@@ -224,7 +227,6 @@ public class PlayerController : CharacterController
             characterStatus.SetLandingPosition(transform.localPosition);
         }
         if (!characterStatus.Landing) { return; }
-        obstacleAction.CliffJumpFlag = false;
         obstacleAction.SetGrabCancel(false);
         if (!timer.GetTimerNoAccele().IsEnabled()&&
             !timer.GetTimerJumpAttackAccele().IsEnabled())
@@ -258,7 +260,6 @@ public class PlayerController : CharacterController
             renderer.enabled = !cameraController.IsFPSMode();
         }
     }
-
     //行動処理を行う
     private void FixedUpdate()
     {
@@ -266,7 +267,6 @@ public class PlayerController : CharacterController
         MoveStateCheck();
         UpdateCommand();
     }
-
     /// <summary>
     /// プレイヤーが動くか動かないかを状態で決める関数
     /// </summary>
@@ -283,7 +283,8 @@ public class PlayerController : CharacterController
                             characterStatus.CurrentState == CharacterTagList.StateTag.Die ||
                             characterStatus.CurrentState == CharacterTagList.StateTag.GetUp;
         if (noMoveInput) { return; }
-        if(characterStatus.CurrentState == CharacterTagList.StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 && keyInput.Vertical == 0) { return; }
+        if(characterStatus.CurrentState == CharacterTagList.StateTag.ReadySpinAttack&& keyInput.Horizontal == 0 &&
+           keyInput.Vertical == 0) { return; }
         if(commands.GetFallDistanceCheck().FallDamage) { return; }
         characterStatus.MoveInput = true;
     }
@@ -298,7 +299,10 @@ public class PlayerController : CharacterController
     {
         return Vector3.Scale(dir, new Vector3(1, 0, 1)).normalized;
     }
-
+    /// <summary>
+    /// プレイヤーの行動を実行する処理をする関数
+    /// プレイヤーの移動や停止、回転を行う
+    /// </summary>
     private void UpdateCommand()
     {
         //MonoBehaviourを継承してるクラスの処理
@@ -348,7 +352,21 @@ public class PlayerController : CharacterController
         if (noRotate) { return true; }
         return false;
     }
-
+    /// <summary>
+    /// 移動処理を行う関数
+    /// </summary>
+    /// <param name="forward">
+    /// カメラから見て前の数値
+    /// </param>
+    /// <param name="right">
+    /// カメラから見て右の数値
+    /// </param>
+    /// <param name="_maxspeed">
+    /// 最大スピード
+    /// </param>
+    /// <param name="_accele">
+    /// 加速力
+    /// </param>
     private void Accele(Vector3 forward, Vector3 right, float _maxspeed, float _accele)
     {
         Vector3 vel = characterStatus.Velocity;
@@ -373,8 +391,14 @@ public class PlayerController : CharacterController
         }
         characterStatus.Velocity = vel;
     }
-
     private const float LittleSpeed = 0.2f;
+    /// <summary>
+    /// 移動で使うスピードを状態によって変更する関数
+    /// </summary>
+    /// <param name="_speed">
+    /// 最大、加速スピードを代入
+    /// </param>
+    /// <returns></returns>
     private float SetSpeed(float _speed)
     {
         if(characterStatus.CurrentState == CharacterTagList.StateTag.ReadySpinAttack||
@@ -385,13 +409,19 @@ public class PlayerController : CharacterController
         }
         return _speed;
     }
-
+    /// <summary>
+    /// プレイヤーの死亡処理関数
+    /// </summary>
     public override void Death()
     {
         base.Death();
         motion.ForcedChangeMotion(CharacterTagList.StateTag.Die);
         effectController.CreateVFX((int)EffectTagList.CharacterEffectTag.Death, transform.position, 1f, Quaternion.identity);
     }
+    /// <summary>
+    /// ライフ回復処理関数
+    /// </summary>
+    /// <param name="count"></param>
     public override void RecoveryHelth(int count)
     {
         base.RecoveryHelth(count);
@@ -413,7 +443,10 @@ public class PlayerController : CharacterController
     {
         HandleCollision(other);
     }
-
+    /// <summary>
+    /// コライダーに他のコライダーが当たった時の処理
+    /// </summary>
+    /// <param name="other"></param>
     private void HandleCollision(Collider other)
     {
         if (characterStatus.DeathFlag) { return; }
@@ -429,7 +462,10 @@ public class PlayerController : CharacterController
                 break;
         }
     }
-
+    /// <summary>
+    /// ダメージを受けるか判定する関数
+    /// </summary>
+    /// <param name="other"></param>
     private void DamageOrGuardCheck(Collider other)
     {
         switch (characterStatus.GuardState)
@@ -447,7 +483,10 @@ public class PlayerController : CharacterController
                 break;
         }
     }
-
+    /// <summary>
+    /// 押す状態タグの変更を行う関数
+    /// </summary>
+    /// <param name="_pushTag"></param>
     private void SetPushState(CharacterTagList.PushTag _pushTag){pushTag = _pushTag;}
     private void OnCollisionStay(Collision collision)
     {
@@ -476,7 +515,6 @@ public class PlayerController : CharacterController
                 break;
         }
     }
-
     private void OnCollisionExit(Collision collision)
     {
         if (characterStatus.DeathFlag) { return; }
@@ -490,5 +528,4 @@ public class PlayerController : CharacterController
                 break;
         }
     }
-
 }

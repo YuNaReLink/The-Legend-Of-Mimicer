@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// プレイヤー、敵の制御クラスの元クラス
+/// </summary>
 public class CharacterController : MonoBehaviour
 {
     [SerializeField]
@@ -138,7 +141,14 @@ public class CharacterController : MonoBehaviour
     }
     public Vector3 StopMoveVelocity()
     {
-        return new Vector3(0, characterRB.velocity.y, 0);
+        Vector3 stopVelocity = new Vector3(0, characterRB.velocity.y, 0);
+        if (characterStatus.CurrentState == CharacterTagList.StateTag.Grab||
+            characterStatus.CurrentState == CharacterTagList.StateTag.ClimbWall)
+        {
+            stopVelocity = Vector3.zero;
+        }
+
+        return stopVelocity;
     }
     /// <summary>
     /// オブジェクトのRigidbodyに移動量を与える関数
