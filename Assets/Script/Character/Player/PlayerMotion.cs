@@ -156,7 +156,7 @@ public class PlayerMotion : MotionController
         }
     }
 
-    private const float jumpAttackMotionStop = 0.5f;
+    private const float JumpAttackMotionStop = 0.5f;
     /// <summary>
     /// ƒ‚[ƒVƒ‡ƒ“‚ğ’â~‚³‚¹‚éÚ×ŠÖ”
     /// </summary>
@@ -171,7 +171,7 @@ public class PlayerMotion : MotionController
         switch (motion)
         {
             case "jumpAttack":
-                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= jumpAttackMotionStop)
+                if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= JumpAttackMotionStop)
                 {
                     if (!controller.CharacterStatus.Landing)
                     {

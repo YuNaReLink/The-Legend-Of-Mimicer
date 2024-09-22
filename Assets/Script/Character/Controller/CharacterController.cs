@@ -161,7 +161,6 @@ public class CharacterController : MonoBehaviour
     /// ジャンプのパワーをもらってオブジェクトをy上方向に上げる関数
     /// </summary>
     /// <param name="_jumppower"></param>
-    /// <param name="_maxJumpPower"></param>
     public virtual void JumpForce(float _jumppower)
     {
         characterRB.AddForce(transform.up * _jumppower, ForceMode.Impulse);

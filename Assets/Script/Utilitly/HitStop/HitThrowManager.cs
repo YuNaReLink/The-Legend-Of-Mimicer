@@ -13,9 +13,9 @@ public class HitThrowManager : MonoBehaviour
     private bool                    hitStop = false;
     public bool                     IsHitThrow() { return hitStop; }
 
-    private const float             hitStopCount = 0.5f;
+    private const float             HitStopCount = 0.5f;
 
-    public float                    HitStopCount => hitStopCount;
+    public float                    GetHitStopCount => HitStopCount;
 
     private void Start()
     {

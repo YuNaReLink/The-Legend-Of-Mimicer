@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// ボスの制御クラス
+/// </summary>
 public class BossController : EnemyController
 {
     private BossState               bossState = null;
@@ -19,9 +22,9 @@ public class BossController : EnemyController
     public bool                     RevivalFlag => revivalFlag;
     public void                     SetRevivalFlag(bool flag) {  revivalFlag = flag; }
 
-    private const float BaseDieTimerCount = 5f;
+    private const float             BaseDieTimerCount = 5f;
 
-    private const float BaseDieEffectScale = 10f;
+    private const float             BaseDieEffectScale = 10f;
 
     protected override void InitializeAssign()
     {
@@ -30,7 +33,6 @@ public class BossController : EnemyController
         bossState = new BossState(this);
         bossDamageCommand = new BossDamageCommand(this);
         
-
         bossState.Initilaize();
 
         if(bossSoundController == null)
@@ -70,16 +72,13 @@ public class BossController : EnemyController
 
     protected override void MoveStateCheck()
     {
-        switch (characterStatus.CurrentState)
-        {
-            case CharacterTagList.StateTag.Idle:
-            case CharacterTagList.StateTag.Attack:
-            case CharacterTagList.StateTag.Gurid:
-            case CharacterTagList.StateTag.Damage:
-            case CharacterTagList.StateTag.Die:
-            case CharacterTagList.StateTag.GetUp:
-                return;
-        }
+        bool stateCheck =   characterStatus.CurrentState == CharacterTagList.StateTag.Idle ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.Attack ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.Gurid ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.Damage ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.Die ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.GetUp;
+        if (stateCheck) { return; }
         characterStatus.MoveInput = true;
     }
 
@@ -87,10 +86,7 @@ public class BossController : EnemyController
     {
         //ボスはプレイヤーの情報を見つけていたら動くようにしている
         if (TargetStateCheck()) { return; }
-        if(bossDamageCommand != null)
-        {
-            bossDamageCommand.Execute();
-        }
+        bossDamageCommand?.Execute();
         if (characterStatus.MoveInput)
         {
             Accele();
@@ -102,7 +98,7 @@ public class BossController : EnemyController
         //ボスに移動を適用
         Move();
         //ボスオブジェクトに回転を適用
-        TransformRotate();
+        TransformRotate(0.5f);
     }
 
     private bool TargetStateCheck()
@@ -123,22 +119,6 @@ public class BossController : EnemyController
             vel = vel.normalized * data.MaxSpeed;
         }
         characterStatus.Velocity = vel;
-    }
-
-    private void TransformRotate()
-    {
-        switch (characterStatus.CurrentState)
-        {
-            case CharacterTagList.StateTag.Attack:
-            case CharacterTagList.StateTag.Gurid:
-            case CharacterTagList.StateTag.Damage:
-            case CharacterTagList.StateTag.GetUp:
-                return;
-        }
-        if(target == null) { return; }
-        Vector3 dir = target.transform.position - transform.position;
-        Quaternion targetRotation = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.5f * Time.deltaTime);
     }
 
     public override void Death()

@@ -1,9 +1,11 @@
 using UnityEngine;
 
+/// <summary>
+/// キノコモンスターの制御を行うクラス
+/// </summary>
 public class MushroomController : EnemyController
 {
-    private MushroomState            mushroomState = null;
-    public MushroomState            GetMushroomState() { return mushroomState; }
+    private MushroomState           mushroomState = null;
 
     private SoundController         soundController = null;
     public SoundController          GetSoundController() { return soundController; }
@@ -70,7 +72,7 @@ public class MushroomController : EnemyController
             {
                 StopMove();
             }
-            TransformRotate();
+            TransformRotate(2.5f);
         }
         Move();
         mushroomDamage?.Execute();
@@ -78,14 +80,11 @@ public class MushroomController : EnemyController
     }
     protected override void MoveStateCheck()
     {
-        switch (characterStatus.CurrentState)
-        {
-            case CharacterTagList.StateTag.Idle:
-            case CharacterTagList.StateTag.Attack:
-            case CharacterTagList.StateTag.Damage:
-            case CharacterTagList.StateTag.Die:
-                return;
-        }
+        bool stateCheck = characterStatus.CurrentState == CharacterTagList.StateTag.Idle ||
+                          characterStatus.CurrentState == CharacterTagList.StateTag.Attack ||
+                          characterStatus.CurrentState == CharacterTagList.StateTag.Damage ||
+                          characterStatus.CurrentState == CharacterTagList.StateTag.Die;
+        if (stateCheck) { return; }
         characterStatus.MoveInput = true;
     }
 
@@ -101,33 +100,16 @@ public class MushroomController : EnemyController
         characterStatus.Velocity = vel;
     }
 
-    private void TransformRotate()
-    {
-        switch (characterStatus.CurrentState)
-        {
-            case CharacterTagList.StateTag.Attack:
-            case CharacterTagList.StateTag.Damage:
-                return;
-        }
-        if (target == null) { return; }
-        Vector3 dir = target.transform.position - transform.position;
-        Quaternion targetRotation = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2.5f * Time.deltaTime);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         ToolController tool = other.GetComponent<ToolController>();
         if (tool != null)
         {
-            switch (tool.GetToolTag())
-            {
-                case ToolTag.Shield:
-                case ToolTag.Other:
-                    return;
-            }
+            bool toolTagCheck = tool.GetToolTag() == ToolTag.Shield ||
+                                tool.GetToolTag() == ToolTag.Other;
+            if (toolTagCheck) { return; }
             if (timer.GetTimerDamageCoolDown().IsEnabled()) { return; }
-            timer.GetTimerDamageCoolDown().StartTimer(0.25f);
+            timer.GetTimerDamageCoolDown().StartTimer(damageCoolDownCount);
             mushroomDamage.Attacker = other.gameObject;
             mushroomDamage.SetDamageFlag(true);
             effectController.CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position, 1f, Quaternion.identity);

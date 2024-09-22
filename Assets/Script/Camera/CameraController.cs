@@ -153,30 +153,30 @@ public class CameraController : MonoBehaviour
     /// <summary>
     /// ゲームオーバー時のカメラとの距離と高さを調整する
     /// </summary>
-    private const float removeNeckHeightNum = 0.02f;
-    private const float minNeckHeight = 0.5f;
-    private const float removeGameOverCameraDistance = 0.02f;
-    private const float minGameOverCameraDistance = 3.0f;
+    private const float RemoveNeckHeightNum = 0.02f;
+    private const float MinNeckHeight = 0.5f;
+    private const float RemoveGameOverCameraDistance = 0.02f;
+    private const float MinGameOverCameraDistance = 3.0f;
     private void GameOverCameraControl()
     {
-        neckHeight -= removeNeckHeightNum;
-        if (neckHeight < minNeckHeight)
+        neckHeight -= RemoveNeckHeightNum;
+        if (neckHeight < MinNeckHeight)
         {
-            neckHeight = minNeckHeight;
+            neckHeight = MinNeckHeight;
         }
-        cameraStatus.SetBaseDistance(cameraStatus.BaseDistance - removeGameOverCameraDistance);
-        if (cameraStatus.BaseDistance < minGameOverCameraDistance)
+        cameraStatus.SetBaseDistance(cameraStatus.BaseDistance - RemoveGameOverCameraDistance);
+        if (cameraStatus.BaseDistance < MinGameOverCameraDistance)
         {
-            cameraStatus.SetBaseDistance(minGameOverCameraDistance);
+            cameraStatus.SetBaseDistance(MinGameOverCameraDistance);
         }
     }
     /// <summary>
     /// ゲームクリア時のカメラと対象の距離を設定する関数
     /// </summary>
-    private const float gameClearDistance = 10.0f;
+    private const float GameClearDistance = 10.0f;
     private void GameClearCameraControl()
     {
-        cameraStatus.SetBaseDistance(gameClearDistance);
+        cameraStatus.SetBaseDistance(GameClearDistance);
     }
     void FixedUpdate()
     {
@@ -290,15 +290,15 @@ public class CameraController : MonoBehaviour
     /// <summary>
     /// ゲームオーバー時のカメラの動きと回転を行う関数
     /// </summary>
-    private const float addGameOverCameraRotationHor = 2.0f;
-    private const float rotationEulerAnglesYOffset = 145.0f;
+    private const float AddGameOverCameraRotationHor = 2.0f;
+    private const float RotationEulerAnglesYOffset = 145.0f;
     private void GameOverCamera()
     {
-        rotation_hor += addGameOverCameraRotationHor;
-        float dis = player.transform.rotation.eulerAngles.y + rotationEulerAnglesYOffset - rotation_hor;
+        rotation_hor += AddGameOverCameraRotationHor;
+        float dis = player.transform.rotation.eulerAngles.y + RotationEulerAnglesYOffset - rotation_hor;
         if(dis <= 0.1f)
         {
-            rotation_hor = player.transform.rotation.eulerAngles.y + rotationEulerAnglesYOffset;
+            rotation_hor = player.transform.rotation.eulerAngles.y + RotationEulerAnglesYOffset;
         }
         rotation_ver = 0;
 
@@ -307,13 +307,13 @@ public class CameraController : MonoBehaviour
     /// <summary>
     /// クリアした時にtargetに入ってるオブジェクトを中心にカメラを制御する処理
     /// </summary>
-    private const float targetRotationVer = 60.0f;
+    private const float TargetRotationVer = 60.0f;
     private void TargetCameraUpdate()
     {
         if (target == null) {return;}
 
         rotation_hor = target.transform.rotation.eulerAngles.y;
-        rotation_ver = targetRotationVer;
+        rotation_ver = TargetRotationVer;
 
         MoveCameraPositionAndRotatetion();
     }

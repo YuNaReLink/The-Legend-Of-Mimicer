@@ -27,3 +27,7 @@ MonoBehaviour:
   lowStepJumpPower: 1250
   strongAttackPowerRatio1: 1.5
   strongAttackPowerRatio2: 2
+  thirdAttackForwardPower: 100
+  jumpPowerOfJumpAttack: 1250
+  forwardPowerOfJumpAttack: 500
+  forwardPowerOfSpinAttack: 250

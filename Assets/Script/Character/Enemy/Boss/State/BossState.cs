@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BossState
 {
-    private BossController controller = null;
+    private BossController      controller = null;
     public BossState(BossController _controller)
     {
         controller = _controller;
@@ -11,11 +11,11 @@ public class BossState
     /// <summary>
     ///プレイヤーがボスと最大距離離れた時の基準
     /// </summary>
-    private const float MaxMoveDistance = 12.0f;
+    private const float         MaxMoveDistance = 12.0f;
     /// <summary>
     /// プレイヤーがボスに最低限近づいた時に攻撃する基準
     /// </summary>
-    private const float MinAttackDistance = 4.0f;
+    private const float         MinAttackDistance = 4.0f;
 
     public void Initilaize()
     {

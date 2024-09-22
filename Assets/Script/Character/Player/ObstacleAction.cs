@@ -469,7 +469,7 @@ public class ObstacleAction : MonoBehaviour
         }
     }
 
-    private const float wallActionStopCount = 0.25f;
+    private const float WallActionStopCount = 0.25f;
     /// <summary>
     /// ’Í‚Ü‚è‚Ìˆ—‚ğs‚¤ŠÖ”
     /// </summary>
@@ -492,7 +492,7 @@ public class ObstacleAction : MonoBehaviour
             else if (controller.GetKeyInput().Vertical <= -1.0f&&
                      controller.GetCameraController().IsCameraVerticalRotation())
             {
-                controller.GetTimer().GetTimerWallActionStop().StartTimer(wallActionStopCount);
+                controller.GetTimer().GetTimerWallActionStop().StartTimer(WallActionStopCount);
                 grabFlag = false;
                 grabCancel = true;
                 controller.CharacterRB.useGravity = true;

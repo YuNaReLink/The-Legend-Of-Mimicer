@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HeartItem : Consumables
 {
-    private const int               count = 1;
+    private const int               Count = 1;
     public override ConsumablesTag  GetConsumablesTag(){return ConsumablesTag.Heart;}
 
     protected override void GetCommand(PlayerController _player, int count)
@@ -16,7 +16,7 @@ public class HeartItem : Consumables
         if (other.tag != "Player") { return; }
         player = other.GetComponent<PlayerController>();
         if(player == null) { return; }
-        GetCommand(player,count);
+        GetCommand(player,Count);
         base.OnTriggerEnter(other);
     }
 }

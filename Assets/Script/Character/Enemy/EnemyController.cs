@@ -46,6 +46,10 @@ public class EnemyController : CharacterController
     protected EnemyTimer                timer = null;
     //の Get関数
     public EnemyTimer                   GetTimer() { return timer; }
+    [Header("ダメージを食らう間隔"),SerializeField]
+    protected float                     damageCoolDownCount = 0.25f;
+    [Header("最初に待機させる間隔"), SerializeField]
+    protected float                     startStopCount = 3.0f;
 
     protected override void Awake()
     {
@@ -65,7 +69,7 @@ public class EnemyController : CharacterController
     {
         base.Start();
         //最初は3秒待たせる
-        timer.GetTimerIdle().StartTimer(3f);
+        timer.GetTimerIdle().StartTimer(startStopCount);
         //状態は待機に設定
         characterStatus.CurrentState = CharacterTagList.StateTag.Idle;
         //スクリプタブルオブジェクトがあるなら
@@ -88,6 +92,18 @@ public class EnemyController : CharacterController
         timer.TimerUpdate();
     }
 
+    protected void TransformRotate(float slerpSpeed)
+    {
+        bool rotateCheck = characterStatus.CurrentState == CharacterTagList.StateTag.Attack ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.Gurid ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.Damage ||
+                            characterStatus.CurrentState == CharacterTagList.StateTag.GetUp;
+        if (rotateCheck) { return; }
+        if (target == null) { return; }
+        Vector3 dir = target.transform.position - transform.position;
+        Quaternion targetRotation = Quaternion.LookRotation(dir);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, slerpSpeed * Time.deltaTime);
+    }
 
     public override void Death()
     {

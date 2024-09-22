@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーの入力処理を行うクラス
+/// </summary>
 public class PlayerInput : MonoBehaviour
 {
     private PlayerController                        controller = null;

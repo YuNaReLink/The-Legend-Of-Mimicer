@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 全キャラクターのノックバックの処理を行うクラス
+/// </summary>
 public class KnockBackCommand : InterfaceBaseCommand
 {
     private CharacterController         controller = null;
