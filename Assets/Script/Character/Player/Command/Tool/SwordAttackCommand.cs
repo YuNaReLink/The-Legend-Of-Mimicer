@@ -20,8 +20,8 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
         SpinAttackInput();
     }
 
-    private const float maxMotionNormalizedTimeOfAttack = 0.4f;
-    private const float maxMotionNormalizedTimeOfAttack3 = 0.6f;
+    private const float MaxMotionNormalizedTimeOfAttack = 0.4f;
+    private const float MaxMotionNormalizedTimeOfAttack3 = 0.6f;
 
     /// <summary>
     /// 三段攻撃の処理
@@ -53,14 +53,14 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
         switch (controller.GetKeyInput().ThreeAttackCount)
         {
             //一段目
-            case 0:
+            case (int)CharacterTagList.TripleAttack.First:
                 if (controller.GetToolController().IsCurrentToolChange)
                 {
                     controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.FirstAttack);
                 }
                 if (animInfo.IsName("attack3"))
                 {
-                    if (animInfo.normalizedTime < maxMotionNormalizedTimeOfAttack3) { return; }
+                    if (animInfo.normalizedTime < MaxMotionNormalizedTimeOfAttack3) { return; }
                     AttackDetailHandle();
                 }
                 else
@@ -69,15 +69,15 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
                 }
                 break;
             //二段目
-            case 1:
+            case (int)CharacterTagList.TripleAttack.Second:
                 if (!animInfo.IsName("attack1")) { return; }
-                if (animInfo.normalizedTime < maxMotionNormalizedTimeOfAttack) { return; }
+                if (animInfo.normalizedTime < MaxMotionNormalizedTimeOfAttack) { return; }
                 AttackDetailHandle();
                 break;
             //三段目
-            case 2:
+            case (int)CharacterTagList.TripleAttack.Third:
                 if (!animInfo.IsName("attack2")) { return; }
-                if (animInfo.normalizedTime < maxMotionNormalizedTimeOfAttack) { return; }
+                if (animInfo.normalizedTime < MaxMotionNormalizedTimeOfAttack) { return; }
                 AttackDetailHandle();
                 break;
         }
@@ -114,7 +114,7 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
         return false;
     }
 
-    private const float jumpAttackAcceleCount = 0.5f;
+    private const float JumpAttackAcceleCount = 0.5f;
 
     public void JumpAttackInput()
     {
@@ -125,21 +125,21 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
         //カメラ注目中のジャンプ斬り入力
         if (controller.GetKeyInput().ActionButton&& controller.GetKeyInput().IsCameraLockEnabled())
         {
-            controller.GetTimer().GetTimerJumpAttackAccele().StartTimer(jumpAttackAcceleCount);
+            controller.GetTimer().GetTimerJumpAttackAccele().StartTimer(JumpAttackAcceleCount);
             controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.JumpAttack);
             controller.GetKeyInput().ActionButton = false;
         }
         //空中にいる時のジャンプ斬り入力
         else if (controller.GetKeyInput().AttackButton && !controller.CharacterStatus.Landing)
         {
-            controller.GetTimer().GetTimerJumpAttackAccele().StartTimer(jumpAttackAcceleCount);
+            controller.GetTimer().GetTimerJumpAttackAccele().StartTimer(JumpAttackAcceleCount);
             controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.JumpAttack);
             controller.GetKeyInput().AttackButton = false;
             controller.BattleMode = true;
         }
     }
 
-    private const float motionNormalizedTimeOfAttack1 = 0.7f;
+    private const float MotionNormalizedTimeOfAttack1 = 0.7f;
 
     private void SpinAttackInput()
     {
@@ -149,7 +149,7 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
         if(controller.GetKeyInput().ThreeAttackCount >= (int)CharacterTagList.TripleAttack.Second) { return; }
         //回転攻撃準備動作開始フラグ
         bool readystartflag = controller.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("attack1")&&
-            controller.GetAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime >= motionNormalizedTimeOfAttack1;
+            controller.GetAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime >= MotionNormalizedTimeOfAttack1;
         //回転攻撃動作開始フラグ
         bool spinflag = controller.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("readySpinAttack");
         //回転攻撃準備入力
@@ -200,46 +200,39 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
 
         switch (controller.TripleAttack)
         {
-            case CharacterTagList.TripleAttack.Three:
+            case CharacterTagList.TripleAttack.Third:
                 ThreeAttack();
                 break;
         }
     }
 
-    private const float maxThreeAttackMotionNormalizedTime = 0.7f;
-
-    private const float forwardPower = 100f;
+    private const float MaxThreeAttackMotionNormalizedTime = 0.7f;
 
     private void ThreeAttack()
     {
         AnimatorStateInfo info = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
-        if(info.normalizedTime > maxThreeAttackMotionNormalizedTime) { return; }
-        controller.ForwardAccele(forwardPower);
+        if(info.normalizedTime > MaxThreeAttackMotionNormalizedTime) { return; }
+        controller.ForwardAccele(controller.GetData().ThirdAttackForwardPower);
     }
-
-    private const float jumpPowerOfJumpAttack = 1250f;
-
-    private const float forwardPowerOfJumpAttack = 500f;
 
     private void JumpAttackCommand()
     {
         if (!controller.GetTimer().GetTimerJumpAttackAccele().IsEnabled()) { return; }
         if (controller.CharacterStatus.Landing && !controller.CharacterStatus.Jumping)
         {
-            controller.JumpForce(jumpPowerOfJumpAttack);
+            controller.JumpForce(controller.GetData().JumpPowerOfJumpAttack);
             controller.CharacterStatus.Jumping = true;
         }
-        controller.ForwardAccele(forwardPowerOfJumpAttack);
+        controller.ForwardAccele(controller.GetData().ForwardPowerOfJumpAttack);
     }
 
-    private const float motionNormalizedTimeOfSpinAttack = 0.3f;
-    private const float forwardPowerOfSpinAttack = 250f;
+    private const float MotionNormalizedTimeOfSpinAttack = 0.3f;
 
     private void SpinAttackCommand()
     {
         if(controller.CharacterStatus.CurrentState != CharacterTagList.StateTag.SpinAttack) {  return; }
         AnimatorStateInfo info = controller.GetAnimator().GetCurrentAnimatorStateInfo(0);
-        if(info.normalizedTime > motionNormalizedTimeOfSpinAttack) { return; }
-        controller.ForwardAccele(forwardPowerOfSpinAttack);
+        if(info.normalizedTime > MotionNormalizedTimeOfSpinAttack) { return; }
+        controller.ForwardAccele(controller.GetData().ForwardPowerOfSpinAttack);
     }
 }

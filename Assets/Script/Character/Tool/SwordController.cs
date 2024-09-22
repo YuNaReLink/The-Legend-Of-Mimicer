@@ -95,10 +95,10 @@ public class SwordController : ToolController
         }
     }
 
-    private const float jumpattackStartCount = 0.3f;
-    private const float jumpattackEndCount = 0.5f;
+    private const float JumpattackStartCount = 0.3f;
+    private const float JumpattackEndCount = 0.5f;
 
-    private const float spinAttackStartCount = 0.3f;
+    private const float SpinAttackStartCount = 0.3f;
     /// <summary>
     /// モーションの名前から現在のモーションを取得して
     /// モーションの再生時間でコライダーを有効にするかを決める
@@ -118,14 +118,14 @@ public class SwordController : ToolController
                 }
                 break;
             case CharacterTagList.StateTag.JumpAttack:
-                if (animInfo.normalizedTime >= jumpattackStartCount &&
-                    animInfo.normalizedTime < jumpattackEndCount)
+                if (animInfo.normalizedTime >= JumpattackStartCount &&
+                    animInfo.normalizedTime < JumpattackEndCount)
                 {
                     return true;
                 }
                 break;
             case CharacterTagList.StateTag.SpinAttack:
-                if (animInfo.normalizedTime < spinAttackStartCount)
+                if (animInfo.normalizedTime < SpinAttackStartCount)
                 {
                     return true;
                 }
@@ -137,14 +137,14 @@ public class SwordController : ToolController
         return false;
     }
 
-    private const float firstAttackStartTime = 0.3f;
-    private const float firstAttackEndTime = 0.7f;
+    private const float FirstAttackStartTime = 0.3f;
+    private const float FirstAttackEndTime = 0.7f;
 
-    private const float secondAttackStartTime = 0.1f;
-    private const float secondAttackEndTime = 0.4f;
+    private const float SecondAttackStartTime = 0.1f;
+    private const float SecondAttackEndTime = 0.4f;
 
-    private const float threeAttackStartTime = 0.5f;
-    private const float threeAttackEndTime = 0.7f;
+    private const float ThreeAttackStartTime = 0.5f;
+    private const float ThreeAttackEndTime = 0.7f;
     /// <summary>
     /// 三段攻撃時のコライダーを有効にする間隔を決める関数
     /// </summary>
@@ -158,22 +158,22 @@ public class SwordController : ToolController
         switch (player.TripleAttack)
         {
             case CharacterTagList.TripleAttack.First:
-                if (animInfo.normalizedTime >= firstAttackStartTime &&
-                    animInfo.normalizedTime < firstAttackEndTime)
+                if (animInfo.normalizedTime >= FirstAttackStartTime &&
+                    animInfo.normalizedTime < FirstAttackEndTime)
                 {
                     return true;
                 }
                 break;
             case CharacterTagList.TripleAttack.Second:
-                if (animInfo.normalizedTime >= secondAttackStartTime &&
-                    animInfo.normalizedTime < secondAttackEndTime)
+                if (animInfo.normalizedTime >= SecondAttackStartTime &&
+                    animInfo.normalizedTime < SecondAttackEndTime)
                 {
                     return true;
                 }
                 break;
-            case CharacterTagList.TripleAttack.Three:
-                if (animInfo.normalizedTime >= threeAttackStartTime &&
-                    animInfo.normalizedTime < threeAttackEndTime)
+            case CharacterTagList.TripleAttack.Third:
+                if (animInfo.normalizedTime >= ThreeAttackStartTime &&
+                    animInfo.normalizedTime < ThreeAttackEndTime)
                 {
                     return true;
                 }

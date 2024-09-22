@@ -114,7 +114,7 @@ public class SpiderController : EnemyController
                     return;
             }
             if (timer.GetTimerDamageCoolDown().IsEnabled()) { return; }
-            timer.GetTimerDamageCoolDown().StartTimer(0.25f);
+            timer.GetTimerDamageCoolDown().StartTimer(damageCoolDownCount);
             spiderDamage.Attacker = other.gameObject;
             spiderDamage.SetDamageFlag(true);
             effectController.CreateVFX((int)EffectTagList.CharacterEffectTag.Damage, other.transform.position,1f, Quaternion.identity);

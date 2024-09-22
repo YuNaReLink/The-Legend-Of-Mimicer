@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -9,7 +10,9 @@ public class PatrolState : MonoBehaviour
 
     private int             currentPoint = 0;
     public int              CurrentPoint => currentPoint;
-
+    /// <summary>
+    /// „‰ñƒ|ƒCƒ“ƒg‚ğ•Û‚·‚éVector3
+    /// </summary>
     [SerializeField]
     private Vector3[]       patrolPoints;
 

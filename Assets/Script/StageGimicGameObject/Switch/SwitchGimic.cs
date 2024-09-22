@@ -26,7 +26,7 @@ public class SwitchGimic : MonoBehaviour
     /// <summary>
     /// エフェクトの大きさを設定する変数
     /// </summary>
-    private const float         effectScale = 1.0f;
+    private const float         EffectScale = 1.0f;
     /// <summary>
     /// 効果音とエフェクトを発生させるのを止めるタイマークラス
     /// </summary>
@@ -34,7 +34,7 @@ public class SwitchGimic : MonoBehaviour
     /// <summary>
     /// タイマークラスに使うカウント変数
     /// </summary>
-    private const float         coolDownCount = 0.5f;
+    private const float         CoolDownCount = 0.5f;
 
     private void Awake()
     {
@@ -64,7 +64,7 @@ public class SwitchGimic : MonoBehaviour
             colorChange.ChangeMaterial(ColorChange.MaterialTag.Two);
         }
         soundController.PlaySESound((int)SoundTagList.SwicthSoundTag.Hit);
-        effectController.CreateVFX((int)EffectTagList.SwordHitTag.Hit, other.transform.position,effectScale, Quaternion.identity);
-        hitCoolDownTimer.StartTimer(coolDownCount);
+        effectController.CreateVFX((int)EffectTagList.SwordHitTag.Hit, other.transform.position,EffectScale, Quaternion.identity);
+        hitCoolDownTimer.StartTimer(CoolDownCount);
     }
 }

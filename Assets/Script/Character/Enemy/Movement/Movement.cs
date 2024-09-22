@@ -1,10 +1,15 @@
 using UnityEngine;
 
+/// <summary>
+/// 敵の移動処理を行うクラス
+/// </summary>
 public class Movement
 {
     private CharacterController     controller = null;
 
     private Transform               thisTransform = null;
+
+    private const float             MoveSpeed = 1000.0f;
 
     public Movement(GameObject gameObject)
     {
@@ -36,7 +41,7 @@ public class Movement
             currentSpeed > targetMoveSpeed + MoveSpeedApproximately)
         {
             speed = Mathf.Lerp(currentSpeed, targetMoveSpeed, moveSpeedChangeRate * time);
-            speed = Mathf.Round(speed * 1000.0f) * 0.001f;
+            speed = Mathf.Round(speed * MoveSpeed) * 0.001f;
         }
 
         //前方に向かって移動する

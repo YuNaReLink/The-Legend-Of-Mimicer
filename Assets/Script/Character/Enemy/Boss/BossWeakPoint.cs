@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// ボスの弱点オブジェクトにアタッチして
+/// 当たり判定の処理を行う
+/// </summary>
 public class BossWeakPoint : MonoBehaviour
 {
     private BossController controller = null;
@@ -12,8 +16,6 @@ public class BossWeakPoint : MonoBehaviour
             Debug.LogError("controllerがアタッチされていません(BossController)");
         }
     }
-
-
     private void OnTriggerEnter(Collider other)
     {
         ToolController toolController = other.GetComponent<ToolController>();

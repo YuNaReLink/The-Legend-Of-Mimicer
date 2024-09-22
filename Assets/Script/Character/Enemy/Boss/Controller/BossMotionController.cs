@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// ボスの特定のモーションの名前を保持してるクラス
+/// </summary>
 public class BossMotionName
 {
     private string[] motionName = new string[]
@@ -14,6 +17,9 @@ public class BossMotionName
     public string[] GetMotionName() { return motionName; }
 }
 
+/// <summary>
+/// ボスのモーション処理を管理するクラス
+/// </summary>
 public class BossMotionController : MotionController
 {
     private BossController controller = null;
@@ -45,9 +51,9 @@ public class BossMotionController : MotionController
         anim.SetInteger(stateName, (int)tag);
     }
 
-    private const float maxStampAttackNormalizedTime = 0.7f;
+    private const float MaxStampAttackNormalizedTime = 0.7f;
 
-    private const float maxStunNormalizedTime = 0.8f;
+    private const float MaxStunNormalizedTime = 0.8f;
     /// <summary>
     /// 個別のアニメーションで
     /// 途中でアニメーションを止めたい時に処理する関数のBossバージョン
@@ -65,7 +71,7 @@ public class BossMotionController : MotionController
         {
             case CharacterTagList.StateTag.Attack:
                 //攻撃中でアニメーション進行度がmaxStampAttackNormalizedTime以上なら
-                if (animInfo.IsName("stampAttack") && animInfo.normalizedTime >= maxStampAttackNormalizedTime)
+                if (animInfo.IsName("stampAttack") && animInfo.normalizedTime >= MaxStampAttackNormalizedTime)
                 {
                     //タイマーが動いていたら
                     if (controller.GetTimer().GetTimerAttackCoolDown().IsEnabled())
@@ -81,7 +87,7 @@ public class BossMotionController : MotionController
                 break;
             case CharacterTagList.StateTag.Damage:
                 //怯み状態でアニメーション進行度がmaxStunNormalizedTime以上なら
-                if (animInfo.IsName("stun") && animInfo.normalizedTime >= maxStunNormalizedTime)
+                if (animInfo.IsName("stun") && animInfo.normalizedTime >= MaxStunNormalizedTime)
                 {
                     //タイマーが動いていたら
                     if (controller.GetTimer().GetTimerStun().IsEnabled())

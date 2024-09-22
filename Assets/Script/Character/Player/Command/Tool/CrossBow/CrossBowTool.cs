@@ -1,5 +1,8 @@
 
-
+/// <summary>
+/// クロスボウの制御を管理するクラス
+/// 主に矢の発射
+/// </summary>
 public class CrossBowTool : InterfaceBaseToolCommand
 {
     private PlayerController    controller = null;

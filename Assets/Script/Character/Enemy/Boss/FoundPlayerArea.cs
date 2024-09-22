@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// ボスがプレイヤーの情報を取得するオブジェクトにアタッチし
+/// プレイヤーが当たり判定にヒットした時に処理を行う
+/// </summary>
 public class FoundPlayerArea : MonoBehaviour
 {
     private BossController controller = null;

@@ -16,7 +16,7 @@ public class BossDamageCommand : EnemyDamageCommand, InterfaceState
     {
         StunInput();
     }
-    private const float stunTimerCount = 7f;
+    private const float StunTimerCount = 7f;
     private void StunInput()
     {
         //怯みフラグがfalseなら早期リターン
@@ -24,7 +24,7 @@ public class BossDamageCommand : EnemyDamageCommand, InterfaceState
         //ダメージ状態を設定
         bossController.GetMotion().ChangeMotion(CharacterTagList.StateTag.Damage);
         //怯みを維持するためにタイマーをスタート
-        bossController.GetTimer().GetTimerStun().StartTimer(stunTimerCount);
+        bossController.GetTimer().GetTimerStun().StartTimer(StunTimerCount);
     }
 
     public override void Execute()

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーの落下処理を行うクラス
+/// </summary>
 public class FallDistanceCheck : InterfaceBaseCommand
 {
     //参照用プレイヤーコントローラー
@@ -14,7 +17,7 @@ public class FallDistanceCheck : InterfaceBaseCommand
     //落下してから地面に落ちるまでの距離
     private float               fallenDistance = 0f;
     //どのぐらいの高さからダメージを与えるか
-    private const float         takeDamageDistance = 10f;
+    private const float         TakeDamageDistance = 10f;
     /// <summary>
     /// 落下ダメージを与えるかどうかのフラグ
     /// </summary>
@@ -54,7 +57,7 @@ public class FallDistanceCheck : InterfaceBaseCommand
         fallenDistance = fallenPosition - controller.transform.position.y;
 
         //　落下によるダメージが発生する距離を超える場合ダメージを与える
-        if (fallenDistance >= takeDamageDistance)
+        if (fallenDistance >= TakeDamageDistance)
         {
             fallDamage = true;
         }

@@ -10,7 +10,7 @@ public class TargetSearchArea : MonoBehaviour
     [SerializeField]
     public float                searchAngle = 130f;
 
-    private const string targetTagName = "Player";
+    private const string        TargetTagName = "Player";
 
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class TargetSearchArea : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         //Ž‹ŠE‚Ì”ÍˆÍ“à‚Ì“–‚½‚è”»’è
-        if (other.gameObject.tag != targetTagName) { return; }
+        if (other.gameObject.tag != TargetTagName) { return; }
         //Ž‹ŠE‚ÌŠp“x“à‚ÉŽû‚Ü‚Á‚Ä‚¢‚é‚©
         Vector3 posDelta = other.transform.position - transform.position;
         float target_angle = Vector3.Angle(transform.forward, posDelta);

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// キノコモンスターの状態を変更処理するクラス
+/// </summary>
 public class MushroomState : MonoBehaviour
 {
     private MushroomController      controller = null;
@@ -17,7 +20,10 @@ public class MushroomState : MonoBehaviour
         {
             Debug.LogError("PatrolStateがアタッチされていません");
         }
-        patrolState?.AwakeInitilaize();
+        else
+        {
+            patrolState?.AwakeInitilaize();
+        }
     }
 
     public void StartInitilaize()
@@ -50,8 +56,6 @@ public class MushroomState : MonoBehaviour
             AttackMode();
         }
     }
-
-
     public void StateFixedUpdate(float time)
     {
         //巡回処理
@@ -67,12 +71,10 @@ public class MushroomState : MonoBehaviour
         Vector3 sub = controller.transform.position - player.transform.position;
         return sub.magnitude;
     }
-
     private void MoveState()
     {
         controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Run);
     }
-
     private void AttackMode()
     {
         if (controller.GetTimer().GetTimerAttackCoolDown().IsEnabled()) { return; }
@@ -93,7 +95,6 @@ public class MushroomState : MonoBehaviour
             controller.FoundPlayer = false;
         }
     }
-
     private void AttackInput()
     {
         controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Attack);

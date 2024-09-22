@@ -27,7 +27,7 @@ public class GameSoundController : SoundController
 
     private AudioClip   saveBGMClip = null;
 
-    private const float volumSpeed = 0.01f;
+    private const float VolumSpeed = 0.01f;
 
     private const float BGMVolumData = 1.0f;
     public float        GetBGMVolumData() { return BGMVolumData; }
@@ -88,7 +88,7 @@ public class GameSoundController : SoundController
     {
         if (changeBGM)
         {
-            BGMVolume -= volumSpeed;
+            BGMVolume -= VolumSpeed;
             if (BGMVolume <= 0)
             {
                 BGMVolume = 0;
@@ -99,7 +99,7 @@ public class GameSoundController : SoundController
         }
         else if (BGMVolume <= BGMVolumData)
         {
-            BGMVolume += volumSpeed;
+            BGMVolume += VolumSpeed;
             if (BGMVolume >= BGMVolumData)
             {
                 BGMVolume = BGMVolumData;

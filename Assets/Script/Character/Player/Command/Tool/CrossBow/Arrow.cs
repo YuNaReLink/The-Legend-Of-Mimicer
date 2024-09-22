@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// –î’P‘Ì‚Ìˆ—
+/// –î‚ª•¨‚É“–‚½‚Á‚½‚Éˆ—‚ğs‚¤
+/// </summary>
 public class Arrow : MonoBehaviour
 {
     [SerializeField]

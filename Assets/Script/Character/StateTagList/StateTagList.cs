@@ -45,7 +45,7 @@ namespace CharacterTagList
         Null = -1,
         First,
         Second,
-        Three,
+        Third,
         DataEnd
     }
     //プレイヤーのガード状態を判定するタグ
