@@ -10,7 +10,7 @@ public class PushState : InterfaceState
 
     public void DoUpdate()
     {
-        if (controller.GetCameraController().IsFPSMode()) { return; }
+        if (CameraController.Instance.IsFPSMode()) { return; }
         if (!controller.CharacterStatus.Landing) { return; }
         if (controller.PushTag == CharacterTagList.PushTag.Null) { return; }
         controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Push);

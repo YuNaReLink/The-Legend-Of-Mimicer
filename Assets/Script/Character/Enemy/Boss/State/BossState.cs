@@ -144,9 +144,7 @@ public class BossState
             case CharacterTagList.StateTag.GetUp:
                 return;
         }
-        CameraController cameraController = controller.Target.GetCameraController();
-        if(cameraController == null) { return; }
-        if (!cameraController.IsFPSMode()) { return; }
+        if (!CameraController.Instance.IsFPSMode()) { return; }
         controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Gurid);
     }
 

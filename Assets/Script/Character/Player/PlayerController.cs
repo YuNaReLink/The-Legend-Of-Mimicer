@@ -1,11 +1,11 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 /// <summary>
 /// プレイヤーの全ての処理を行っているクラス
 /// </summary>
 public class PlayerController : CharacterController
 {
+    //外部からアタッチする一覧
     /// <summary>
     /// ScriptableObjectデータ
     /// プレイヤーで使う変数の値を保持してる
@@ -14,16 +14,29 @@ public class PlayerController : CharacterController
     private PlayerScriptableObject          data;
     public PlayerScriptableObject           GetData() { return data; }
     /// <summary>
-    /// カメラ制御をまとめたクラス
+    /// プレイヤーの道具の処理をまとめたクラス
     /// </summary>
-    [SerializeField]
-    private CameraController                cameraController = null;
-    public CameraController                 GetCameraController() { return cameraController; }
+    private ToolInventoryController         toolInventory = null;
+    public ToolInventoryController          GetToolController() { return toolInventory; }
+    //SerializableでController内にあるクラス
     /// <summary>
     /// プレイヤーのキー入力をまとめたクラス
     /// </summary>
-    private PlayerInput                     keyInput = null;
+    [SerializeField]
+    private PlayerInput                     keyInput;
     public PlayerInput                      GetKeyInput() { return keyInput; }
+    /// <summary>
+    /// プレイヤーの壁、崖との判定処理をまとめたクラス
+    /// </summary>
+    [SerializeField]
+    private ObstacleAction                   obstacleAction = null;
+    public ObstacleAction                    GetObstacleCheck() { return obstacleAction; }
+    /// <summary>
+    /// プレイヤーの道具とは違う装飾品の設定を行うクラス
+    /// </summary>
+    [SerializeField]
+    private PlayerDecorationController      decorationController = null;
+    //生成するクラスの一覧
     /// <summary>
     /// プレイヤー状態を管理するクラス
     /// </summary>
@@ -34,22 +47,6 @@ public class PlayerController : CharacterController
     private PlayerCommands                  commands = null;
     public PlayerCommands                   GetCommands() { return commands; }
     /// <summary>
-    /// プレイヤーの壁、崖との判定処理をまとめたクラス
-    /// </summary>
-    private ObstacleAction                   obstacleAction = null;
-    public ObstacleAction                    GetObstacleCheck() { return obstacleAction; }
-    
-    
-    /// <summary>
-    /// プレイヤーの道具の処理をまとめたクラス
-    /// </summary>
-    private ToolInventoryController         toolInventory = null;
-    public ToolInventoryController          GetToolController() { return toolInventory; }
-    /// <summary>
-    /// プレイヤーの道具とは違う装飾品の設定を行うクラス
-    /// </summary>
-    private PlayerDecorationController      decorationController = null;
-    /// <summary>
     /// プレイヤーの回転をまとめたクラス
     /// </summary>
     private PlayerRotation                  rotation = null;
@@ -58,21 +55,21 @@ public class PlayerController : CharacterController
     /// </summary>
     private PlayerTimers                    timer = null;
     public PlayerTimers                     GetTimer() {  return timer; }
-    
+    /// <summary>
+    /// プレイヤーの各右・左の道具の処理を生成するクラス
+    /// </summary>
+    private InterfaceBaseToolCommand        rightAction = null;
+    public InterfaceBaseToolCommand         RightAction { get { return rightAction; } set { rightAction = value; } }
+    private InterfaceBaseToolCommand        leftAction = null;
+    public InterfaceBaseToolCommand         LeftAction { get { return leftAction; } set { leftAction = value; } }
+
+    //プレイヤーで使うタグ
     /// <summary>
     /// プレイヤーの攻撃行動を処理するクラス
     /// </summary>
     [SerializeField]
     private CharacterTagList.TripleAttack   tripleAttack = CharacterTagList.TripleAttack.Null;
     public CharacterTagList.TripleAttack    TripleAttack { get { return tripleAttack; } set {  tripleAttack = value; } }
-    
-    /// <summary>
-    /// プレイヤーの各右・左の道具の処理を生成するクラス
-    /// </summary>
-    private InterfaceBaseToolCommand        rightAction = null;
-    public InterfaceBaseToolCommand         RightAction { get { return rightAction; }set { rightAction = value; } }
-    private InterfaceBaseToolCommand        leftAction = null;
-    public InterfaceBaseToolCommand         LeftAction { get {return leftAction; }set { leftAction = value; } }
     /// <summary>
     /// プレイヤーが動かせるオブジェクトに触れてるか判定する
     /// </summary>
@@ -80,16 +77,12 @@ public class PlayerController : CharacterController
     private CharacterTagList.PushTag        pushTag = CharacterTagList.PushTag.Null;
     public CharacterTagList.PushTag         PushTag  => pushTag;
     /// <summary>
-    /// パシフィックマテリアル
-    /// </summary>
-    [SerializeField]
-    private List<PhysicMaterial>            physicMaterials = new List<PhysicMaterial>();
-    /// <summary>
     /// ダメージ関係の変数
     /// </summary>
     [SerializeField]
     private CharacterTagList.DamageTag      damageTag = CharacterTagList.DamageTag.Null;
     public CharacterTagList.DamageTag       DamageTag {  get { return damageTag; } set { damageTag = value; } }
+
     [Header("プレイヤーが盾を構えた時に使うモーションClip")]
     [SerializeField]
     private AnimationClip                   clip = null;
@@ -97,12 +90,16 @@ public class PlayerController : CharacterController
     [SerializeField]
     private AnimationClip                   nullClip = null;
     public AnimationClip                    GetNullClip() { return nullClip; }
+
     /// <summary>
     /// プレイヤーのサウンド管理のクラス
     /// </summary>
     private SoundController                 soundController = null;
     public SoundController                  GetSoundController() { return soundController; }
     protected override void                 SetMotionController(){motion = new PlayerMotion(this);}
+
+
+    private const float                     LittleSpeed = 0.2f;
     protected override void Awake()
     {
         base.Awake();
@@ -111,6 +108,9 @@ public class PlayerController : CharacterController
     protected override void Start()
     {
         base.Start();
+
+        obstacleAction.Setup(this);
+
         //サウンドコントローラーのAwake時の初期化
         soundController.AwakeInitilaize();
         if (data != null)
@@ -125,15 +125,7 @@ public class PlayerController : CharacterController
     protected override void InitializeAssign()
     {
         base.InitializeAssign();
-        GameObject cameraObject = GameObject.FindWithTag("MainCamera");
-        if(cameraObject != null)
-        {
-            cameraController = cameraObject.GetComponent<CameraController>();
-        }
-        obstacleAction =        GetComponent<ObstacleAction>();
-        keyInput =              GetComponent<PlayerInput>();
         toolInventory =         GetComponentInChildren<ToolInventoryController>();
-        decorationController =  GetComponent<PlayerDecorationController>();
         soundController =       GetComponent<SoundController>();
         state =                 new PlayerState(this);
         commands =              new PlayerCommands(this);
@@ -141,29 +133,11 @@ public class PlayerController : CharacterController
         timer =                 new PlayerTimers();
         animatorOverride =      new AnimatorOverrideController(animator.runtimeAnimatorController);
 
-        if(obstacleAction == null)
-        {
-            Debug.LogError("ObstacleCheckがアタッチされていません");
-        }
-        else
-        {
-            obstacleAction.SetController(this);
-        }
-
-        if(keyInput == null)
-        {
-            Debug.LogError("PlayerInputがアタッチされていません");
-        }
-        else
-        {
-            keyInput.SetController(this);
-            keyInput.Initialize();
-        }
-
+        obstacleAction.Setup(this);
+        keyInput.Setup(this);
+        keyInput.Initialize();
         state.AwakeInitilaize();
-
         commands.AwakeInitilaize();
-
         if(toolInventory == null)
         {
             Debug.LogError("ToolInventoryControllerがアタッチされていません");
@@ -173,18 +147,8 @@ public class PlayerController : CharacterController
             toolInventory.SetController(this);
             toolInventory.Initilaize();
         }
-
-        if(decorationController == null)
-        {
-            Debug.LogError("PlayerDecorationControllerがアタッチされていません");
-        }
-        else
-        {
-            decorationController.SetController(this);
-        }
-
+        decorationController.Setup(this);
         timer.InitializeAssignTimer();
-
         animator.runtimeAnimatorController = animatorOverride;
     }
     //入力処理を行う
@@ -193,6 +157,7 @@ public class PlayerController : CharacterController
         keyInput.SystemInput();
         if (Time.timeScale <= 0) { return; }
         base.Update();
+        decorationController.Update();
         //タイマーの更新
         timer.TimerUpdate();
         //着地時の判定
@@ -235,20 +200,7 @@ public class PlayerController : CharacterController
         }
         characterStatus.SetJumpPower(0);
     }
-    /// <summary>
-    /// PhysicMaterialを着地の有無で変更する関数
-    /// </summary>
-    private void SetPhysicMaterial()
-    {
-        if (characterStatus.CurrentState != CharacterTagList.StateTag.Grab&&!characterStatus.Landing)
-        {
-            characterCollider.material = physicMaterials[(int)CharacterTagList.PhysicState.Jump];
-        }
-        else
-        {
-            characterCollider.material = physicMaterials[(int)CharacterTagList.PhysicState.Land];
-        }
-    }
+
     /// <summary>
     /// プレイヤーオブジェクトのMeshRendererの表示を変更する関数
     /// </summary>
@@ -256,8 +208,8 @@ public class PlayerController : CharacterController
     {
         foreach (var renderer in rendererData.RendererList)
         {
-            if (renderer.enabled == !cameraController.IsFPSMode()) { continue; }
-            renderer.enabled = !cameraController.IsFPSMode();
+            if (renderer.enabled == !CameraController.Instance.IsFPSMode()) { continue; }
+            renderer.enabled = !CameraController.Instance.IsFPSMode();
         }
     }
     //行動処理を行う
@@ -315,16 +267,10 @@ public class PlayerController : CharacterController
         //継承元のCharacterで宣言してるクラスの処理
         knockBackCommand?.Execute();
         //移動処理
-        if (!timer.GetTimerNoAccele().IsEnabled())
-        {
-            Accele(GetCameraDirection(Camera.main.transform.forward), GetCameraDirection(Camera.main.transform.right),
-                   data.MaxSpeed, data.Acceleration);
-        }
+        Accele(GetCameraDirection(Camera.main.transform.forward), GetCameraDirection(Camera.main.transform.right),
+                                  data.MaxSpeed, data.Acceleration);
         //入力がなかった場合停止処理
-        if (!characterStatus.MoveInput)
-        {
-            StopMove();
-        }
+        StopMove();
         //移動RigidBodyに適用
         Move();
         if(RotateStopFlag()) { return; }
@@ -369,17 +315,18 @@ public class PlayerController : CharacterController
     /// </param>
     private void Accele(Vector3 forward, Vector3 right, float _maxspeed, float _accele)
     {
+        if (timer.GetTimerNoAccele().IsEnabled()) { return; }
         Vector3 vel = characterStatus.Velocity;
         float h = keyInput.Horizontal;
         float v = keyInput.Vertical;
         if (characterStatus.CurrentState == CharacterTagList.StateTag.Jump||characterStatus.CurrentState == CharacterTagList.StateTag.Rolling)
         {
 
-            vel += transform.forward * _accele;
+            vel = transform.forward * _accele;
         }
         else
         {
-            vel += (h * right + v * forward) * SetSpeed(_accele);
+            vel = (h * right + v * forward) * SetSpeed(_accele);
         }
         // 現在の速度の大きさを計算
         float currentSpeed = vel.magnitude;
@@ -391,7 +338,11 @@ public class PlayerController : CharacterController
         }
         characterStatus.Velocity = vel;
     }
-    private const float LittleSpeed = 0.2f;
+    public override void StopMove()
+    {
+        if (characterStatus.MoveInput) { return; }
+        base.StopMove();
+    }
     /// <summary>
     /// 移動で使うスピードを状態によって変更する関数
     /// </summary>
@@ -403,7 +354,7 @@ public class PlayerController : CharacterController
     {
         if(characterStatus.CurrentState == CharacterTagList.StateTag.ReadySpinAttack||
            characterStatus.CurrentState == CharacterTagList.StateTag.Push||
-           cameraController.IsFPSMode())
+           CameraController.Instance.IsFPSMode())
         {
             _speed *= LittleSpeed;
         }

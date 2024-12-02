@@ -79,12 +79,6 @@ public class ToolInventoryController : MonoBehaviour
     [SerializeField]
     private Transform               leftHandTransform;
 
-
-    /// <summary>
-    /// エフェクト関係の変数
-    /// </summary>
-    private SwordEffectController   swordEffect = null;
-
     public void Initilaize()
     {
         inventoryData = GetComponent<InventoryData>();
@@ -191,7 +185,7 @@ public class ToolInventoryController : MonoBehaviour
         if (inventoryData.ToolItemList[c] == null) { return; }
         if (currentToolTag == ToolObjectTag.CrossBow)
         {
-            SetToolPosition(ToolObjectTag.CrossBow, controller.GetCameraController().transform);
+            SetToolPosition(ToolObjectTag.CrossBow, CameraController.Instance.transform);
             inventoryData.ToolItemList[c].transform.localPosition = localCrossBowPos;
         }
         else

@@ -714,7 +714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1482ce12e980942ad2d9981bc3e98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  angle: 130
+  searchAngle: 130
 --- !u!135 &1334087011908859418
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -875,7 +875,6 @@ GameObject:
   - component: {fileID: 1620102980730619372}
   - component: {fileID: 5907544770625698608}
   - component: {fileID: 6589608079859802971}
-  - component: {fileID: 3269232106882816454}
   - component: {fileID: 3557048751742484943}
   - component: {fileID: 7366363391421977626}
   - component: {fileID: 5983776393458440964}
@@ -976,18 +975,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5, y: 0.1820462, z: 0.5}
   m_Center: {x: 0, y: 0.08976959, z: 0}
---- !u!114 &3269232106882816454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9101688894209518531}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 017a6e4a3476c4d498ec065f230a0653, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3557048751742484943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1043,8 +1030,8 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: b60f5fa329eb4ac439552db1da9771f0, type: 2}
   foundPlayer: 0
   target: {fileID: 0}
-  goalPosition: {x: 0, y: 0, z: 0}
-  loiterRadius: 10
+  damageCoolDownCount: 0.25
+  startStopCount: 3
 --- !u!114 &5983776393458440964
 MonoBehaviour:
   m_ObjectHideFlags: 0

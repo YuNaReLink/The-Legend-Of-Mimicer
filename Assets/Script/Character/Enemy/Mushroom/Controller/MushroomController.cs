@@ -18,19 +18,9 @@ public class MushroomController : EnemyController
     protected override void InitializeAssign()
     {
         base.InitializeAssign();
-        mushroomState = GetComponent<MushroomState>();
+        mushroomState = new MushroomState(this);
         soundController = GetComponent<SoundController>();
         mushroomDamage = new MushroomDamageCommand(this);
-
-
-        if(mushroomState == null)
-        {
-            Debug.LogError("MushroomStateがアタッチされていません");
-        }
-        else
-        {
-            mushroomState.SetController(this);
-        }
 
         if(soundController == null)
         {

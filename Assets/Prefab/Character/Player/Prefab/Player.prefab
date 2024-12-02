@@ -109,7 +109,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 6136527748721531752}
-  areaCollider: {fileID: 1936973079133404279}
   distance: 10
   searchAngle: 130
 --- !u!135 &1936973079133404279
@@ -211,9 +210,6 @@ GameObject:
   - component: {fileID: 5602940656481161613}
   - component: {fileID: 2226966414073182723}
   - component: {fileID: 6136527748721531752}
-  - component: {fileID: 2930122255710493470}
-  - component: {fileID: 5085607257831151868}
-  - component: {fileID: 1151272462068201039}
   - component: {fileID: 7840695295424365132}
   - component: {fileID: 8480225175748394788}
   - component: {fileID: 594869213626691746}
@@ -348,6 +344,54 @@ MonoBehaviour:
   battleMode: 0
   data: {fileID: 11400000, guid: 2a35ea8483179074b998d0a286b0cccb, type: 2}
   cameraController: {fileID: 0}
+  keyInput:
+    horizontal: 0
+    vertical: 0
+    currentDirection: 0
+    pastDirection: 0
+    actionButton: 0
+    lockCamera: 0
+    cameraLockEnabled: 0
+    changeButton: 0
+    toolButton: 0
+    attackButton: 0
+    attackHoldButton: 0
+    guardHoldButton: 0
+    guardPushButton: 0
+    getButton: 0
+  obstacleAction:
+    stepCheckOffset: 0.5
+    stepUpCheckOffset: 0.4
+    stepCheckDistance: 1
+    lowStep: 0
+    lowJumpCount: 0
+    wallCheckoffsetArray:
+    - 4
+    - 2
+    - 1
+    - 0.25
+    wallCheckDistanceArray:
+    - 1
+    - 0.7
+    - 0.7
+    - 0.7
+    hitWallFlagArray: 00000000
+    climbForward: 1.5
+    climbUp: 2
+    stepJumpFlag: 0
+    noGarbToClimbFlag: 0
+    wallJumpFlag: 0
+    grabFlag: 0
+    grabCancel: 0
+    climbFlag: 0
+    climbOldPos: {x: 0, y: 0, z: 0}
+    climbPos: {x: 0, y: 0, z: 0}
+    cameraForwardWallFlagArray: 00000000
+    controller: {fileID: 0}
+  decorationController:
+    controller: {fileID: 0}
+    decorationObjects:
+    - {fileID: 6632464060480971127}
   tripleAttack: -1
   pushTag: -1
   physicMaterials:
@@ -356,88 +400,6 @@ MonoBehaviour:
   damageTag: -1
   clip: {fileID: -203655887218126122, guid: bc14e6d09f4e7c9449f69877aac69169, type: 3}
   nullClip: {fileID: -203655887218126122, guid: c4686dcc13e9f6247ae592abef156e0b, type: 3}
---- !u!114 &2930122255710493470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4348658367534398464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db479c22fd810fb458544fbd2bf54c4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  horizontal: 0
-  vertical: 0
-  currentDirection: 0
-  pastDirection: 0
-  actionButton: 0
-  lockCamera: 0
-  cameraLockEnabled: 0
-  changeButton: 0
-  toolButton: 0
-  attackButton: 0
-  attackHoldButton: 0
-  guardHoldButton: 0
-  guardPushButton: 0
-  getButton: 0
---- !u!114 &5085607257831151868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4348658367534398464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a3a5682f82227e488455a74ac2b13a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stepCheckOffset: 0.5
-  stepUpCheckOffset: 0.4
-  stepCheckDistance: 1
-  lowStep: 0
-  lowJumpCount: 0
-  wallCheckoffsetArray:
-  - 4
-  - 2
-  - 1
-  - 0.25
-  wallCheckDistanceArray:
-  - 1
-  - 0.7
-  - 0.7
-  - 0.7
-  hitWallFlagArray: 00000000
-  climbForward: 1.5
-  climbUp: 2
-  stepJumpFlag: 0
-  noGarbToClimbFlag: 0
-  wallJumpFlag: 0
-  grabFlag: 0
-  grabCancel: 0
-  climbFlag: 0
-  climbOldPos: {x: 0, y: 0, z: 0}
-  climbPos: {x: 0, y: 0, z: 0}
-  cliffJump: 0
-  cameraForwardWallFlagArray: 00000000
-  controller: {fileID: 0}
---- !u!114 &1151272462068201039
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4348658367534398464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01c5b8e4df1084740b5ba31467e42c2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 0}
-  decorationObjects:
-  - {fileID: 6632464060480971127}
 --- !u!114 &7840695295424365132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -614,8 +576,8 @@ MonoBehaviour:
   swordTransform: {fileID: 8495432417271610765}
   crossBowTransform: {fileID: 7981790897428794811}
   localCrossBowPos: {x: 1, y: -0.8, z: 1}
-  shieldTransform: {fileID: 495127051318679388}
   rightHandTransform: {fileID: 1685056320766932114}
+  shieldTransform: {fileID: 495127051318679388}
   leftHandTransform: {fileID: 289584789202046710}
 --- !u!114 &2871169377768039812
 MonoBehaviour:

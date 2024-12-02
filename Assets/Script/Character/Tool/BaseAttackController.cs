@@ -21,7 +21,7 @@ public class BaseAttackController : MonoBehaviour
     }
 
     [SerializeField]
-    protected Collider              collider = null;
+    protected new Collider              collider = null;
 
     [SerializeField]
     protected WeaponStateData       statusData = null;

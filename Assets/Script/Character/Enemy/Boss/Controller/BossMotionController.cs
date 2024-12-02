@@ -147,9 +147,7 @@ public class BossMotionController : MotionController
                 controller.CharacterStatus.CurrentState = CharacterTagList.StateTag.Null;
                 break;
             case "guard":
-                CameraController cameraController = controller.Target.GetCameraController();
-                if (cameraController == null) { return; }
-                if (cameraController.IsFPSMode()) { return; }
+                if (CameraController.Instance.IsFPSMode()) { return; }
                 controller.CharacterStatus.CurrentState = CharacterTagList.StateTag.Null;
                 break;
             case "stun":

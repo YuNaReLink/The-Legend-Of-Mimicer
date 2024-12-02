@@ -27,7 +27,7 @@ public class FallState : InterfaceState
                 }
                 return;
         }
-        if (controller.GetCameraController().IsFPSMode()){ return; }
+        if (CameraController.Instance.IsFPSMode()){ return; }
         if (controller.CharacterStatus.Landing) { return; }
         controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Fall);
     }
