@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class SpiderState : MonoBehaviour
+public class SpiderState
 {
+    private Transform transform;
     private SpiderController controller = null;
-    public void SetController(SpiderController _controller)
+    public SpiderState(SpiderController _controller)
     {
         controller = _controller;
+        transform = controller.transform;
     }
     public void Execute()
     {

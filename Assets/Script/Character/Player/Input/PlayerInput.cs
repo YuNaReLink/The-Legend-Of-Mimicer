@@ -3,13 +3,10 @@ using UnityEngine;
 /// <summary>
 /// プレイヤーの入力処理を行うクラス
 /// </summary>
-public class PlayerInput : MonoBehaviour
+[System.Serializable]
+public class PlayerInput
 {
     private PlayerController                        controller = null;
-    public void SetController(PlayerController _controller)
-    {
-        controller = _controller; 
-    }
     /// <summary>
     /// XY移動入力
     /// </summary>
@@ -95,6 +92,11 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private bool                                    getButton = false;
     public bool                                     IsGetButton() {  return getButton; }
+
+    public void Setup(PlayerController c)
+    {
+        controller = c;
+    }
     public void Initialize()
     {
         GetUpInput();
@@ -187,7 +189,7 @@ public class PlayerInput : MonoBehaviour
             case CharacterTagList.StateTag.Grab:
             case CharacterTagList.StateTag.ClimbWall:
             case CharacterTagList.StateTag.WallJump:
-                if (!controller.GetCameraController().IsCameraVerticalRotation())
+                if (!CameraController.Instance.IsCameraVerticalRotation())
                 {
                     vertical = 0f;
                     horizontal = 0f;

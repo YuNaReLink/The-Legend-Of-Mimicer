@@ -83,7 +83,6 @@ GameObject:
   - component: {fileID: 3589985215272241472}
   - component: {fileID: 1264782400171577860}
   - component: {fileID: 4748190420336695491}
-  - component: {fileID: 3167589874690786603}
   - component: {fileID: 4081459926770389903}
   - component: {fileID: 1712639282010056007}
   - component: {fileID: 638804887594730782}
@@ -206,18 +205,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3167589874690786603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 347817752896502674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c00380867b5ac6341a4977cb5ed1c31c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4081459926770389903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,8 +241,8 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: b60f5fa329eb4ac439552db1da9771f0, type: 2}
   foundPlayer: 0
   target: {fileID: 0}
-  goalPosition: {x: 0, y: 0, z: 0}
-  loiterRadius: 10
+  damageCoolDownCount: 0.25
+  startStopCount: 3
 --- !u!114 &1712639282010056007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,7 +486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1482ce12e980942ad2d9981bc3e98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  angle: 130
+  searchAngle: 130
 --- !u!1001 &5025871385281424107
 PrefabInstance:
   m_ObjectHideFlags: 0

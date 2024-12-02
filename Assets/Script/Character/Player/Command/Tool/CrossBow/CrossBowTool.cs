@@ -18,8 +18,7 @@ public class CrossBowTool : InterfaceBaseToolCommand
 
     public void Input()
     {
-        if(controller.GetCameraController() == null) { return; }
-        if (!controller.GetCameraController().IsFPSMode()) { return; }
+        if (!CameraController.Instance.IsFPSMode()) { return; }
         if (!controller.GetKeyInput().ToolButton) { return; }
         if (controller.GetToolController().GetQuiver().Count <= 0) { return; }
         //–î‚ð”­ŽË

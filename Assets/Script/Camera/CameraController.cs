@@ -2,52 +2,71 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    private static CameraController     instance;
+    public static CameraController      Instance => instance;
+
     //メインカメラを取得
-    private Camera              myCamera = null;
+    private Camera                      myCamera = null;
     [Header("カメラが追従するターゲット")]
     [SerializeField]
-    private GameObject          target;
+    private GameObject                  target;
     //プレイヤーのインスタンス宣言
-    private PlayerController    player;
+    private PlayerController            player;
     //カメラコントローラーで使う変数
     [SerializeField]
-    private CameraStatus        cameraStatus;
-    public CameraStatus         CameraStatus => cameraStatus;
+    private CameraStatus                cameraStatus;
+    public CameraStatus                 CameraStatus => cameraStatus;
     /// <summary>
     /// カメラの回転量を保持するもの
     /// </summary>
-    private float               rotation_hor;
+    private float                       rotation_hor;
 
-    private float               rotation_ver;
+    private float                       rotation_ver;
     //カメラがどれくらい動いたかを取得するVector3変数
-    private Vector3             targettrack;
+    private Vector3                     targettrack;
 
 
     [Header("カメラがターゲットに注目した時のカメラの位置を固定する値"),SerializeField]
-    private Vector3             focusCameraPosition = new Vector3(1.5f, 2.0f, 3.0f);
+    private Vector3                     focusCameraPosition = new Vector3(1.5f, 2.0f, 3.0f);
 
     [Header("カメラを回転させる時にスピードを正規化する変数"),SerializeField]
-    private Vector3             cameraRotationNormalizeSpeed = new Vector3(0, 0.2f, -5);
+    private Vector3                     cameraRotationNormalizeSpeed = new Vector3(0, 0.2f, -5);
 
     [SerializeField]
-    private float               neckHeight = 2.0f;
+    private float                       neckHeight = 2.0f;
 
     //注目するためのフラグ
-    private static bool         focusFlag = false;
+    private static bool                 focusFlag = false;
 
-    public static bool          FocusFlag { get { return focusFlag; } set { focusFlag = value; } }
+    public static bool                  FocusFlag { get { return focusFlag; } set { focusFlag = value; } }
 
     //注目する座標を保持するもの
-    private static GameObject   lockObject;
+    private static GameObject           lockObject;
 
-    public static GameObject    LockObject { get { return lockObject; }set { lockObject = value; } }
+    public static GameObject            LockObject { get { return lockObject; }set { lockObject = value; } }
 
     [SerializeField]
-    private bool                fpsMode = false;
-    public bool                 IsFPSMode() {  return fpsMode; }
+    private bool                        fpsMode = false;
+    public bool                         IsFPSMode() {  return fpsMode; }
+
+    private const float                 RemoveNeckHeightNum = 0.02f;
+    private const float                 MinNeckHeight = 0.5f;
+    private const float                 RemoveGameOverCameraDistance = 0.02f;
+    private const float                 MinGameOverCameraDistance = 3.0f;
+
+    private const float                 AddGameOverCameraRotationHor = 2.0f;
+    private const float                 RotationEulerAnglesYOffset = 145.0f;
+    private const float                 TargetRotationVer = 60.0f;
 
     private void Awake()
     {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+
         myCamera = GetComponent<Camera>();
         target = GameObject.FindWithTag("Player");
     }
@@ -153,10 +172,6 @@ public class CameraController : MonoBehaviour
     /// <summary>
     /// ゲームオーバー時のカメラとの距離と高さを調整する
     /// </summary>
-    private const float RemoveNeckHeightNum = 0.02f;
-    private const float MinNeckHeight = 0.5f;
-    private const float RemoveGameOverCameraDistance = 0.02f;
-    private const float MinGameOverCameraDistance = 3.0f;
     private void GameOverCameraControl()
     {
         neckHeight -= RemoveNeckHeightNum;
@@ -290,8 +305,6 @@ public class CameraController : MonoBehaviour
     /// <summary>
     /// ゲームオーバー時のカメラの動きと回転を行う関数
     /// </summary>
-    private const float AddGameOverCameraRotationHor = 2.0f;
-    private const float RotationEulerAnglesYOffset = 145.0f;
     private void GameOverCamera()
     {
         rotation_hor += AddGameOverCameraRotationHor;
@@ -307,7 +320,6 @@ public class CameraController : MonoBehaviour
     /// <summary>
     /// クリアした時にtargetに入ってるオブジェクトを中心にカメラを制御する処理
     /// </summary>
-    private const float TargetRotationVer = 60.0f;
     private void TargetCameraUpdate()
     {
         if (target == null) {return;}

@@ -5,7 +5,8 @@ using UnityEngine;
 /// プレイヤーが持つ道具とは別の装飾品を管理するクラス
 /// 現在は剣の鞘のみ
 /// </summary>
-public class PlayerDecorationController : MonoBehaviour
+[System.Serializable]
+public class PlayerDecorationController
 {
     [SerializeField]
     private PlayerController        controller;
@@ -20,7 +21,12 @@ public class PlayerDecorationController : MonoBehaviour
     [SerializeField]
     private List<GameObject>        decorationObjects = new List<GameObject>();
 
-    void Update()
+    public void Setup(PlayerController c)
+    {
+        controller = c;
+    }
+
+    public void Update()
     {
         SetActiveObject(ToolInventoryController.ToolObjectTag.Sword, DecorationObjectTag.Scabbard);
     }

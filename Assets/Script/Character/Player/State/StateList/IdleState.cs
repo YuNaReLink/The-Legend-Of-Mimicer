@@ -26,7 +26,7 @@ public class IdleState : InterfaceState
                 }
                 break;
             case CharacterTagList.StateTag.ChangeMode:
-                if (!controller.GetCameraController().IsFPSMode())
+                if (!CameraController.Instance.IsFPSMode())
                 {
                     return;
                 }

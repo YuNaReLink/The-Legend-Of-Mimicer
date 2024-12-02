@@ -111,7 +111,7 @@ public class PlayerConnectionUI : MonoBehaviour
     public void GamingEnabledUIUpdate()
     {
         //クロスボウで使う矢の残矢のカウントを表示するUIの処理
-        if (playerController.GetCameraController().IsFPSMode()&&playerController.GetToolController().GetQuiver() != null)
+        if (CameraController.Instance.IsFPSMode()&&playerController.GetToolController().GetQuiver() != null)
         {
             if (!playerUIList[(int)PlayerUINumber.ArrowCount].activeSelf)
             {

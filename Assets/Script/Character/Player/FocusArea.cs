@@ -7,8 +7,6 @@ using UnityEngine;
 /// </summary>
 public class FocusArea : MonoBehaviour
 {
-    [SerializeField]
-    private PlayerController    controller = null;
 
     //Ray‚ð”ò‚Î‚·‹——£
     [SerializeField]

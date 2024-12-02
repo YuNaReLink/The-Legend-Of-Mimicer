@@ -16,9 +16,7 @@ public class CrossBowShoot : MonoBehaviour
     private bool                fire = false;
     public bool                 Fire { get { return fire; }set { fire = value; } }
 
-    private CrossBowAnimation   animation = null;
-
-    private PlayerController    playerController = null;
+    private new CrossBowAnimation   animation = null;
 
     private void Awake()
     {

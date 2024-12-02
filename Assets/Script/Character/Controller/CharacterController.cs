@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -66,6 +67,12 @@ public class CharacterController : MonoBehaviour
     public GameObject                       SelfObject() { return gameObject; }
     public bool                             IsActiveObject() { return gameObject.activeSelf; }
     public void                             SetActiveObject(bool enabled) { gameObject.SetActive(enabled); }
+
+    /// <summary>
+    /// パシフィックマテリアル
+    /// </summary>
+    [SerializeField]
+    protected List<PhysicMaterial> physicMaterials = new List<PhysicMaterial>();
     protected virtual void Awake(){}
     protected virtual void InitializeAssign()
     {
@@ -118,6 +125,20 @@ public class CharacterController : MonoBehaviour
         characterStatus.MoveInput = false;
         battleMode = false;
     }
+    /// <summary>
+    /// PhysicMaterialを着地の有無で変更する関数
+    /// </summary>
+    protected void SetPhysicMaterial()
+    {
+        if (characterStatus.CurrentState != CharacterTagList.StateTag.Grab && !characterStatus.Landing)
+        {
+            characterCollider.material = physicMaterials[(int)CharacterTagList.PhysicState.Jump];
+        }
+        else
+        {
+            characterCollider.material = physicMaterials[(int)CharacterTagList.PhysicState.Land];
+        }
+    }
     protected virtual void Update()
     {
         //入力を解除
@@ -134,7 +155,7 @@ public class CharacterController : MonoBehaviour
     /// <summary>
     /// オブジェクトを止める関数
     /// </summary>
-    public void StopMove()
+    public virtual void StopMove()
     {
         characterStatus.Velocity = StopMoveVelocity();
         characterRB.velocity = characterStatus.Velocity;

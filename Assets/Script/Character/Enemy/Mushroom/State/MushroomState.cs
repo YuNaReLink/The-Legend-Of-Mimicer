@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// キノコモンスターの状態を変更処理するクラス
 /// </summary>
-public class MushroomState : MonoBehaviour
+public class MushroomState
 {
     private MushroomController      controller = null;
 
@@ -12,11 +12,12 @@ public class MushroomState : MonoBehaviour
     private const float             AttackCoolDownCount = 3f;
 
     private PatrolState             patrolState = null;
-    public void SetController(MushroomController _controller)
+
+    public MushroomState(MushroomController c)
     {
-        controller = _controller;
-        patrolState = GetComponent<PatrolState>();
-        if(patrolState == null)
+        controller = c;
+        patrolState = c.GetComponent<PatrolState>();
+        if (patrolState == null)
         {
             Debug.LogError("PatrolStateがアタッチされていません");
         }
@@ -24,11 +25,6 @@ public class MushroomState : MonoBehaviour
         {
             patrolState?.AwakeInitilaize();
         }
-    }
-
-    public void StartInitilaize()
-    {
-        patrolState?.StartInitilaize();
     }
 
     public void StateUpdate()

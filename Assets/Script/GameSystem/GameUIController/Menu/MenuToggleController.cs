@@ -12,7 +12,6 @@ public class MenuToggleController : MonoBehaviour
     public List<Toggle>         ToggleList { get { return toggleList; } set { toggleList = value; } }
     private int                 currentToggleIndex = 0;
     private int                 pastToggleIndex = 0;
-    private bool                selectFlag = false;
     [SerializeField]
     private GraphicRaycaster    graphicRaycaster; // UI‚ÌGraphicRaycaster
     [SerializeField]

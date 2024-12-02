@@ -7,8 +7,6 @@ public class ArrowCount : MonoBehaviour
 
     private Text                    arrowText = null;
 
-    private int                     uiArrowCount = 20;
-
     public void AwakeInitilaize(PlayerController _playerController)
     {
         playerController = _playerController;

@@ -3,8 +3,14 @@ using UnityEngine;
 /// <summary>
 /// プレイヤーが壁や崖のアクションの判定を行うクラス
 /// </summary>
-public class ObstacleAction : MonoBehaviour
+[System.Serializable]
+public class ObstacleAction
 {
+    [SerializeField]
+    private PlayerController    controller = null;
+
+    private Transform transform;
+
     //段差ジャンプのRayの開始位置
     [SerializeField]
     private float               stepCheckOffset = 0.5f;
@@ -104,11 +110,16 @@ public class ObstacleAction : MonoBehaviour
     [SerializeField]
     private bool[]              cameraForwardWallFlagArray = new bool[4];
     //Playerクラスのインスタンス宣言
-    [SerializeField]
-    private PlayerController    controller = null;
-    public void                 SetController(PlayerController _controller) { controller = _controller; }
     //崖、壁とのアクションを行えないようにするカウントダウンのカウント数値
     private const float         StopWallActionCount = 0.1f;
+
+
+    public void Setup(PlayerController c)
+    {
+        controller = c;
+        transform = c.transform;
+    }
+
     /// <summary>
     /// 壁、崖のアクションを行うか判定するbool関数
     /// </summary>
@@ -138,7 +149,7 @@ public class ObstacleAction : MonoBehaviour
     public void WallCheckInput()
     {
         //FPSカメラモードがONなら
-        if (controller.GetCameraController().IsFPSMode()) { return; }
+        if (CameraController.Instance.IsFPSMode()) { return; }
         //入力してる方向にRayを飛ばす処理
         MoveDirectionCheck();
         //プレイヤーの状態によって壁、崖との当たり判定を行わないようにするフラグ
@@ -391,7 +402,7 @@ public class ObstacleAction : MonoBehaviour
     public void Execute()
     {
         if (IsObstacleAction()) { return; }
-        if (controller.GetCameraController().IsFPSMode()) { return; }
+        if (CameraController.Instance.IsFPSMode()) { return; }
         //崖からジャンプする処理
         LowStepCommand();
         //段差を飛び越える時の処理
@@ -483,14 +494,14 @@ public class ObstacleAction : MonoBehaviour
                 controller.CharacterRB.useGravity = false;
                 controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Grab);
             }
-            if (MoveKeyInput()&& controller.GetCameraController().IsCameraVerticalRotation())
+            if (MoveKeyInput()&& CameraController.Instance.IsCameraVerticalRotation())
             {
                 SetClimbPostion();
                 controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.ClimbWall);
                 controller.GetSoundController().PlaySESound((int)SoundTagList.PlayerSoundTag.Climb);
             }
             else if (controller.GetKeyInput().Vertical <= -1.0f&&
-                     controller.GetCameraController().IsCameraVerticalRotation())
+                     CameraController.Instance.IsCameraVerticalRotation())
             {
                 controller.GetTimer().GetTimerWallActionStop().StartTimer(WallActionStopCount);
                 grabFlag = false;

@@ -8,7 +8,7 @@ public class RollingState : InterfaceState
     }
     public void DoUpdate()
     {
-        if (controller.GetCameraController().IsFPSMode()) { return; }
+        if (CameraController.Instance.IsFPSMode()) { return; }
         switch (controller.CharacterStatus.CurrentState)
         {
             case CharacterTagList.StateTag.Rolling:
@@ -54,7 +54,6 @@ public class RollingState : InterfaceState
     }
     private void DirectionRollingInput()
     {
-        float rollingcount = 0.4f;
         float noaccele = 0.4f;
         if (controller.GetKeyInput().Horizontal > 0)
         {
@@ -66,7 +65,6 @@ public class RollingState : InterfaceState
         }
         if (controller.GetKeyInput().Vertical < 0 && controller.GetKeyInput().Horizontal == 0)
         {
-            rollingcount = 0.5f;
             noaccele = 0.5f;
             controller.GetKeyInput().CurrentDirection = CharacterTagList.DirectionTag.Down;
         }
