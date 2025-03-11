@@ -104,6 +104,11 @@ public class RightHandState : InterfaceState
                 tooltag = ToolInventoryController.ToolObjectTag.Null;
             }
         }
+        if (controller.GetKeyInput().GuardPushButton)
+        {
+            if (IsCrossBowCheck()) { return; }
+            tooltag = ToolInventoryController.ToolObjectTag.Null;
+        }
         //同じタグならリターン
         if(controller.GetToolController().CurrentToolTag == tooltag) { return; }
         //あったらそのオブジェクトのタグを代入

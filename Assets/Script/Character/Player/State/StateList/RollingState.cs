@@ -29,7 +29,7 @@ public class RollingState : InterfaceState
         if (!controller.CharacterStatus.Landing) { return; }
         if (controller.GetMotion().IsEndRollingMotionNameCheck()) { return; }
         if (!controller.GetKeyInput().ActionButton) { return; }
-        if (!controller.GetKeyInput().IsCameraLockEnabled())
+        if (!controller.GetKeyInput().GuardHoldButton)
         {
             //Š®‘S‚É~‚Ü‚Á‚Ä‚¢‚½‚çƒŠƒ^[ƒ“
             if (controller.GetKeyInput().Vertical == 0 && controller.GetKeyInput().Horizontal == 0) { return; }

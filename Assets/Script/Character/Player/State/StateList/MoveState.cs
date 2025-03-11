@@ -34,7 +34,7 @@ public class MoveState : InterfaceState
         if (!controller.CharacterStatus.Landing){return;}
         if (playerInput.Horizontal == 0&&
             playerInput.Vertical   == 0) { return; }
-        if (!playerInput.IsCameraLockEnabled())
+        if (!playerInput.GuardHoldButton)
         {
             playerInput.CurrentDirection = CharacterTagList.DirectionTag.Null;
             controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.Run);

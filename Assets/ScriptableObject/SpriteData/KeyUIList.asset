@@ -15,7 +15,7 @@ MonoBehaviour:
   spriteList:
   - {fileID: 21300000, guid: 3059c9da3e626b2468c8dcc154c667f1, type: 3}
   - {fileID: 21300000, guid: 1e32562b1438b3d4da12908e7a95fca4, type: 3}
-  - {fileID: 21300000, guid: a73bde4e4c63a684184055837b1fc7be, type: 3}
+  - {fileID: 21300000, guid: 84258e50ff2f7b843a76fb88d1d38797, type: 3}
   - {fileID: 21300000, guid: 1f2dced1bd1d5f042ace1014678f135d, type: 3}
   - {fileID: 21300000, guid: 78092aeb5c03c4f458e4e7020930b193, type: 3}
   - {fileID: 21300000, guid: d6dad3cde9ff8144582635a3640fb879, type: 3}

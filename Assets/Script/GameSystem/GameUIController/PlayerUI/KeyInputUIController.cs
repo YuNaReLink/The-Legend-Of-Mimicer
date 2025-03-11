@@ -10,7 +10,7 @@ public class KeyInputUIController : MonoBehaviour
     {
         E,
         Q,
-        C,
+        RightClick,
         F,
         Tab,
         Shift
@@ -100,7 +100,7 @@ public class KeyInputUIController : MonoBehaviour
 
         EKeyUI();
         QKeyUI();
-        CKeyUI();
+        RightClickUI();
         FKeyUI();
         TabKeyUI();
         ShiftKeyUI();
@@ -185,17 +185,17 @@ public class KeyInputUIController : MonoBehaviour
         }
     }
 
-    private void CKeyUI()
+    private void RightClickUI()
     {
-        if (inputCoolDownsTimers[(int)KeyUINumber.C].IsEnabled()) { return; }
-        if (InputManager.LockCameraButton())
+        if (inputCoolDownsTimers[(int)KeyUINumber.RightClick].IsEnabled()) { return; }
+        if (InputManager.GuardHoldButton())
         {
-            keyImageArray[(int)KeyUINumber.C].color = new Color32(100, 100, 100, 255);
-            inputCoolDownsTimers[(int)KeyUINumber.C].StartTimer(0.1f);
+            keyImageArray[(int)KeyUINumber.RightClick].color = new Color32(100, 100, 100, 255);
+            inputCoolDownsTimers[(int)KeyUINumber.RightClick].StartTimer(0.1f);
         }
         else
         {
-            keyImageArray[(int)KeyUINumber.C].color = new Color32(255, 255, 255, 255);
+            keyImageArray[(int)KeyUINumber.RightClick].color = new Color32(255, 255, 255, 255);
         }
     }
 

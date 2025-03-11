@@ -43,7 +43,7 @@ public class ShieldGuridCommand : InterfaceBaseToolCommand
             }
             //カメラが注目中だったら
             //ガード状態のタグを変更
-            if (controller.GetKeyInput().IsCameraLockEnabled())
+            if (CameraController.FocusFlag)
             {
                 controller.CharacterStatus.GuardState = CharacterTagList.GuardState.Normal;
             }

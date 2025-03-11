@@ -237,7 +237,7 @@ public class CameraController : MonoBehaviour
         {
             focusFlag = false;
         }
-        if (focusFlag&&player.GetKeyInput().IsCameraLockEnabled())
+        if (focusFlag&&player.GetKeyInput().GuardHoldButton)
         {
             Vector3 directionToEnemy = lockObject.transform.position - transform.position;
             // プレイヤーのローカル座標系でのカメラのオフセット
@@ -250,7 +250,7 @@ public class CameraController : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, player.transform.position + rotatedOffset, Time.deltaTime * 2.0f);
             return;
         }
-        else if (!focusFlag && player.GetKeyInput().IsCameraLockEnabled() || NoTPSCameraState())
+        else if (!focusFlag && player.GetKeyInput().GuardHoldButton || NoTPSCameraState())
         {
             ResetCameraAngles(cameraStatus.ResetCameraSpeed);
         }
