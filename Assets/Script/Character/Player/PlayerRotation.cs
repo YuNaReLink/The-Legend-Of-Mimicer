@@ -19,7 +19,7 @@ public class PlayerRotation
         PlayerInput input = controller.GetKeyInput();
 
         //自身が動いてる場合の注目処理
-        if (CameraController.FocusFlag&& input.IsCameraLockEnabled()&&
+        if (CameraController.FocusFlag && input.GuardHoldButton &&
             CameraController.LockObject != null)
         {
             // 敵の方向ベクトルを取得
@@ -32,7 +32,7 @@ public class PlayerRotation
         }
         //条件に当てはまっていたらプレイヤーの向きを
         //カメラの方向によって取得しないようにする
-        else if (input.IsCameraLockEnabled())
+        else if (input.GuardHoldButton)
         {
             Vector3 forwardPos = new Vector3(0,0,2.5f);
             //前方方向を取得

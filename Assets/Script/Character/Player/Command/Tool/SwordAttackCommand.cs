@@ -123,7 +123,7 @@ public class SwordAttackCommand : InterfaceBaseToolCommand
         //移動キーが何も入力されていなかったら
         if(controller.GetKeyInput().Horizontal != 0&& controller.GetKeyInput().Vertical == 0) { return; }
         //カメラ注目中のジャンプ斬り入力
-        if (controller.GetKeyInput().ActionButton&& controller.GetKeyInput().IsCameraLockEnabled())
+        if (controller.GetKeyInput().ActionButton&& controller.GetKeyInput().GuardHoldButton)
         {
             controller.GetTimer().GetTimerJumpAttackAccele().StartTimer(JumpAttackAcceleCount);
             controller.GetMotion().ChangeMotion(CharacterTagList.StateTag.JumpAttack);
